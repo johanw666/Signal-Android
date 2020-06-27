@@ -93,6 +93,7 @@ public final class PinState {
 
     TextSecurePreferences.setV1RegistrationLockPin(context, pin);
 
+    /*
     if (kbsData == null && pin != null) {
       Log.i(TAG, "Registration Lock V1");
       SignalStore.kbsValues().clearRegistrationLockAndPin();
@@ -112,10 +113,11 @@ public final class PinState {
       TextSecurePreferences.setV1RegistrationLockEnabled(context, false);
       SignalStore.storageServiceValues().setNeedsAccountRestore(true);
     } else {
+    */
       Log.i(TAG, "No registration lock or PIN at all.");
       SignalStore.kbsValues().clearRegistrationLockAndPin();
       TextSecurePreferences.setV1RegistrationLockEnabled(context, false);
-    }
+    //}
 
     updateState(buildInferredStateFromOtherFields());
   }

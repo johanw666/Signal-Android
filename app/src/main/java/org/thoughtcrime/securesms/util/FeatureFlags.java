@@ -92,6 +92,8 @@ public final class FeatureFlags {
    */
   @SuppressWarnings("MismatchedQueryAndUpdateOfCollection")
   private static final Map<String, Object> FORCED_VALUES = new HashMap<String, Object>() {{
+    put(PINS_MEGAPHONE_KILL_SWITCH, (Boolean) true);
+    put(PINS_FOR_ALL_MANDATORY, (Boolean) false);
   }};
 
   /**
