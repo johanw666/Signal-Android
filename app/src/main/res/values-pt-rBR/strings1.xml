@@ -1,0 +1,26 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<resources>
+  <!--arrays.xml-->
+  <string name="arrays__import_export_orig">Importar / exportar</string>
+  <!--ImportFragment-->
+  <string name="ImportFragment_restore_encrypted_backup">Restaurar backup criptografado?</string>
+  <string name="ImportFragment_restoring_an_encrypted_backup_will_completely_replace_your_existing_keys">
+        Restaurar um backup criptografado irá substituir completamente suas chaves existentes,
+        preferências e mensagens. Você perderá toda informação que estiver em sua
+        instalação Signal atual mas não estiver no backup.
+    </string>
+  <string name="ImportFragment_restore">Restaurar</string>
+  <string name="ImportFragment_restoring">Restaurando</string>
+  <string name="ImportFragment_restoring_encrypted_backup">Restaurando backup criptografado...</string>
+  <string name="ImportFragment_no_encrypted_backup_found">Nenhum backup criptografado encontrado!</string>
+  <string name="ImportFragment_restore_complete">Restauração finalizada!</string>
+  <!--ExportFragment-->
+  <string name="ExportFragment_export_to_sd_card">Exportar para cartão SD?</string>
+  <string name="ExportFragment_this_will_export_your_encrypted_keys_settings_and_messages">Isto\n        exportará suas chaves criptografadas, configurações e mensagens para o cartão SD.\n    </string>
+  <string name="ExportFragment_exporting_keys_settings_and_messages">Exportando chaves criptogradas,\n        configurações e mensagens...\n    </string>
+  <!--database_upgrade_activity-->
+  <string name="export_fragment__export_encrypted_backup">Exportar backup criptografado</string>
+  <string name="export_fragment__export_an_encrypted_backup_to_the_sd_card">Exportar um backup\n        criptografado para o cartão SD.\n    </string>
+  <string name="import_fragment__restore_encrypted_backup">Restaurar backup criptografado</string>
+  <string name="import_fragment__restore_a_previously_exported_encrypted_signal_backup">Restaurar um backup criptografado do Signal exportado anteriormente</string>
+</resources>

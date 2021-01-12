@@ -1,0 +1,24 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<resources>
+  <!--arrays.xml-->
+  <string name="arrays__import_export_orig">Import / export</string>
+  <!--ImportFragment-->
+  <string name="ImportFragment_restore_encrypted_backup">Obnovit šifrovanou zálohu?</string>
+  <string name="ImportFragment_restoring_an_encrypted_backup_will_completely_replace_your_existing_keys">
+Obnova ze šifrované zálohy kompletně nahradí vaše aktuální klíče, nastavení a zprávy.
+Přijdete o všechny informace z vaší aktuální instalace Signal které nejsou zálohovány.</string>
+  <string name="ImportFragment_restore">Obnovení</string>
+  <string name="ImportFragment_restoring">Obnovuji</string>
+  <string name="ImportFragment_restoring_encrypted_backup">Obnovování zašifrované zálohy...</string>
+  <string name="ImportFragment_no_encrypted_backup_found">Žádná zašifrovaná záloha nebyla nalezena!</string>
+  <string name="ImportFragment_restore_complete">Obnova dokončena!</string>
+  <!--ExportFragment-->
+  <string name="ExportFragment_export_to_sd_card">Exportovat na SD kartu?</string>
+  <string name="ExportFragment_this_will_export_your_encrypted_keys_settings_and_messages">Tímto exportujete šifrované klíče, nastavení a zprávy na SD kartu.</string>
+  <string name="ExportFragment_exporting_keys_settings_and_messages">Exportování zašifrovaných klíčů, nastavení a zpráv...</string>
+  <!--database_upgrade_activity-->
+  <string name="export_fragment__export_encrypted_backup">Export šifrované zálohy</string>
+  <string name="export_fragment__export_an_encrypted_backup_to_the_sd_card">Exportovat zašifrovanou zálohu na SD kartu.</string>
+  <string name="import_fragment__restore_encrypted_backup">Obnovit šifrovanou zálohu</string>
+  <string name="import_fragment__restore_a_previously_exported_encrypted_signal_backup">Obnovit dříve exportovanou zašifrovanou zálohu Signal.</string>
+</resources>

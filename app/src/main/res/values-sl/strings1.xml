@@ -1,0 +1,23 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<resources>
+  <!--arrays.xml-->
+  <string name="arrays__import_export_orig">Uvoz/Izvoz</string>
+  <!--ImportFragment-->
+  <string name="ImportFragment_restore_encrypted_backup">Obnovim iz šifirane varnostne kopije?</string>
+  <string name="ImportFragment_restoring_an_encrypted_backup_will_completely_replace_your_existing_keys">
+Uvoz iz šifrirane varnostne kopije bo popolnoma nadomestil obstoječe ključe, nastavitve, in sporočila. Izgubili boste vse podatke iz trenutne namestitve aplikacije Signal, ki niso v tej varnostni kopiji.</string>
+  <string name="ImportFragment_restore">Obnovi</string>
+  <string name="ImportFragment_restoring">Obnavljam</string>
+  <string name="ImportFragment_restoring_encrypted_backup">Obnavljam iz šifrirane varnostne kopije...</string>
+  <string name="ImportFragment_no_encrypted_backup_found">Ne najdem nobene šifrirane varnostne kopije!</string>
+  <string name="ImportFragment_restore_complete">Obnova dokončana!</string>
+  <!--ExportFragment-->
+  <string name="ExportFragment_export_to_sd_card">Izvozim na kartico SD?</string>
+  <string name="ExportFragment_this_will_export_your_encrypted_keys_settings_and_messages">S tem boste izvozili svoje ključe, nastavitve in sporočila na kartico SD v šifrirani obliki.</string>
+  <string name="ExportFragment_exporting_keys_settings_and_messages">Izvažam ključe, nastavitve in sporočila v šifrirani obliki...</string>
+  <!--database_upgrade_activity-->
+  <string name="export_fragment__export_encrypted_backup">Izvozi šifrirano varnostno kopijo</string>
+  <string name="export_fragment__export_an_encrypted_backup_to_the_sd_card">Izvozi šifrirano varnostno kopijo na kartico SD.</string>
+  <string name="import_fragment__restore_encrypted_backup">Uvoz iz šifrirane varnostne kopije</string>
+  <string name="import_fragment__restore_a_previously_exported_encrypted_signal_backup">Obnova podatkov iz predhodno ustvarjene šifrirane varnostne kopije Signal.</string>
+</resources>
