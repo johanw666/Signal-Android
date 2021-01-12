@@ -1,0 +1,38 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<resources>
+  <!-- arrays.xml -->
+  <string name="arrays__import_export_orig">ఎగుమతి</string>
+  <!--ExportFragment-->
+  <string name="ExportFragment_export">ఎగుమతి</string>
+  <string name="ExportFragment_export_plaintext_to_storage">సహజమైన వాక్యాలను నిల్వచేయుటకు ఎగుమతి చేయాలా?</string>
+  <string name="ExportFragment_warning_this_will_export_the_plaintext_contents">హెచ్చరిక, ఈ నిల్వకు మీ సిగ్నల్ సందేశాలను సాదా విషయాలు ఎగుమతి చేస్తుంది.</string>
+  <string name="ExportFragment_cancel">రద్దు</string>
+  <string name="ExportFragment_exporting">ఎగుమతి అవుతోంది</string>
+  <string name="ExportFragment_exporting_plaintext_to_storage">సహజమైన వాక్యాలు నిల్వచేయుటకు ఎగుమతి చేయబడుతున్నవి...</string>
+  <string name="ExportFragment_error_unable_to_write_to_storage">లోపం, నిలవచేసే చోటుకు వ్రాయలేరు.</string>
+  <string name="ExportFragment_error_while_writing_to_storage">నిల్వ చేసే చోటుకు  వ్రాసేటపుడు లోపం.</string>
+  <string name="ExportFragment_export_successful">ఎగుమతి విజయవంతమైనది.</string>
+  <string name="export_fragment__export_plaintext_backup">సాధారణ అక్షరాల బ్యాకప్ ఎగుమతి </string>
+  <string name="export_fragment__export_a_plaintext_backup_compatible_with">సాదా బ్యాకప్ \'ఎస్ఎంఎస్ బ్యాకప్ మరియు amp అనుకూలంగా ఎగుమతి; నిల్వలో పునరుద్ధరించు \'</string>
+  <!--ImportExportActivity-->
+  <string name="ImportExportActivity_import">దిగుమతి</string>
+  <string name="ImportExportActivity_export">ఎగుమతి</string>
+  <!--ImportFragment-->
+  <string name="ImportFragment_import_system_sms_database">దిగుమతి వ్యవస్థ ఎస్సెమ్మెస్ డేటాబేస్?</string>
+  <string name="ImportFragment_this_will_import_messages_from_the_system">ఇది పరికరం యొక్క అప్రమేయ సందెశ దత్తాంశస్థానం లొని సందేశాలను సిగ్నల్  లోకి ఎగుమతి చేయును. మీరు ఇదివరకే పరికరం  యొక్క  సందేశ  దత్తాంశస్థానన్ని ఎగుమతి చెసి ఉన్న యెడల మరలా  ఎగుమతి చెయుట నకిలీ సందెశాలను స్రుష్టించును.   </string>
+  <string name="ImportFragment_import">దిగుమతి</string>
+  <string name="ImportFragment_cancel">రద్దు</string>
+  <string name="ImportFragment_import_plaintext_backup">సాదా బ్యాకప్ దిగుమతి చేయాలనుకుంటున్నారా?</string>
+  <string name="ImportFragment_this_will_import_messages_from_a_plaintext_backup">ఇది సందేశాలను సాదా బ్యాకప్ నుండి దిగుమతి చేస్తుంది.మీరు గతంలో ఈ బ్యాకప్ దిగుమతి చేసి ఉంటే,మళ్లీ దిగుమతి నకిలీ సందేశాలను ఫలితమౌతుంది.</string>
+  <string name="ImportFragment_importing">దిగుమతి అవుతోంది</string>
+  <string name="ImportFragment_import_plaintext_backup_elipse">సాదా బ్యాకప్ దిగుమతి అవుతోంది ...</string>
+  <string name="ImportFragment_no_plaintext_backup_found">సాదా బ్యాకప్ దొరకలేదు!</string>
+  <string name="ImportFragment_error_importing_backup">బ్యాకప్ దిగుమతి లోపం!</string>
+  <string name="ImportFragment_import_complete">దిగుమతి పూర్తయింది!</string>
+  <string name="ImportExportFragment_signal_needs_the_sms_permission_in_order_to_import_sms_messages">SMS సందేశాలను దిగుమతి చెయ్యడానికి సిగ్నల్కు SMS అనుమతి అవసరం, కానీ ఇది శాశ్వతంగా తిరస్కరించబడింది. దయచేసి దయచేసి అనువర్తన సెట్టింగ్లకు కొనసాగించండి, \"అనుమతులు\" ఎంచుకోండి మరియు \"SMS\" ను ప్రారంభించండి.</string>
+  <string name="ImportExportFragment_signal_needs_the_sms_permission_in_order_to_import_sms_messages_toast">SMS సందేశాలను దిగుమతి చేసుకోవడానికి సిగ్నల్కు SMS అనుమతి అవసరం</string>
+  <string name="ImportExportFragment_signal_needs_the_storage_permission_in_order_to_read_from_external_storage_but_it_has_been_permanently_denied">బాహ్య నిల్వ నుండి చదవడానికి సిగ్నల్కు నిల్వ అనుమతి అవసరం, కానీ ఇది శాశ్వతంగా తిరస్కరించబడింది. దయచేసి అనువర్తనం సెట్టింగ్లకు కొనసాగించండి, \"అనుమతులు\" ఎంచుకోండి, ఆపై \"నిల్వ\" ను ప్రారంభించండి.</string>
+  <string name="ImportExportFragment_signal_needs_the_storage_permission_in_order_to_read_from_external_storage">బాహ్య నిల్వ నుండి చదవడానికి సిగ్నల్కు నిల్వ అనుమతి అవసరం.</string>
+  <string name="ImportExportFragment_signal_needs_the_storage_permission_in_order_to_write_to_external_storage_but_it_has_been_permanently_denied">బాహ్య నిల్వకు రాయడానికి సిగ్నల్కు నిల్వ అనుమతి అవసరం, కానీ ఇది శాశ్వతంగా తిరస్కరించబడింది. దయచేసి అనువర్తనం సెట్టింగ్లకు కొనసాగించండి, \"అనుమతులు\" ఎంచుకోండి, ఆపై \"నిల్వ\" ను ప్రారంభించండి.</string>
+  <string name="ImportExportFragment_signal_needs_the_storage_permission_in_order_to_write_to_external_storage">బాహ్య నిల్వకు వ్రాయడానికి సిగ్నల్ కి నిల్వ అనుమతి అవసరం.</string>
+</resources>

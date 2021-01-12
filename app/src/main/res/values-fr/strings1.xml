@@ -1,0 +1,25 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<resources>
+  <!--arrays.xml-->
+  <string name="arrays__import_export_orig">Importer / exporter</string>
+  <!-- preferences.xml -->
+  <string name="preferences__oled_theme">OLED Sombre</string>
+  <string name="preferences__green_theme">Vert Clair</string>
+  <!--ImportFragment-->
+  <string name="ImportFragment_restore_encrypted_backup">Restaurer une sauvegarde chiffrée ?</string>
+  <string name="ImportFragment_restoring_an_encrypted_backup_will_completely_replace_your_existing_keys">La restauration d\'une sauvegarde chiffrée va complètement remplacer vos clés, préférences et messages. Vous perdrez toutes les informations qui se trouvent dans votre installation Signal actuelle mais pas dans la sauvegarde.</string>
+  <string name="ImportFragment_restore">Restaurer</string>
+  <string name="ImportFragment_restoring">Restauration</string>
+  <string name="ImportFragment_restoring_encrypted_backup">Restauration de la sauvegarde chiffrée...</string>
+  <string name="ImportFragment_no_encrypted_backup_found">Aucune sauvegarde chiffrée trouvée!</string>
+  <string name="ImportFragment_restore_complete">Restauration terminée !</string>
+   <!--ExportFragment-->
+  <string name="ExportFragment_export_to_sd_card">Exporter vers la carte SD ?</string>
+  <string name="ExportFragment_this_will_export_your_encrypted_keys_settings_and_messages">Ceci ⏎\nexportera vos clés chiffrées, les paramètres et les messages sur la carte SD.</string>
+  <string name="ExportFragment_exporting_keys_settings_and_messages">Exportation des clés chiffrées, \nparamètres et messages ... </string>
+  <!--database_upgrade_activity-->
+  <string name="export_fragment__export_encrypted_backup">Exporter une sauvegarde chiffrée</string>
+  <string name="export_fragment__export_an_encrypted_backup_to_the_sd_card">Exporter une sauvegarde chiffrée vers l\'espace de stockage</string>
+  <string name="import_fragment__restore_encrypted_backup">Restaurer la sauvegarde chiffrée</string>
+  <string name="import_fragment__restore_a_previously_exported_encrypted_signal_backup">Restaurer une sauvegarde chiffrée précédemment avec Signal</string>
+</resources>

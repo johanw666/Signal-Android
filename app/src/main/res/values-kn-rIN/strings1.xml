@@ -1,0 +1,11 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<resources>
+  <!--ExportFragment-->
+  <string name="ExportFragment_export_to_sd_card">ಎಸ್.ಡಿ  ಕಾರ್ಡ್ಗೆ ರಫ್ತು ಮಾಡಿ?</string>
+  <string name="ExportFragment_this_will_export_your_encrypted_keys_settings_and_messages">ಇದು\nಏಸ್.ಡಿ ಕಾರ್ಡ್ಗೆ ನಿಮ್ಮ ಗೂಢಲಿಪೀಕರಣಗೊಂಡ ಕೀಲಿಗಳನ್ನು, ಸೆಟ್ಟಿಂಗ್ಗಳನ್ನು ಮತ್ತು ಸಂದೇಶಗಳ ರಫ್ತು ಮಾಡುತ್ತದೆ.</string>
+  <string name="ExportFragment_exporting_keys_settings_and_messages">ಗೂಢಲಿಪೀಕರಣಗೊಂಡ ಕೀಲಿಗಳನ್ನು,\nಸೆಟ್ಟಿಂಗ್ಗಳನ್ನು ಮತ್ತು ಸಂದೇಶಗಳನ್ನು ರಫ್ತು ಮಾಡಲಾಗುತ್ತಿದೆ ...</string>
+
+  <!--database_upgrade_activity-->
+  <string name="export_fragment__export_encrypted_backup">ಗೂಢಲಿಪೀಕರಣಗೊಂಡ ಬ್ಯಾಕ್ಅಪ್ ಅನ್ನು ರಫ್ತು ಮಾಡಿ</string>
+  <string name="export_fragment__export_an_encrypted_backup_to_the_sd_card">ಎಸ್.ಡಿ  ಕಾರ್ಡ್ಗೆ \nಒಂದು ಗೂಢಲಿಪೀಕರಣಗೊಂಡ ⏎ ಬ್ಯಾಕ್ಅಪ್ ಅನ್ನು ರಫ್ತು ಮಾಡಿ.</string>
+</resources>
