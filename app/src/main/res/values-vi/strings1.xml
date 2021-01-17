@@ -1,0 +1,25 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<resources>
+  <!--arrays.xml-->
+  <string name="arrays__import_export_orig">Xuất / nhập</string>
+  <!--ImportFragment-->
+  <string name="ImportFragment_restore_encrypted_backup">Phục hồi phần sao lưu mã hóa?</string>
+  <string name="ImportFragment_restoring_an_encrypted_backup_will_completely_replace_your_existing_keys">
+Khôi phục sao lưu đã mã khoá sẽ thay thế hoàn toàn các khoá, tinh chỉnh và tin nhắn hiện hữu của bạn. Bạn cũng sẽ mất tất cả thông tin trong bản cài đặt Signal hiện tại ngoại trừ
+trong bản sao lưu.
+</string>
+  <string name="ImportFragment_restore">Phục hồi</string>
+  <string name="ImportFragment_restoring">Đang phục hồi</string>
+  <string name="ImportFragment_restoring_encrypted_backup">Phục hồi sao lưu có mã hóa...</string>
+  <string name="ImportFragment_no_encrypted_backup_found">Không tìm thấy sao lưu có mã hóa!</string>
+  <string name="ImportFragment_restore_complete">Phục hồi hoàn tất!</string>
+  <!--ExportFragment-->
+  <string name="ExportFragment_export_to_sd_card">Xuất ra thẻ nhớ SD?</string>
+  <string name="ExportFragment_this_will_export_your_encrypted_keys_settings_and_messages">Thao tác này sẽ xuất các chìa khóa mã hóa, thiết đặt, và tin nhắn của bạn ra thẻ nhớ SD.</string>
+  <string name="ExportFragment_exporting_keys_settings_and_messages">Đang xuất ra các chìa khóa mã hóa, thiết đặt, và tin nhắn...</string>
+  <!--database_upgrade_activity-->
+  <string name="export_fragment__export_encrypted_backup">Xuất Sao Lưu Có Mã Hóa</string>
+  <string name="export_fragment__export_an_encrypted_backup_to_the_sd_card">Xuất sao lưu có mã hóa ra thẻ nhớ SD</string>
+  <string name="import_fragment__restore_encrypted_backup">Phục hồi sao lưu đã mã khóa</string>
+  <string name="import_fragment__restore_a_previously_exported_encrypted_signal_backup">Phục hồi sao lưu Signal đã mã khóa từng xuất ra trước đó</string>
+</resources>

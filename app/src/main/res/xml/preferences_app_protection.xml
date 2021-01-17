@@ -18,6 +18,13 @@
 
   <PreferenceCategory android:title="@string/preferences_app_protection__app_access">
 
+    <!-- JW: added option to use the passphrase -->
+    <org.thoughtcrime.securesms.components.SwitchPreferenceCompat
+        android:key="pref_signal_protection_method"
+        android:defaultValue="false"
+        android:title="@string/preferences_app_protection__method_passphrase"
+        android:summary="@string/preferences_app_protection__method_passphrase_summary"/>
+
     <org.thoughtcrime.securesms.components.SwitchPreferenceCompat
         android:defaultValue="false"
         android:key="pref_android_screen_lock"

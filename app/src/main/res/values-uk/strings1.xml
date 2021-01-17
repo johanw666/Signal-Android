@@ -1,0 +1,25 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<resources>
+  <!--arrays.xml-->
+  <string name="arrays__import_export_orig">Імпорт / експорт</string>
+  <!--ImportFragment-->
+  <string name="ImportFragment_restore_encrypted_backup">Відновити зашифровану резервну копію?</string>
+  <string name="ImportFragment_restoring_an_encrypted_backup_will_completely_replace_your_existing_keys">
+Відновлення зашифрованої резервної копії повністю замінить поточні ключі, налаштування
+та повідомлення. Ви не втратите ані жодної інформації, що наразі є у Signal, ані у резервній копії.
+ </string>
+  <string name="ImportFragment_restore">Відновити</string>
+  <string name="ImportFragment_restoring">Відновлення</string>
+  <string name="ImportFragment_restoring_encrypted_backup">Відновлення зашифрованої резервної копії</string>
+  <string name="ImportFragment_no_encrypted_backup_found">Зашифрована резервна копія не знайдена!</string>
+  <string name="ImportFragment_restore_complete">Відновлення завершено!</string>
+  <!--ExportFragment-->
+  <string name="ExportFragment_export_to_sd_card">Експортувати на SD-карту?</string>
+  <string name="ExportFragment_this_will_export_your_encrypted_keys_settings_and_messages">Це експортує ваші шифровані ключі, налаштування та повідомлення на SD карту.</string>
+  <string name="ExportFragment_exporting_keys_settings_and_messages">Експорт шифрованих ключів, налаштувань та повідомлень\u2026</string>
+  <!--database_upgrade_activity-->
+  <string name="export_fragment__export_encrypted_backup">Експорт Зашифрованої Резервної копії</string>
+  <string name="export_fragment__export_an_encrypted_backup_to_the_sd_card">Експортувати на SD-карту\nзашифровану резервну копію.</string>
+  <string name="import_fragment__restore_encrypted_backup">Відновити зашифровану резервну копію</string>
+  <string name="import_fragment__restore_a_previously_exported_encrypted_signal_backup">Відновити раніше експортовану зашифровану резервну копію Signal</string>
+</resources>

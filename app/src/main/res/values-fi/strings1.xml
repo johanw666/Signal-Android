@@ -1,0 +1,24 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<resources>
+  <!--arrays.xml-->
+  <string name="arrays__import_export_orig">Varmuuskopiot</string>
+  <!--ImportFragment-->
+  <string name="ImportFragment_restore_encrypted_backup">Palautetaanko salattu varmuuskopio?</string>
+  <string name="ImportFragment_restoring_an_encrypted_backup_will_completely_replace_your_existing_keys">
+Salatun varmuuskopion palauttaminen korvaa kaikki olemassa olevat avaimet, asetukset ja
+viestit. Menetät kaikki Signalissa olevat tiedot, jotka eivät ole osa varmuuskopiota.</string>
+  <string name="ImportFragment_restore">Palauta</string>
+  <string name="ImportFragment_restoring">Palautetaan</string>
+  <string name="ImportFragment_restoring_encrypted_backup">Palautetaan salattua varmuuskopiota...</string>
+  <string name="ImportFragment_no_encrypted_backup_found">Salattua varmuuskopiota ei löytynyt!</string>
+  <string name="ImportFragment_restore_complete">Palautus suoritettu!</string>
+  <!--ExportFragment-->
+  <string name="ExportFragment_export_to_sd_card">Viedäänkö SD-muistikortille?</string>
+  <string name="ExportFragment_this_will_export_your_encrypted_keys_settings_and_messages">Tämä toiminto \ntulee viemään salatut avaimet, asetukset ja viestit SD-muistikortille.</string>
+  <string name="ExportFragment_exporting_keys_settings_and_messages">Viedään salattuja avaimia,\nasetuksia ja viestejä...</string>
+  <!--database_upgrade_activity-->
+  <string name="export_fragment__export_encrypted_backup">Vie salattu varmuuskopio</string>
+  <string name="export_fragment__export_an_encrypted_backup_to_the_sd_card">Vie salattu varmuuskopio\nSD-muistikortille.</string>
+  <string name="import_fragment__restore_encrypted_backup">Palauta salattu varmuuskopio</string>
+  <string name="import_fragment__restore_a_previously_exported_encrypted_signal_backup"> Palauta aiemmin viety salattu Signal-varmuuskopio.</string>
+</resources>

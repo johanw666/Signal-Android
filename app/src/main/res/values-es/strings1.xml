@@ -1,0 +1,25 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<resources>
+  <!--arrays.xml-->
+  <string name="arrays__import_export_orig">Importar/exportar</string>
+  <!--ImportFragment-->
+  <string name="ImportFragment_restore_encrypted_backup">¿Restaurar copia de seguridad cifrada?</string>
+  <string name="ImportFragment_restoring_an_encrypted_backup_will_completely_replace_your_existing_keys">
+Restaurar una copia de seguridad cifrada reemplazará completamente sus claves existentes, preferencias, y
+mensajes. Perderá cualquier información que esté en su instalación actual de Signal pero no
+en la copia de seguridad.</string>
+  <string name="ImportFragment_restore">Restaurar</string>
+  <string name="ImportFragment_restoring">Restaurando</string>
+  <string name="ImportFragment_restoring_encrypted_backup">Restaurando copia de seguridad cifrada...</string>
+  <string name="ImportFragment_no_encrypted_backup_found">¡No se encontró la copia de seguridad cifrada!</string>
+  <string name="ImportFragment_restore_complete">¡Restauración completada!</string>
+  <!--ExportFragment-->
+  <string name="ExportFragment_export_to_sd_card">¿Exportar a tarjeta SD?</string>
+  <string name="ExportFragment_this_will_export_your_encrypted_keys_settings_and_messages">Esto\n        exportará sus claves cifradas, configuración y mensajes a la tarjeta SD.\n    </string>
+  <string name="ExportFragment_exporting_keys_settings_and_messages">Exportando claves cifradas,\n        configuración y mensajes...\n    </string>
+  <!--database_upgrade_activity-->
+  <string name="export_fragment__export_encrypted_backup">Exportar copia de seguridad cifrada</string>
+  <string name="export_fragment__export_an_encrypted_backup_to_the_sd_card">Exportar copia de seguridad\n        cifrada a la tarjeta SD.\n    </string>
+  <string name="import_fragment__restore_encrypted_backup">Restaurar copia de seguridad encriptada</string>
+  <string name="import_fragment__restore_a_previously_exported_encrypted_signal_backup">Recuperar una copia de seguridad ecriptada de Signal previamente exportada</string>
+</resources>
