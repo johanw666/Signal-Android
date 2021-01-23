@@ -14,6 +14,7 @@ import org.signal.core.util.logging.Log;
 import org.thoughtcrime.securesms.attachments.AttachmentId;
 import org.thoughtcrime.securesms.attachments.DatabaseAttachment;
 import org.thoughtcrime.securesms.database.DatabaseFactory;
+import org.thoughtcrime.securesms.database.MmsDatabase; // JW: added
 import org.thoughtcrime.securesms.database.NoSuchMessageException;
 import org.thoughtcrime.securesms.database.model.MessageRecord;
 import org.thoughtcrime.securesms.jobmanager.impl.NotInCallConstraint;
@@ -68,7 +69,13 @@ public class AttachmentUtil {
         .size();
 
     if (attachmentCount <= 1) {
-      DatabaseFactory.getMmsDatabase(context).deleteMessage(mmsId);
+      // JW: changed
+      if (!TextSecurePreferences.isDeleteMediaOnly(context)) {
+        DatabaseFactory.getMmsDatabase(context).deleteMessage(mmsId);
+      }  else {
+        MmsDatabase mmsdb = (MmsDatabase)DatabaseFactory.getMmsDatabase(context);
+        mmsdb.deleteAttachmentsOnly(mmsId);
+      }
     } else {
       DatabaseFactory.getAttachmentDatabase(context).deleteAttachment(attachmentId);
     }
