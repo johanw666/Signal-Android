@@ -51,6 +51,7 @@ import org.thoughtcrime.securesms.recipients.RecipientExporter;
 import org.thoughtcrime.securesms.recipients.RecipientId;
 import org.thoughtcrime.securesms.recipients.ui.notifications.CustomNotificationsDialogFragment;
 import org.thoughtcrime.securesms.util.DateUtils;
+import org.thoughtcrime.securesms.util.FeatureFlags;
 import org.thoughtcrime.securesms.util.LifecycleCursorWrapper;
 import org.thoughtcrime.securesms.util.ServiceUtil;
 import org.thoughtcrime.securesms.util.Util;
@@ -260,11 +261,10 @@ public class ManageRecipientFragment extends LoggingFragment {
       });
     }
 
-    viewModel.getCanBlock().observe(getViewLifecycleOwner(),
-                                    canBlock -> block.setVisibility(canBlock ? View.VISIBLE : View.GONE));
-
-    viewModel.getCanUnblock().observe(getViewLifecycleOwner(),
-                                      canUnblock -> unblock.setVisibility(canUnblock ? View.VISIBLE : View.GONE));
+    viewModel.getCanBlock().observe(getViewLifecycleOwner(), canBlock -> {
+      block.setVisibility(canBlock ? View.VISIBLE : View.GONE);
+      unblock.setVisibility(canBlock ? View.GONE : View.VISIBLE);
+    });
 
     messageButton.setOnClickListener(v -> {
       if (fromConversation) {
@@ -387,7 +387,7 @@ public class ManageRecipientFragment extends LoggingFragment {
                                                                   .setColors(colors)
                                                                   .setSize(ColorPickerDialog.SIZE_SMALL)
                                                                   .setSortColors(false)
-                                                                  .setColumns(3)
+                                                                  .setColumns(4) // JW: changed from 3 to 4
                                                                   .build();
 
     ColorPickerDialog dialog = new ColorPickerDialog(requireActivity(), color -> viewModel.onSelectColor(color), params);
