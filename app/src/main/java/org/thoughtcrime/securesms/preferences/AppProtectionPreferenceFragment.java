@@ -5,6 +5,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.Typeface;
+import android.os.Build; // JW
 import android.os.Bundle;
 import android.text.InputType;
 import android.text.SpannableStringBuilder;
@@ -82,12 +83,16 @@ public class AppProtectionPreferenceFragment extends CorrectedPreferenceFragment
   private static final String PREFERENCE_WHO_CAN_SEE_PHONE_NUMBER     = "pref_who_can_see_phone_number";
   private static final String PREFERENCE_WHO_CAN_FIND_BY_PHONE_NUMBER = "pref_who_can_find_by_phone_number";
 
+  private CheckBoxPreference protectionMethod; // JW
+  private CheckBoxPreference enableScreenLock; // JW
   private CheckBoxPreference disablePassphrase;
 
   @Override
   public void onCreate(Bundle paramBundle) {
     super.onCreate(paramBundle);
 
+    protectionMethod  = (CheckBoxPreference) this.findPreference(TextSecurePreferences.PROTECTION_METHOD_PREF); // JW
+    enableScreenLock  = (CheckBoxPreference) this.findPreference(TextSecurePreferences.SCREEN_LOCK); // JW
     disablePassphrase = (CheckBoxPreference) this.findPreference("pref_enable_passphrase_temporary");
 
     this.findPreference(KbsValues.V2_LOCK_ENABLED).setPreferenceDataStore(SignalStore.getPreferenceDataStore());
@@ -111,6 +116,8 @@ public class AppProtectionPreferenceFragment extends CorrectedPreferenceFragment
     this.findPreference(PREFERENCE_UNIDENTIFIED_LEARN_MORE).setOnPreferenceClickListener(new UnidentifiedLearnMoreClickListener());
     this.findPreference(PREFERENCE_INCOGNITO_LEARN_MORE).setOnPreferenceClickListener(new IncognitoLearnMoreClickListener());
     disablePassphrase.setOnPreferenceChangeListener(new DisablePassphraseClickListener());
+    enableScreenLock.setOnPreferenceChangeListener(new EnableScreenLockToggleListener()); // JW
+    protectionMethod.setOnPreferenceChangeListener(new ProtectionMethodToggleListener()); // JW
 
     if (FeatureFlags.phoneNumberPrivacy()) {
       Preference whoCanSeePhoneNumber    = this.findPreference(PREFERENCE_WHO_CAN_SEE_PHONE_NUMBER);
@@ -133,6 +140,15 @@ public class AppProtectionPreferenceFragment extends CorrectedPreferenceFragment
     initializeVisibility();
   }
 
+  // JW: added method.
+  private boolean isPassphraseSelected() {
+    // Because this preference may be undefined when this app is first ran we also check if there is a passphrase
+    // defined, if so, we assume passphrase protection:
+    return TextSecurePreferences.isProtectionMethodPassphrase(getContext()) ||
+      (TextSecurePreferences.getBooleanPreference(getContext(), "pref_enable_passphrase_temporary", false) &&
+       !TextSecurePreferences.isPasswordDisabled(getContext()));
+  }
+
   @Override
   public void onCreatePreferences(@Nullable Bundle savedInstanceState, String rootKey) {
     addPreferencesFromResource(R.xml.preferences_app_protection);
@@ -147,6 +163,7 @@ public class AppProtectionPreferenceFragment extends CorrectedPreferenceFragment
     else                                                         initializeScreenLockTimeoutSummary();
 
     disablePassphrase.setChecked(!TextSecurePreferences.isPasswordDisabled(getActivity()));
+    protectionMethod.setChecked(isPassphraseSelected()); // JW: set the choice between passphrase and Android screenlock.
 
     Preference             signalPinCreateChange   = this.findPreference(TextSecurePreferences.SIGNAL_PIN_CHANGE);
     SwitchPreferenceCompat signalPinReminders      = (SwitchPreferenceCompat) this.findPreference(PinValues.PIN_REMINDERS_ENABLED);
@@ -214,7 +231,11 @@ public class AppProtectionPreferenceFragment extends CorrectedPreferenceFragment
   }
 
   private void initializeVisibility() {
-    if (TextSecurePreferences.isPasswordDisabled(getContext())) {
+    // JW: refactored whole method
+    if (!isPassphraseSelected()) {
+      findPreference(TextSecurePreferences.SCREEN_LOCK).setVisible(true);
+      findPreference(TextSecurePreferences.SCREEN_LOCK_TIMEOUT).setVisible(true);
+
       findPreference("pref_enable_passphrase_temporary").setVisible(false);
       findPreference(TextSecurePreferences.CHANGE_PASSPHRASE_PREF).setVisible(false);
       findPreference(TextSecurePreferences.PASSPHRASE_TIMEOUT_INTERVAL_PREF).setVisible(false);
@@ -226,6 +247,11 @@ public class AppProtectionPreferenceFragment extends CorrectedPreferenceFragment
         findPreference(TextSecurePreferences.SCREEN_LOCK).setEnabled(false);
       }
     } else {
+      findPreference("pref_enable_passphrase_temporary").setVisible(true);
+      findPreference(TextSecurePreferences.CHANGE_PASSPHRASE_PREF).setVisible(true);
+      findPreference(TextSecurePreferences.PASSPHRASE_TIMEOUT_INTERVAL_PREF).setVisible(true);
+      findPreference(TextSecurePreferences.PASSPHRASE_TIMEOUT_PREF).setVisible(true);
+
       findPreference(TextSecurePreferences.SCREEN_LOCK).setVisible(false);
       findPreference(TextSecurePreferences.SCREEN_LOCK_TIMEOUT).setVisible(false);
     }
@@ -432,6 +458,68 @@ public class AppProtectionPreferenceFragment extends CorrectedPreferenceFragment
         startActivity(intent);
       }
 
+      return false;
+    }
+  }
+
+  // JW: switch between passphrase protection and Android screenprotection
+  private class ProtectionMethodToggleListener implements Preference.OnPreferenceChangeListener {
+    @Override
+    public boolean onPreferenceChange(Preference preference, Object newValue) {
+      boolean usePassphraseProtection = (boolean) newValue;
+
+      TextSecurePreferences.setProtectionMethod(getContext(), usePassphraseProtection);
+
+      // After togggle, we disable both passphrase and Android keylock.
+      // Remove the passphrase if there is one set
+      if (TextSecurePreferences.getBooleanPreference(getContext(), "pref_enable_passphrase_temporary", false))
+      {
+        MasterSecretUtil.changeMasterSecretPassphrase(getActivity(),
+          KeyCachingService.getMasterSecret(getContext()),
+          MasterSecretUtil.UNENCRYPTED_PASSPHRASE);
+
+        TextSecurePreferences.setPasswordDisabled(getActivity(), true);
+
+        Intent intent = new Intent(getActivity(), KeyCachingService.class);
+        intent.setAction(KeyCachingService.DISABLE_ACTION);
+        getActivity().startService(intent);
+      }
+
+      TextSecurePreferences.setBooleanPreference(getContext(), "pref_enable_passphrase_temporary", false);
+      TextSecurePreferences.setPasswordDisabled(getActivity(), true);
+      disablePassphrase.setChecked(false);
+
+      // Disable system lock
+      TextSecurePreferences.setScreenLockEnabled(getContext(), false);
+      enableScreenLock.setChecked(false);
+
+      initializeVisibility();
+
+      return true;
+    }
+  }
+  
+  // JW: screenlock protection does not work for API < 21
+  private class EnableScreenLockToggleListener implements Preference.OnPreferenceChangeListener {
+    @Override
+    public boolean onPreferenceChange(Preference preference, Object newValue) {
+      boolean screenlockEnabled = (boolean) newValue;
+
+      if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+        TextSecurePreferences.setScreenLockEnabled(getContext(), screenlockEnabled);
+        enableScreenLock.setChecked(screenlockEnabled);
+      }
+      else if (screenlockEnabled) {
+        TextSecurePreferences.setScreenLockEnabled(getContext(), false);
+        enableScreenLock.setChecked(false);
+
+        AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+        builder.setTitle(R.string.preferences_app_protection__android_version_too_low);
+        builder.setMessage(R.string.preferences_app_protection__screenlock_requires_lollipop);
+        builder.setIcon(R.drawable.ic_info_outline);
+        builder.setPositiveButton(android.R.string.ok, null);
+        builder.show();
+      }
       return false;
     }
   }
