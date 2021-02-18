@@ -62,7 +62,7 @@ protobuf {
 }
 
 def canonicalVersionCode = 792
-def canonicalVersionName = "5.4.6"
+def canonicalVersionName = "5.4.6.0-JW"
 
 def postFixSize = 100
 def abiPostFix = ['universal'   : 0,
@@ -96,6 +96,7 @@ android {
     }
 
     defaultConfig {
+        // applicationId "org.thoughtcrime.securesms.jw" // JW: build test versions with different package name
         versionCode canonicalVersionCode * postFixSize
         versionName canonicalVersionName
 
@@ -105,10 +106,11 @@ android {
         multiDexEnabled true
 
         vectorDrawables.useSupportLibrary = true
-        project.ext.set("archivesBaseName", "Signal");
+        project.ext.set("archivesBaseName", "Signal-Android"); // JW: change basename
 
-        buildConfigField "long", "BUILD_TIMESTAMP", getLastCommitTimestamp() + "L"
-        buildConfigField "String", "GIT_HASH", "\"${getGitHash()}\""
+        // JW: change back to old code that works without having Git in the path and by downloading the source as zip, timestamp is not used anyway
+        buildConfigField "long", "BUILD_TIMESTAMP", System.currentTimeMillis() + "L"
+        buildConfigField "String", "GIT_HASH", "\"00000\"" // JW: empty string, I don't build from a repository
         buildConfigField "String", "SIGNAL_URL", "\"https://textsecure-service.whispersystems.org\""
         buildConfigField "String", "STORAGE_URL", "\"https://storage.signal.org\""
         buildConfigField "String", "SIGNAL_CDN_URL", "\"https://cdn.signal.org\""
@@ -288,6 +290,7 @@ android {
 dependencies {
     lintChecks project(':lintchecks')
 
+    implementation 'net.lingala.zip4j:zip4j:2.7.0' // JW: added
     implementation ('androidx.appcompat:appcompat:1.2.0') {
         force = true
     }
