@@ -265,11 +265,15 @@ public class PassphrasePromptActivity extends PassphraseActivity {
   private void setLockTypeVisibility() {
     if (TextSecurePreferences.isScreenLockEnabled(this)) {
       passphraseAuthContainer.setVisibility(View.GONE);
+      // JW: to override setSoftInputMode it has to be defined in the manifest file
+      getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN); // JW
       fingerprintPrompt.setVisibility(biometricManager.canAuthenticate(BIOMETRIC_AUTHENTICATORS) == BiometricManager.BIOMETRIC_SUCCESS ? View.VISIBLE
                                                                                                                                        : View.GONE);
       lockScreenButton.setVisibility(View.VISIBLE);
     } else {
       passphraseAuthContainer.setVisibility(View.VISIBLE);
+      getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_VISIBLE); // JW
+      passphraseText.requestFocus(); // JW
       fingerprintPrompt.setVisibility(View.GONE);
       lockScreenButton.setVisibility(View.GONE);
     }
