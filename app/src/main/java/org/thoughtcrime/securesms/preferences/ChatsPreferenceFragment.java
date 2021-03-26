@@ -59,6 +59,7 @@ public class ChatsPreferenceFragment extends ListSummaryPreferenceFragment {
         });
 
     initializeListSummary((ListPreference) findPreference(TextSecurePreferences.MESSAGE_BODY_TEXT_SIZE_PREF));
+    initializeListSummary((ListPreference) findPreference(TextSecurePreferences.GOOGLE_MAP_TYPE)); // JW: added
   }
 
   // JW: added
