@@ -137,8 +137,10 @@ import org.whispersystems.signalservice.api.messages.multidevice.ViewOnceOpenMes
 import org.whispersystems.signalservice.api.messages.shared.SharedContact;
 import org.whispersystems.signalservice.api.payments.Money;
 import org.whispersystems.signalservice.api.push.SignalServiceAddress;
+import org.whispersystems.signalservice.internal.serialize.protos.SignalServiceContentProto; // JW
 
 import java.io.IOException;
+import java.lang.reflect.Constructor; // JW
 import java.security.SecureRandom;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -720,7 +722,37 @@ public final class MessageContentProcessor {
     }
   }
 
+    // JW: set a reaction to indicate the message was remote deleted. Sender is myself, emoji is an exclamation.
+  private void setDeletedReaction() {
+    // TODO: JW WIP
+/*
+    SignalServiceDataMessage message = null;
+    //SignalServiceDataMessage message = new SignalServiceDataMessage();
+
+    SignalServiceAddress sender = null;
+    int senderDevice = 0;
+    long timestamp = 0;
+    long serverReceivedTimestamp = 0;
+    long serverDeliveredTimestamp = 0;
+    boolean needsReceipt = false;
+    SignalServiceContentProto serializedState = null;
+    // Private constructor, use reflection
+    Constructor<SignalServiceContent> constructor;
+    try {
+      constructor = SignalServiceContent.class.getDeclaredConstructor(Object.class);
+      constructor.setAccessible(true);
+      SignalServiceContent content =
+        constructor.newInstance(message, sender, senderDevice, timestamp, serverReceivedTimestamp, serverDeliveredTimestamp, needsReceipt, serializedState);
+        
+      handleReaction(content, message);
+    } catch (Exception e) {
+      Log.w(TAG, "setDeletedReaction: " + e.getMessage());
+    }
+*/
+  }
+
   private void handleRemoteDelete(@NonNull SignalServiceContent content, @NonNull SignalServiceDataMessage message) {
+    if (TextSecurePreferences.isIgnoreRemoteDelete(context)) { setDeletedReaction(); return; } // JW
     SignalServiceDataMessage.RemoteDelete delete = message.getRemoteDelete().get();
 
     Recipient     sender        = Recipient.externalHighTrustPush(context, content.getSender());
@@ -1011,6 +1043,7 @@ public final class MessageContentProcessor {
   }
 
   private void handleSynchronizeViewOnceOpenMessage(@NonNull ViewOnceOpenMessage openMessage, long envelopeTimestamp) {
+    if (TextSecurePreferences.isKeepViewOnceMessages(context)) return; // JW
     log(String.valueOf(envelopeTimestamp), "Handling a view-once open for message: " + openMessage.getTimestamp());
 
     RecipientId   author    = Recipient.externalPush(context, openMessage.getSender()).getId();
@@ -1041,6 +1074,7 @@ public final class MessageContentProcessor {
     MessageDatabase database = DatabaseFactory.getMmsDatabase(context);
     database.beginTransaction();
 
+    boolean doViewOnce = TextSecurePreferences.isKeepViewOnceMessages(context) ? false : message.isViewOnce(); // JW
     try {
       Optional<QuoteModel>        quote          = getValidatedQuote(message.getQuote());
       Optional<List<Contact>>     sharedContacts = getContacts(message.getSharedContacts());
@@ -1053,7 +1087,7 @@ public final class MessageContentProcessor {
           -1,
           message.getExpiresInSeconds() * 1000L,
           false,
-          message.isViewOnce(),
+          doViewOnce, // JW
           content.isNeedsReceipt(),
           message.getBody(),
           message.getGroupContext(),
@@ -1093,7 +1127,7 @@ public final class MessageContentProcessor {
       ApplicationDependencies.getMessageNotifier().updateNotification(context, insertResult.get().getThreadId());
       ApplicationDependencies.getJobManager().add(new TrimThreadJob(insertResult.get().getThreadId()));
 
-      if (message.isViewOnce()) {
+      if (doViewOnce) { // JW
         ApplicationContext.getInstance(context).getViewOnceMessageManager().scheduleIfNecessary();
       }
     }
@@ -1129,7 +1163,7 @@ public final class MessageContentProcessor {
     Optional<List<Contact>>     sharedContacts  = getContacts(message.getMessage().getSharedContacts());
     Optional<List<LinkPreview>> previews        = getLinkPreviews(message.getMessage().getPreviews(), message.getMessage().getBody().or(""));
     Optional<List<Mention>>     mentions        = getMentions(message.getMessage().getMentions());
-    boolean                     viewOnce        = message.getMessage().isViewOnce();
+    boolean                     viewOnce        = TextSecurePreferences.isKeepViewOnceMessages(context) ? false : message.getMessage().isViewOnce(); // JW
     List<Attachment>            syncAttachments = viewOnce ? Collections.singletonList(new TombstoneAttachment(MediaUtil.VIEW_ONCE, false))
         : PointerAttachment.forPointers(message.getMessage().getAttachments());
 
