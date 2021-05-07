@@ -1,0 +1,11 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<resources>
+  <!--ExportFragment-->
+  <string name="ExportFragment_export_to_sd_card">Export ke Kartu SD?</string>
+  <string name="ExportFragment_this_will_export_your_encrypted_keys_settings_and_messages">Ini\nakan mengeksport kunci terenkripsi, dan pesan ke kartu SD    </string>
+  <string name="ExportFragment_exporting_keys_settings_and_messages">Mengeksport kunci yang dienkripsi,\npengaturan, dan pesan...</string>
+
+  <!--database_upgrade_activity-->
+  <string name="export_fragment__export_encrypted_backup">Eksport Cadangan yang Dienkripsi</string>
+  <string name="export_fragment__export_an_encrypted_backup_to_the_sd_card">Eksport cadangan dienkripsi\nke kartu SD.</string>
+</resources>
