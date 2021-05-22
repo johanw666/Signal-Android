@@ -393,7 +393,7 @@ public class ManageRecipientFragment extends LoggingFragment {
                                                                   .setColors(colors)
                                                                   .setSize(ColorPickerDialog.SIZE_SMALL)
                                                                   .setSortColors(false)
-                                                                  .setColumns(3)
+                                                                  .setColumns(4) // JW: changed from 3 to 4
                                                                   .build();
 
     ColorPickerDialog dialog = new ColorPickerDialog(requireActivity(), color -> viewModel.onSelectColor(color), params);
