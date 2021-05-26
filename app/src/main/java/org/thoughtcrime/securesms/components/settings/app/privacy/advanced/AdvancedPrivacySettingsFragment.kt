@@ -15,6 +15,7 @@ import org.thoughtcrime.securesms.components.settings.DSLSettingsAdapter
 import org.thoughtcrime.securesms.components.settings.DSLSettingsFragment
 import org.thoughtcrime.securesms.components.settings.DSLSettingsText
 import org.thoughtcrime.securesms.components.settings.configure
+import org.thoughtcrime.securesms.dependencies.ApplicationDependencies // JW: added
 import org.thoughtcrime.securesms.phonenumbers.PhoneNumberFormatter
 import org.thoughtcrime.securesms.registration.RegistrationNavigationActivity
 import org.thoughtcrime.securesms.util.CommunicationActions
@@ -121,6 +122,17 @@ class AdvancedPrivacySettingsFragment : DSLSettingsFragment(R.string.preferences
         viewModel.setAlwaysRelayCalls(!state.alwaysRelayCalls)
       }
 
+      // JW: added
+      switchPref(
+        title = DSLSettingsText.from(R.string.preferences_advanced__push_notifications_fcm),
+        summary = DSLSettingsText.from(R.string.preferences_advanced__push_notifications_fcm_summary),
+        isChecked = state.pushNotificationsViaFCM
+      ) {
+        val isFcm = state.pushNotificationsViaFCM
+        viewModel.setPushNotificationsViaFCM(!state.pushNotificationsViaFCM)
+        FCMPreferenceFunctions.onFCMPreferenceChange(context, isFcm)
+      }
+
       dividerPref()
 
       sectionHeaderPref(R.string.preferences_communication__category_sealed_sender)
@@ -158,4 +170,5 @@ class AdvancedPrivacySettingsFragment : DSLSettingsFragment(R.string.preferences
       getString(R.string.preferences__free_private_messages_and_calls)
     }
   }
+
 }
