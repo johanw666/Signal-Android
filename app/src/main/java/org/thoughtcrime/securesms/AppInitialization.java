@@ -75,7 +75,7 @@ public final class AppInitialization {
     TextSecurePreferences.setJobManagerVersion(context, JobManager.CURRENT_VERSION);
     TextSecurePreferences.setLastExperienceVersionCode(context, Util.getCanonicalVersionCode());
     TextSecurePreferences.setHasSeenStickerIntroTooltip(context, true);
-    // TextSecurePreferences.setPasswordDisabled(context, true); // JW: don't do this
+    TextSecurePreferences.setPasswordDisabled(context, true);
     TextSecurePreferences.setLastExperienceVersionCode(context, Util.getCanonicalVersionCode());
     ApplicationDependencies.getMegaphoneRepository().onFirstEverAppLaunch();
     SignalStore.onFirstEverAppLaunch();
