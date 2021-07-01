@@ -83,6 +83,39 @@ class PrivacySettingsViewModel(
     refresh()
   }
 
+  // JW: added
+  fun setPassphraseEnabled(enabled: Boolean) {
+    sharedPreferences.edit().putBoolean(TextSecurePreferences.DISABLE_PASSPHRASE_PREF, !enabled).apply()
+    sharedPreferences.edit().putBoolean("pref_enable_passphrase_temporary", enabled).apply()
+    sharedPreferences.edit().putBoolean(TextSecurePreferences.SCREEN_LOCK, !enabled).apply()
+    refresh()
+  }
+
+  fun setOnlyScreenlockEnabled(enabled: Boolean) {
+    sharedPreferences.edit().putBoolean(TextSecurePreferences.DISABLE_PASSPHRASE_PREF, enabled).apply()
+    sharedPreferences.edit().putBoolean("pref_enable_passphrase_temporary", !enabled).apply()
+    sharedPreferences.edit().putBoolean(TextSecurePreferences.SCREEN_LOCK, enabled).apply()
+    refresh()
+  }
+
+  fun setNoLock() {
+    sharedPreferences.edit().putBoolean(TextSecurePreferences.DISABLE_PASSPHRASE_PREF, true).apply()
+    sharedPreferences.edit().putBoolean("pref_enable_passphrase_temporary", false).apply()
+    sharedPreferences.edit().putBoolean(TextSecurePreferences.SCREEN_LOCK, false).apply()
+    refresh()
+  }
+
+  // JW: added method.
+  fun isPassphraseSelected(): Boolean {
+    // Because this preference may be undefined when this app is first ran we also check if there is a passphrase
+    // defined, if so, we assume passphrase protection:
+    val myContext = ApplicationDependencies.getApplication()
+
+    return TextSecurePreferences.isProtectionMethodPassphrase(myContext) ||
+      TextSecurePreferences.getBooleanPreference(myContext, "pref_enable_passphrase_temporary", false) &&
+      !TextSecurePreferences.isPasswordDisabled(myContext)
+  }
+
   fun refresh() {
     store.update(this::updateState)
   }
@@ -102,6 +135,10 @@ class PrivacySettingsViewModel(
       isObsoletePasswordTimeoutEnabled = TextSecurePreferences.isPassphraseTimeoutEnabled(ApplicationDependencies.getApplication()),
       obsoletePasswordTimeout = TextSecurePreferences.getPassphraseTimeoutInterval(ApplicationDependencies.getApplication()),
       universalExpireTimer = SignalStore.settings().universalExpireTimer
+      // JW: added
+      ,
+      //isProtectionMethodPassphrase = isPassphraseSelected()
+      isProtectionMethodPassphrase = TextSecurePreferences.isProtectionMethodPassphrase(ApplicationDependencies.getApplication())
     )
   }
 
