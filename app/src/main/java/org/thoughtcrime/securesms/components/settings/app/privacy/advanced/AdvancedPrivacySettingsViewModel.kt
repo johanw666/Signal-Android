@@ -57,6 +57,12 @@ class AdvancedPrivacySettingsViewModel(
     refresh()
   }
 
+  fun setPushNotificationsViaFCM(enabled: Boolean) {
+    val GCM_DISABLED_PREF = "pref_gcm_disabled" // From settings, but is private there
+    sharedPreferences.edit().putBoolean(GCM_DISABLED_PREF, !enabled).apply()
+    refresh()
+  }
+
   fun refresh() {
     store.update { getState().copy(showProgressSpinner = it.showProgressSpinner) }
   }
@@ -71,6 +77,9 @@ class AdvancedPrivacySettingsViewModel(
       ApplicationDependencies.getApplication()
     ),
     false
+  // JW: added
+  ,
+    pushNotificationsViaFCM = !TextSecurePreferences.isFcmDisabled(ApplicationDependencies.getApplication())
   )
 
   enum class Event {
