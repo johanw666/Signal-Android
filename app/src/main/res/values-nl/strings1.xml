@@ -1,0 +1,67 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<resources>
+  <!--arrays.xml-->
+  <string name="arrays__import_export_orig">Importeren / exporteren</string>
+  <!-- preferences.xml -->
+  <string name="preferences__oled_theme">OLED Donker</string>
+  <string name="preferences__green_theme">Groen Licht</string>
+  <string name="preferences__blue_theme">Blauw Licht</string>
+  <string name="preferences_chats__google_map_type">Locatie</string>
+  <string name="preferences__map_type">Kaartsoort</string>
+  <string name="preferences__map_normal">Normaal</string>
+  <string name="preferences__map_hybrid">Hybride</string>
+  <string name="preferences__map_satellite">Satelliet</string>
+  <string name="preferences__map_terrain">Terrein</string>
+  <string name="preferences__map_none">Geen</string>
+  <!-- app protection-->
+  <string name="preferences_app_protection__method_passphrase">Gebruik een wachtwoord</string>
+  <string name="preferences_app_protection__method_passphrase_summary">Gebruik een wachtwoord om Signal te beveiligen in plaats van de standaard Android schermbeveiliging of vingerafdruk</string>
+  <string name="preferences_app_protection__screenlock_requires_lollipop">Het gebruik van de schermbeveiliging vereist Android 5.0 (Lollipop) of hoger.</string>
+  <string name="preferences_app_protection__android_version_too_low">Android versie te laag</string>
+  <!-- FCM switch -->
+  <string name="preferences_advanced__push_notifications_fcm">Push meldingen via FCM</string>
+  <string name="preferences_advanced__push_notifications_fcm_summary">Ontvang notifications via Google Play Services. Als dit uitstaat wordt een websocket gebruikt, dit kan de accu iets meer belasten</string>
+  <string name="preferences_advanced__play_services_not_found">Google Play Services niet gevonden</string>
+  <string name="preferences_advanced__need_to_restart">Signal moet opnieuw starten om de veranderingen door te voeren</string>
+  <!-- Keep messages -->
+  <string name="preferences_chats__control_message_deletion">Beheer verwijderen van berichten</string>
+  <string name="preferences_chats__chat_keep_view_once_messages">Behoud eenmalige weergave-media</string>
+  <string name="preferences_chats__keep_view_once_messages_summary">Deze optie zorgt ervoor dat eenmalige weergave-media behandeld worden als gewone media en niet verwijderd worden na het bekijken</string>
+  <string name="preferences_chats__chat_ignore_remote_delete">Negeer verwijderen op afstand</string>
+  <string name="preferences_chats__chat_ignore_remote_delete_summary">Deze optie voorkomt dat berichten door de verzender verwijderd kunnen worden</string>
+  <string name="preferences_chats__delete_media_only">Verwijder alleen media</string>
+  <string name="preferences_chats__delete_media_only_summary">Verwijder in het Alle media scherm alleen media, niet het bericht zelf</string>
+  <!--backup location-->
+  <string name="preferences_chats__chat_backups_removable">Backup locatie</string>
+  <string name="preferences_chats__backup_chats_to_removable_storage">Backup chats naar de SD-kaart (indien aanwezig)</string>
+  <!--backup zipfile or not-->
+  <string name="preferences_chats__chat_backups_zipfile">Versleutelde backups in zipfile opslaan</string>
+  <string name="preferences_chats__backup_chats_to_encrypted_zipfile">De zipfile wordt versleuteld met hetzelfde password als de reguliere backup, of geen indien geen regulierebackup geconfigureerd</string>
+  <string name="preferences_chats__chat_backups_zipfile_plain">Onversleutelde backups in zipfile opslaan</string>
+  <string name="preferences_chats__backup_chats_to_encrypted_zipfile_plain">De zipfile wordt versleuteld met hetzelfde password als de reguliere backup, of geen indien geen regulierebackup geconfigureerd</string>
+  <!--ImportFragment-->
+  <string name="ImportFragment_restore_encrypted_backup">Versleutelde backup herstellen?</string>
+  <string name="ImportFragment_restoring_an_encrypted_backup_will_completely_replace_your_existing_keys">
+Herstellen van een versleutelde back-up zal je bestaande sleutels, voorkeuren en berichten volledig vervangen. Je zult alle informatie verliezen die wel in je huidige Signal-installatie zit, maar niet in de back-up.</string>
+  <string name="ImportFragment_restore">Herstellen</string>
+  <string name="ImportFragment_restoring">Herstellen</string>
+  <string name="ImportFragment_restoring_encrypted_backup">Versleutelde backup herstellen...</string>
+  <string name="ImportFragment_no_encrypted_backup_found">Geen versleutelde back-up gevonden!</string>
+  <string name="ImportFragment_restore_complete">Herstellen voltooid!</string>
+  <string name="ImportFragment_restore_ok">OK</string>
+  <string name="import_fragment__import_system_sms_database">Sms-berichten uit de systeemdatabank importeren?</string>
+  <string name="import_fragment__import_the_database_from_the_default_system">Importeer de databank van de standaardberichtenapp</string>
+  <string name="import_fragment__import_plaintext_backup">Onversleuteld back-up-bestand importeren</string>
+  <string name="import_fragment__import_a_plaintext_backup_file">Importeer een onversleuteld back-up-bestand. Compatibel met ‘Sms back-up &amp; Herstellen’.</string>
+  <!--ExportFragment-->
+  <string name="ExportFragment_export_to_sd_card">Opslaan op SD-kaart?</string>
+  <string name="ExportFragment_this_will_export_your_encrypted_keys_settings_and_messages">Dit exporteert je keys, instellingen en berichten versleuteld naar de SD-kaart</string>
+  <string name="ExportFragment_exporting_keys_settings_and_messages">Keys, instellingen en berichten versleuteld naar de SD-kaart aan het exporteren...</string>
+   <!--database_upgrade_activity-->
+  <string name="export_fragment__export_encrypted_backup">Exporteer Versleutelde Back-up</string>
+  <string name="export_fragment__export_an_encrypted_backup_to_the_sd_card">Export een versleutelde back-up naar de SD-kaart.</string>
+  <string name="import_fragment__restore_encrypted_backup">Versleutelde back-up herstellen</string>
+  <string name="import_fragment__restore_a_previously_exported_encrypted_signal_backup">Herstel een eerder geëxporteerde versleutelde back-up van Signal</string>
+    <!-- RegistrationActivity -->
+    <string name="registration_activity__restore_encrypted_backup">Versleutelde backup terugzetten</string>
+</resources>
