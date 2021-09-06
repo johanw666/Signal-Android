@@ -71,6 +71,7 @@
   <string name="ImportExportFragment_signal_needs_the_storage_permission_in_order_to_read_from_external_storage">Signal needs the Storage permission in order to read from external storage.</string>
   <string name="ImportExportFragment_signal_needs_the_storage_permission_in_order_to_write_to_external_storage_but_it_has_been_permanently_denied">Signal needs the Storage permission in order to write to external storage, but it has been permanently denied. Please continue to app settings, select \"Permissions\", then enable \"Storage\".</string>
   <string name="ImportExportFragment_signal_needs_the_storage_permission_in_order_to_write_to_external_storage">Signal needs the Storage permission in order to write to external storage.</string>
+  <string name="ImportExportFragment_signal_needs_the_all_files_access_permission">Signal needs the All Files Access permission in order to make this kind of backups.</string>
 
   <string name="ImportFragment_restore_encrypted_backup">Restore encrypted backup?</string>
   <string name="ImportFragment_restoring_an_encrypted_backup_will_completely_replace_your_existing_keys">

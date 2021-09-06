@@ -1,22 +1,20 @@
 package org.thoughtcrime.securesms.components.settings.app.chats
 
+import android.content.Intent // JW: added
 import android.net.Uri
 import android.os.Build // JW: added
 import androidx.lifecycle.ViewModelProviders
 import androidx.navigation.Navigation
 import androidx.preference.PreferenceManager // JW: added
 import org.thoughtcrime.securesms.R
-import org.thoughtcrime.securesms.backup.BackupDialog
+import org.thoughtcrime.securesms.backup.BackupDialog // JW: added
 import org.thoughtcrime.securesms.components.settings.DSLConfiguration
 import org.thoughtcrime.securesms.components.settings.DSLSettingsAdapter
 import org.thoughtcrime.securesms.components.settings.DSLSettingsFragment
 import org.thoughtcrime.securesms.components.settings.DSLSettingsText
 import org.thoughtcrime.securesms.components.settings.configure
 import org.thoughtcrime.securesms.keyvalue.SignalStore
-import org.thoughtcrime.securesms.preferences.BackupsPreferenceFragment
 import org.thoughtcrime.securesms.util.UriUtils // JW: added
-import java.io.File
-import java.util.Objects
 
 
 class ChatsSettingsFragment : DSLSettingsFragment(R.string.preferences_chats__chats) {
@@ -36,6 +34,15 @@ class ChatsSettingsFragment : DSLSettingsFragment(R.string.preferences_chats__ch
     viewModel.state.observe(viewLifecycleOwner) {
       adapter.submitList(getConfiguration(it).toMappingModelList())
     }
+  }
+
+  // JW: added
+  override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+    super.onActivityResult(requestCode, resultCode, data)
+
+    val backupUri = data!!.data
+    SignalStore.settings().setSignalBackupDirectory(backupUri!!)
+    viewModel.setChatBackupLocationApi30(UriUtils.getFullPathFromTreeUri(context, backupUri))
   }
 
   private fun getConfiguration(state: ChatsSettingsState): DSLConfiguration {
@@ -110,15 +117,13 @@ class ChatsSettingsFragment : DSLSettingsFragment(R.string.preferences_chats__ch
         )
       } else {
         val backupUri = SignalStore.settings().signalBackupDirectory
-        //val summaryText = UriUtils.getFullPathFromTreeUri(context, backupUri) + " (tap to clear)"
         val summaryText = UriUtils.getFullPathFromTreeUri(context, backupUri)
 
         clickPref(
           title = DSLSettingsText.from(R.string.preferences_chats__chat_backups_removable),
           summary = DSLSettingsText.from(summaryText),
           onClick = {
-            // TODO: JW: option to change backup location
-            //SignalStore.settings().clearSignalBackupDirectory()
+            BackupDialog.showChooseBackupLocationDialog(this@ChatsSettingsFragment, CHOOSE_BACKUPS_LOCATION_REQUEST_CODE)
             viewModel.setChatBackupLocationApi30(UriUtils.getFullPathFromTreeUri(context, backupUri))
           }
         )

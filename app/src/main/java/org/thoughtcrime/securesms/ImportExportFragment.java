@@ -458,18 +458,23 @@ public class ImportExportFragment extends Fragment {
   private void CheckAndGetAccessPermissionApi30() {
     if (Build.VERSION.SDK_INT >= 30) {
       if (!Environment.isExternalStorageManager()) {
-        Intent intent = new Intent(Settings.ACTION_MANAGE_ALL_FILES_ACCESS_PERMISSION);
-        startActivity(intent);
+        AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+        builder.setMessage(getActivity().getString(R.string.ImportExportFragment_signal_needs_the_all_files_access_permission))
+               .setCancelable(false)
+               .setPositiveButton(getActivity().getString(R.string.ImportFragment_restore_ok), new DialogInterface.OnClickListener() {
+                 public void onClick(DialogInterface dialog, int id) {
+                   Intent intent = new Intent(Settings.ACTION_MANAGE_ALL_FILES_ACCESS_PERMISSION);
+                   startActivity(intent);
+                 }
+               });
+        AlertDialog alert = builder.create();
+        alert.show();
       }
     }
   }
 
   @Override
   public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
-    String result = (resultCode == Activity.RESULT_OK) ? "RESULT_OK" : "Not OK"; // Activity.RESULT_OK == -1
-    String logEntry = "onActivityResult: requestcode = " + requestCode + ", resultCode = " + result + ", Uri = " + (data != null ? data.getData() : "null");
-    Log.w(TAG, logEntry);
-    //Toast.makeText(getActivity(), logEntry, Toast.LENGTH_LONG).show();
     super.onActivityResult(requestCode, resultCode, data);
 
     if (data != null && data.getData() != null) {
