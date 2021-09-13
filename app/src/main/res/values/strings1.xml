@@ -85,6 +85,18 @@
   <string name="ImportFragment_no_encrypted_backup_found">No encrypted backup found!</string>
   <string name="ImportFragment_restore_complete">Restore complete!</string>
   <string name="ImportFragment_restore_ok">OK</string>
+  <!-- ImportFragment - WhatsApp import -->
+  <string name="ImportFragment_no_whatsapp_backup_found">No WhatsApp Backup found! Make sure msgstore.db is in the root directory of the phone\'s internal storage.</string>
+  <string name="ImportFragment_import_whatsapp_backup">Import WhatsApp backup?</string>
+  <string name="ImportFragment_this_will_import_messages_from_whatsapp_backup">This will import
+      messages from an unencrypted WhatsApp msgstore.db backup file located in the root of the internal sd card. If you\'ve previously imported this backup, importing again will result in duplicated messages.
+  </string>
+  <string name="ImportFragment_import_whatsapp_backup_elipse">Importing whatsapp backup...</string>
+  <string name="import_fragment__import_whatsapp_backup">Import WhatsApp backup</string>
+  <string name="import_fragment__import_whatsapp_backup_file">Import a WhatsApp db file. Place msgstore.db in the root directory</string>
+  <string name="import_fragment__import_whatsapp_import_media">Import media messages</string>
+  <string name="import_fragment__import_whatsapp_import_groups">Import group chats if Signal group with the same name exists</string>
+  <string name="import_fragment__import_whatsapp_avoid_duplicates">Avoid duplicate messages</string>
   <!-- ExportFragment -->
   <string name="ExportFragment_export_to_sd_card">Export To SD Card?</string>
   <string name="ExportFragment_this_will_export_your_encrypted_keys_settings_and_messages">This will export your encrypted keys, settings, and messages to the SD card.</string>

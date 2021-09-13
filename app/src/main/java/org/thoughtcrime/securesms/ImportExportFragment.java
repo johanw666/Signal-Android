@@ -30,7 +30,7 @@ import org.thoughtcrime.securesms.database.EncryptedBackupExporter;
 import org.thoughtcrime.securesms.database.NoExternalStorageException;
 import org.thoughtcrime.securesms.database.PlaintextBackupExporter;
 import org.thoughtcrime.securesms.database.PlaintextBackupImporter;
-import org.thoughtcrime.securesms.keyvalue.SettingsValues;
+import org.thoughtcrime.securesms.database.WhatsappBackupImporter;
 import org.thoughtcrime.securesms.keyvalue.SignalStore;
 import org.thoughtcrime.securesms.permissions.Permissions;
 import org.thoughtcrime.securesms.service.ApplicationMigrationService;
@@ -62,12 +62,14 @@ public class ImportExportFragment extends Fragment {
   public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle bundle) {
     View layout              = inflater.inflate(R.layout.import_export_fragment, container, false);
     View importSmsView       = layout.findViewById(R.id.import_sms             );
+    View importWhatsappView  = layout.findViewById(R.id.import_whatsapp_backup);
     View importPlaintextView = layout.findViewById(R.id.import_plaintext_backup);
     View importEncryptedView = layout.findViewById(R.id.import_encrypted_backup);
     View exportPlaintextView = layout.findViewById(R.id.export_plaintext_backup);
     View exportEncryptedView = layout.findViewById(R.id.export_encrypted_backup);
 
     importSmsView.setOnClickListener(v -> handleImportSms());
+    importWhatsappView.setOnClickListener(v -> handleImportWhatsappBackup());
     importPlaintextView.setOnClickListener(v -> handleImportPlaintextBackup());
     importEncryptedView.setOnClickListener(v -> handleImportEncryptedBackup());
     exportPlaintextView.setOnClickListener(v -> handleExportPlaintextBackup());
@@ -118,6 +120,91 @@ public class ImportExportFragment extends Fragment {
     });
     builder.setNegativeButton(getActivity().getString(R.string.ImportFragment_cancel), null);
     builder.show();
+  }
+
+  @SuppressWarnings("CodeBlock2Expr")
+  @SuppressLint("InlinedApi")
+  private void handleImportWhatsappBackup() {
+    CheckAndGetAccessPermissionApi30();
+    AlertDialog.Builder builder = ImportWhatsappDialog.getWhatsappBackupDialog(getActivity());
+    builder.setPositiveButton(getActivity().getString(R.string.ImportFragment_import), (dialog, which) -> {
+      Permissions.with(ImportExportFragment.this)
+                 .request(Manifest.permission.WRITE_EXTERNAL_STORAGE, Manifest.permission.READ_EXTERNAL_STORAGE)
+                 .ifNecessary()
+                 .withPermanentDenialDialog(getString(R.string.ImportExportFragment_signal_needs_the_storage_permission_in_order_to_read_from_external_storage_but_it_has_been_permanently_denied))
+                 .onAllGranted(() -> new ImportWhatsappBackupTask(ImportWhatsappDialog.isImportGroups(), ImportWhatsappDialog.isAvoidDuplicates(), ImportWhatsappDialog.isImportMedia()).executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR))
+                 .onAnyDenied(() -> Toast.makeText(getContext(), R.string.ImportExportFragment_signal_needs_the_storage_permission_in_order_to_read_from_external_storage, Toast.LENGTH_LONG).show())
+                 .execute();
+    });
+    builder.setNegativeButton(getActivity().getString(R.string.ImportFragment_cancel), null);
+    builder.show();
+  }
+
+  @SuppressLint("StaticFieldLeak")
+  public class ImportWhatsappBackupTask extends AsyncTask<Void, Void, Integer> {
+
+    private final boolean importGroups;
+    private final boolean importMedia;
+    private final boolean avoidDuplicates;
+
+    public ImportWhatsappBackupTask(boolean importGroups, boolean avoidDuplicates, boolean importMedia) {
+      this.importGroups = importGroups;
+      this.avoidDuplicates = avoidDuplicates;
+      this.importMedia = importMedia;
+    }
+
+    @Override
+    protected void onPreExecute() {
+      progressDialog = new ProgressDialog(getActivity());
+      progressDialog.setTitle(getActivity().getString(R.string.ImportFragment_importing));
+      progressDialog.setMessage(getActivity().getString(R.string.ImportFragment_import_whatsapp_backup_elipse));
+      progressDialog.setCancelable(false);
+      progressDialog.setIndeterminate(false);
+      progressDialog.setProgressStyle(ProgressDialog.STYLE_HORIZONTAL);
+      progressDialog.show();
+    }
+
+    protected void onPostExecute(Integer result) {
+      Context context = getActivity();
+
+      if (progressDialog != null)
+        progressDialog.dismiss();
+
+      if (context == null)
+        return;
+
+      switch (result) {
+        case NO_SD_CARD:
+          Toast.makeText(context,
+                         context.getString(R.string.ImportFragment_no_whatsapp_backup_found),
+                         Toast.LENGTH_LONG).show();
+          break;
+        case ERROR_IO:
+          Toast.makeText(context,
+                         context.getString(R.string.ImportFragment_error_importing_backup),
+                         Toast.LENGTH_LONG).show();
+          break;
+        case SUCCESS:
+          Toast.makeText(context,
+                         context.getString(R.string.ImportFragment_import_complete),
+                         Toast.LENGTH_LONG).show();
+          break;
+      }
+    }
+
+    @Override
+    protected Integer doInBackground(Void... params) {
+      try {
+        WhatsappBackupImporter.importWhatsappFromSd(getActivity(), progressDialog, importGroups, avoidDuplicates, importMedia);
+        return SUCCESS;
+      } catch (NoExternalStorageException e) {
+        Log.w(TAG, e);
+        return NO_SD_CARD;
+      } catch (IOException e) {
+        Log.w(TAG, e);
+        return ERROR_IO;
+      }
+    }
   }
 
   @SuppressWarnings("CodeBlock2Expr")
@@ -285,7 +372,6 @@ public class ImportExportFragment extends Fragment {
     }
   }
 
-  // JW: Encrypted backup import/export.
   public void handleImportEncryptedBackup() {
     CheckAndGetAccessPermissionApi30();
     AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());

@@ -70,6 +70,55 @@
             android:layout_height="1dp"
             android:background="?android:attr/listDivider"/>
 
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="?android:attr/listDivider"/>
+        <LinearLayout android:id="@+id/import_whatsapp_backup"
+            android:clickable="true"
+            android:orientation="horizontal"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:paddingTop="12dp"
+            android:paddingBottom="12dp"
+            android:gravity="center_vertical"
+            android:background="?selectableItemBackground">
+
+            <androidx.appcompat.widget.AppCompatImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="16dp"
+                android:layout_marginStart="16dp"
+                android:layout_marginRight="32dip"
+                android:layout_marginEnd="32dip"
+                android:tint="?attr/colorAccent"
+                android:src="@drawable/whatsapp"/>
+
+            <LinearLayout android:orientation="vertical"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginRight="16dp"
+                android:layout_marginEnd="16dp">
+
+                <TextView android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="start"
+                    style="@style/Registration.Description"
+                    android:text="@string/import_fragment__import_whatsapp_backup"/>
+
+                <TextView android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="start"
+                    android:textAppearance="?android:attr/textAppearanceSmall"
+                    android:text="@string/import_fragment__import_whatsapp_backup_file"/>
+            </LinearLayout>
+        </LinearLayout>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="?android:attr/listDivider"/>
+
         <LinearLayout android:id="@+id/import_plaintext_backup"
                       android:clickable="true"
                       android:orientation="horizontal"
