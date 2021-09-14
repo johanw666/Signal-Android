@@ -47,8 +47,8 @@ public class WhatsappBackup {
     private static final String TOA            = "toa";
     private static final String SC_TOA         = "sc_toa";
     private static final String LOCKED         = "locked";
-    private static final String TRANSPORT      = "transport"; // JW: added
-    private static final String GROUP_NAME     = "group_name"; // SW: added
+    private static final String TRANSPORT      = "transport";
+    private static final String GROUP_NAME     = "group_name";
 
     private static final SimpleDateFormat dateFormatter = new SimpleDateFormat("EEE, dd MMM yyyy HH:mm:ss z");
 
@@ -183,17 +183,17 @@ public class WhatsappBackup {
         private String serviceCenter;
         private int    read;
         private int    status;
-        private String transport; // JW: added
-        private String groupName; // SW: added
-        private int mediaWaType; // SW: added
-        private long waMessageId; // SW: added
+        private String transport;
+        private String groupName;
+        private int mediaWaType; //
+        private long waMessageId;
         private String mediaCaption;
 
         public WhatsappBackupItem() {}
 
         public WhatsappBackupItem(int protocol, String address, String contactName, long date, int type,
                              String subject, String body, String serviceCenter, int read, int status,
-                             String transport) // JW: added
+                             String transport)
         {
             this.protocol      = protocol;
             this.address       = address;
@@ -206,7 +206,7 @@ public class WhatsappBackup {
             this.serviceCenter = serviceCenter;
             this.read          = read;
             this.status        = status;
-            this.transport     = transport; // JW: added
+            this.transport     = transport;
             this.groupName     = null;
             this.mediaWaType   = 0;
             this.waMessageId   = 0;
@@ -268,7 +268,7 @@ public class WhatsappBackup {
             return waMessageId;
         }
 
-        public String getTransport() { return transport; } // JW: added
+        public String getTransport() { return transport; }
 
         public String getMediaCaption() {
             return mediaCaption;

@@ -53,6 +53,19 @@ Herstellen van een versleutelde back-up zal je bestaande sleutels, voorkeuren en
   <string name="import_fragment__import_the_database_from_the_default_system">Importeer de databank van de standaardberichtenapp</string>
   <string name="import_fragment__import_plaintext_backup">Onversleuteld back-up-bestand importeren</string>
   <string name="import_fragment__import_a_plaintext_backup_file">Importeer een onversleuteld back-up-bestand. Compatibel met ‘Sms back-up &amp; Herstellen’.</string>
+  <!-- ImportFragment - WhatsApp import -->
+  <string name="ImportFragment_no_whatsapp_backup_found">WhatsApp Backup niet gevonden! Plaats msgstore.db in the root directory van de telefoons interne geheugen.</string>
+  <string name="ImportFragment_import_whatsapp_backup">Import WhatsApp backup?</string>
+  <string name="ImportFragment_this_will_import_messages_from_whatsapp_backup">Dit importeert berichten uit een niet versleutelde
+      WhatsApp msgstore.db backup in de root van de interne sd kaart.
+      Als je deze database al al eerder geïmporteerd hebt komen de berichten er dubbel in.
+  </string>
+  <string name="ImportFragment_import_whatsapp_backup_elipse">Importeren whatsapp backup...</string>
+  <string name="import_fragment__import_whatsapp_backup">Import WhatsApp backup</string>
+  <string name="import_fragment__import_whatsapp_backup_file">Importeer een WhatsApp db file. Plaats msgstore.db in de root directory</string>
+  <string name="import_fragment__import_whatsapp_import_media">Import media berichten</string>
+  <string name="import_fragment__import_whatsapp_import_groups">Import groepsgesprekken als er een Signal groep met dezelfde naam bestaat</string>
+  <string name="import_fragment__import_whatsapp_avoid_duplicates">Voorkom dubbele berichten</string>
   <!--ExportFragment-->
   <string name="ExportFragment_export_to_sd_card">Opslaan op SD-kaart?</string>
   <string name="ExportFragment_this_will_export_your_encrypted_keys_settings_and_messages">Dit exporteert je keys, instellingen en berichten versleuteld naar de SD-kaart</string>

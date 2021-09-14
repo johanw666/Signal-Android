@@ -17,8 +17,7 @@
         android:gravity="center_vertical"
         android:text="@string/ImportExportActivity_import"
         android:textSize="14sp"
-        android:fontFamily="sans-serif-medium"
-        android:textColor="@color/core_black"/>
+        android:fontFamily="sans-serif-medium"/>
 
     <LinearLayout android:layout_width="wrap_content"
                   android:layout_height="wrap_content"
@@ -70,10 +69,6 @@
             android:layout_height="1dp"
             android:background="?android:attr/listDivider"/>
 
-        <View
-            android:layout_width="match_parent"
-            android:layout_height="1dp"
-            android:background="?android:attr/listDivider"/>
         <LinearLayout android:id="@+id/import_whatsapp_backup"
             android:clickable="true"
             android:orientation="horizontal"
@@ -216,8 +211,7 @@
         android:gravity="center_vertical"
         android:text="@string/ImportExportActivity_export"
         android:textSize="14sp"
-        android:fontFamily="sans-serif-medium"
-        android:textColor="@color/core_black"/>
+        android:fontFamily="sans-serif-medium"/>
 
     <LinearLayout android:layout_width="wrap_content"
                   android:layout_height="wrap_content"

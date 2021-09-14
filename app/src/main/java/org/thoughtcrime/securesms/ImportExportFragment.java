@@ -36,6 +36,7 @@ import org.thoughtcrime.securesms.permissions.Permissions;
 import org.thoughtcrime.securesms.service.ApplicationMigrationService;
 import org.thoughtcrime.securesms.util.UriUtils;
 
+import java.io.File;
 import java.io.IOException;
 
 
@@ -126,18 +127,31 @@ public class ImportExportFragment extends Fragment {
   @SuppressLint("InlinedApi")
   private void handleImportWhatsappBackup() {
     CheckAndGetAccessPermissionApi30();
-    AlertDialog.Builder builder = ImportWhatsappDialog.getWhatsappBackupDialog(getActivity());
-    builder.setPositiveButton(getActivity().getString(R.string.ImportFragment_import), (dialog, which) -> {
-      Permissions.with(ImportExportFragment.this)
-                 .request(Manifest.permission.WRITE_EXTERNAL_STORAGE, Manifest.permission.READ_EXTERNAL_STORAGE)
-                 .ifNecessary()
-                 .withPermanentDenialDialog(getString(R.string.ImportExportFragment_signal_needs_the_storage_permission_in_order_to_read_from_external_storage_but_it_has_been_permanently_denied))
-                 .onAllGranted(() -> new ImportWhatsappBackupTask(ImportWhatsappDialog.isImportGroups(), ImportWhatsappDialog.isAvoidDuplicates(), ImportWhatsappDialog.isImportMedia()).executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR))
-                 .onAnyDenied(() -> Toast.makeText(getContext(), R.string.ImportExportFragment_signal_needs_the_storage_permission_in_order_to_read_from_external_storage, Toast.LENGTH_LONG).show())
-                 .execute();
-    });
-    builder.setNegativeButton(getActivity().getString(R.string.ImportFragment_cancel), null);
-    builder.show();
+    if (existsWhatsAppMessageDatabase()) {
+      AlertDialog.Builder builder = ImportWhatsappDialog.getWhatsappBackupDialog(getActivity());
+      builder.setPositiveButton(getActivity().getString(R.string.ImportFragment_import), (dialog, which) -> {
+        Permissions.with(ImportExportFragment.this)
+                   .request(Manifest.permission.WRITE_EXTERNAL_STORAGE, Manifest.permission.READ_EXTERNAL_STORAGE)
+                   .ifNecessary()
+                   .withPermanentDenialDialog(getString(R.string.ImportExportFragment_signal_needs_the_storage_permission_in_order_to_read_from_external_storage_but_it_has_been_permanently_denied))
+                   .onAllGranted(() -> new ImportWhatsappBackupTask(ImportWhatsappDialog.isImportGroups(), ImportWhatsappDialog.isAvoidDuplicates(), ImportWhatsappDialog.isImportMedia()).executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR))
+                   .onAnyDenied(() -> Toast.makeText(getContext(), R.string.ImportExportFragment_signal_needs_the_storage_permission_in_order_to_read_from_external_storage, Toast.LENGTH_LONG).show())
+                   .execute();
+      });
+      builder.setNegativeButton(getActivity().getString(R.string.ImportFragment_cancel), null);
+      builder.show();
+    } else {
+      AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+      builder.setMessage(getActivity().getString(R.string.ImportFragment_no_whatsapp_backup_found))
+             .setCancelable(false)
+             .setPositiveButton(getActivity().getString(R.string.ImportFragment_restore_ok), new DialogInterface.OnClickListener() {
+                public void onClick(DialogInterface dialog, int id) {
+                  dialog.cancel();
+                }
+              });
+      AlertDialog alert = builder.create();
+      alert.show();
+    }
   }
 
   @SuppressLint("StaticFieldLeak")
@@ -539,6 +553,12 @@ public class ImportExportFragment extends Fragment {
         return ERROR_IO;
       }
     }
+  }
+
+  private boolean existsWhatsAppMessageDatabase() {
+    String dbfile = Environment.getExternalStorageDirectory().getAbsolutePath() + File.separator + "msgstore.db";
+    File msgdb = new File(dbfile);
+    if (msgdb.exists()) return true; else return false;
   }
 
   private void CheckAndGetAccessPermissionApi30() {
