@@ -135,7 +135,7 @@ class AppSettingsFragment : DSLSettingsFragment(R.string.text_secure_normal__men
         linkId = R.string.donate_url
       )
 
-      if (FeatureFlags.internalUser()) {
+      //if (FeatureFlags.internalUser()) { // JW: always show
         dividerPref()
 
         clickPref(
@@ -144,7 +144,7 @@ class AppSettingsFragment : DSLSettingsFragment(R.string.text_secure_normal__men
             Navigation.findNavController(requireView()).navigate(R.id.action_appSettingsFragment_to_internalSettingsFragment)
           }
         )
-      }
+      //}
     }
   }
 
