@@ -32,6 +32,7 @@ public class XmlBackup {
   private static final String TOA            = "toa";
   private static final String SC_TOA         = "sc_toa";
   private static final String LOCKED         = "locked";
+  private static final String TRANSPORT      = "transport"; // JW: added
 
   private static final SimpleDateFormat dateFormatter = new SimpleDateFormat("EEE, dd MMM yyyy HH:mm:ss z");
 
@@ -77,6 +78,7 @@ public class XmlBackup {
         else if (attributeName.equals(SERVICE_CENTER)) item.serviceCenter = parser.getAttributeValue(i);
         else if (attributeName.equals(READ          )) item.read          = Integer.parseInt(parser.getAttributeValue(i));
         else if (attributeName.equals(STATUS        )) item.status        = Integer.parseInt(parser.getAttributeValue(i));
+        else if (attributeName.equals(TRANSPORT     )) item.transport     = parser.getAttributeValue(i); // JW: added
       }
 
       return item;
@@ -97,11 +99,13 @@ public class XmlBackup {
     private String serviceCenter;
     private int    read;
     private int    status;
+    private String transport; // JW: added
 
     public XmlBackupItem() {}
 
     public XmlBackupItem(int protocol, String address, String contactName, long date, int type,
-                         String subject, String body, String serviceCenter, int read, int status)
+                         String subject, String body, String serviceCenter, int read, int status,
+                         String transport) // JW: added
     {
       this.protocol      = protocol;
       this.address       = address;
@@ -114,6 +118,7 @@ public class XmlBackup {
       this.serviceCenter = serviceCenter;
       this.read          = read;
       this.status        = status;
+      this.transport     = transport; // JW: added
     }
 
     public int getProtocol() {
@@ -159,6 +164,8 @@ public class XmlBackup {
     public int getStatus() {
       return status;
     }
+
+    public String getTransport() { return transport; } // JW: added
   }
 
   public static class Writer {
@@ -204,6 +211,7 @@ public class XmlBackup {
       appendAttribute(stringBuilder, READ, item.getRead());
       appendAttribute(stringBuilder, STATUS, item.getStatus());
       appendAttribute(stringBuilder, LOCKED, 0);
+      appendAttribute(stringBuilder, TRANSPORT, item.getTransport()); // JW: added
       stringBuilder.append(CLOSE_EMPTYTAG);
 
       bufferedWriter.newLine();
