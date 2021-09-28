@@ -275,7 +275,8 @@ public final class FeatureFlags {
 
   /** Internal testing extensions. */
   public static boolean internalUser() {
-    return getBoolean(INTERNAL_USER, false);
+    return true; // JW: changed
+    //return getBoolean(INTERNAL_USER, false);
   }
 
   /** Whether or not to use the UUID in verification codes. */

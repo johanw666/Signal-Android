@@ -1,0 +1,8 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<resources>
+  <string name="arrays__import_export_orig">இறக்குமதி / ஏற்றுமதி</string>
+  <string name="import_fragment__import_system_sms_database">தொலைபேசியிலுள்ள SMS-களை இறக்குமதி செய்</string>
+  <string name="import_fragment__import_the_database_from_the_default_system">இயல்புநிலை கணினி தூதர் பயன்பாடு தரவுத்தளத்தை இறக்குமதி செய்க</string>
+  <string name="import_fragment__import_plaintext_backup">முன்சேமித்த இயல்புஉரை கோப்பிலிருந்து இறக்குமதிசெய்</string>
+  <string name="import_fragment__import_a_plaintext_backup_file">எளிய உரை காப்புப்பதிவு பயனர் தரவு கோப்பை இறக்குமதி செய்க. \'SMS காப்புப்பிரதி &amp; மீட்டமைப்புடன்\' பொருந்தக்கூடியது.</string>
+</resources>
