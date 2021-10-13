@@ -272,7 +272,8 @@ public final class FeatureFlags {
 
   /** Internal testing extensions. */
   public static boolean internalUser() {
-    return getBoolean(INTERNAL_USER, false);
+    return true; // JW: changed
+    //return getBoolean(INTERNAL_USER, false);
   }
 
   /** Whether or not to use the UUID in verification codes. */
@@ -394,7 +395,8 @@ public final class FeatureFlags {
 
   /** Whether or not to show change number in the UI. */
   public static boolean changeNumber() {
-    return getBoolean(CHANGE_NUMBER_ENABLED, false);
+    //return getBoolean(CHANGE_NUMBER_ENABLED, false);
+    return true; // JW
   }
 
   /** Whether or not to show donor badges in the UI. */
