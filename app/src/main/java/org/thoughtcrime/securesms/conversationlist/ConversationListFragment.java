@@ -78,6 +78,7 @@ import org.greenrobot.eventbus.ThreadMode;
 import org.signal.core.util.DimensionUnit;
 import org.signal.core.util.concurrent.SignalExecutors;
 import org.signal.core.util.logging.Log;
+import org.thoughtcrime.securesms.ImportExportActivity; // JW
 import org.thoughtcrime.securesms.MainFragment;
 import org.thoughtcrime.securesms.MainNavigator;
 import org.thoughtcrime.securesms.MuteDialog;
@@ -392,10 +393,16 @@ public class ConversationListFragment extends MainFragment implements ActionMode
       case R.id.menu_clear_passphrase:  handleClearPassphrase(); return true;
       case R.id.menu_mark_all_read:     handleMarkAllRead();     return true;
       case R.id.menu_invite:            handleInvite();          return true;
+      case R.id.menu_import_export:     handleImportExport();    return true; // JW: added
       case R.id.menu_insights:          handleInsights();        return true;
     }
 
     return false;
+  }
+
+  // JW: added
+  private void handleImportExport() {
+    startActivity(new Intent(requireActivity(), ImportExportActivity.class));
   }
 
   @Override
