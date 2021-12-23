@@ -1718,4 +1718,26 @@ public class SmsDatabase extends MessageDatabase {
     }
   }
 
+  // JW: re-added function, required for PlaintextBackup
+  public int getMessageCount() {
+    SQLiteDatabase db = databaseHelper.getSignalReadableDatabase();
+    Cursor cursor     = null;
+
+    try {
+      cursor = db.query(TABLE_NAME, new String[] {"COUNT(*)"}, null, null, null, null, null);
+
+      if (cursor != null && cursor.moveToFirst()) return cursor.getInt(0);
+      else                                        return 0;
+    } finally {
+      if (cursor != null)
+        cursor.close();
+    }
+  }
+
+  // JW: re-added function, required for PlaintextBackup
+  Cursor getMessages(int skip, int limit) {
+    SQLiteDatabase db = databaseHelper.getSignalReadableDatabase();
+    return db.query(TABLE_NAME, MESSAGE_PROJECTION, null, null, null, null, ID, skip + "," + limit);
+  }
+
 }
