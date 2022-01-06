@@ -8,16 +8,21 @@ import android.os.Environment;
 import android.os.storage.StorageManager;
 import android.os.storage.StorageVolume;
 import android.provider.MediaStore;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.annotation.RequiresApi;
 
+import com.annimon.stream.Stream; // JW: added
+
 import org.thoughtcrime.securesms.BuildConfig;
 import org.thoughtcrime.securesms.R;
 import org.thoughtcrime.securesms.database.NoExternalStorageException;
 import org.thoughtcrime.securesms.dependencies.ApplicationDependencies;
+import org.thoughtcrime.securesms.keyvalue.SignalStore; // JW: added
 import org.thoughtcrime.securesms.permissions.Permissions;
+import org.thoughtcrime.securesms.util.UriUtils; // JW: added
 
 import java.io.File;
 import java.util.List;
@@ -27,8 +32,87 @@ public class StorageUtil {
 
   private static final String PRODUCTION_PACKAGE_ID = "org.thoughtcrime.securesms";
 
+  // JW: split backup directories per type because otherwise some files might get unintentionally deleted
+  public static File getBackupDirectory() throws NoExternalStorageException {
+    return getBackupTypeDirectory("Backups");
+  }
+
+  public static File getBackupPlaintextDirectory() throws NoExternalStorageException {
+    return getBackupTypeDirectory("PlaintextBackups");
+  }
+
+  public static File getRawBackupDirectory() throws NoExternalStorageException {
+    return getBackupTypeDirectory("FullBackups");
+  }
+
+  private static File getBackupTypeDirectory(String backupType) throws NoExternalStorageException {
+    Context context = ApplicationDependencies.getApplication();
+    File signal = null;
+    if (Build.VERSION.SDK_INT < 30) {
+      signal = getBackupBaseDirectory();
+    } else {
+      Uri backupDirectoryUri = SignalStore.settings().getSignalBackupDirectory();
+      signal = new File(UriUtils.getFullPathFromTreeUri(context, backupDirectoryUri));
+    }
+    File backups = new File(signal, backupType);
+
+    //noinspection ConstantConditions
+    if (BuildConfig.APPLICATION_ID.startsWith(PRODUCTION_PACKAGE_ID + ".")) {
+      backups = new File(backups, BuildConfig.APPLICATION_ID.substring(PRODUCTION_PACKAGE_ID.length() + 1));
+    }
+
+    if (!backups.exists()) {
+      if (!backups.mkdirs()) {
+        throw new NoExternalStorageException("Unable to create backup directory...");
+      }
+    }
+
+    return backups;
+  }
+
+  // JW: added. Returns storage dir on internal or removable storage
+  private static File getStorage() throws NoExternalStorageException {
+    Context context = ApplicationDependencies.getApplication();
+    File storage = null;
+
+    // We now check if the removable storage is prefered. If it is
+    // and it is not available we fallback to internal storage.
+    if (TextSecurePreferences.isBackupLocationRemovable(context)) {
+      // For now we only support the application directory on the removable storage.
+      if (Build.VERSION.SDK_INT >= 19) {
+        File[] directories = context.getExternalFilesDirs(null);
+
+        if (directories != null) {
+          storage = Stream.of(directories)
+                  .withoutNulls()
+                  .filterNot(f -> f.getAbsolutePath().contains("emulated"))
+                  .limit(1)
+                  .findSingle()
+                  .orElse(null);
+        }
+      }
+    }
+    if (storage == null) {
+      storage = Environment.getExternalStorageDirectory();
+    }
+    return storage;
+  }
+
+  // JW: added method
+  public static File getBackupBaseDirectory() throws NoExternalStorageException {
+    File storage = getStorage();
+
+    if (!storage.canWrite()) {
+      throw new NoExternalStorageException();
+    }
+
+    File signal = new File(storage, "Signal");
+
+    return signal;
+  }
+
   public static File getOrCreateBackupDirectory() throws NoExternalStorageException {
-    File storage = Environment.getExternalStorageDirectory();
+    File storage = getStorage(); // JW: changed
 
     if (!storage.canWrite()) {
       throw new NoExternalStorageException();
@@ -40,19 +124,6 @@ public class StorageUtil {
       if (!backups.mkdirs()) {
         throw new NoExternalStorageException("Unable to create backup directory...");
       }
-    }
-
-    return backups;
-  }
-
-  public static File getBackupDirectory() throws NoExternalStorageException {
-    File storage = Environment.getExternalStorageDirectory();
-    File signal  = new File(storage, "Signal");
-    File backups = new File(signal, "Backups");
-
-    //noinspection ConstantConditions
-    if (BuildConfig.APPLICATION_ID.startsWith(PRODUCTION_PACKAGE_ID + ".")) {
-      backups = new File(backups, BuildConfig.APPLICATION_ID.substring(PRODUCTION_PACKAGE_ID.length() + 1));
     }
 
     return backups;
@@ -83,7 +154,28 @@ public class StorageUtil {
   }
 
   public static File getBackupCacheDirectory(Context context) {
+    // JW: changed.
+    if (TextSecurePreferences.isBackupLocationRemovable(context)) {
+      if (Build.VERSION.SDK_INT >= 19) {
+        File[] directories = context.getExternalCacheDirs();
+
+        if (directories != null) {
+          File result = getNonEmulated(directories);
+          if (result != null) return result;
+        }
+      }
+    }
     return context.getExternalCacheDir();
+  }
+
+  // JW: re-added
+  private static @Nullable File getNonEmulated(File[] directories) {
+    return Stream.of(directories)
+            .withoutNulls()
+            .filterNot(f -> f.getAbsolutePath().contains("emulated"))
+            .limit(1)
+            .findSingle()
+            .orElse(null);
   }
 
   private static File getSignalStorageDir() throws NoExternalStorageException {
