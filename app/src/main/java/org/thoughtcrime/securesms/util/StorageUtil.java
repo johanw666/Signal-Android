@@ -25,24 +25,34 @@ import org.thoughtcrime.securesms.permissions.Permissions;
 import org.thoughtcrime.securesms.util.UriUtils; // JW: added
 
 import java.io.File;
+import java.nio.file.Path; // JW: added
 import java.util.List;
 import java.util.Objects;
 
 public class StorageUtil {
 
   private static final String PRODUCTION_PACKAGE_ID = "org.thoughtcrime.securesms";
+  // JW: the different backup types
+  private static final String BACKUPS = "Backups";
+  private static final String FULL_BACKUPS = "FullBackups";
+  private static final String PLAINTEXT_BACKUPS = "PlaintextBackups";
 
   // JW: split backup directories per type because otherwise some files might get unintentionally deleted
   public static File getBackupDirectory() throws NoExternalStorageException {
-    return getBackupTypeDirectory("Backups");
+    if (Build.VERSION.SDK_INT >= 30) {
+      // We don't add the separate "Backups" subdir for Android 11+ to not complicate things...
+      return getBackupTypeDirectory("");
+    } else {
+      return getBackupTypeDirectory(BACKUPS);
+    }
   }
 
   public static File getBackupPlaintextDirectory() throws NoExternalStorageException {
-    return getBackupTypeDirectory("PlaintextBackups");
+    return getBackupTypeDirectory(PLAINTEXT_BACKUPS);
   }
 
   public static File getRawBackupDirectory() throws NoExternalStorageException {
-    return getBackupTypeDirectory("FullBackups");
+    return getBackupTypeDirectory(FULL_BACKUPS);
   }
 
   private static File getBackupTypeDirectory(String backupType) throws NoExternalStorageException {
@@ -53,6 +63,15 @@ public class StorageUtil {
     } else {
       Uri backupDirectoryUri = SignalStore.settings().getSignalBackupDirectory();
       signal = new File(UriUtils.getFullPathFromTreeUri(context, backupDirectoryUri));
+    }
+    // For android 11+, if the last part ends with "Backups", remove that and add the backupType so
+    // we still can use the Backups, FulBackups etc. subdirectories when the chosen backup folder
+    // is a subdirectory called Backups.
+    if (Build.VERSION.SDK_INT >= 30 && !backupType.equals("")) {
+      Path selectedDir = signal.toPath();
+      if (selectedDir.endsWith(BACKUPS)) {
+        signal = selectedDir.getParent().toFile();
+      }
     }
     File backups = new File(signal, backupType);
 
