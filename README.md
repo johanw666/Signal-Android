@@ -35,6 +35,36 @@ For larger changes and feature ideas, we ask that you propose it on the [unoffic
 ## Contributing Ideas
 Have something you want to say about Open Whisper Systems projects or want to be part of the conversation? Get involved in the [community forum](https://community.signalusers.org).
 
+## WhatsApp Data Import
+
+This is based on code contributed by Samuel Welten (https://github.com/jukefoxer/Signal-Android) and Wollwolke 
+(https://github.com/Wollwolke/Signal-Android/tree/feature/wa-db-import). Thank you both for this.
+
+This fork of the Signal App provides a method to import one's WhatsApp conversations. It's currently still a pretty tedious process, but at least it's possible.
+
+### What works
+
+* Import 1-to-1 text conversation threads.
+* Import group chat conversations if a group chat with the same name is set up in the Signal App.
+* Importing images and videos messages from WhatsApp chats.
+
+### What doesn't work
+
+* Multimedia messages other than images and videos are currently not imported.
+* It's pretty slow (10 seconds per 1000 messages).
+
+### How to do it
+
+* Extract your unencrypted msgstore.db from your WhatsApp installation. There are several methods to do so. WhatsAppDump seems to offer a possibility that doesn't require rooting the device. A more detailed description of how to do so might be added here in the future.
+* Copy the msgstore.db file to the top level directory of your internal storage
+* Make an encrypted Backup of your Signal Messages using the built-in feature of the Signal App.
+* Build and install this version of the Signal App and import the encrypted Backup of your signal messages.
+* You might have to go to the app permission settings and give it the permission to manage all of the external storage.
+* Go to Backup => Import WhatsApp to start the import.
+* Be patient until it finishes.
+* If you're happy with the WhatsApp import create another encrypted backup of all Signal messages.
+* Install the original Signal app again and import the encrypted Backup.
+
 Help
 ====
 ## Support
