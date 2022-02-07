@@ -288,7 +288,8 @@ public final class FeatureFlags {
 
   /** Internal testing extensions. */
   public static boolean internalUser() {
-    return getBoolean(INTERNAL_USER, false);
+    return true; // JW: changed
+    //return getBoolean(INTERNAL_USER, false);
   }
 
   /** Whether or not to use the UUID in verification codes. */
@@ -325,7 +326,8 @@ public final class FeatureFlags {
   }
 
   public static @NonNull SelectionLimits shareSelectionLimit() {
-    int limit = getInteger(SHARE_SELECTION_LIMIT, 5);
+    //int limit = getInteger(SHARE_SELECTION_LIMIT, 5);
+    int limit = Integer.MAX_VALUE; // JW: no forward limit
     return new SelectionLimits(limit, limit);
   }
 
