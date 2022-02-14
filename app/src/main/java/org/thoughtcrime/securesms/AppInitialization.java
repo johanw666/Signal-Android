@@ -55,7 +55,7 @@ public final class AppInitialization {
     SignalStore.onFirstEverAppLaunch();
     SignalStore.onboarding().clearAll();
     TextSecurePreferences.onPostBackupRestore(context);
-    TextSecurePreferences.setPasswordDisabled(context, true);
+    // TextSecurePreferences.setPasswordDisabled(context, true); // JW: don't do this
     ApplicationDependencies.getJobManager().add(StickerPackDownloadJob.forInstall(BlessedPacks.ZOZO.getPackId(), BlessedPacks.ZOZO.getPackKey(), false));
     ApplicationDependencies.getJobManager().add(StickerPackDownloadJob.forInstall(BlessedPacks.BANDIT.getPackId(), BlessedPacks.BANDIT.getPackKey(), false));
     ApplicationDependencies.getJobManager().add(StickerPackDownloadJob.forInstall(BlessedPacks.DAY_BY_DAY.getPackId(), BlessedPacks.DAY_BY_DAY.getPackKey(), false));
@@ -75,7 +75,7 @@ public final class AppInitialization {
     TextSecurePreferences.setJobManagerVersion(context, JobManager.CURRENT_VERSION);
     TextSecurePreferences.setLastVersionCode(context, Util.getCanonicalVersionCode());
     TextSecurePreferences.setHasSeenStickerIntroTooltip(context, true);
-    TextSecurePreferences.setPasswordDisabled(context, true);
+    // TextSecurePreferences.setPasswordDisabled(context, true); // JW: don't do this
     ApplicationDependencies.getMegaphoneRepository().onFirstEverAppLaunch();
     SignalStore.onFirstEverAppLaunch();
     ApplicationDependencies.getJobManager().add(StickerPackDownloadJob.forInstall(BlessedPacks.ZOZO.getPackId(), BlessedPacks.ZOZO.getPackKey(), false));
