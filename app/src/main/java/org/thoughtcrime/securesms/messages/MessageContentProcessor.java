@@ -160,7 +160,6 @@ import org.whispersystems.signalservice.api.push.SignalServiceAddress;
 import org.whispersystems.signalservice.internal.serialize.protos.SignalServiceContentProto; // JW
 
 import java.io.IOException;
-import java.lang.reflect.Constructor; // JW
 import java.security.SecureRandom;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -914,41 +913,27 @@ public final class MessageContentProcessor {
   }
 
   // JW: set a reaction to indicate the message was remote deleted. Sender is myself, emoji is an exclamation.
-  private void setDeletedReaction() {
-    // TODO: JW WIP
-/*
-    SignalServiceDataMessage message = null;
-    //SignalServiceDataMessage message = new SignalServiceDataMessage();
+  // Thanks ClauZ for the implementation
+  private void setDeletedReaction(@NonNull SignalServiceDataMessage message, @Nullable MessageRecord targetMessage) {
+    if (targetMessage != null) {
+      String remoteDeleteEmoji = EmojiUtil.getCanonicalRepresentation("\u2757");
 
-    SignalServiceAddress sender = null;
-    int senderDevice = 0;
-    long timestamp = 0;
-    long serverReceivedTimestamp = 0;
-    long serverDeliveredTimestamp = 0;
-    boolean needsReceipt = false;
-    SignalServiceContentProto serializedState = null;
-    // Private constructor, use reflection
-    Constructor<SignalServiceContent> constructor;
-    try {
-      constructor = SignalServiceContent.class.getDeclaredConstructor(Object.class);
-      constructor.setAccessible(true);
-      SignalServiceContent content =
-        constructor.newInstance(message, sender, senderDevice, timestamp, serverReceivedTimestamp, serverDeliveredTimestamp, needsReceipt, serializedState);
-        
-      handleReaction(content, message);
-    } catch (Exception e) {
-      Log.w(TAG, "setDeletedReaction: " + e.getMessage());
+      MessageId      targetMessageId = new MessageId(targetMessage.getId(), targetMessage.isMms());
+      ReactionRecord reactionRecord  = new ReactionRecord(remoteDeleteEmoji, Recipient.self().getId(), message.getTimestamp(), System.currentTimeMillis());
+
+      SignalDatabase.reactions().addReaction(targetMessageId, reactionRecord);
+      ApplicationDependencies.getMessageNotifier().updateNotification(context, targetMessage.getThreadId(), false);
     }
-*/
   }
 
   private @Nullable MessageId handleRemoteDelete(@NonNull SignalServiceContent content, @NonNull SignalServiceDataMessage message, @NonNull Recipient senderRecipient) {
-    if (TextSecurePreferences.isIgnoreRemoteDelete(context)) { setDeletedReaction(); return null; } // JW
     log(content.getTimestamp(), "Remote delete for message " + message.getRemoteDelete().get().getTargetSentTimestamp());
 
     SignalServiceDataMessage.RemoteDelete delete = message.getRemoteDelete().get();
 
     MessageRecord targetMessage = SignalDatabase.mmsSms().getMessageFor(delete.getTargetSentTimestamp(), senderRecipient.getId());
+
+    if (TextSecurePreferences.isIgnoreRemoteDelete(context)) { setDeletedReaction(message, targetMessage); return null; } // JW
 
     if (targetMessage != null && RemoteDeleteUtil.isValidReceive(targetMessage, senderRecipient, content.getServerReceivedTimestamp())) {
       MessageDatabase db = targetMessage.isMms() ? SignalDatabase.mms() : SignalDatabase.sms();
