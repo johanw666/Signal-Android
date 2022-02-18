@@ -143,8 +143,8 @@ class AdvancedPrivacySettingsFragment : DSLSettingsFragment(R.string.preferences
         isChecked = state.pushNotificationsViaFCM
       ) {
         val isFcm = state.pushNotificationsViaFCM
-        viewModel.setPushNotificationsViaFCM(!state.pushNotificationsViaFCM)
-        FCMPreferenceFunctions.onFCMPreferenceChange(context, isFcm)
+        viewModel.setPushNotificationsViaFCM(!isFcm)
+        FCMPreferenceFunctions.onFCMPreferenceChange(context, !isFcm)
       }
 
       dividerPref()
