@@ -26,12 +26,16 @@ import org.thoughtcrime.securesms.database.SignalDatabase;
 import org.thoughtcrime.securesms.database.ThreadDatabase;
 import org.thoughtcrime.securesms.database.model.databaseprotos.DecryptedGroupV2Context;
 import org.thoughtcrime.securesms.dependencies.ApplicationDependencies;
+import org.thoughtcrime.securesms.groups.GroupChangeException;
 import org.thoughtcrime.securesms.groups.GroupDoesNotExistException;
 import org.thoughtcrime.securesms.groups.GroupId;
+import org.thoughtcrime.securesms.groups.GroupManager;
 import org.thoughtcrime.securesms.groups.GroupMutation;
 import org.thoughtcrime.securesms.groups.GroupNotAMemberException;
 import org.thoughtcrime.securesms.groups.GroupProtoUtil;
 import org.thoughtcrime.securesms.groups.GroupsV2Authorization;
+import org.thoughtcrime.securesms.groups.ui.GroupChangeFailureReason;
+import org.thoughtcrime.securesms.groups.ui.GroupChangeResult;
 import org.thoughtcrime.securesms.groups.v2.ProfileKeySet;
 import org.thoughtcrime.securesms.jobmanager.Job;
 import org.thoughtcrime.securesms.jobs.AvatarGroupsV2DownloadJob;
@@ -593,6 +597,13 @@ public final class GroupsV2StateProcessor {
               if (addedBy.isBlocked()) {
                 Log.i(TAG, "Group adder: " + addedBy.getDisplayName(context) +" is a blocked contact. Auto blocking and leaving");
                 RecipientUtil.block(context, addedBy);
+                try {
+                  GroupManager.leaveGroup(context, groupId);
+                  return;
+                } catch (GroupChangeException | IOException e) {
+                  Log.w(TAG, "Unable to automatically leave the group: " + e.getMessage());
+                  return;
+                }
               }
             } catch (Exception e) {
               Log.i(TAG, "Exception trying to block recipient: " + e.getMessage());
