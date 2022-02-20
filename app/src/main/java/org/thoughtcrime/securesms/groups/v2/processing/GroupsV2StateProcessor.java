@@ -34,8 +34,6 @@ import org.thoughtcrime.securesms.groups.GroupMutation;
 import org.thoughtcrime.securesms.groups.GroupNotAMemberException;
 import org.thoughtcrime.securesms.groups.GroupProtoUtil;
 import org.thoughtcrime.securesms.groups.GroupsV2Authorization;
-import org.thoughtcrime.securesms.groups.ui.GroupChangeFailureReason;
-import org.thoughtcrime.securesms.groups.ui.GroupChangeResult;
 import org.thoughtcrime.securesms.groups.v2.ProfileKeySet;
 import org.thoughtcrime.securesms.jobmanager.Job;
 import org.thoughtcrime.securesms.jobs.AvatarGroupsV2DownloadJob;
@@ -596,9 +594,16 @@ public final class GroupsV2StateProcessor {
             try {
               if (addedBy.isBlocked()) {
                 Log.i(TAG, "Group adder: " + addedBy.getDisplayName(context) +" is a blocked contact. Auto blocking and leaving");
-                RecipientUtil.block(context, addedBy);
+                // RecipientUtil.block(context, addedBy);
+                // RecipientUtil.block(context, Recipient.externalGroupExact(context, groupId).getId());
                 try {
                   GroupManager.leaveGroup(context, groupId);
+                  // Now remove the group from the conversation list
+                  ThreadDatabase threadDatabase = SignalDatabase.threads();
+                  long threadId = threadDatabase.getThreadIdIfExistsFor(addedBy.getId());
+                  if (threadId != -1) {
+                    threadDatabase.deleteConversation(threadId);
+                  }
                   return;
                 } catch (GroupChangeException | IOException e) {
                   Log.w(TAG, "Unable to automatically leave the group: " + e.getMessage());
