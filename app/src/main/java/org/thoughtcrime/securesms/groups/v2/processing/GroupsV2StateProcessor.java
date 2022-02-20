@@ -44,7 +44,6 @@ import org.thoughtcrime.securesms.mms.MmsException;
 import org.thoughtcrime.securesms.mms.OutgoingGroupUpdateMessage;
 import org.thoughtcrime.securesms.recipients.Recipient;
 import org.thoughtcrime.securesms.recipients.RecipientId;
-import org.thoughtcrime.securesms.recipients.RecipientUtil; // JW
 import org.thoughtcrime.securesms.sms.IncomingGroupUpdateMessage;
 import org.thoughtcrime.securesms.sms.IncomingTextMessage;
 import org.thoughtcrime.securesms.util.TextSecurePreferences; // JW
@@ -594,14 +593,15 @@ public final class GroupsV2StateProcessor {
             try {
               if (addedBy.isBlocked()) {
                 Log.i(TAG, "Group adder: " + addedBy.getDisplayName(context) +" is a blocked contact. Auto blocking and leaving");
-                // RecipientUtil.block(context, addedBy);
+                // Block the group
                 // RecipientUtil.block(context, Recipient.externalGroupExact(context, groupId).getId());
                 try {
                   GroupManager.leaveGroup(context, groupId);
-                  // Now remove the group from the conversation list
                   ThreadDatabase threadDatabase = SignalDatabase.threads();
-                  long threadId = threadDatabase.getThreadIdIfExistsFor(addedBy.getId());
+                  long threadId = threadDatabase.getThreadIdIfExistsFor(Recipient.externalGroupExact(context, groupId).getId());
+                  // Now remove the group from the conversation list
                   if (threadId != -1) {
+                    Log.i(TAG, "Deleting conversation with threadId: " + threadId);
                     threadDatabase.deleteConversation(threadId);
                   }
                   return;
