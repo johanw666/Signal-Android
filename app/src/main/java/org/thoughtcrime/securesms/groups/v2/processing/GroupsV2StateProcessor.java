@@ -42,8 +42,10 @@ import org.thoughtcrime.securesms.mms.MmsException;
 import org.thoughtcrime.securesms.mms.OutgoingGroupUpdateMessage;
 import org.thoughtcrime.securesms.recipients.Recipient;
 import org.thoughtcrime.securesms.recipients.RecipientId;
+import org.thoughtcrime.securesms.recipients.RecipientUtil; // JW
 import org.thoughtcrime.securesms.sms.IncomingGroupUpdateMessage;
 import org.thoughtcrime.securesms.sms.IncomingTextMessage;
+import org.thoughtcrime.securesms.util.TextSecurePreferences; // JW
 import org.whispersystems.libsignal.util.guava.Optional;
 import org.whispersystems.signalservice.api.groupsv2.DecryptedGroupHistoryEntry;
 import org.whispersystems.signalservice.api.groupsv2.DecryptedGroupUtil;
@@ -584,6 +586,18 @@ public final class GroupsV2StateProcessor {
 
         if (addedByOptional.isPresent()) {
           Recipient addedBy = addedByOptional.get();
+
+          // JW: if the option is selected, prevent blocked contacts from adding you to groups.
+          if (TextSecurePreferences.blockedContactsCantAddYouToGroups(context)) {
+            try {
+              if (addedBy.isBlocked()) {
+                Log.i(TAG, "Group adder: " + addedBy.getDisplayName(context) +" is a blocked contact. Auto blocking and leaving");
+                RecipientUtil.block(context, addedBy);
+              }
+            } catch (Exception e) {
+              Log.i(TAG, "Exception trying to block recipient: " + e.getMessage());
+            }
+          }
 
           Log.i(TAG, String.format("Added as a full member of %s by %s", groupId, addedBy.getId()));
 

@@ -15,5 +15,6 @@ data class ChatsSettingsState(
   val keepViewOnceMessages: Boolean,
   val ignoreRemoteDelete: Boolean,
   val deleteMediaOnly: Boolean,
-  val googleMapType: String
+  val googleMapType: String,
+  val blockedContactsCantAddYouToGroups: Boolean
 )

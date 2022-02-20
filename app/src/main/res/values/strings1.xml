@@ -119,4 +119,8 @@
   <string name="export_fragment__export_a_plaintext_backup_compatible_with">Export a plaintext backup compatible with \'SMS Backup &amp; Restore\' to storage</string>
   <!-- RegistrationActivity -->
   <string name="registration_activity__restore_encrypted_backup">Restore encrypted backup</string>
+  <!-- group control -->
+  <string name="preferences_chats__group_control">Group control</string>
+  <string name="preferences_chats__can_blocked_contacts_add_you_to_groups">Adding by blocked contacts</string>
+  <string name="preferences_chats__can_blocked_contacts_add_you_to_groups_summary">If checked, blocked contacts can not add you to groups. If they try the request is denied automatically and you are auto-unsubscribed.</string>
 </resources>

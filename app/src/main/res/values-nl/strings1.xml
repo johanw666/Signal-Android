@@ -77,4 +77,8 @@ Herstellen van een versleutelde back-up zal je bestaande sleutels, voorkeuren en
   <string name="import_fragment__restore_a_previously_exported_encrypted_signal_backup">Herstel een eerder geëxporteerde versleutelde back-up van Signal</string>
     <!-- RegistrationActivity -->
     <string name="registration_activity__restore_encrypted_backup">Versleutelde backup terugzetten</string>
+  <!-- group control -->
+  <string name="preferences_chats__group_control">Groep beheer</string>
+  <string name="preferences_chats__can_blocked_contacts_add_you_to_groups">Toevoegen door geblokkeerde contacten</string>
+  <string name="preferences_chats__can_blocked_contacts_add_you_to_groups_summary">Wanneer deze optie aan staat kunnen geblokkeerde contacten je niet toevoegen aan groepen. Als ze het doen wordt het verzoek afgewezen en wordt je automatisch uitgeschreven.</string>
 </resources>

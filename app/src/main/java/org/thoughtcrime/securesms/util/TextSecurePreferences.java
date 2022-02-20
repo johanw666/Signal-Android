@@ -1179,6 +1179,8 @@ public class TextSecurePreferences {
   public static final String DELETE_MEDIA_ONLY = "pref_delete_media_only";
   // override the internal user feature flag
   public static final String OVERRIDE_INTERNAL_USER = "pref_override_internal_user";
+  // can you be added to groups by blocked contacts
+  public static final String BLOCKED_CANT_ADD_YOU_TO_GROUPS = "pref_blocked_cant_add_you_to_groups";
 
   public static boolean overrideInternalUser(@NonNull Context context) {
     return getBooleanPreference(context, OVERRIDE_INTERNAL_USER, false);
@@ -1257,9 +1259,17 @@ public class TextSecurePreferences {
     return getBooleanPreference(context, DELETE_MEDIA_ONLY, false);
   }
 
-   public static void setDeleteMediaOnly(Context context, boolean value) {
+  public static void setDeleteMediaOnly(Context context, boolean value) {
     setBooleanPreference(context, DELETE_MEDIA_ONLY, value);
-  } 
+  }
+
+  public static boolean blockedContactsCantAddYouToGroups(Context context) {
+    return getBooleanPreference(context, BLOCKED_CANT_ADD_YOU_TO_GROUPS, false);
+  }
+
+  public static void setBlockedContactsCantAddYouToGroups(Context context, boolean value) {
+    setBooleanPreference(context, BLOCKED_CANT_ADD_YOU_TO_GROUPS, value);
+  }
   // End added methods block
   //---------------------------------------------------------------------------
 }

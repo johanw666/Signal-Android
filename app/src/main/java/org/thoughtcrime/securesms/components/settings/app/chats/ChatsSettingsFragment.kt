@@ -197,6 +197,20 @@ class ChatsSettingsFragment : DSLSettingsFragment(R.string.preferences_chats__ch
 
       dividerPref()
 
+      sectionHeaderPref(R.string.preferences_chats__group_control)
+
+      // JW: added
+      switchPref(
+        title = DSLSettingsText.from(R.string.preferences_chats__can_blocked_contacts_add_you_to_groups),
+        summary = DSLSettingsText.from(R.string.preferences_chats__can_blocked_contacts_add_you_to_groups_summary),
+        isChecked = state.blockedContactsCantAddYouToGroups,
+        onClick = {
+          viewModel.setBlockedCanAddYouToGroups(!state.blockedContactsCantAddYouToGroups)
+        }
+      )
+
+      dividerPref()
+
       sectionHeaderPref(R.string.preferences_chats__google_map_type)
 
       // JW: added

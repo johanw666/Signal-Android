@@ -39,7 +39,8 @@ class ChatsSettingsViewModel(private val sharedPreferences: SharedPreferences, p
       keepViewOnceMessages = TextSecurePreferences.isKeepViewOnceMessages(ApplicationDependencies.getApplication()),
       ignoreRemoteDelete = TextSecurePreferences.isIgnoreRemoteDelete(ApplicationDependencies.getApplication()),
       deleteMediaOnly = TextSecurePreferences.isDeleteMediaOnly(ApplicationDependencies.getApplication()),
-      googleMapType = TextSecurePreferences.getGoogleMapType(ApplicationDependencies.getApplication())
+      googleMapType = TextSecurePreferences.getGoogleMapType(ApplicationDependencies.getApplication()),
+      blockedContactsCantAddYouToGroups = TextSecurePreferences.blockedContactsCantAddYouToGroups(ApplicationDependencies.getApplication())
     )
   )
 
@@ -135,6 +136,12 @@ class ChatsSettingsViewModel(private val sharedPreferences: SharedPreferences, p
   }
 
   // JW: added
+  fun setBlockedCanAddYouToGroups(enabled: Boolean) {
+    TextSecurePreferences.setBlockedContactsCantAddYouToGroups(context, enabled)
+    refresh()
+  }
+
+  // JW: added
   private fun getState() = ChatsSettingsState(
     generateLinkPreviews = SignalStore.settings().isLinkPreviewsEnabled,
     useAddressBook = SignalStore.settings().isPreferSystemContactPhotos,
@@ -148,7 +155,8 @@ class ChatsSettingsViewModel(private val sharedPreferences: SharedPreferences, p
     keepViewOnceMessages = TextSecurePreferences.isKeepViewOnceMessages(context),
     ignoreRemoteDelete = TextSecurePreferences.isIgnoreRemoteDelete(context),
     deleteMediaOnly = TextSecurePreferences.isDeleteMediaOnly(context),
-    googleMapType = TextSecurePreferences.getGoogleMapType(context)
+    googleMapType = TextSecurePreferences.getGoogleMapType(context),
+    blockedContactsCantAddYouToGroups = TextSecurePreferences.blockedContactsCantAddYouToGroups(context)
   )
 
 
