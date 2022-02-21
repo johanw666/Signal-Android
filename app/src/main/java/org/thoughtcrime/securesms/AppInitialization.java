@@ -56,7 +56,7 @@ public final class AppInitialization {
     SignalStore.onFirstEverAppLaunch();
     SignalStore.onboarding().clearAll();
     TextSecurePreferences.onPostBackupRestore(context);
-    // TextSecurePreferences.setPasswordDisabled(context, true); // JW: don't do this
+    TextSecurePreferences.setPasswordDisabled(context, true);
     ApplicationDependencies.getJobManager().add(StickerPackDownloadJob.forInstall(BlessedPacks.ZOZO.getPackId(), BlessedPacks.ZOZO.getPackKey(), false));
     ApplicationDependencies.getJobManager().add(StickerPackDownloadJob.forInstall(BlessedPacks.BANDIT.getPackId(), BlessedPacks.BANDIT.getPackKey(), false));
     ApplicationDependencies.getJobManager().add(StickerPackDownloadJob.forInstall(BlessedPacks.DAY_BY_DAY.getPackId(), BlessedPacks.DAY_BY_DAY.getPackKey(), false));

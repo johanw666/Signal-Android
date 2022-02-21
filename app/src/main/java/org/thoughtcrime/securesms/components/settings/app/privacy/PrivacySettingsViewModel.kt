@@ -92,8 +92,8 @@ class PrivacySettingsViewModel(
   }
 
   fun setOnlyScreenlockEnabled(enabled: Boolean) {
-    sharedPreferences.edit().putBoolean(TextSecurePreferences.DISABLE_PASSPHRASE_PREF, enabled).apply()
-    sharedPreferences.edit().putBoolean("pref_enable_passphrase_temporary", !enabled).apply()
+    sharedPreferences.edit().putBoolean(TextSecurePreferences.DISABLE_PASSPHRASE_PREF, true).apply()
+    sharedPreferences.edit().putBoolean("pref_enable_passphrase_temporary", false).apply()
     sharedPreferences.edit().putBoolean(TextSecurePreferences.SCREEN_LOCK, enabled).apply()
     refresh()
   }
