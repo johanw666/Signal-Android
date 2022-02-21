@@ -1,0 +1,126 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+  <!-- arrays.xml -->
+  <string name="arrays__import_export_orig">Import / export</string>
+  <!-- preferences.xml -->
+  <string name="preferences__oled_theme">OLED Dark</string>
+  <string name="preferences__green_theme">Green Light</string>
+  <string name="preferences__blue_theme">Blue Light</string>
+  <string name="preferences_chats__google_map_type">Location</string>
+  <string name="preferences__map_type">Map type</string>
+  <string name="preferences__map_normal">Normal</string>
+  <string name="preferences__map_hybrid">Hybrid</string>
+  <string name="preferences__map_satellite">Satellite</string>
+  <string name="preferences__map_terrain">Terrain</string>
+  <string name="preferences__map_none">None</string>
+  <!-- app protection-->
+  <string name="preferences_app_protection__method_passphrase">Use a passphrase</string>
+  <string name="preferences_app_protection__method_passphrase_summary">Use a passphrase to protect Signal instead of the Android screen lock or fingerprint</string>
+  <string name="preferences_app_protection__screenlock_requires_lollipop">Using the system screenlock requires Android 5.0 (Lollipop) or higher.</string>
+  <string name="preferences_app_protection__android_version_too_low">Android version too low</string>
+  <!-- FCM switch -->
+  <string name="preferences_advanced__push_notifications_fcm">Push Notifications via FCM</string>
+  <string name="preferences_advanced__push_notifications_fcm_summary">Receive push notifications via Google Play Services. When switched off a websocket will be used, which might cause more battery usage</string>
+  <string name="preferences_advanced__play_services_not_found">Google Play Services not found</string>
+  <string name="preferences_advanced__need_to_restart">Signal needs to restart for the changes to take effect</string>
+  <!-- Keep messages -->
+  <string name="preferences_chats__control_message_deletion">Control message deletion</string>
+  <string name="preferences_chats__chat_keep_view_once_messages">Keep view-once media</string>
+  <string name="preferences_chats__keep_view_once_messages_summary">When checked incoming view-once media will be treated as normal view-always media and will not be deleted after view</string>
+  <string name="preferences_chats__chat_ignore_remote_delete">Ignore remote delete</string>
+  <string name="preferences_chats__chat_ignore_remote_delete_summary">When checked, this option prevents the remote deletion of messages by the sender</string>
+  <string name="preferences_chats__delete_media_only">Delete media only</string>
+  <string name="preferences_chats__delete_media_only_summary">Delete only media, not the message itself, when media is deleted in the All media screen</string>
+  <!--backup location-->
+  <string name="preferences_chats__chat_backups_removable">Backup location</string>
+  <string name="preferences_chats__backup_chats_to_removable_storage">Backup chats to removable storage (if available)</string>
+  <!--backup zipfile or not-->
+  <string name="preferences_chats__chat_backups_zipfile">Store encrypted backups in zipfile</string>
+  <string name="preferences_chats__backup_chats_to_encrypted_zipfile">The zipfile will be encrypted with the same password as the regular backups, or no password if regular backup is not set</string>
+  <string name="preferences_chats__chat_backups_zipfile_plain">Store plaintext backups in zipfile</string>
+  <string name="preferences_chats__backup_chats_to_encrypted_zipfile_plain">The zipfile will be encrypted with the same password as the regular backups, or no password if regular backup is not set</string>
+  <!-- ImportExportActivity -->
+  <string name="ImportExportActivity_import">Import</string>
+  <string name="ImportExportActivity_export">Export</string>
+  <!-- ImportFragment -->
+  <string name="ImportFragment_import_system_sms_database">Import system SMS database?</string>
+  <string name="ImportFragment_this_will_import_messages_from_the_system">This will import
+      messages from the system\'s default SMS database to Signal. If you\'ve previously
+      imported the system\'s SMS database, importing again will result in duplicated messages.
+  </string>
+  <string name="ImportFragment_import">Import</string>
+  <string name="ImportFragment_cancel">Cancel</string>
+  <string name="ImportFragment_import_plaintext_backup">Import plaintext backup?</string>
+  <string name="ImportFragment_this_will_import_messages_from_a_plaintext_backup">This will import
+      messages from a plaintext backup. If you\'ve previously imported this backup,
+      importing again will result in duplicated messages.
+  </string>
+  <string name="ImportFragment_importing">Importing</string>
+  <string name="ImportFragment_import_plaintext_backup_elipse">Importing plaintext backup...</string>
+  <string name="ImportFragment_no_plaintext_backup_found">No plaintext backup found!</string>
+  <string name="ImportFragment_error_importing_backup">Error importing backup!</string>
+  <string name="ImportFragment_import_complete">Import complete!</string>
+  <string name="import_fragment__import_system_sms_database">Import system SMS database</string>
+  <string name="import_fragment__import_the_database_from_the_default_system">Import the database from the default system messenger app</string>
+  <string name="import_fragment__import_plaintext_backup">Import plaintext backup</string>
+  <string name="import_fragment__import_a_plaintext_backup_file">Import a plaintext backup file. Compatible with \'SMS Backup &amp; Restore.\'</string>
+
+  <string name="ImportExportFragment_signal_needs_the_sms_permission_in_order_to_import_sms_messages">Signal needs the SMS permission in order to import SMS messages, but it has been permanently denied. Please continue to app settings, select \"Permissions\", and enable \"SMS\".</string>
+  <string name="ImportExportFragment_signal_needs_the_sms_permission_in_order_to_import_sms_messages_toast">Signal needs the SMS permission in order to import SMS messages</string>
+  <string name="ImportExportFragment_signal_needs_the_storage_permission_in_order_to_read_from_external_storage_but_it_has_been_permanently_denied">Signal needs the Storage permission in order to read from external storage, but it has been permanently denied. Please continue to app settings, select \"Permissions\", then enable \"Storage\".</string>
+  <string name="ImportExportFragment_signal_needs_the_storage_permission_in_order_to_read_from_external_storage">Signal needs the Storage permission in order to read from external storage.</string>
+  <string name="ImportExportFragment_signal_needs_the_storage_permission_in_order_to_write_to_external_storage_but_it_has_been_permanently_denied">Signal needs the Storage permission in order to write to external storage, but it has been permanently denied. Please continue to app settings, select \"Permissions\", then enable \"Storage\".</string>
+  <string name="ImportExportFragment_signal_needs_the_storage_permission_in_order_to_write_to_external_storage">Signal needs the Storage permission in order to write to external storage.</string>
+  <string name="ImportExportFragment_signal_needs_the_all_files_access_permission">Signal needs the All Files Access permission in order to make this kind of backups.</string>
+
+  <string name="ImportFragment_restore_encrypted_backup">Restore encrypted backup?</string>
+  <string name="ImportFragment_restoring_an_encrypted_backup_will_completely_replace_your_existing_keys">
+      Restoring an encrypted backup will completely replace your existing keys, preferences, and
+      messages. You will lose any information that\'s in your current Signal install but not
+      in the backup.
+  </string>
+  <string name="ImportFragment_restore">Restore</string>
+  <string name="ImportFragment_restoring">Restoring</string>
+  <string name="ImportFragment_restoring_encrypted_backup">Restoring encrypted backup...</string>
+  <string name="ImportFragment_no_encrypted_backup_found">No encrypted backup found!</string>
+  <string name="ImportFragment_restore_complete">Restore complete!</string>
+  <string name="ImportFragment_restore_ok">OK</string>
+  <!-- ImportFragment - WhatsApp import -->
+  <string name="ImportFragment_no_whatsapp_backup_found">No WhatsApp Backup found! Make sure msgstore.db is in the root directory of the phone\'s internal storage.</string>
+  <string name="ImportFragment_import_whatsapp_backup">Import WhatsApp backup?</string>
+  <string name="ImportFragment_this_will_import_messages_from_whatsapp_backup">This will import
+      messages from an unencrypted WhatsApp msgstore.db backup file located in the root of the internal sd card. If you\'ve previously imported this backup, importing again will result in duplicated messages.
+  </string>
+  <string name="ImportFragment_import_whatsapp_backup_elipse">Importing whatsapp backup...</string>
+  <string name="import_fragment__import_whatsapp_backup">Import WhatsApp backup</string>
+  <string name="import_fragment__import_whatsapp_backup_file">Import a WhatsApp db file. Place msgstore.db in the root directory</string>
+  <string name="import_fragment__import_whatsapp_import_media">Import media messages</string>
+  <string name="import_fragment__import_whatsapp_import_groups">Import group chats if Signal group with the same name exists</string>
+  <string name="import_fragment__import_whatsapp_avoid_duplicates">Avoid duplicate messages</string>
+  <!-- ExportFragment -->
+  <string name="ExportFragment_export_to_sd_card">Export To SD Card?</string>
+  <string name="ExportFragment_this_will_export_your_encrypted_keys_settings_and_messages">This will export your encrypted keys, settings, and messages to the SD card.</string>
+  <string name="ExportFragment_exporting_keys_settings_and_messages">Exporting encrypted keys, settings, and messages...</string>
+  <string name="ExportFragment_export">Export</string>
+  <string name="ExportFragment_export_plaintext_to_storage">Export plaintext to storage?</string>
+  <string name="ExportFragment_warning_this_will_export_the_plaintext_contents">Warning, this will export the plaintext contents of your Signal messages to storage.</string>
+  <string name="ExportFragment_cancel">Cancel</string>
+  <string name="ExportFragment_exporting">Exporting</string>
+  <string name="ExportFragment_exporting_plaintext_to_storage">Exporting plaintext to storage...</string>
+  <string name="ExportFragment_error_unable_to_write_to_storage">Error, unable to write to storage.</string>
+  <string name="ExportFragment_error_while_writing_to_storage">Error while writing to storage.</string>
+  <string name="ExportFragment_export_successful">Export successful.</string>
+  <!-- database_upgrade_activity -->
+  <string name="import_fragment__restore_encrypted_backup">Restore encrypted backup</string>
+  <string name="import_fragment__restore_a_previously_exported_encrypted_signal_backup">Restore a previously exported encrypted Signal backup</string>
+  <string name="export_fragment__export_encrypted_backup">Export encrypted backup</string>
+  <string name="export_fragment__export_an_encrypted_backup_to_the_sd_card">Export an encrypted backup to the SD card.</string>
+  <string name="export_fragment__export_plaintext_backup">Export plaintext backup</string>
+  <string name="export_fragment__export_a_plaintext_backup_compatible_with">Export a plaintext backup compatible with \'SMS Backup &amp; Restore\' to storage</string>
+  <!-- RegistrationActivity -->
+  <string name="registration_activity__restore_encrypted_backup">Restore encrypted backup</string>
+  <!-- group control -->
+  <string name="preferences_chats__group_control">Group control</string>
+  <string name="preferences_chats__can_blocked_contacts_add_you_to_groups">Adding by blocked contacts</string>
+  <string name="preferences_chats__can_blocked_contacts_add_you_to_groups_summary">If checked, blocked contacts can not add you to groups. If they try the request is denied automatically and you are auto-unsubscribed.</string>
+</resources>
