@@ -699,7 +699,7 @@ public final class GroupsV2StateProcessor {
         } catch (MmsException e) {
           Log.w(TAG, e);
         }
-      } else {
+      } else if (!Recipient.resolved(RecipientId.from(editor.get(), null)).isBlocked()) { // JW: don't store messages from blocked contacts
         MessageDatabase                        smsDatabase  = SignalDatabase.sms();
         RecipientId                            sender       = RecipientId.from(editor.get(), null);
         IncomingTextMessage                    incoming     = new IncomingTextMessage(sender, -1, timestamp, timestamp, timestamp, "", Optional.of(groupId), 0, false, null);
