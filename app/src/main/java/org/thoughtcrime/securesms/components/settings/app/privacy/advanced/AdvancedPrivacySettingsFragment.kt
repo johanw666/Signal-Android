@@ -136,6 +136,17 @@ class AdvancedPrivacySettingsFragment : DSLSettingsFragment(R.string.preferences
         viewModel.setAlwaysRelayCalls(!state.alwaysRelayCalls)
       }
 
+      // JW: added
+      switchPref(
+        title = DSLSettingsText.from(R.string.preferences_advanced__push_notifications_fcm),
+        summary = DSLSettingsText.from(R.string.preferences_advanced__push_notifications_fcm_summary),
+        isChecked = state.pushNotificationsViaFCM
+      ) {
+        val isFcm = state.pushNotificationsViaFCM
+        viewModel.setPushNotificationsViaFCM(!isFcm)
+        FCMPreferenceFunctions.onFCMPreferenceChange(context, !isFcm)
+      }
+
       dividerPref()
 
       sectionHeaderPref(R.string.preferences_communication__category_sealed_sender)
