@@ -1,0 +1,8 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<resources>
+  <string name="arrays__import_export_orig">Importálás / exportálás</string>
+  <string name="import_fragment__import_system_sms_database">Rendszer SMS adatbázis importálása</string>
+  <string name="import_fragment__import_the_database_from_the_default_system">Adatbázis importálása a rendszer alapértelmezett üzenetküldő alkalmazásából</string>
+  <string name="import_fragment__import_plaintext_backup">Titkosítatlan biztonsági mentés importálása</string>
+  <string name="import_fragment__import_a_plaintext_backup_file">Titkosítatlan biztonságimentés-fájl importálása. Kompatibilis az \'SMS Backup &amp; Restore\'-ral.</string>
+</resources>
