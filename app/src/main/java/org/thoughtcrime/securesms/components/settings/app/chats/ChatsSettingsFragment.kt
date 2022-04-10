@@ -24,6 +24,8 @@ class ChatsSettingsFragment : DSLSettingsFragment(R.string.preferences_chats__ch
 
   private val mapLabels by lazy { resources.getStringArray(R.array.pref_map_type_entries) } // JW: added
   private val mapValues by lazy { resources.getStringArray(R.array.pref_map_type_values) }  // JW: added
+  private val groupAddLabels by lazy { resources.getStringArray(R.array.pref_group_add_entries) } // JW: added
+  private val groupAddValues by lazy { resources.getStringArray(R.array.pref_group_add_values) }  // JW: added
   val CHOOSE_BACKUPS_LOCATION_REQUEST_CODE = 1201 // JW: added
 
   override fun onResume() {
@@ -200,12 +202,12 @@ class ChatsSettingsFragment : DSLSettingsFragment(R.string.preferences_chats__ch
       sectionHeaderPref(R.string.preferences_chats__group_control)
 
       // JW: added
-      switchPref(
-        title = DSLSettingsText.from(R.string.preferences_chats__can_blocked_contacts_add_you_to_groups),
-        summary = DSLSettingsText.from(R.string.preferences_chats__can_blocked_contacts_add_you_to_groups_summary),
-        isChecked = state.blockedContactsCantAddYouToGroups,
-        onClick = {
-          viewModel.setBlockedCanAddYouToGroups(!state.blockedContactsCantAddYouToGroups)
+      radioListPref(
+        title = DSLSettingsText.from(R.string.preferences_chats__who_can_add_you_to_groups),
+        listItems = groupAddLabels,
+        selected = groupAddValues.indexOf(state.whoCanAddYouToGroups),
+        onSelected = {
+          viewModel.setWhoCanAddYouToGroups(groupAddValues[it])
         }
       )
 

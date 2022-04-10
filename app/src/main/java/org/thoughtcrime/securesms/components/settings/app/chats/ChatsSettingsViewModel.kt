@@ -38,7 +38,7 @@ class ChatsSettingsViewModel(private val sharedPreferences: SharedPreferences, p
       ignoreRemoteDelete = TextSecurePreferences.isIgnoreRemoteDelete(ApplicationDependencies.getApplication()),
       deleteMediaOnly = TextSecurePreferences.isDeleteMediaOnly(ApplicationDependencies.getApplication()),
       googleMapType = TextSecurePreferences.getGoogleMapType(ApplicationDependencies.getApplication()),
-      blockedContactsCantAddYouToGroups = TextSecurePreferences.blockedContactsCantAddYouToGroups(ApplicationDependencies.getApplication())
+      whoCanAddYouToGroups = TextSecurePreferences.whoCanAddYouToGroups(ApplicationDependencies.getApplication())
     )
   )
 
@@ -133,8 +133,8 @@ class ChatsSettingsViewModel(private val sharedPreferences: SharedPreferences, p
   }
 
   // JW: added
-  fun setBlockedCanAddYouToGroups(enabled: Boolean) {
-    TextSecurePreferences.setBlockedContactsCantAddYouToGroups(context, enabled)
+  fun setWhoCanAddYouToGroups(adder: String) {
+    TextSecurePreferences.setWhoCanAddYouToGroups(context, adder)
     refresh()
   }
 
@@ -153,8 +153,7 @@ class ChatsSettingsViewModel(private val sharedPreferences: SharedPreferences, p
     ignoreRemoteDelete = TextSecurePreferences.isIgnoreRemoteDelete(context),
     deleteMediaOnly = TextSecurePreferences.isDeleteMediaOnly(context),
     googleMapType = TextSecurePreferences.getGoogleMapType(context),
-    blockedContactsCantAddYouToGroups = TextSecurePreferences.blockedContactsCantAddYouToGroups(context)
+    whoCanAddYouToGroups = TextSecurePreferences.whoCanAddYouToGroups(ApplicationDependencies.getApplication())
   )
-
 
 }

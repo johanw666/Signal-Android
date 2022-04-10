@@ -16,5 +16,5 @@ data class ChatsSettingsState(
   val ignoreRemoteDelete: Boolean,
   val deleteMediaOnly: Boolean,
   val googleMapType: String,
-  val blockedContactsCantAddYouToGroups: Boolean
+  val whoCanAddYouToGroups: String
 )

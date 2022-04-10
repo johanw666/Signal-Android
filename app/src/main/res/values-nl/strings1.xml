@@ -13,6 +13,11 @@
   <string name="preferences__map_satellite">Satelliet</string>
   <string name="preferences__map_terrain">Terrein</string>
   <string name="preferences__map_none">Geen</string>
+  <string name="preferences__group_anyone">Iedereen</string>
+  <string name="preferences__group_non_blocked">Alle niet geblokkeerde contacten</string>
+  <string name="preferences__group_only_contats">Alleen contacten</string>
+  <string name="preferences__group_only_systemcontats">Alleen systeem contacten</string>
+  <string name="preferences__group_nobody">N</string>
   <!-- app protection-->
   <string name="preferences_app_protection__method_passphrase">Gebruik een wachtwoord</string>
   <string name="preferences_app_protection__method_passphrase_summary">Gebruik een wachtwoord om Signal te beveiligen in plaats van de standaard Android schermbeveiliging of vingerafdruk</string>
@@ -79,6 +84,5 @@ Herstellen van een versleutelde back-up zal je bestaande sleutels, voorkeuren en
     <string name="registration_activity__restore_encrypted_backup">Versleutelde backup terugzetten</string>
   <!-- group control -->
   <string name="preferences_chats__group_control">Groep beheer</string>
-  <string name="preferences_chats__can_blocked_contacts_add_you_to_groups">Toevoegen door geblokkeerde contacten</string>
-  <string name="preferences_chats__can_blocked_contacts_add_you_to_groups_summary">Wanneer deze optie aan staat kunnen geblokkeerde contacten je niet toevoegen aan groepen. Als ze het doen wordt het verzoek afgewezen en wordt je automatisch uitgeschreven.</string>
+  <string name="preferences_chats__who_can_add_you_to_groups">Wie kan je aan groepen toevoegen</string>
 </resources>

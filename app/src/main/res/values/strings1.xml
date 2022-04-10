@@ -13,6 +13,11 @@
   <string name="preferences__map_satellite">Satellite</string>
   <string name="preferences__map_terrain">Terrain</string>
   <string name="preferences__map_none">None</string>
+  <string name="preferences__group_anyone">Anyone</string>
+  <string name="preferences__group_non_blocked">All non-blocked persons</string>
+  <string name="preferences__group_only_contats">Only contacts</string>
+  <string name="preferences__group_only_systemcontats">Only system contacts</string>
+  <string name="preferences__group_nobody">Nobody</string>
   <!-- app protection-->
   <string name="preferences_app_protection__method_passphrase">Use a passphrase</string>
   <string name="preferences_app_protection__method_passphrase_summary">Use a passphrase to protect Signal instead of the Android screen lock or fingerprint</string>
@@ -121,6 +126,5 @@
   <string name="registration_activity__restore_encrypted_backup">Restore encrypted backup</string>
   <!-- group control -->
   <string name="preferences_chats__group_control">Group control</string>
-  <string name="preferences_chats__can_blocked_contacts_add_you_to_groups">Adding by blocked contacts</string>
-  <string name="preferences_chats__can_blocked_contacts_add_you_to_groups_summary">If checked, blocked contacts can not add you to groups. If they try the request is denied automatically and you are auto-unsubscribed.</string>
+  <string name="preferences_chats__who_can_add_you_to_groups">Who can add you to groups</string>
 </resources>
