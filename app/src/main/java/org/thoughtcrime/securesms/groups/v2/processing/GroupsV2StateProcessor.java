@@ -45,6 +45,7 @@ import org.thoughtcrime.securesms.recipients.Recipient;
 import org.thoughtcrime.securesms.recipients.RecipientId;
 import org.thoughtcrime.securesms.sms.IncomingGroupUpdateMessage;
 import org.thoughtcrime.securesms.sms.IncomingTextMessage;
+import org.thoughtcrime.securesms.util.TextSecurePreferences; // JW
 import org.whispersystems.signalservice.api.groupsv2.DecryptedGroupHistoryEntry;
 import org.whispersystems.signalservice.api.groupsv2.DecryptedGroupUtil;
 import org.whispersystems.signalservice.api.groupsv2.GroupHistoryPage;
@@ -558,6 +559,30 @@ public class GroupsV2StateProcessor {
       this.recipientDatabase = recipientDatabase;
     }
 
+    // JW: Check if the person is allowed to add you to a group
+    private boolean mayThisPersonAddYouToAGroup(Recipient addedBy) {
+      boolean mayAdd = true;
+
+      switch (TextSecurePreferences.whoCanAddYouToGroups(context)) {
+        case "anyone":
+          mayAdd = true;
+          break;
+        case "nonblocked":
+          mayAdd = !addedBy.isBlocked();
+          break;
+        case "onlycontacts":
+          mayAdd = addedBy.isProfileSharing();
+          break;
+        case "onlysystemcontacts":
+          mayAdd = addedBy.isSystemContact() && !addedBy.isBlocked();
+          break;
+        case "nobody":
+          mayAdd = false;
+          break;
+      }
+      return mayAdd;
+    }
+
     void determineProfileSharing(@NonNull GlobalGroupState inputGroupState, @NonNull DecryptedGroup newLocalState) {
       if (inputGroupState.getLocalState() != null) {
         boolean wasAMemberAlready = DecryptedGroupUtil.findMemberByUuid(inputGroupState.getLocalState().getMembersList(), selfAci.uuid()).isPresent();
@@ -587,12 +612,13 @@ public class GroupsV2StateProcessor {
 
           Log.i(TAG, String.format("Added as a full member of %s by %s", groupId, addedBy.getId()));
 
-          if (addedBy.isBlocked() && (inputGroupState.getLocalState() == null || !DecryptedGroupUtil.isRequesting(inputGroupState.getLocalState(), selfAci.uuid()))) {
-            Log.i(TAG, "Added by a blocked user. Leaving group.");
+          // JW: changed logic with more options
+          if (!mayThisPersonAddYouToAGroup(addedBy) && (inputGroupState.getLocalState() == null || !DecryptedGroupUtil.isRequesting(inputGroupState.getLocalState(), selfAci.uuid()))) {
+            Log.i(TAG, "Added by a not allowed user: " + addedBy.getDisplayName(context) + ". Leaving group.");
             ApplicationDependencies.getJobManager().add(new LeaveGroupV2Job(groupId));
             //noinspection UnnecessaryReturnStatement
             return;
-          } else if (addedBy.isSystemContact() || addedBy.isProfileSharing()) {
+          } else if ((addedBy.isSystemContact() || addedBy.isProfileSharing()) && !addedBy.isBlocked()) { // JW: added isBlocked() explicitly here
             Log.i(TAG, "Group 'adder' is trusted. contact: " + addedBy.isSystemContact() + ", profileSharing: " + addedBy.isProfileSharing());
             Log.i(TAG, "Added to a group and auto-enabling profile sharing");
             recipientDatabase.setProfileSharing(Recipient.externalGroupExact(context, groupId).getId(), true);
@@ -606,7 +632,7 @@ public class GroupsV2StateProcessor {
         Optional<Recipient> addedBy = selfAsPendingOptional.flatMap(adder -> Optional.ofNullable(UuidUtil.fromByteStringOrNull(adder.getAddedByUuid()))
                                                                                      .map(a -> Recipient.externalPush(ServiceId.fromByteStringOrNull(adder.getAddedByUuid()), null, false)));
 
-        if (addedBy.isPresent() && addedBy.get().isBlocked()) {
+        if (addedBy.isPresent() && !mayThisPersonAddYouToAGroup(addedBy.get())) { // JW: replaced blocked by more general permission
           Log.i(TAG, String.format( "Added to group %s by a blocked user %s. Leaving group.", groupId, addedBy.get().getId()));
           ApplicationDependencies.getJobManager().add(new LeaveGroupV2Job(groupId));
           //noinspection UnnecessaryReturnStatement
@@ -688,7 +714,7 @@ public class GroupsV2StateProcessor {
         } catch (MmsException e) {
           Log.w(TAG, e);
         }
-      } else {
+      } else if (!TextSecurePreferences.whoCanAddYouToGroups(context).equals("nonblocked") || !Recipient.resolved(RecipientId.from(editor.get(), null)).isBlocked()) { // JW: don't store messages from blocked contacts
         MessageDatabase                        smsDatabase  = SignalDatabase.sms();
         RecipientId                            sender       = RecipientId.from(editor.get(), null);
         IncomingTextMessage                    incoming     = new IncomingTextMessage(sender, -1, timestamp, timestamp, timestamp, "", Optional.of(groupId), 0, false, null);
