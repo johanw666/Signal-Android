@@ -19,4 +19,7 @@ data class PrivacySettingsState(
   val universalExpireTimer: Int,
   val privateStories: List<DistributionListPartialRecord>,
   val isStoriesEnabled: Boolean
+  // JW: added
+  ,
+  val isProtectionMethodPassphrase: Boolean
 )
