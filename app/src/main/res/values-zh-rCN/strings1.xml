@@ -1,0 +1,29 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<resources>
+  <!--arrays.xml-->
+  <string name="arrays__import_export_orig">导入/导出</string>
+  <!--ImportFragment-->
+  <string name="ImportFragment_restore_encrypted_backup">恢复加密备份？</string>
+  <string name="ImportFragment_restoring_an_encrypted_backup_will_completely_replace_your_existing_keys">
+恢复加密的备份将会完全替换您已经存在的密钥、首选项和
+信息。您将会失去当前暗号上的所有信息，除非您已经备份。</string>
+  <string name="ImportFragment_restore">还原</string>
+  <string name="ImportFragment_restoring">正在还原</string>
+  <string name="ImportFragment_restoring_encrypted_backup">正在还原加密的备份…</string>
+  <string name="ImportFragment_no_encrypted_backup_found">未找到加密的备份！</string>
+  <string name="ImportFragment_restore_complete">还原完成！</string>
+  <!--ExportFragment-->
+  <string name="ExportFragment_export_to_sd_card">导出到SD卡？</string>
+  <string name="ExportFragment_this_will_export_your_encrypted_keys_settings_and_messages">这会将您的密钥、设置和信息加密后导出到SD卡。</string>
+  <string name="ExportFragment_exporting_keys_settings_and_messages">正在导出加密后的密钥、设置和信息…</string>
+
+  <!--database_upgrade_activity-->
+  <string name="export_fragment__export_encrypted_backup">导出加密的备份</string>
+  <string name="export_fragment__export_an_encrypted_backup_to_the_sd_card">将加密的备份导出到SD卡。</string>
+  <string name="import_fragment__restore_encrypted_backup">恢复加密备份</string>
+  <string name="import_fragment__restore_a_previously_exported_encrypted_signal_backup">还原之前导出的加密暗号备份。</string>
+  <string name="import_fragment__import_system_sms_database">导入系统短信数据库</string>
+  <string name="import_fragment__import_the_database_from_the_default_system">从系统默认短信应用导入数据库</string>
+  <string name="import_fragment__import_plaintext_backup">导入明文备份</string>
+  <string name="import_fragment__import_a_plaintext_backup_file">导入明文备份文件。兼容“SMS Backup &amp; Restore”备份。</string>
+</resources>
