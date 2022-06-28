@@ -1,0 +1,8 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<resources>
+  <string name="arrays__import_export_orig">Impor / ekspor</string>
+  <string name="import_fragment__import_system_sms_database">Impor sistem basis data SMS</string>
+  <string name="import_fragment__import_the_database_from_the_default_system">Impor basis data dari aplikasi pengiriman pesan standar di sistem</string>
+  <string name="import_fragment__import_plaintext_backup">Impor cadangan plaintext </string>
+  <string name="import_fragment__import_a_plaintext_backup_file">Impor cadangan plaintext. Kompatibel dengan \'SMS Backup &amp; Restore.\'</string>
+</resources>
