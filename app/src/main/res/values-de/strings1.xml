@@ -1,0 +1,36 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<resources>
+  <!--arrays.xml-->
+  <string name="arrays__import_export_orig">Datensicherung</string>
+  <!-- preferences.xml -->
+  <string name="preferences__oled_theme">OLED Dunkel</string>
+  <string name="preferences__green_theme">Grün Hell</string>
+  <!--app protection-->
+  <string name="preferences_app_protection__method_passphrase">Passphrase verwenden</string>
+  <string name="preferences_app_protection__method_passphrase_summary">Passphrase zum Schutz von Signal verwenden anstatt Androids Bildschirmsperre oder Fingerabdruck</string>
+  <!--backup location-->
+  <string name="preferences_chats__chat_backups_removable">Speicherort für Datensicherungen</string>
+  <string name="preferences_chats__backup_chats_to_removable_storage">Unterhaltungen auf SD-Karte sichern (falls vorhanden)</string>
+  <!--ImportFragment-->
+  <string name="ImportFragment_restore_encrypted_backup">Verschlüsselte Sicherung wiederherstellen?</string>
+  <string name="ImportFragment_restoring_an_encrypted_backup_will_completely_replace_your_existing_keys">
+Das Wiederherstellen einer verschlüsselten Datensicherung ersetzt deine bestehenden Schlüssel, Einstellungen und Nachrichten. Du wirst jegliche Informationen deiner jetzigen Signal-Installation verlieren, die nicht in dieser Datensicherung enthalten sind.</string>
+  <string name="ImportFragment_restore">Wiederherstellen</string>
+  <string name="ImportFragment_restoring">Wiederherstellen</string>
+  <string name="ImportFragment_restoring_encrypted_backup">Verschlüsselte Datensicherung wird wiederhergestellt …</string>
+  <string name="ImportFragment_no_encrypted_backup_found">Keine verschlüsselte Datensicherung gefunden!</string>
+  <string name="ImportFragment_restore_complete">Wiederherstellung abgeschlossen!</string>
+  <!--ExportFragment-->
+  <string name="ExportFragment_export_to_sd_card">Auf SD-Karte exportieren?</string>
+  <string name="ExportFragment_this_will_export_your_encrypted_keys_settings_and_messages">Dies wird Ihre verschlüsselten Schlüssel, Einstellungen und Nachrichten auf die SD-Karte exportieren.</string>
+  <string name="ExportFragment_exporting_keys_settings_and_messages">Exportiere verschlüsselte Schlüssel,\nEinstellungen und Nachrichten...</string>
+  <!--database_upgrade_activity-->
+  <string name="export_fragment__export_encrypted_backup">Verschlüsselte TextSecure-Datensicherung exportieren</string>
+  <string name="export_fragment__export_an_encrypted_backup_to_the_sd_card">Exportiere eine verschlüsselte TextSecure-Datensicherung auf die SD-Karte.</string>
+  <string name="import_fragment__restore_encrypted_backup">Verschlüsselte Sicherung wiederherstellen</string>
+  <string name="import_fragment__restore_a_previously_exported_encrypted_signal_backup">Eine zuvor exportierte, verschlüsselte Signal-Datensicherung wiederherstellen</string>
+  <string name="import_fragment__import_system_sms_database">System-SMS-Datenbank importieren</string>
+  <string name="import_fragment__import_the_database_from_the_default_system">Datenbank aus der Standard-SMS-App importieren</string>
+  <string name="import_fragment__import_plaintext_backup">Klartextsicherung importieren</string>
+  <string name="import_fragment__import_a_plaintext_backup_file">Eine mit »SMS Backup &amp; Restore« kompatible Klartextsicherung importieren</string>
+</resources>
