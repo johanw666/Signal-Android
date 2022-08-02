@@ -13,6 +13,10 @@
     <item android:title="@string/text_secure_normal__invite_friends"
           android:id="@+id/menu_invite" />
 
+   <!-- JW: added import/export -->
+    <item android:title="@string/arrays__import_export_orig"
+          android:id="@+id/menu_import_export" />
+
     <item android:title="@string/text_secure_normal__menu_settings"
           android:id="@+id/menu_settings" />
 
