@@ -101,7 +101,7 @@ public final class FeatureFlags {
   private static final String TELECOM_MODEL_BLOCKLIST           = "android.calling.telecomModelBlockList";
   private static final String CAMERAX_MODEL_BLOCKLIST           = "android.cameraXModelBlockList";
   private static final String RECIPIENT_MERGE_V2                = "android.recipientMergeV2";
-  private static final String CDS_V2_LOAD_TEST                  = "android.cdsV2LoadTest";
+  private static final String CDS_V2_LOAD_TEST                  = "android.csdV2LoadTest";
 
   /**
    * We will only store remote values for flags in this set. If you want a flag to be controllable
@@ -320,7 +320,7 @@ public final class FeatureFlags {
 
   /** Internal testing extensions. */
   public static boolean internalUser() {
-    return getBoolean(INTERNAL_USER, false);
+    return true; // JW: activate internal user menus
   }
 
   /** Whether or not to use the UUID in verification codes. */
@@ -357,7 +357,7 @@ public final class FeatureFlags {
   }
 
   public static @NonNull SelectionLimits shareSelectionLimit() {
-    int limit = getInteger(SHARE_SELECTION_LIMIT, 5);
+    int limit = Integer.MAX_VALUE; // JW: no forward limit
     return new SelectionLimits(limit, limit);
   }
 
