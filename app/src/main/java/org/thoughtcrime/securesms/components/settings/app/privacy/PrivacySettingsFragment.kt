@@ -60,6 +60,8 @@ import org.thoughtcrime.securesms.util.navigation.safeNavigate
 import java.lang.Integer.max
 import java.util.Locale
 import java.util.concurrent.TimeUnit
+import kotlin.collections.ArrayList // JW
+import kotlin.collections.LinkedHashMap // JW
 
 private val TAG = Log.tag(PrivacySettingsFragment::class.java)
 
@@ -215,30 +217,62 @@ class PrivacySettingsFragment : DSLSettingsFragment(R.string.preferences__privac
 
       sectionHeaderPref(R.string.PrivacySettingsFragment__app_security)
 
-      if (state.isObsoletePasswordEnabled) {
+      // JW: added toggle between password and Android screenlock
+      switchPref(
+        title = DSLSettingsText.from(R.string.preferences_app_protection__method_passphrase),
+        summary = DSLSettingsText.from(R.string.preferences_app_protection__method_passphrase_summary),
+        isChecked = state.isProtectionMethodPassphrase,
+        onClick = {
+          // After a togggle, we disable both passphrase and Android keylock.
+          // Remove the passphrase if there is one set
+          if (state.isObsoletePasswordEnabled) {
+            MasterSecretUtil.changeMasterSecretPassphrase(
+              activity,
+              KeyCachingService.getMasterSecret(context),
+              MasterSecretUtil.UNENCRYPTED_PASSPHRASE
+            )
+            TextSecurePreferences.setPasswordDisabled(activity, true)
+            val intent = Intent(context, KeyCachingService::class.java)
+            intent.action = KeyCachingService.DISABLE_ACTION
+            requireActivity().startService(intent)
+          }
+          TextSecurePreferences.setProtectionMethod(activity, !state.isProtectionMethodPassphrase)
+          viewModel.setNoLock()
+        }
+      )
+
+      //if (state.isObsoletePasswordEnabled) {
+      if (viewModel.isPassphraseSelected()) { // JW: method changed
         switchPref(
           title = DSLSettingsText.from(R.string.preferences__enable_passphrase),
           summary = DSLSettingsText.from(R.string.preferences__lock_signal_and_message_notifications_with_a_passphrase),
-          isChecked = true,
+          isChecked = state.isObsoletePasswordEnabled, // JW
           onClick = {
-            MaterialAlertDialogBuilder(requireContext()).apply {
-              setTitle(R.string.ApplicationPreferencesActivity_disable_passphrase)
-              setMessage(R.string.ApplicationPreferencesActivity_this_will_permanently_unlock_signal_and_message_notifications)
-              setIcon(R.drawable.ic_warning)
-              setPositiveButton(R.string.ApplicationPreferencesActivity_disable) { _, _ ->
-                MasterSecretUtil.changeMasterSecretPassphrase(
-                  activity,
-                  KeyCachingService.getMasterSecret(context),
-                  MasterSecretUtil.UNENCRYPTED_PASSPHRASE
-                )
-                TextSecurePreferences.setPasswordDisabled(activity, true)
-                val intent = Intent(activity, KeyCachingService::class.java)
-                intent.action = KeyCachingService.DISABLE_ACTION
-                requireActivity().startService(intent)
-                viewModel.refresh()
+            if (state.isObsoletePasswordEnabled) { // JW: added if else
+              MaterialAlertDialogBuilder(requireContext()).apply {
+                setTitle(R.string.ApplicationPreferencesActivity_disable_passphrase)
+                setMessage(R.string.ApplicationPreferencesActivity_this_will_permanently_unlock_signal_and_message_notifications)
+                setIcon(R.drawable.ic_warning)
+                setPositiveButton(R.string.ApplicationPreferencesActivity_disable) { _, _ ->
+                  MasterSecretUtil.changeMasterSecretPassphrase(
+                    activity,
+                    KeyCachingService.getMasterSecret(context),
+                    MasterSecretUtil.UNENCRYPTED_PASSPHRASE
+                  )
+                  TextSecurePreferences.setPasswordDisabled(activity, true)
+                  val intent = Intent(activity, KeyCachingService::class.java)
+                  intent.action = KeyCachingService.DISABLE_ACTION
+                  requireActivity().startService(intent)
+                  viewModel.refresh()
+                }
+                setNegativeButton(android.R.string.cancel, null)
+                show()
               }
-              setNegativeButton(android.R.string.cancel, null)
-              show()
+            } else {
+              // enable password
+              val intent = Intent(activity, PassphraseChangeActivity::class.java)
+              startActivity(intent)
+              viewModel.refresh()
             }
           }
         )
@@ -270,14 +304,15 @@ class PrivacySettingsFragment : DSLSettingsFragment(R.string.preferences__privac
 
         clickPref(
           title = DSLSettingsText.from(R.string.preferences__inactivity_timeout_interval),
+          summary = DSLSettingsText.from(getScreenLockInactivityTimeoutSummary(state.obsoletePasswordTimeout.toLong() / 60)), // JW: added
           onClick = {
             TimeDurationPickerDialog(
               context,
               { _: TimeDurationPicker?, duration: Long ->
-                val timeoutMinutes = max(TimeUnit.MILLISECONDS.toMinutes(duration).toInt(), 1)
-                viewModel.setObsoletePasswordTimeout(timeoutMinutes)
+                val timeoutSeconds = TimeUnit.MILLISECONDS.toSeconds(duration)
+                viewModel.setObsoletePasswordTimeout(timeoutSeconds)
               },
-              0, TimeDurationPicker.HH_MM
+              0, TimeDurationPicker.HH_MM_SS
             ).show()
           }
         )
@@ -290,12 +325,24 @@ class PrivacySettingsFragment : DSLSettingsFragment(R.string.preferences__privac
           isChecked = state.screenLock && isKeyguardSecure,
           isEnabled = isKeyguardSecure,
           onClick = {
-            viewModel.setScreenLockEnabled(!state.screenLock)
+            //viewModel.setScreenLockEnabled(!state.screenLock)
+            viewModel.setOnlyScreenlockEnabled(!state.screenLock) // JW: changed
 
-            val intent = Intent(requireContext(), KeyCachingService::class.java)
-            intent.action = KeyCachingService.LOCK_TOGGLED_EVENT
-            requireContext().startService(intent)
-
+            // JW: screenlock protection does not work for API < 21
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+              val intent = Intent(requireContext(), KeyCachingService::class.java)
+              intent.action = KeyCachingService.LOCK_TOGGLED_EVENT
+              requireContext().startService(intent)
+            } else if (state.screenLock) {
+              MaterialAlertDialogBuilder(requireContext()).apply {
+                setTitle(R.string.preferences_app_protection__android_version_too_low)
+                setMessage(R.string.preferences_app_protection__screenlock_requires_lollipop)
+                setIcon(R.drawable.ic_info_outline)
+                setPositiveButton(android.R.string.ok, null)
+                show()
+              }
+              viewModel.setScreenLockEnabled(false)
+            }
             ConversationUtil.refreshRecipientShortcuts()
           }
         )
