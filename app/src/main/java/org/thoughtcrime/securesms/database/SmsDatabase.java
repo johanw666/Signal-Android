@@ -2010,4 +2010,53 @@ public class SmsDatabase extends MessageDatabase {
     }
     return Optional.ofNullable(result);
   }
+
+  // JW: added to reset exported flag
+  @Override
+  public void resetExportedMessages() {
+    beginTransaction();
+    try {
+      List<Long> threadsToUpdate = new LinkedList<>();
+      try (Cursor cursor = getReadableDatabase().query(TABLE_NAME, THREAD_ID_PROJECTION, EXPORTED + " = ?", SqlUtil.buildArgs(1), THREAD_ID, null, null, null)) {
+        while (cursor.moveToNext()) {
+          threadsToUpdate.add(CursorUtil.requireLong(cursor, THREAD_ID));
+        }
+      }
+
+      ContentValues cv = new ContentValues();
+      cv.put(EXPORTED, 0);
+      cv.put(EXPORT_STATE, (byte[]) null);
+      getWritableDatabase().update(TABLE_NAME, cv,EXPORTED + " = ?", SqlUtil.buildArgs(1));
+
+      for (final long threadId : threadsToUpdate) {
+        SignalDatabase.threads().update(threadId, false);
+      }
+
+      setTransactionSuccessful();
+    } finally {
+      endTransaction();
+    }
+  }
+
+  // JW: re-added function, required for PlaintextBackup
+  public int getMessageCount() {
+    SQLiteDatabase db = databaseHelper.getSignalReadableDatabase();
+    Cursor cursor     = null;
+
+    try {
+      cursor = db.query(TABLE_NAME, new String[] {"COUNT(*)"}, null, null, null, null, null);
+
+      if (cursor != null && cursor.moveToFirst()) return cursor.getInt(0);
+      else                                        return 0;
+    } finally {
+      if (cursor != null)
+        cursor.close();
+    }
+  }
+
+  // JW: re-added function, required for PlaintextBackup
+  Cursor getMessages(int skip, int limit) {
+    SQLiteDatabase db = databaseHelper.getSignalReadableDatabase();
+    return db.query(TABLE_NAME, MESSAGE_PROJECTION, null, null, null, null, ID, skip + "," + limit);
+  }
 }

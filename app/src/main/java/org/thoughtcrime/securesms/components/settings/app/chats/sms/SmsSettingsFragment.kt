@@ -7,6 +7,7 @@ import android.os.Build
 import android.provider.Settings
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.annotation.WorkerThread
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.Navigation
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
@@ -74,6 +75,14 @@ class SmsSettingsFragment : DSLSettingsFragment(R.string.preferences__sms_mms) {
             title = DSLSettingsText.from(R.string.SmsSettingsFragment__remove_sms_messages),
             onClick = {
               showSmsRemovalDialog()
+            }
+          )
+
+          // JW: added. Commented out until it works, re-export of sms does not work after this.
+          clickPref(
+            title = DSLSettingsText.from(R.string.SmsSettingsFragment__reset_sms_export_flag),
+            onClick = {
+              showSmsResetDialog()
             }
           )
 
@@ -151,6 +160,27 @@ class SmsSettingsFragment : DSLSettingsFragment(R.string.preferences__sms_mms) {
           SignalDatabase.mms.deleteExportedMessages()
         }
         Snackbar.make(requireView(), R.string.SmsSettingsFragment__removing_sms_messages_from_signal, Snackbar.LENGTH_SHORT).show()
+      }
+      .show()
+  }
+
+  // JW: added
+  private fun showSmsResetDialog() {
+    val totalEexportedCount = SignalDatabase.sms.exportedInsecureMessagesCount + SignalDatabase.mms.exportedInsecureMessagesCount
+    val message = requireContext().getString(R.string.ResetSmsMessagesDialogFragment__reset_export_flag_for_d_messages, totalEexportedCount)
+    MaterialAlertDialogBuilder(requireContext())
+      .setTitle(message)
+      .setMessage(R.string.ResetSmsMessagesDialogFragment__keep_messages_exported)
+      .setPositiveButton(R.string.ResetSmsMessagesDialogFragment__do_not_change_export_status) { _, _ ->
+        Snackbar.make(requireView(), R.string.SmsSettingsFragment__you_can_remove_sms_messages_from_signal_in_settings, Snackbar.LENGTH_SHORT).show()
+      }
+      .setNegativeButton(R.string.ResetSmsMessagesDialogFragment__you_can_reset_sms_export_flag) { _, _ ->
+        SignalExecutors.BOUNDED.execute {
+          SignalDatabase.sms.resetExportedMessages()
+          SignalDatabase.mms.resetExportedMessages()
+          SmsSettingsRepository().getSmsExportState()
+        }
+        Snackbar.make(requireView(), R.string.SmsSettingsFragment__resetting_the_export_flag, Snackbar.LENGTH_SHORT).show()
       }
       .show()
   }
