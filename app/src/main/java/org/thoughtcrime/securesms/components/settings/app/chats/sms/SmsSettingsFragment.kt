@@ -77,7 +77,7 @@ class SmsSettingsFragment : DSLSettingsFragment(R.string.preferences__sms_mms) {
               showSmsRemovalDialog()
             }
           )
-/*
+
           // JW: added. Commented out until it works, re-export of sms does not work after this.
           clickPref(
             title = DSLSettingsText.from(R.string.SmsSettingsFragment__reset_sms_export_flag),
@@ -85,7 +85,7 @@ class SmsSettingsFragment : DSLSettingsFragment(R.string.preferences__sms_mms) {
               showSmsResetDialog()
             }
           )
-*/
+
           dividerPref()
         }
         SmsSettingsState.SmsExportState.NO_SMS_MESSAGES_IN_DATABASE -> Unit
