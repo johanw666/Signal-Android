@@ -17,4 +17,7 @@ data class PrivacySettingsState(
   val isObsoletePasswordTimeoutEnabled: Boolean,
   val obsoletePasswordTimeout: Int,
   val universalExpireTimer: Int
+  // JW: added
+  ,
+  val isProtectionMethodPassphrase: Boolean
 )
