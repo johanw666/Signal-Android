@@ -78,6 +78,7 @@ import org.greenrobot.eventbus.ThreadMode;
 import org.signal.core.util.DimensionUnit;
 import org.signal.core.util.concurrent.SignalExecutors;
 import org.signal.core.util.concurrent.SimpleTask;
+import org.thoughtcrime.securesms.ImportExportActivity; // JW
 import org.signal.core.util.logging.Log;
 import org.thoughtcrime.securesms.MainFragment;
 import org.thoughtcrime.securesms.MainNavigator;
@@ -477,6 +478,7 @@ public class ConversationListFragment extends MainFragment implements ActionMode
         handleMarkAllRead(); return true;
       case R.id.menu_invite:
         handleInvite(); return true;
+      case R.id.menu_import_export: handleImportExport(); return true; // JW: added
       case R.id.menu_insights:
         handleInsights(); return true;
       case R.id.menu_notification_profile:
@@ -484,6 +486,11 @@ public class ConversationListFragment extends MainFragment implements ActionMode
     }
 
     return false;
+  }
+
+  // JW: added
+  private void handleImportExport() {
+    startActivity(new Intent(requireActivity(), ImportExportActivity.class));
   }
 
   private boolean isSearchOpen() {
