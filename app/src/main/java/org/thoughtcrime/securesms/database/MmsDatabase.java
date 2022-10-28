@@ -3085,4 +3085,81 @@ public class MmsDatabase extends MessageDatabase {
   private long generatePduCompatTimestamp(long time) {
     return time - (time % 1000);
   }
+
+  //------------------------------------------------------------------------------------------------
+  // JW: added methods.
+  private static final String[] MESSAGE_COLUMNS = new String[] {
+    ID,
+    THREAD_ID, DATE_SENT + " AS " + NORMALIZED_DATE_SENT,
+    DATE_RECEIVED + " AS " + NORMALIZED_DATE_RECEIVED,
+    DATE_SERVER,
+    MESSAGE_BOX, READ,
+    CONTENT_LOCATION, EXPIRY, MESSAGE_TYPE,
+    MESSAGE_SIZE, STATUS, TRANSACTION_ID,
+    BODY, PART_COUNT, RECIPIENT_ID, ADDRESS_DEVICE_ID,
+    DELIVERY_RECEIPT_COUNT, READ_RECEIPT_COUNT, MISMATCHED_IDENTITIES, NETWORK_FAILURE, SUBSCRIPTION_ID,
+    EXPIRES_IN, EXPIRE_STARTED, NOTIFIED, QUOTE_ID, QUOTE_AUTHOR, QUOTE_BODY, QUOTE_ATTACHMENT, QUOTE_MISSING, QUOTE_MENTIONS,
+    SHARED_CONTACTS, LINK_PREVIEWS, UNIDENTIFIED, VIEW_ONCE, REACTIONS_UNREAD, REACTIONS_LAST_SEEN,
+    REMOTE_DELETED, MENTIONS_SELF
+  };
+
+  // JW: added to reset exported flag
+  @Override
+  public void resetExportedMessages() {
+    beginTransaction();
+    try {
+      List<Long> threadsToUpdate = new LinkedList<>();
+      try (Cursor cursor = getReadableDatabase().query(TABLE_NAME, THREAD_ID_PROJECTION, EXPORTED + " = ?", SqlUtil.buildArgs(1), THREAD_ID, null, null, null)) {
+        while (cursor.moveToNext()) {
+          threadsToUpdate.add(CursorUtil.requireLong(cursor, THREAD_ID));
+        }
+      }
+
+      ContentValues cv = new ContentValues();
+      cv.put(EXPORTED, 0);
+      cv.put(EXPORT_STATE, (byte[]) null);
+      getWritableDatabase().update(TABLE_NAME, cv,EXPORTED + " = ?", SqlUtil.buildArgs(1));
+
+      for (final long threadId : threadsToUpdate) {
+        SignalDatabase.threads().update(threadId, false);
+      }
+
+      setTransactionSuccessful();
+    } finally {
+      endTransaction();
+    }
+  }
+
+  // Deletes only the attachment for the message, not the message itself.
+  public boolean deleteAttachmentsOnly(long messageId) {
+    long threadId = getThreadIdForMessage(messageId);
+    AttachmentDatabase attachmentDatabase = SignalDatabase.attachments();
+    attachmentDatabase.deleteAttachmentsForMessage(messageId);
+    notifyConversationListeners(threadId);
+    return true;
+  }
+
+  // function required for PlaintextBackup
+  public int getMessageCount() {
+    SQLiteDatabase db = databaseHelper.getSignalReadableDatabase();
+    Cursor cursor = null;
+
+    try {
+      cursor = db.query(TABLE_NAME, new String[]{"COUNT(*)"}, null, null, null, null, null);
+
+      if (cursor != null && cursor.moveToFirst()) return cursor.getInt(0);
+      else return 0;
+    } finally {
+      if (cursor != null)
+        cursor.close();
+    }
+  }
+
+  // JW: added function, required for PlaintextBackup
+  Cursor getMessages(int skip, int limit) {
+    SQLiteDatabase db = databaseHelper.getSignalReadableDatabase();
+    //return db.query(TABLE_NAME, MMS_PROJECTION, null, null, null, null, ID, skip + "," + limit);
+    return db.query(TABLE_NAME, MESSAGE_COLUMNS, null, null, null, null, ID, skip + "," + limit);
+  }
+  //------------------------------------------------------------------------------------------------
 }
