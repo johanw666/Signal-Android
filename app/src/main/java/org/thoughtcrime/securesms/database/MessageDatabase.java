@@ -103,6 +103,7 @@ public abstract class MessageDatabase extends Database implements MmsSmsColumns,
   public abstract Cursor getUnexportedInsecureMessages(int limit);
   public abstract long getUnexportedInsecureMessagesEstimatedSize();
   public abstract void deleteExportedMessages();
+  public abstract void resetExportedMessages(); // JW: added
 
   public abstract void markExpireStarted(long messageId);
   public abstract void markExpireStarted(long messageId, long startTime);
@@ -409,6 +410,17 @@ public abstract class MessageDatabase extends Database implements MmsSmsColumns,
 
   public int getUnexportedInsecureMessagesCount(long threadId) {
     try (Cursor cursor = getWritableDatabase().query(getTableName(), SqlUtil.COUNT, getInsecureMessageClause(threadId) + " AND " + EXPORTED + " < ?", SqlUtil.buildArgs(MessageExportStatus.EXPORTED), null, null, null)) {
+      if (cursor.moveToFirst()) {
+        return cursor.getInt(0);
+      }
+    }
+
+    return 0;
+  }
+
+  // JW: added
+  public int getExportedInsecureMessagesCount() {
+    try (Cursor cursor = getWritableDatabase().query(getTableName(), SqlUtil.COUNT, getInsecureMessageClause() + " AND " + EXPORTED, null, null, null, null)) {
       if (cursor.moveToFirst()) {
         return cursor.getInt(0);
       }
