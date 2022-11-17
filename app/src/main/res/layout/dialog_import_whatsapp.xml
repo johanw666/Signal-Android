@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical">
+
+    <CheckBox
+        android:id="@+id/import_media_checkbox"
+        style="?android:attr/textAppearanceMedium"
+        android:text="@string/import_fragment__import_whatsapp_import_media"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="20dp" />
+
+    <CheckBox
+        android:id="@+id/import_groups_checkbox"
+        style="?android:attr/textAppearanceMedium"
+        android:text="@string/import_fragment__import_whatsapp_import_groups"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="20dp" />
+
+    <CheckBox
+        android:id="@+id/avoid_duplicates_checkbox"
+        style="?android:attr/textAppearanceMedium"
+        android:text="@string/import_fragment__import_whatsapp_avoid_duplicates"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="20dp" />
+
+</LinearLayout>
