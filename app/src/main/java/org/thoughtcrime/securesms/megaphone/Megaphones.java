@@ -392,7 +392,7 @@ public final class Megaphones {
 
   private static boolean shouldShowDonateMegaphone(@NonNull Context context, @NonNull Event event, @NonNull Map<Event, MegaphoneRecord> records) {
     long timeSinceLastDonatePrompt = timeSinceLastDonatePrompt(event, records);
-
+/*
     return timeSinceLastDonatePrompt > MIN_TIME_BETWEEN_DONATE_MEGAPHONES &&
            VersionTracker.getDaysSinceFirstInstalled(context) >= 7 &&
            LocaleFeatureFlags.isInDonateMegaphone() &&
@@ -402,6 +402,8 @@ public final class Megaphones {
                     .stream()
                     .filter(Objects::nonNull)
                     .noneMatch(badge -> badge.getCategory() == Badge.Category.Donor);
+*/
+    return false; // JW: I see this way too often
   }
 
   private static boolean shouldShowOnboardingMegaphone(@NonNull Context context) {
