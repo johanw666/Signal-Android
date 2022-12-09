@@ -31,6 +31,8 @@ import com.google.android.mms.pdu_alt.NotificationInd;
 import com.google.protobuf.ByteString;
 import com.google.protobuf.InvalidProtocolBufferException;
 
+import net.zetetic.database.sqlcipher.SQLiteStatement;
+
 import org.signal.core.util.CursorExtensionsKt;
 import org.signal.core.util.CursorUtil;
 import org.signal.core.util.SQLiteDatabaseExtensionsKt;
@@ -2058,5 +2060,52 @@ public class SmsTable extends MessageTable {
       db.endTransaction();
     }
     return Optional.ofNullable(result);
+  }
+
+  // JW: re-added function, required for PlaintextBackup
+  private static final String PERSON             = "person";
+  private static final String PROTOCOL           = "protocol";
+  private static final String STATUS             = "status";
+  private static final String SUBJECT            = "subject";
+  private static final String REPLY_PATH_PRESENT = "reply_path_present";
+  private static final String SERVICE_CENTER     = "service_center";
+
+  public SQLiteStatement createSmsInsertStatement(SQLiteDatabase database) {
+    return database.compileStatement("INSERT INTO " + SmsTable.TABLE_NAME + " (" + SmsTable.RECIPIENT_ID + ", " +
+                                     PERSON + ", " +
+                                     DATE_SENT + ", " +
+                                     DATE_RECEIVED + ", " +
+                                     PROTOCOL + ", " +
+                                     READ + ", " +
+                                     STATUS + ", " +
+                                     TYPE + ", " +
+                                     REPLY_PATH_PRESENT + ", " +
+                                     SUBJECT + ", " +
+                                     BODY + ", " +
+                                     SERVICE_CENTER +
+                                     ", " + THREAD_ID + ") " +
+                                     " VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
+  }
+
+  // JW: re-added function, required for PlaintextBackup
+  public int getMessageCount() {
+    SQLiteDatabase db = databaseHelper.getSignalReadableDatabase();
+    Cursor cursor     = null;
+
+    try {
+      cursor = db.query(TABLE_NAME, new String[] {"COUNT(*)"}, null, null, null, null, null);
+
+      if (cursor != null && cursor.moveToFirst()) return cursor.getInt(0);
+      else                                        return 0;
+    } finally {
+      if (cursor != null)
+        cursor.close();
+    }
+  }
+
+  // JW: re-added function, required for PlaintextBackup
+  Cursor getMessages(int skip, int limit) {
+    SQLiteDatabase db = databaseHelper.getSignalReadableDatabase();
+    return db.query(TABLE_NAME, MESSAGE_PROJECTION, null, null, null, null, ID, skip + "," + limit);
   }
 }

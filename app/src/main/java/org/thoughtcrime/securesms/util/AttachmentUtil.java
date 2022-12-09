@@ -12,6 +12,7 @@ import org.signal.core.util.logging.Log;
 import org.thoughtcrime.securesms.attachments.AttachmentId;
 import org.thoughtcrime.securesms.attachments.DatabaseAttachment;
 import org.thoughtcrime.securesms.database.NoSuchMessageException;
+import org.thoughtcrime.securesms.database.MmsTable; // JW: added
 import org.thoughtcrime.securesms.database.SignalDatabase;
 import org.thoughtcrime.securesms.database.model.MessageRecord;
 import org.thoughtcrime.securesms.jobmanager.impl.NotInCallConstraint;
@@ -68,11 +69,18 @@ public class AttachmentUtil {
                                                  .size();
 
     if (attachmentCount <= 1) {
-      SignalDatabase.mms().deleteMessage(mmsId);
+      // JW: changed
+      if (!TextSecurePreferences.isDeleteMediaOnly(context)) {
+        SignalDatabase.mms().deleteMessage(mmsId);
+      }  else {
+        MmsTable mmsdb = SignalDatabase.mms();
+        mmsdb.deleteAttachmentsOnly(mmsId);
+      }
     } else {
       SignalDatabase.attachments().deleteAttachment(attachmentId);
     }
   }
+
 
   private static boolean isNonDocumentType(String contentType) {
     return
