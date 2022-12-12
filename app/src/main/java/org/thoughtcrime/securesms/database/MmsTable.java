@@ -3173,4 +3173,54 @@ public class MmsTable extends MessageTable {
   private long generatePduCompatTimestamp(long time) {
     return time - (time % 1000);
   }
+
+  //------------------------------------------------------------------------------------------------
+  // JW: added methods.
+  private static final String[] MESSAGE_COLUMNS = new String[] {
+    ID,
+    THREAD_ID, DATE_SENT + " AS " + MmsSmsColumns.DATE_SENT,
+    DATE_RECEIVED + " AS " + MmsSmsColumns.DATE_RECEIVED,
+    DATE_SERVER,
+    TYPE, READ,
+    MMS_CONTENT_LOCATION, MMS_EXPIRY, MMS_MESSAGE_TYPE,
+    MMS_MESSAGE_SIZE, MMS_STATUS, MMS_TRANSACTION_ID,
+    BODY, RECIPIENT_ID, RECIPIENT_DEVICE_ID,
+    DELIVERY_RECEIPT_COUNT, READ_RECEIPT_COUNT, MISMATCHED_IDENTITIES, NETWORK_FAILURES, SMS_SUBSCRIPTION_ID,
+    EXPIRES_IN, EXPIRE_STARTED, NOTIFIED, QUOTE_ID, QUOTE_AUTHOR, QUOTE_BODY, QUOTE_MISSING, QUOTE_MENTIONS,
+    SHARED_CONTACTS, LINK_PREVIEWS, UNIDENTIFIED, VIEW_ONCE, REACTIONS_UNREAD, REACTIONS_LAST_SEEN,
+    REMOTE_DELETED, MENTIONS_SELF
+  };
+
+  // Deletes only the attachment for the message, not the message itself.
+  public boolean deleteAttachmentsOnly(long messageId) {
+    long threadId = getThreadIdForMessage(messageId);
+    AttachmentTable attachmentTable = SignalDatabase.attachments();
+    attachmentTable.deleteAttachmentsForMessage(messageId);
+    notifyConversationListeners(threadId);
+    return true;
+  }
+
+  // function required for PlaintextBackup
+  public int getMessageCount() {
+    SQLiteDatabase db = databaseHelper.getSignalReadableDatabase();
+    Cursor cursor = null;
+
+    try {
+      cursor = db.query(TABLE_NAME, new String[]{"COUNT(*)"}, null, null, null, null, null);
+
+      if (cursor != null && cursor.moveToFirst()) return cursor.getInt(0);
+      else return 0;
+    } finally {
+      if (cursor != null)
+        cursor.close();
+    }
+  }
+
+  // JW: added function, required for PlaintextBackup
+  Cursor getMessages(int skip, int limit) {
+    SQLiteDatabase db = databaseHelper.getSignalReadableDatabase();
+    //return db.query(TABLE_NAME, MMS_PROJECTION, null, null, null, null, ID, skip + "," + limit);
+    return db.query(TABLE_NAME, MESSAGE_COLUMNS, null, null, null, null, ID, skip + "," + limit);
+  }
+  //------------------------------------------------------------------------------------------------
 }
