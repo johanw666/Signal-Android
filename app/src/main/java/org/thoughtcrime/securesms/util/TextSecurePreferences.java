@@ -191,6 +191,31 @@ public class TextSecurePreferences {
 
   private static final String ARGON2_TESTED = "argon2_tested";
 
+  //---------------------------------------------------------------------------
+  // JW: added strings are in this block.
+  // true = passphrase, false = Android lock or fingerprint
+  public static final String PROTECTION_METHOD_PREF = "pref_signal_protection_method";
+  // true = backup to removable SD card (if available), false = backup to internal sd card
+  public static final String BACKUP_LOCATION_REMOVABLE_PREF = "pref_backup_location_external";
+  // false (default) means the backup location is not changed by the user, true means it is changed.
+  // This is used to determine at first app start to locate the app backup.
+  public static final String BACKUP_LOCATION_CHANGED = "pref_backup_location_changed";
+  // added to use encrypted zipfiles to store raw backups
+  public static final String BACKUP_STORE_ZIPFILE_PREF = "pref_backup_zipfile";
+  // added to use encrypted zipfiles to store plaintext backups
+  public static final String BACKUP_STORE_ZIPFILE_PLAIN_PREF = "pref_backup_zipfile_plain";
+  // used to see if we delete view once messages after view or not
+  public static final String KEEP_VIEW_ONCE_MESSAGES = "pref_keep_view_once_messages";
+  // used to see if we ignore remote delete messages or not
+  public static final String IGNORE_REMOTE_DELETE = "pref_ignore_remote_delete";
+  // select map type for location picker
+  public static final String GOOGLE_MAP_TYPE = "pref_google_map_type";
+  // delete only media, not the rest of the message, from the All media screen
+  public static final String DELETE_MEDIA_ONLY = "pref_delete_media_only";
+  // who can add you to groups
+  public static final String WHO_CAN_ADD_YOU_TO_GROUPS = "pref_who_can_add_you_to_groups";
+  //---------------------------------------------------------------------------
+
   private static final String[] booleanPreferencesToBackup = {SCREEN_SECURITY_PREF,
                                                               INCOGNITO_KEYBORAD_PREF,
                                                               ALWAYS_RELAY_CALLS_PREF,
@@ -206,7 +231,13 @@ public class TextSecurePreferences {
                                                               NEW_CONTACTS_NOTIFICATIONS,
                                                               SHOW_INVITE_REMINDER_PREF,
                                                               SYSTEM_EMOJI_PREF,
-                                                              ENTER_SENDS_PREF};
+                                                              ENTER_SENDS_PREF,
+                                                              // JW: added boolean options
+                                                              BACKUP_STORE_ZIPFILE_PREF,
+                                                              BACKUP_STORE_ZIPFILE_PLAIN_PREF,
+                                                              KEEP_VIEW_ONCE_MESSAGES,
+                                                              IGNORE_REMOTE_DELETE,
+                                                              DELETE_MEDIA_ONLY};
 
   private static final String[] stringPreferencesToBackup = {LED_COLOR_PREF,
                                                              LED_BLINK_PREF,
@@ -214,7 +245,10 @@ public class TextSecurePreferences {
                                                              NOTIFICATION_PRIVACY_PREF,
                                                              THEME_PREF,
                                                              LANGUAGE_PREF,
-                                                             MESSAGE_BODY_TEXT_SIZE_PREF};
+                                                             MESSAGE_BODY_TEXT_SIZE_PREF,
+                                                             // JW: added String options
+                                                             GOOGLE_MAP_TYPE,
+                                                             WHO_CAN_ADD_YOU_TO_GROUPS};
 
   private static final String[] stringSetPreferencesToBackup = {MEDIA_DOWNLOAD_MOBILE_PREF,
                                                                 MEDIA_DOWNLOAD_WIFI_PREF,
@@ -1161,4 +1195,89 @@ public class TextSecurePreferences {
   public enum MediaKeyboardMode {
     EMOJI, STICKER, GIF
   }
+
+  //---------------------------------------------------------------------------
+  // JW: added methods are in this block.
+  // added for PROTECTION_METHOD_PREF
+  public static boolean isProtectionMethodPassphrase(@NonNull Context context) {
+    return getBooleanPreference(context, PROTECTION_METHOD_PREF, false);
+  }
+
+  public static void setProtectionMethod(Context context, boolean value) {
+    setBooleanPreference(context, PROTECTION_METHOD_PREF, value);
+  }
+
+  public static void setBackupLocationRemovable(Context context, boolean value) {
+    setBooleanPreference(context, BACKUP_LOCATION_REMOVABLE_PREF, value);
+  }
+  // Default to false so default does the same as official Signal.
+  public static boolean isBackupLocationRemovable(Context context) {
+    return getBooleanPreference(context, BACKUP_LOCATION_REMOVABLE_PREF, false);
+  }
+
+  public static void setBackupLocationChanged(Context context, boolean value) {
+    setBooleanPreference(context, BACKUP_LOCATION_CHANGED, value);
+  }
+
+  public static boolean isBackupLocationChanged(Context context) {
+    return getBooleanPreference(context, BACKUP_LOCATION_CHANGED, false);
+  }
+
+  public static boolean isRawBackupInZipfile(Context context) {
+    return getBooleanPreference(context, BACKUP_STORE_ZIPFILE_PREF, false);
+  }
+
+  public static void setRawBackupZipfile(Context context, boolean value) {
+    setBooleanPreference(context, BACKUP_STORE_ZIPFILE_PREF, value);
+  }
+
+  public static boolean isPlainBackupInZipfile(Context context) {
+    return getBooleanPreference(context, BACKUP_STORE_ZIPFILE_PLAIN_PREF, false);
+  }
+
+  public static void setPlainBackupZipfile(Context context, boolean value) {
+    setBooleanPreference(context, BACKUP_STORE_ZIPFILE_PLAIN_PREF, value);
+  }
+
+  public static boolean isKeepViewOnceMessages(Context context) {
+    return getBooleanPreference(context, KEEP_VIEW_ONCE_MESSAGES, false);
+  }
+
+  public static void setKeepViewOnceMessages(Context context, boolean value) {
+    setBooleanPreference(context, KEEP_VIEW_ONCE_MESSAGES, value);
+  }
+
+  public static String getGoogleMapType(Context context) {
+    return getStringPreference(context, GOOGLE_MAP_TYPE, "normal");
+  }
+
+  public static void setGoogleMapType(Context context, String value) {
+    setStringPreference(context, GOOGLE_MAP_TYPE, value);
+  }
+
+  public static boolean isIgnoreRemoteDelete(Context context) {
+    return getBooleanPreference(context, IGNORE_REMOTE_DELETE, false);
+  }
+
+  public static void setIgnoreRemoteDelete(Context context, boolean value) {
+    setBooleanPreference(context, IGNORE_REMOTE_DELETE, value);
+  }
+
+  public static boolean isDeleteMediaOnly(Context context) {
+    return getBooleanPreference(context, DELETE_MEDIA_ONLY, false);
+  }
+
+  public static void setDeleteMediaOnly(Context context, boolean value) {
+    setBooleanPreference(context, DELETE_MEDIA_ONLY, value);
+  }
+
+  public static String whoCanAddYouToGroups(Context context) {
+    return getStringPreference(context, WHO_CAN_ADD_YOU_TO_GROUPS, "nonblocked");
+  }
+
+  public static void setWhoCanAddYouToGroups(Context context, String value) {
+    setStringPreference(context, WHO_CAN_ADD_YOU_TO_GROUPS, value);
+  }
+  // End added methods block
+  //---------------------------------------------------------------------------
 }
