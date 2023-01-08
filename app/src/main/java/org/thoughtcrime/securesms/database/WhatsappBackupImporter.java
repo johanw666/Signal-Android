@@ -101,6 +101,7 @@ public class WhatsappBackupImporter {
                 threads.update(threadId, true);
             }
 
+            whatsappDb.setTransactionSuccessful();
             Log.w(TAG, "Exited loop");
         } catch (Exception e) {
             Log.w(TAG, e);

@@ -5269,40 +5269,5 @@ public class MessageTable extends DatabaseTable implements MessageTypes, Recipie
 
     return MessageTypes.BASE_INBOX_TYPE;
   }
-
-  public @NonNull InsertResult insertPlaintextMessage(@NonNull RecipientId recipientId,
-                                                      long   dateSent,
-                                                      long   dateReceived,
-                                                      long   read,
-                                                      long   status,
-                                                      long   type,
-                                                      String body) {
-    Recipient recipient = Recipient.resolved(recipientId);
-    long      threadId  = SignalDatabase.threads().getOrCreateThreadIdFor(recipient);
-
-    ContentValues values = new ContentValues(9);
-    values.put(RECIPIENT_ID, recipientId.serialize());
-    values.put(RECIPIENT_DEVICE_ID, 1);
-    values.put(DATE_SENT, dateSent);
-    values.put(DATE_RECEIVED, dateReceived);
-    values.put(READ, read);
-    values.put(MMS_STATUS, status);
-    values.put(TYPE, type);
-    values.put(BODY, body);
-    values.put(THREAD_ID, threadId);
-
-    long    messageId          = getWritableDatabase().insert(TABLE_NAME, null, values);
-    boolean keepThreadArchived = SignalStore.settings().shouldKeepMutedChatsArchived() && Recipient.resolved(recipientId).isMuted();
-
-    SignalDatabase.threads().update(threadId, !keepThreadArchived);
-
-    notifyConversationListeners(threadId);
-    TrimThreadJob.enqueueAsync(threadId);
-
-    Log.w(TAG, "insertPlaintextMessage: threadId = " + Long.toString(threadId));
-    Log.w(TAG, "insertPlaintextMessage: messageId = " + Long.toString(messageId));
-
-    return new InsertResult(messageId, threadId);
-  }
   //---------------------------------------------------------------------------
 }
