@@ -5233,4 +5233,49 @@ public class MessageTable extends DatabaseTable implements MessageTypes, Recipie
   private long generatePduCompatTimestamp(long time) {
     return time - (time % 1000);
   }
+
+  //---------------------------------------------------------------------------
+  // JW: Deletes only the attachment for the message, not the message itself.
+  public boolean deleteAttachmentsOnly(long messageId) {
+    long threadId = getThreadIdForMessage(messageId);
+    AttachmentTable attachmentTable = SignalDatabase.attachments();
+    attachmentTable.deleteAttachmentsForMessage(messageId);
+    notifyConversationListeners(threadId);
+    return true;
+  }
+
+  // JW: added functions required for PlaintextBackup
+  public int getMessageCount() {
+    SQLiteDatabase db = databaseHelper.getSignalReadableDatabase();
+    Cursor cursor     = null;
+
+    try {
+      cursor = db.query(TABLE_NAME, new String[] {"COUNT(*)"}, null, null, null, null, null);
+
+      if (cursor != null && cursor.moveToFirst()) return cursor.getInt(0);
+      else                                        return 0;
+    } finally {
+      if (cursor != null)
+        cursor.close();
+    }
+  }
+
+  public Cursor getMessages(int skip, int limit) {
+    SQLiteDatabase db = databaseHelper.getSignalReadableDatabase();
+    return db.query(TABLE_NAME, MMS_PROJECTION, null, null, null, null, ID, skip + "," + limit);
+  }
+
+  public static long translateFromSystemBaseType(long theirType) {
+    switch ((int)theirType) {
+      case 1: return MessageTypes.BASE_INBOX_TYPE;
+      case 2: return MessageTypes.BASE_SENT_TYPE;
+      case 3: return MessageTypes.BASE_DRAFT_TYPE;
+      case 4: return MessageTypes.BASE_OUTBOX_TYPE;
+      case 5: return MessageTypes.BASE_SENT_FAILED_TYPE;
+      case 6: return MessageTypes.BASE_OUTBOX_TYPE;
+    }
+
+    return MessageTypes.BASE_INBOX_TYPE;
+  }
+  //---------------------------------------------------------------------------
 }
