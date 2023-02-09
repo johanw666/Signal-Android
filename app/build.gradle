@@ -441,7 +441,7 @@ dependencies {
 
     coreLibraryDesugaring libs.android.tools.desugar
 
-    implementation 'net.lingala.zip4j:zip4j:2.11.3' // JW: added
+    implementation 'net.lingala.zip4j:zip4j:2.11.4' // JW: added
     implementation (libs.androidx.appcompat) {
         version {
             strictly '1.5.1'
