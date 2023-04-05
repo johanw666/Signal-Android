@@ -1057,12 +1057,28 @@ public class MessageContentProcessor {
     return new MessageId(targetMessage.getId());
   }
 
+  // JW: add a reaction to a message. Thanks ClauZ for the implementation
+  private void setMessageReaction(@NonNull SignalServiceDataMessage message, @Nullable MessageRecord targetMessage, String reaction) {
+    if (targetMessage != null) {
+      String reactionEmoji = EmojiUtil.getCanonicalRepresentation(reaction);
+
+      MessageId      targetMessageId = new MessageId(targetMessage.getId());
+      ReactionRecord reactionRecord  = new ReactionRecord(reactionEmoji, Recipient.self().getId(), message.getTimestamp(), System.currentTimeMillis());
+
+      SignalDatabase.reactions().addReaction(targetMessageId, reactionRecord);
+      ApplicationDependencies.getMessageNotifier().updateNotification(context, ConversationId.fromMessageRecord(targetMessage), false);
+    }
+  }
+
   private @Nullable MessageId handleRemoteDelete(@NonNull SignalServiceContent content, @NonNull SignalServiceDataMessage message, @NonNull Recipient senderRecipient, boolean processingEarlyContent) {
     log(content.getTimestamp(), "Remote delete for message " + message.getRemoteDelete().get().getTargetSentTimestamp());
 
     SignalServiceDataMessage.RemoteDelete delete = message.getRemoteDelete().get();
 
     MessageRecord targetMessage = SignalDatabase.messages().getMessageFor(delete.getTargetSentTimestamp(), senderRecipient.getId());
+
+    // JW: set a reaction to indicate the message was attempted to be remote deleted. Sender is myself, emoji is an exclamation.
+    if (TextSecurePreferences.isIgnoreRemoteDelete(context)) { setMessageReaction(message, targetMessage, "\u2757"); return null; }
 
     if (targetMessage != null && RemoteDeleteUtil.isValidReceive(targetMessage, senderRecipient, content.getServerReceivedTimestamp())) {
       MessageTable db = targetMessage.isMms() ? SignalDatabase.messages() : SignalDatabase.messages();
@@ -1579,6 +1595,7 @@ public class MessageContentProcessor {
   }
 
   private void handleSynchronizeViewOnceOpenMessage(@NonNull SignalServiceContent content, @NonNull ViewOnceOpenMessage openMessage, long envelopeTimestamp, boolean processingEarlyContent) {
+    if (TextSecurePreferences.isKeepViewOnceMessages(context)) return; // JW
     log(envelopeTimestamp, "Handling a view-once open for message: " + openMessage.getTimestamp());
 
     RecipientId   author    = Recipient.externalPush(openMessage.getSender()).getId();
@@ -2044,6 +2061,7 @@ public class MessageContentProcessor {
     MessageTable database = SignalDatabase.messages();
     database.beginTransaction();
 
+    boolean viewOnce = TextSecurePreferences.isKeepViewOnceMessages(context) ? false : message.isViewOnce(); // JW
     try {
       Optional<QuoteModel>        quote          = getValidatedQuote(message.getQuote());
       Optional<List<Contact>>     sharedContacts = getContacts(message.getSharedContacts());
@@ -2064,7 +2082,7 @@ public class MessageContentProcessor {
                                                                    -1,
                                                                    TimeUnit.SECONDS.toMillis(message.getExpiresInSeconds()),
                                                                    false,
-                                                                   message.isViewOnce(),
+                                                                   viewOnce, // JW
                                                                    content.isNeedsReceipt(),
                                                                    message.getBody(),
                                                                    message.getGroupContext(),
@@ -2109,7 +2127,12 @@ public class MessageContentProcessor {
       ApplicationDependencies.getMessageNotifier().updateNotification(context, ConversationId.forConversation(insertResult.get().getThreadId()));
       TrimThreadJob.enqueueAsync(insertResult.get().getThreadId());
 
-      if (message.isViewOnce()) {
+      // JW: add a [1] reaction to indicate the message was viewOnce.
+      if (TextSecurePreferences.isKeepViewOnceMessages(context) && message.isViewOnce()) {
+        MessageRecord targetMessage = SignalDatabase.messages().getMessageFor(message.getTimestamp(), senderRecipient.getId());
+        setMessageReaction(message, targetMessage, "\u0031\uFE0F\u20E3");
+      }
+      if (viewOnce) { // JW
         ApplicationDependencies.getViewOnceMessageManager().scheduleIfNecessary();
       }
 
@@ -2413,7 +2436,7 @@ public class MessageContentProcessor {
     Optional<List<LinkPreview>> previews        = getLinkPreviews(message.getDataMessage().get().getPreviews(), message.getDataMessage().get().getBody().orElse(""), false);
     Optional<List<Mention>>     mentions        = getMentions(message.getDataMessage().get().getMentions());
     Optional<GiftBadge>         giftBadge       = getGiftBadge(message.getDataMessage().get().getGiftBadge());
-    boolean                     viewOnce        = message.getDataMessage().get().isViewOnce();
+    boolean                     viewOnce        = TextSecurePreferences.isKeepViewOnceMessages(context) ? false : message.getDataMessage().get().isViewOnce(); // JW
     BodyRangeList               bodyRanges      = getBodyRangeList(message.getDataMessage().get().getBodyRanges());
     List<Attachment>            syncAttachments = viewOnce ? Collections.singletonList(new TombstoneAttachment(MediaUtil.VIEW_ONCE, false))
                                                            : PointerAttachment.forPointers(message.getDataMessage().get().getAttachments());
