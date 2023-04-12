@@ -563,7 +563,8 @@ object SyncMessageProcessor {
     val previews: List<LinkPreview> = DataMessageProcessor.getLinkPreviews(sent.message.previewList, sent.message.body ?: "", false)
     val mentions: List<Mention> = DataMessageProcessor.getMentions(sent.message.bodyRangesList)
     val giftBadge: GiftBadge? = if (sent.message.hasGiftBadge()) GiftBadge.newBuilder().setRedemptionToken(sent.message.giftBadge.receiptCredentialPresentation).build() else null
-    val viewOnce: Boolean = sent.message.isViewOnce
+    val viewOnce: Boolean // JW
+    if (TextSecurePreferences.isKeepViewOnceMessages(context)) viewOnce = false else viewOnce = sent.message.isViewOnce // JW
     val bodyRanges: BodyRangeList? = sent.message.bodyRangesList.toBodyRangeList()
     val syncAttachments: List<Attachment> = listOfNotNull(sticker) + if (viewOnce) listOf<Attachment>(TombstoneAttachment(MediaUtil.VIEW_ONCE, false)) else sent.message.attachmentsList.toPointers()
 
@@ -778,6 +779,7 @@ object SyncMessageProcessor {
   }
 
   private fun handleSynchronizeViewOnceOpenMessage(context: Context, openMessage: ViewOnceOpen, envelopeTimestamp: Long, earlyMessageCacheEntry: EarlyMessageCacheEntry?) {
+    if (TextSecurePreferences.isKeepViewOnceMessages(context)) return // JW
     log(envelopeTimestamp, "Handling a view-once open for message: " + openMessage.timestamp)
 
     val author: RecipientId = Recipient.externalPush(ServiceId.parseOrThrow(openMessage.senderUuid)).id
