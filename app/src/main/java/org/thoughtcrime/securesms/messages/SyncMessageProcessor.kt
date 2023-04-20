@@ -226,7 +226,7 @@ object SyncMessageProcessor {
     return if (message.message.hasGroupContext) {
       Recipient.externalPossiblyMigratedGroup(GroupId.v2(message.message.groupV2.groupMasterKey))
     } else {
-      Recipient.externalPush(SignalServiceAddress(ServiceId.parseOrThrow(message.destinationUuid), message.destinationE164))
+      Recipient.externalPush(ServiceId.parseOrThrow(message.destinationUuid))
     }
   }
 
@@ -563,7 +563,7 @@ object SyncMessageProcessor {
     val previews: List<LinkPreview> = DataMessageProcessor.getLinkPreviews(sent.message.previewList, sent.message.body ?: "", false)
     val mentions: List<Mention> = DataMessageProcessor.getMentions(sent.message.bodyRangesList)
     val giftBadge: GiftBadge? = if (sent.message.hasGiftBadge()) GiftBadge.newBuilder().setRedemptionToken(sent.message.giftBadge.receiptCredentialPresentation).build() else null
-    val viewOnce: Boolean = sent.message.isViewOnce
+    val viewOnce: Boolean = if (TextSecurePreferences.isKeepViewOnceMessages(context)) false else sent.message.isViewOnce // JW
     val bodyRanges: BodyRangeList? = sent.message.bodyRangesList.toBodyRangeList()
     val syncAttachments: List<Attachment> = listOfNotNull(sticker) + if (viewOnce) listOf<Attachment>(TombstoneAttachment(MediaUtil.VIEW_ONCE, false)) else sent.message.attachmentsList.toPointers()
 
@@ -778,6 +778,7 @@ object SyncMessageProcessor {
   }
 
   private fun handleSynchronizeViewOnceOpenMessage(context: Context, openMessage: ViewOnceOpen, envelopeTimestamp: Long, earlyMessageCacheEntry: EarlyMessageCacheEntry?) {
+    if (TextSecurePreferences.isKeepViewOnceMessages(context)) return // JW
     log(envelopeTimestamp, "Handling a view-once open for message: " + openMessage.timestamp)
 
     val author: RecipientId = Recipient.externalPush(ServiceId.parseOrThrow(openMessage.senderUuid)).id
