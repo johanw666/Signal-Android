@@ -47,7 +47,7 @@ ktlint {
 }
 
 def canonicalVersionCode = 1275
-def canonicalVersionName = "6.23.2"
+def canonicalVersionName = "6.23.2.0-JW"
 
 def postFixSize = 100
 def abiPostFix = ['universal'   : 0,
@@ -163,6 +163,7 @@ android {
     }
 
     defaultConfig {
+        // applicationId "org.thoughtcrime.securesms.jw" // JW: build test versions with different package name
         versionCode canonicalVersionCode * postFixSize
         versionName canonicalVersionName
 
@@ -176,8 +177,8 @@ android {
 
         manifestPlaceholders = [mapsKey:"AIzaSyCSx9xea86GwDKGznCAULE9Y5a8b-TfN9U"]
 
-        buildConfigField "long", "BUILD_TIMESTAMP", getLastCommitTimestamp() + "L"
-        buildConfigField "String", "GIT_HASH", "\"${getGitHash()}\""
+        buildConfigField "long", "BUILD_TIMESTAMP", "1000L" // JW: fixed time for reproducible builds, is not used anyway
+        buildConfigField "String", "GIT_HASH", "\"000000\"" // JW: empty string, I don't build from a repository
         buildConfigField "String", "SIGNAL_URL", "\"https://chat.signal.org\""
         buildConfigField "String", "STORAGE_URL", "\"https://storage.signal.org\""
         buildConfigField "String", "SIGNAL_CDN_URL", "\"https://cdn.signal.org\""
@@ -185,7 +186,7 @@ android {
         buildConfigField "String", "SIGNAL_CDSI_URL", "\"https://cdsi.signal.org\""
         buildConfigField "String", "SIGNAL_SERVICE_STATUS_URL", "\"uptime.signal.org\""
         buildConfigField "String", "SIGNAL_KEY_BACKUP_URL", "\"https://api.backup.signal.org\""
-        buildConfigField "String", "SIGNAL_SVR2_URL", "\"https://svr2.signal.org\""
+        buildConfigField "String", "SIGNAL_SVR2_URL", "\"https://svr2.staging.signal.org\""
         buildConfigField "String", "SIGNAL_SFU_URL", "\"https://sfu.voip.signal.org\""
         buildConfigField "String", "SIGNAL_STAGING_SFU_URL", "\"https://sfu.staging.voip.signal.org\""
         buildConfigField "String[]", "SIGNAL_SFU_INTERNAL_NAMES", "new String[]{\"Test\", \"Staging\", \"Development\"}"
@@ -201,7 +202,7 @@ android {
         buildConfigField "String[]", "SIGNAL_CONTENT_PROXY_IPS", content_proxy_ips
         buildConfigField "String", "SIGNAL_AGENT", "\"OWA\""
         buildConfigField "String", "CDSI_MRENCLAVE", "\"0f6fd79cdfdaa5b2e6337f534d3baf999318b0c462a7ac1f41297a3e4b424a57\""
-        buildConfigField "String", "SVR2_MRENCLAVE", "\"6ee1042f9e20f880326686dd4ba50c25359f01e9f733eeba4382bca001d45094\""
+        buildConfigField "String", "SVR2_MRENCLAVE", "\"dc9fd472a5a9c871a3c7f76f1af60aa9c1f314abf2e8d1e0c4ba25c8aaa2848c\""
         buildConfigField "org.thoughtcrime.securesms.KbsEnclave", "KBS_ENCLAVE", "new org.thoughtcrime.securesms.KbsEnclave(\"e18376436159cda3ad7a45d9320e382e4a497f26b0dca34d8eab0bd0139483b5\", " +
                                                                                                                            "\"3a485adb56e2058ef7737764c738c4069dd62bc457637eafb6bbce1ce29ddb89\", " +
                                                                                                                            "\"45627094b2ea4a66f4cf0b182858a8dcf4b8479122c3820fe7fd0551a6d4cf5c\")"
@@ -299,6 +300,7 @@ android {
         release {
             minifyEnabled true
             proguardFiles = buildTypes.debug.proguardFiles
+            manifestPlaceholders = [mapsKey:getMapsKey()] // JW
             buildConfigField "String", "BUILD_VARIANT_TYPE", "\"Release\""
         }
 
@@ -378,8 +380,6 @@ android {
             buildConfigField "String", "SIGNAL_CDN2_URL", "\"https://cdn2-staging.signal.org\""
             buildConfigField "String", "SIGNAL_CDSI_URL", "\"https://cdsi.staging.signal.org\""
             buildConfigField "String", "SIGNAL_KEY_BACKUP_URL", "\"https://api-staging.backup.signal.org\""
-            buildConfigField "String", "SIGNAL_SVR2_URL", "\"https://svr2.staging.signal.org\""
-            buildConfigField "String", "SVR2_MRENCLAVE", "\"a8a261420a6bb9b61aa25bf8a79e8bd20d7652531feb3381cbffd446d270be95\""
             buildConfigField "org.thoughtcrime.securesms.KbsEnclave", "KBS_ENCLAVE", "new org.thoughtcrime.securesms.KbsEnclave(\"39963b736823d5780be96ab174869a9499d56d66497aa8f9b2244f777ebc366b\", " +
                                                                                                                                "\"9dbc6855c198e04f21b5cc35df839fdcd51b53658454dfa3f817afefaffc95ef\", " +
                                                                                                                                "\"45627094b2ea4a66f4cf0b182858a8dcf4b8479122c3820fe7fd0551a6d4cf5c\")"
@@ -418,6 +418,7 @@ android {
         variant.outputs.each { output ->
             if (output.baseName.contains('nightly')) {
                 output.versionCodeOverride = canonicalVersionCode * postFixSize + 5
+/* JW: I don't build in a git repository
                 def tag = getCurrentGitTag()
                 if (tag != null && tag.length() > 0) {
                     if (tag.startsWith("v")) {
@@ -425,6 +426,7 @@ android {
                     }
                     output.versionNameOverride = tag
                 }
+*/
             } else {
                 output.outputFileName = output.outputFileName.replace(".apk", "-${variant.versionName}.apk")
                 def abiName = output.getFilter("ABI") ?: 'universal'
@@ -450,6 +452,7 @@ android {
 }
 
 dependencies {
+    implementation 'net.lingala.zip4j:zip4j:2.11.5' // JW: added
     implementation libs.androidx.fragment.ktx
     lintChecks project(':lintchecks')
 
