@@ -6,16 +6,15 @@ import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.content.res.ColorStateList;
 import android.content.res.Resources;
-import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.location.Address;
 import android.location.Geocoder;
-import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
 import android.view.View;
 import android.view.animation.OvershootInterpolator;
+import android.widget.Button; // JW
 
 import androidx.annotation.ColorInt;
 import androidx.annotation.NonNull;
@@ -27,26 +26,19 @@ import androidx.fragment.app.Fragment;
 
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
-import com.google.android.gms.maps.MapView;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MapStyleOptions;
 
 import org.signal.core.util.logging.Log;
 import org.thoughtcrime.securesms.R;
-import org.thoughtcrime.securesms.components.location.SignalMapView;
-import org.thoughtcrime.securesms.providers.BlobProvider;
-import org.thoughtcrime.securesms.util.BitmapUtil;
 import org.thoughtcrime.securesms.util.DynamicNoActionBarTheme;
 import org.thoughtcrime.securesms.util.DynamicTheme;
-import org.thoughtcrime.securesms.util.MediaUtil;
-import org.thoughtcrime.securesms.util.concurrent.ListenableFuture;
-import org.thoughtcrime.securesms.util.views.SimpleProgressDialog;
+import org.thoughtcrime.securesms.util.TextSecurePreferences; // JW: added
 
 import java.io.IOException;
 import java.util.List;
 import java.util.Locale;
-import java.util.concurrent.ExecutionException;
 
 /**
  * Allows selection of an address from a google map.
@@ -74,6 +66,10 @@ public final class PlacePickerActivity extends AppCompatActivity {
   private LatLng                   currentLocation = new LatLng(0, 0);
   private AddressLookup            addressLookup;
   private GoogleMap                googleMap;
+  // JW: added buttons
+  private Button                   btnMapTypeNormal;
+  private Button                   btnMapTypeSatellite;
+  private Button                   btnMapTypeTerrain;
 
   public static void startActivityForResultAtCurrentLocation(@NonNull Fragment fragment, int requestCode, @ColorInt int chatColor) {
     fragment.startActivityForResult(new Intent(fragment.requireActivity(), PlacePickerActivity.class).putExtra(KEY_CHAT_COLOR, chatColor), requestCode);
@@ -94,9 +90,35 @@ public final class PlacePickerActivity extends AppCompatActivity {
     bottomSheet      = findViewById(R.id.bottom_sheet);
     View markerImage = findViewById(R.id.marker_image_view);
     View fab         = findViewById(R.id.place_chosen_button);
+    // JW: add maptype buttons
+    btnMapTypeNormal    = findViewById(R.id.btnMapTypeNormal);
+    btnMapTypeSatellite = findViewById(R.id.btnMapTypeSatellite);
+    btnMapTypeTerrain   = findViewById(R.id.btnMapTypeTerrain);
 
     ViewCompat.setBackgroundTintList(fab, ColorStateList.valueOf(getIntent().getIntExtra(KEY_CHAT_COLOR, Color.RED)));
     fab.setOnClickListener(v -> finishWithAddress());
+
+    // JW: button event handlers
+    btnMapTypeNormal.setOnClickListener(new View.OnClickListener() {
+      @Override public void onClick(@NonNull View v) {
+        googleMap.setMapType(GoogleMap.MAP_TYPE_NORMAL);
+        TextSecurePreferences.setGoogleMapType(getApplicationContext(), "normal");
+      }
+    });
+
+    btnMapTypeSatellite.setOnClickListener(new View.OnClickListener() {
+      @Override public void onClick(@NonNull View v) {
+        googleMap.setMapType(GoogleMap.MAP_TYPE_SATELLITE);
+        TextSecurePreferences.setGoogleMapType(getApplicationContext(), "satellite");
+      }
+    });
+
+    btnMapTypeTerrain.setOnClickListener(new View.OnClickListener() {
+      @Override public void onClick(@NonNull View v) {
+        googleMap.setMapType(GoogleMap.MAP_TYPE_TERRAIN);
+        TextSecurePreferences.setGoogleMapType(getApplicationContext(), "terrain");
+      }
+    });
 
     if (ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION)   == PackageManager.PERMISSION_GRANTED ||
         ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) == PackageManager.PERMISSION_GRANTED)
@@ -167,8 +189,30 @@ public final class PlacePickerActivity extends AppCompatActivity {
 
   private void setMap(GoogleMap googleMap) {
     this.googleMap = googleMap;
+    // JW: set maptype
+    if (googleMap != null) {
+      setGoogleMapType(googleMap);
+    } else {
+      // In case there is no Google maps installed:
+      btnMapTypeNormal.setVisibility(View.GONE);
+      btnMapTypeSatellite.setVisibility(View.GONE);
+      btnMapTypeTerrain.setVisibility(View.GONE);
+    }
 
     moveMapToInitialIfPossible();
+  }
+
+  // JW: set the maptype
+  private void setGoogleMapType(GoogleMap googleMap) {
+    String mapType = TextSecurePreferences.getGoogleMapType(getApplicationContext());
+
+    if (googleMap != null) {
+           if (mapType.equals("hybrid"))    { googleMap.setMapType(GoogleMap.MAP_TYPE_HYBRID); }
+      else if (mapType.equals("satellite")) { googleMap.setMapType(GoogleMap.MAP_TYPE_SATELLITE); }
+      else if (mapType.equals("terrain"))   { googleMap.setMapType(GoogleMap.MAP_TYPE_TERRAIN); }
+      else if (mapType.equals("none"))      { googleMap.setMapType(GoogleMap.MAP_TYPE_NONE); }
+      else                                  { googleMap.setMapType(GoogleMap.MAP_TYPE_NORMAL); }
+    }
   }
 
   private void moveMapToInitialIfPossible() {
@@ -190,29 +234,9 @@ public final class PlacePickerActivity extends AppCompatActivity {
     String      address      = currentAddress != null && currentAddress.getAddressLine(0) != null ? currentAddress.getAddressLine(0) : "";
     AddressData addressData  = new AddressData(currentLocation.latitude, currentLocation.longitude, address);
 
-    SimpleProgressDialog.DismissibleDialog dismissibleDialog = SimpleProgressDialog.showDelayed(this);
-    MapView mapView = findViewById(R.id.map_view);
-    SignalMapView.snapshot(currentLocation, mapView).addListener(new ListenableFuture.Listener<>() {
-      @Override
-      public void onSuccess(Bitmap result) {
-        dismissibleDialog.dismiss();
-        byte[] blob = BitmapUtil.toByteArray(result);
-        Uri uri = BlobProvider.getInstance()
-                              .forData(blob)
-                              .withMimeType(MediaUtil.IMAGE_JPEG)
-                              .createForSingleSessionInMemory();
-        returnIntent.putExtra(ADDRESS_INTENT, addressData);
-        returnIntent.setData(uri);
-        setResult(RESULT_OK, returnIntent);
-        finish();
-      }
-
-      @Override
-      public void onFailure(ExecutionException e) {
-        dismissibleDialog.dismiss();
-        Log.e(TAG, "Failed to generate snapshot", e);
-      }
-    });
+    returnIntent.putExtra(ADDRESS_INTENT, addressData);
+    setResult(RESULT_OK, returnIntent);
+    finish();
   }
 
   private void enableMyLocationButtonIfHaveThePermission(GoogleMap googleMap) {
