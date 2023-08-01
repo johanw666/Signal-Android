@@ -3,9 +3,7 @@ name: build pure black version
 on:
   schedule:
     - cron: "0 0 * * *"  ## Run everyday at midnight to check for any updates
-  push:
-   branches:
-    - Pure-Black-Version
+  
 permissions:
   contents: write  ## To fetch code (actions/checkout) then releases/upload
 
