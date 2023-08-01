@@ -18,8 +18,6 @@ import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
 
 import org.thoughtcrime.securesms.R;
-import org.thoughtcrime.securesms.dependencies.ApplicationDependencies; // JW: added
-import org.thoughtcrime.securesms.util.TextSecurePreferences; // JW: added
 import org.thoughtcrime.securesms.util.concurrent.ListenableFuture;
 import org.thoughtcrime.securesms.util.concurrent.SettableFuture;
 
@@ -30,6 +28,7 @@ public class SignalMapView extends LinearLayout {
   private MapView   mapView;
   private ImageView imageView;
   private TextView  textView;
+  public static int mapType; // JW
 
   public SignalMapView(Context context) {
     this(context, null);
@@ -52,19 +51,7 @@ public class SignalMapView extends LinearLayout {
     this.mapView   = findViewById(R.id.map_view);
     this.imageView = findViewById(R.id.image_view);
     this.textView  = findViewById(R.id.address_view);
-  }
-
-  // JW: set the maptype
-  public static void setGoogleMapType(GoogleMap googleMap) {
-    String mapType = TextSecurePreferences.getGoogleMapType(ApplicationDependencies.getApplication());
-
-    if (googleMap != null) {
-      if      (mapType.equals("hybrid"))    { googleMap.setMapType(GoogleMap.MAP_TYPE_HYBRID); }
-      else if (mapType.equals("satellite")) { googleMap.setMapType(GoogleMap.MAP_TYPE_SATELLITE); }
-      else if (mapType.equals("terrain"))   { googleMap.setMapType(GoogleMap.MAP_TYPE_TERRAIN); }
-      else if (mapType.equals("none"))      { googleMap.setMapType(GoogleMap.MAP_TYPE_NONE); }
-      else                                  { googleMap.setMapType(GoogleMap.MAP_TYPE_NORMAL); }
-    }
+    this.mapType   = GoogleMap.MAP_TYPE_NORMAL; // JW
   }
 
   public ListenableFuture<Bitmap> display(final SignalPlace place) {
@@ -101,8 +88,7 @@ public class SignalMapView extends LinearLayout {
       googleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(place, 13));
       googleMap.addMarker(new MarkerOptions().position(place));
       googleMap.setBuildingsEnabled(true);
-      //googleMap.setMapType(GoogleMap.MAP_TYPE_NORMAL);
-      setGoogleMapType(googleMap); // JW: set maptype
+      googleMap.setMapType(mapType); // JW: set maptype
       googleMap.getUiSettings().setAllGesturesEnabled(false);
       googleMap.setOnMapLoadedCallback(() -> googleMap.snapshot(bitmap -> {
         future.set(bitmap);
@@ -115,6 +101,7 @@ public class SignalMapView extends LinearLayout {
 
     return future;
   }
+
   public static ListenableFuture<Bitmap> snapshot(final SignalPlace place, @NonNull final MapView mapView) {
     return snapshot(place.getLatLong(), mapView);
   }

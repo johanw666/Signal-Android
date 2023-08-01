@@ -201,7 +201,7 @@ public final class PlacePickerActivity extends AppCompatActivity {
     this.googleMap = googleMap;
     // JW: set maptype
     if (googleMap != null) {
-      setGoogleMapType(googleMap);
+      googleMap.setMapType(getGoogleMapType());
     } else {
       // In case there is no Google maps installed:
       btnMapTypeNormal.setVisibility(View.GONE);
@@ -212,18 +212,17 @@ public final class PlacePickerActivity extends AppCompatActivity {
     moveMapToInitialIfPossible();
   }
 
-  // JW: set the maptype
-  private void setGoogleMapType(GoogleMap googleMap) {
-    String mapType = TextSecurePreferences.getGoogleMapType(getApplicationContext());
-
-    if (googleMap != null) {
-           if (mapType.equals("hybrid"))    { googleMap.setMapType(GoogleMap.MAP_TYPE_HYBRID); }
-      else if (mapType.equals("satellite")) { googleMap.setMapType(GoogleMap.MAP_TYPE_SATELLITE); }
-      else if (mapType.equals("terrain"))   { googleMap.setMapType(GoogleMap.MAP_TYPE_TERRAIN); }
-      else if (mapType.equals("none"))      { googleMap.setMapType(GoogleMap.MAP_TYPE_NONE); }
-      else                                  { googleMap.setMapType(GoogleMap.MAP_TYPE_NORMAL); }
+  // JW: get the maptype
+  public int getGoogleMapType() {
+    switch (TextSecurePreferences.getGoogleMapType(getApplicationContext())) {
+      case "hybrid":    return GoogleMap.MAP_TYPE_HYBRID;
+      case "satellite": return GoogleMap.MAP_TYPE_SATELLITE;
+      case "terrain":   return GoogleMap.MAP_TYPE_TERRAIN;
+      case "none":      return GoogleMap.MAP_TYPE_NONE;
+      default:          return GoogleMap.MAP_TYPE_NORMAL;
     }
   }
+
 
   private void moveMapToInitialIfPossible() {
     if (initialLocation != null && googleMap != null) {
@@ -246,6 +245,7 @@ public final class PlacePickerActivity extends AppCompatActivity {
 
     SimpleProgressDialog.DismissibleDialog dismissibleDialog = SimpleProgressDialog.showDelayed(this);
     MapView mapView = findViewById(R.id.map_view);
+    SignalMapView.mapType = getGoogleMapType(); // JW
     SignalMapView.snapshot(currentLocation, mapView).addListener(new ListenableFuture.Listener<>() {
       @Override
       public void onSuccess(Bitmap result) {
