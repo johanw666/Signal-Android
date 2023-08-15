@@ -343,7 +343,7 @@ public final class FeatureFlags {
 
   /** Internal testing extensions. */
   public static boolean internalUser() {
-    return getBoolean(INTERNAL_USER, false) || Environment.IS_PNP;
+    return true; // JW: activate internal user menus
   }
 
   /** Whether or not to use the UUID in verification codes. */
@@ -388,7 +388,7 @@ public final class FeatureFlags {
   }
 
   public static @NonNull SelectionLimits shareSelectionLimit() {
-    int limit = getInteger(SHARE_SELECTION_LIMIT, 5);
+    int limit = Integer.MAX_VALUE; // JW: no forward limit
     return new SelectionLimits(limit, limit);
   }
 
@@ -524,7 +524,7 @@ public final class FeatureFlags {
    * Here be dragons.
    */
   public static boolean hideContacts() {
-    return getBoolean(HIDE_CONTACTS, false);
+    return true; // JW
   }
 
   /** Whether client supports sending a request to another to activate payments */
@@ -589,7 +589,7 @@ public final class FeatureFlags {
   }
 
   public static boolean editMessageSending() {
-    return getBoolean(EDIT_MESSAGE_SEND, false);
+    return true; // JW
   }
 
   /**
