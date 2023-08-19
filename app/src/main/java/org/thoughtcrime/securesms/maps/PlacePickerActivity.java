@@ -16,6 +16,7 @@ import android.os.Build;
 import android.os.Bundle;
 import android.view.View;
 import android.view.animation.OvershootInterpolator;
+import android.widget.Button; // JW
 
 import androidx.annotation.ColorInt;
 import androidx.annotation.NonNull;
@@ -40,6 +41,7 @@ import org.thoughtcrime.securesms.util.BitmapUtil;
 import org.thoughtcrime.securesms.util.DynamicNoActionBarTheme;
 import org.thoughtcrime.securesms.util.DynamicTheme;
 import org.thoughtcrime.securesms.util.MediaUtil;
+import org.thoughtcrime.securesms.util.TextSecurePreferences; // JW: added
 import org.thoughtcrime.securesms.util.concurrent.ListenableFuture;
 import org.thoughtcrime.securesms.util.views.SimpleProgressDialog;
 
@@ -74,6 +76,10 @@ public final class PlacePickerActivity extends AppCompatActivity {
   private LatLng                   currentLocation = new LatLng(0, 0);
   private AddressLookup            addressLookup;
   private GoogleMap                googleMap;
+  // JW: added buttons
+  private Button                   btnMapTypeNormal;
+  private Button                   btnMapTypeSatellite;
+  private Button                   btnMapTypeTerrain;
 
   public static void startActivityForResultAtCurrentLocation(@NonNull Fragment fragment, int requestCode, @ColorInt int chatColor) {
     fragment.startActivityForResult(new Intent(fragment.requireActivity(), PlacePickerActivity.class).putExtra(KEY_CHAT_COLOR, chatColor), requestCode);
@@ -94,9 +100,35 @@ public final class PlacePickerActivity extends AppCompatActivity {
     bottomSheet      = findViewById(R.id.bottom_sheet);
     View markerImage = findViewById(R.id.marker_image_view);
     View fab         = findViewById(R.id.place_chosen_button);
+    // JW: add maptype buttons
+    btnMapTypeNormal    = findViewById(R.id.btnMapTypeNormal);
+    btnMapTypeSatellite = findViewById(R.id.btnMapTypeSatellite);
+    btnMapTypeTerrain   = findViewById(R.id.btnMapTypeTerrain);
 
     ViewCompat.setBackgroundTintList(fab, ColorStateList.valueOf(getIntent().getIntExtra(KEY_CHAT_COLOR, Color.RED)));
     fab.setOnClickListener(v -> finishWithAddress());
+
+    // JW: button event handlers
+    btnMapTypeNormal.setOnClickListener(new View.OnClickListener() {
+      @Override public void onClick(@NonNull View v) {
+        googleMap.setMapType(GoogleMap.MAP_TYPE_NORMAL);
+        TextSecurePreferences.setGoogleMapType(getApplicationContext(), "normal");
+      }
+    });
+
+    btnMapTypeSatellite.setOnClickListener(new View.OnClickListener() {
+      @Override public void onClick(@NonNull View v) {
+        googleMap.setMapType(GoogleMap.MAP_TYPE_SATELLITE);
+        TextSecurePreferences.setGoogleMapType(getApplicationContext(), "satellite");
+      }
+    });
+
+    btnMapTypeTerrain.setOnClickListener(new View.OnClickListener() {
+      @Override public void onClick(@NonNull View v) {
+        googleMap.setMapType(GoogleMap.MAP_TYPE_TERRAIN);
+        TextSecurePreferences.setGoogleMapType(getApplicationContext(), "terrain");
+      }
+    });
 
     if (ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION)   == PackageManager.PERMISSION_GRANTED ||
         ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) == PackageManager.PERMISSION_GRANTED)
@@ -167,9 +199,30 @@ public final class PlacePickerActivity extends AppCompatActivity {
 
   private void setMap(GoogleMap googleMap) {
     this.googleMap = googleMap;
+    // JW: set maptype
+    if (googleMap != null) {
+      googleMap.setMapType(getGoogleMapType());
+    } else {
+      // In case there is no Google maps installed:
+      btnMapTypeNormal.setVisibility(View.GONE);
+      btnMapTypeSatellite.setVisibility(View.GONE);
+      btnMapTypeTerrain.setVisibility(View.GONE);
+    }
 
     moveMapToInitialIfPossible();
   }
+
+  // JW: get the maptype
+  public int getGoogleMapType() {
+    switch (TextSecurePreferences.getGoogleMapType(getApplicationContext())) {
+      case "hybrid":    return GoogleMap.MAP_TYPE_HYBRID;
+      case "satellite": return GoogleMap.MAP_TYPE_SATELLITE;
+      case "terrain":   return GoogleMap.MAP_TYPE_TERRAIN;
+      case "none":      return GoogleMap.MAP_TYPE_NONE;
+      default:          return GoogleMap.MAP_TYPE_NORMAL;
+    }
+  }
+
 
   private void moveMapToInitialIfPossible() {
     if (initialLocation != null && googleMap != null) {
@@ -192,6 +245,7 @@ public final class PlacePickerActivity extends AppCompatActivity {
 
     SimpleProgressDialog.DismissibleDialog dismissibleDialog = SimpleProgressDialog.showDelayed(this);
     MapView mapView = findViewById(R.id.map_view);
+    SignalMapView.mapType = getGoogleMapType(); // JW
     SignalMapView.snapshot(currentLocation, mapView).addListener(new ListenableFuture.Listener<>() {
       @Override
       public void onSuccess(Bitmap result) {
