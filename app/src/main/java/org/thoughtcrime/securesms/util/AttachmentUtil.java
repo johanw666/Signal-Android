@@ -81,7 +81,12 @@ public class AttachmentUtil {
                                                  .size();
 
     if (attachmentCount <= 1) {
-      SignalDatabase.messages().deleteMessage(mmsId);
+      // JW: changed
+      if (!TextSecurePreferences.isDeleteMediaOnly(context)) {
+        SignalDatabase.messages().deleteMessage(mmsId);
+      }  else {
+        SignalDatabase.messages().deleteAttachmentsOnly(mmsId);
+      }
     } else {
       SignalDatabase.attachments().deleteAttachment(attachmentId);
     }
