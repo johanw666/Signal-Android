@@ -5433,4 +5433,30 @@ open class MessageTable(context: Context?, databaseHelper: SignalDatabase) : Dat
       }
     }
   }
+
+  //---------------------------------------------------------------------------
+  // JW: Deletes only the attachment for the message, not the message itself.
+  fun deleteAttachmentsOnly(messageId: Long): Boolean {
+    val threadId = getThreadIdForMessage(messageId)
+    val attachmentTable = SignalDatabase.attachments
+    attachmentTable.deleteAttachmentsForMessage(messageId)
+    notifyConversationListeners(threadId)
+    OptimizeMessageSearchIndexJob.enqueue()
+    return true
+  }
+
+  // JW: added functions required for PlaintextBackup
+  fun getMessageCount(): Int {
+    return readableDatabase
+      .select("COUNT(*)")
+      .from(TABLE_NAME)
+      .run()
+      .readToSingleInt()
+  }
+
+  fun getMessages(skip: Int, limit: Int): Cursor {
+    val db = databaseHelper.signalReadableDatabase
+    return db.query(TABLE_NAME, MMS_PROJECTION, null, null, null, null, ID, skip.toString().plus(",").plus(limit.toString()))
+  }
+  //---------------------------------------------------------------------------
 }
