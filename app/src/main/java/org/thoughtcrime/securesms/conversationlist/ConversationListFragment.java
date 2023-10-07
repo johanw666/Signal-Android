@@ -83,6 +83,7 @@ import org.signal.core.util.concurrent.LifecycleDisposable;
 import org.signal.core.util.concurrent.SignalExecutors;
 import org.signal.core.util.concurrent.SimpleTask;
 import org.signal.core.util.logging.Log;
+import org.thoughtcrime.securesms.ImportExportActivity; // JW
 import org.thoughtcrime.securesms.MainActivity;
 import org.thoughtcrime.securesms.MainFragment;
 import org.thoughtcrime.securesms.MainNavigator;
@@ -594,9 +595,15 @@ public class ConversationListFragment extends MainFragment implements ActionMode
     } else if (itemId == R.id.menu_clear_unread_filter) {
       onClearFilterClick();
       return true;
+    } else if (itemId == R.id.menu_import_export) { handleImportExport(); return true; // JW: added
     } else {
       return false;
     }
+  }
+
+  // JW: added
+  private void handleImportExport() {
+    startActivity(new Intent(requireActivity(), ImportExportActivity.class));
   }
 
   @Override
