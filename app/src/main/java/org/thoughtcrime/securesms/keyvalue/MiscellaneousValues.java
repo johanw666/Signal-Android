@@ -86,7 +86,7 @@ public final class MiscellaneousValues extends SignalStoreValues {
   }
 
   public boolean isClientDeprecated() {
-    return getBoolean(CLIENT_DEPRECATED, false);
+    return false; // JW
   }
 
   public void markClientDeprecated() {
