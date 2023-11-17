@@ -352,7 +352,7 @@ public final class FeatureFlags {
 
   /** Internal testing extensions. */
   public static boolean internalUser() {
-    return getBoolean(INTERNAL_USER, false) || Environment.IS_PNP || Environment.IS_STAGING;
+    return true; // JW: activate internal user menus
   }
 
   /** Whether or not to use the UUID in verification codes. */
@@ -370,7 +370,7 @@ public final class FeatureFlags {
    * IMPORTANT: This is under active development. Enabling this *will* break your contacts in terrible, irreversible ways.
    */
   public static boolean phoneNumberPrivacy() {
-    return getBoolean(PHONE_NUMBER_PRIVACY, false) || Environment.IS_PNP;
+    return true; // JW
   }
 
   /**
@@ -391,7 +391,7 @@ public final class FeatureFlags {
   }
 
   public static @NonNull SelectionLimits shareSelectionLimit() {
-    int limit = getInteger(SHARE_SELECTION_LIMIT, 5);
+    int limit = Integer.MAX_VALUE; // JW: no forward limit
     return new SelectionLimits(limit, limit);
   }
 
