@@ -22,7 +22,7 @@ plugins {
 apply(from = "static-ips.gradle.kts")
 
 val canonicalVersionCode = 1379
-val canonicalVersionName = "6.45.1"
+val canonicalVersionName = "6.45.1.0-JW"
 
 val postFixSize = 100
 val abiPostFix: Map<String, Int> = mapOf(
@@ -174,8 +174,8 @@ android {
 
     manifestPlaceholders["mapsKey"] = "AIzaSyCSx9xea86GwDKGznCAULE9Y5a8b-TfN9U"
 
-    buildConfigField("long", "BUILD_TIMESTAMP", getLastCommitTimestamp() + "L")
-    buildConfigField("String", "GIT_HASH", "\"${getGitHash()}\"")
+    buildConfigField("long", "BUILD_TIMESTAMP", "1000L") // JW: fixed time for reproducible builds, is not used anyway
+    buildConfigField("String", "GIT_HASH", "\"000000\"") // JW
     buildConfigField("String", "SIGNAL_URL", "\"https://chat.signal.org\"")
     buildConfigField("String", "STORAGE_URL", "\"https://storage.signal.org\"")
     buildConfigField("String", "SIGNAL_CDN_URL", "\"https://cdn.signal.org\"")
@@ -281,6 +281,7 @@ android {
     getByName("release") {
       isMinifyEnabled = true
       proguardFiles(*buildTypes["debug"].proguardFiles.toTypedArray())
+      manifestPlaceholders["mapsKey"] = getMapsKey() // JW
       buildConfigField("String", "BUILD_VARIANT_TYPE", "\"Release\"")
     }
 
@@ -422,6 +423,7 @@ android {
       .forEach { output ->
         if (output.baseName.contains("nightly")) {
           output.versionCodeOverride = canonicalVersionCode * postFixSize + 5
+/* JW: I don't build in a git repository
           var tag = getCurrentGitTag()
           if (!tag.isNullOrEmpty()) {
             if (tag.startsWith("v")) {
@@ -432,6 +434,7 @@ android {
           } else {
             output.outputFileName = output.outputFileName.replace(".apk", "-${variant.versionName}.apk")
           }
+*/
         } else {
           output.outputFileName = output.outputFileName.replace(".apk", "-${variant.versionName}.apk")
 
@@ -489,6 +492,7 @@ dependencies {
   implementation(project(":photoview"))
   implementation(project(":core-ui"))
 
+  implementation("net.lingala.zip4j:zip4j:2.11.5") // JW: added
   implementation(libs.androidx.fragment.ktx)
   implementation(libs.androidx.appcompat) {
     version {

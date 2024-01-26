@@ -112,7 +112,7 @@ public final class Megaphones {
       put(Event.BACKUP_SCHEDULE_PERMISSION, shouldShowBackupSchedulePermissionMegaphone(context) ? RecurringSchedule.every(TimeUnit.DAYS.toMillis(3)) : NEVER);
       put(Event.ONBOARDING, shouldShowOnboardingMegaphone(context) ? ALWAYS : NEVER);
       put(Event.TURN_OFF_CENSORSHIP_CIRCUMVENTION, shouldShowTurnOffCircumventionMegaphone() ? RecurringSchedule.every(TimeUnit.DAYS.toMillis(7)) : NEVER);
-      put(Event.REMOTE_MEGAPHONE, shouldShowRemoteMegaphone(records) ? RecurringSchedule.every(TimeUnit.DAYS.toMillis(1)) : NEVER);
+//      put(Event.REMOTE_MEGAPHONE, shouldShowRemoteMegaphone(records) ? RecurringSchedule.every(TimeUnit.DAYS.toMillis(1)) : NEVER); // JW
       put(Event.PIN_REMINDER, new SignalPinReminderSchedule());
       put(Event.SET_UP_YOUR_USERNAME, shouldShowSetUpYourUsernameMegaphone(records) ? ALWAYS : NEVER);
 
@@ -137,8 +137,8 @@ public final class Megaphones {
         return buildAddAProfilePhotoMegaphone(context);
       case TURN_OFF_CENSORSHIP_CIRCUMVENTION:
         return buildTurnOffCircumventionMegaphone(context);
-      case REMOTE_MEGAPHONE:
-        return buildRemoteMegaphone(context);
+//      case REMOTE_MEGAPHONE:
+//        return buildRemoteMegaphone(context); // JW
       case BACKUP_SCHEDULE_PERMISSION:
         return buildBackupPermissionMegaphone(context);
       case SMS_EXPORT:
