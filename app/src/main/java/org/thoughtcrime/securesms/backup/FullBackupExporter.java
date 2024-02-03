@@ -160,7 +160,7 @@ public class FullBackupExporter extends FullBackupBase {
       for (String table : tables) {
         throwIfCanceled(cancellationSignal);
         if (table.equals(MessageTable.TABLE_NAME)) {
-          count = exportTable(table, input, outputStream, cursor -> isNonExpiringMessage(input, cursor), null, count, estimatedCount, cancellationSignal);
+          count = exportTable(table, input, outputStream, cursor -> isNonExpiringMessage(cursor), null, count, estimatedCount, cancellationSignal);
         } else if (table.equals(ReactionTable.TABLE_NAME)) {
           count = exportTable(table, input, outputStream, cursor -> isForNonExpiringMessage(input, CursorUtil.requireLong(cursor, ReactionTable.MESSAGE_ID)), null, count, estimatedCount, cancellationSignal);
         } else if (table.equals(MentionTable.TABLE_NAME)) {
@@ -579,38 +579,28 @@ public class FullBackupExporter extends FullBackupBase {
     return count;
   }
 
-  private static boolean isNonExpiringMessage(@NonNull SQLiteDatabase db, @NonNull Cursor cursor) {
-    long expireStarted     = CursorUtil.requireLong(cursor, MessageTable.EXPIRE_STARTED);
-    long expiresIn         = CursorUtil.requireLong(cursor, MessageTable.EXPIRES_IN);
-    long originalMessageId = CursorUtil.requireLong(cursor, MessageTable.ORIGINAL_MESSAGE_ID);
-    long latestRevisionId  = CursorUtil.requireLong(cursor, MessageTable.LATEST_REVISION_ID);
+  private static boolean isNonExpiringMessage(@NonNull Cursor cursor) {
+    long expireStarted = CursorUtil.requireLong(cursor, MessageTable.EXPIRE_STARTED);
+    long expiresIn     = CursorUtil.requireLong(cursor, MessageTable.EXPIRES_IN);
+
+    if (expireStarted == 0 || expiresIn == 0) {
+      return true;
+    }
 
     long expiresAt     = expireStarted + expiresIn;
     long timeRemaining = expiresAt - System.currentTimeMillis();
 
-    if (expireStarted > 0 && timeRemaining <= EXPIRATION_BACKUP_THRESHOLD) {
-      return false;
-    }
-
-    if (originalMessageId > 0 && !isForNonExpiringMessage(db, originalMessageId)) {
-      return false;
-    }
-
-    if (latestRevisionId > 0 && !isForNonExpiringMessage(db, latestRevisionId)) {
-      return false;
-    }
-
-    return true;
+    return timeRemaining > EXPIRATION_BACKUP_THRESHOLD;
   }
 
   private static boolean isForNonExpiringMessage(@NonNull SQLiteDatabase db, long messageId) {
-    String[] columns = new String[] { MessageTable.EXPIRE_STARTED, MessageTable.EXPIRES_IN, MessageTable.LATEST_REVISION_ID, MessageTable.ORIGINAL_MESSAGE_ID };
+    String[] columns = new String[] { MessageTable.EXPIRE_STARTED, MessageTable.EXPIRES_IN };
     String   where   = MessageTable.ID + " = ?";
     String[] args    = SqlUtil.buildArgs(messageId);
 
     try (Cursor mmsCursor = db.query(MessageTable.TABLE_NAME, columns, where, args, null, null, null)) {
       if (mmsCursor != null && mmsCursor.moveToFirst()) {
-        return isNonExpiringMessage(db, mmsCursor);
+        return isNonExpiringMessage(mmsCursor);
       }
     }
 
