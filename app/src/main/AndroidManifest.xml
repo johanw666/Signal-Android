@@ -31,8 +31,10 @@
     <uses-permission android:name="android.permission.READ_PHONE_STATE" />
     <uses-permission android:name="android.permission.READ_PHONE_NUMBERS" />
 
-    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"
-                     android:maxSdkVersion="28" />
+    <!-- JW: override for Android 10. For Android 11 and up we use the MANAGE_EXTERNAL_STORAGE permission. -->
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.MANAGE_EXTERNAL_STORAGE" />
+
 
     <uses-permission android:name="android.permission.CAMERA" />
 
@@ -105,6 +107,10 @@
                  android:backupAgent=".absbackup.SignalBackupAgent"
                  android:theme="@style/TextSecure.LightTheme"
                  android:largeHeap="true">
+
+    <!-- JW: added. This is currently only relevant for captchas. -->
+    <meta-data android:name="android.webkit.WebView.MetricsOptOut"
+               android:value="true" />
 
     <meta-data
             android:name="com.google.android.gms.wallet.api.enabled"
@@ -674,11 +680,21 @@
               android:configChanges="touchscreen|keyboard|keyboardHidden|orientation|screenLayout|screenSize"
               android:exported="false"/>
 
+    <!-- JW: added the windowSoftInputMode="stateAlwaysVisible" flag here to show a keyboard on open -->
     <activity android:name=".PassphrasePromptActivity"
               android:launchMode="singleTask"
               android:theme="@style/TextSecure.LightIntroTheme"
+              android:windowSoftInputMode="stateAlwaysVisible"
               android:configChanges="touchscreen|keyboard|keyboardHidden|orientation|screenLayout|screenSize"
               android:exported="false"/>
+
+    <!-- JW: Add activity used in plaintext backup import / export -->
+    <activity android:name=".ImportExportActivity"
+              android:configChanges="touchscreen|keyboard|keyboardHidden|orientation|screenLayout|screenSize"/>
+
+    <!-- JW: Add activity used in encrypted backup import -->
+    <activity android:name=".ExitActivity"
+              android:theme="@android:style/Theme.NoDisplay" />
 
     <activity android:name=".NewConversationActivity"
               android:theme="@style/Theme.Signal.DayNight.NoActionBar"
