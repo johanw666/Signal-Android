@@ -6,6 +6,16 @@ data class ChatsSettingsState(
   val keepMutedChatsArchived: Boolean,
   val useSystemEmoji: Boolean,
   val enterKeySends: Boolean,
-  val localBackupsEnabled: Boolean,
-  val remoteBackupsEnabled: Boolean
+  val chatBackupsEnabled: Boolean
+  // JW: added extra preferences
+  ,
+  val chatBackupsLocation: Boolean,
+  val chatBackupsLocationApi30: String,
+  val chatBackupZipfile: Boolean,
+  val chatBackupZipfilePlain: Boolean,
+  val keepViewOnceMessages: Boolean,
+  val ignoreRemoteDelete: Boolean,
+  val deleteMediaOnly: Boolean,
+  val googleMapType: String,
+  val whoCanAddYouToGroups: String
 )
