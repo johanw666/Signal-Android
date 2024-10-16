@@ -38,6 +38,7 @@ import org.thoughtcrime.securesms.mms.MmsException
 import org.thoughtcrime.securesms.mms.OutgoingMessage
 import org.thoughtcrime.securesms.recipients.Recipient
 import org.thoughtcrime.securesms.recipients.RecipientId
+import org.thoughtcrime.securesms.util.TextSecurePreferences // JW
 import org.whispersystems.signalservice.api.NetworkResult
 import org.whispersystems.signalservice.api.groupsv2.DecryptedGroupUtil
 import org.whispersystems.signalservice.api.groupsv2.GroupChangeReconstruct
@@ -553,6 +554,19 @@ class GroupsV2StateProcessor private constructor(
   @VisibleForTesting
   internal class ProfileAndMessageHelper(private val aci: ACI, private val masterKey: GroupMasterKey, private val groupId: GroupId.V2) {
 
+    // JW: Check if the person is allowed to add you to a group
+    private fun mayThisPersonAddYouToAGroup(addedBy: Recipient): Boolean {
+      when (TextSecurePreferences.whoCanAddYouToGroups(AppDependencies.application)) {
+        "anyone"             -> return true
+        "nonblocked"         -> return !addedBy.isBlocked
+        "onlycontacts"       -> return addedBy.isProfileSharing && !addedBy.isBlocked // check for blocked is not necessary but defensive programming if something changes here
+        "onlysystemcontacts" -> return addedBy.isSystemContact && !addedBy.isBlocked
+        "nobody"             -> return false
+        else                 -> return true
+      }
+      return true
+    }
+
     fun setProfileSharing(groupStateDiff: GroupStateDiff, newLocalState: DecryptedGroup) {
       val previousGroupState = groupStateDiff.previousGroupState
 
@@ -577,11 +591,12 @@ class GroupsV2StateProcessor private constructor(
         if (addedBy != null) {
           Log.i(TAG, "Added as a full member of $groupId by ${addedBy.id}")
 
-          if (addedBy.isBlocked && (previousGroupState == null || !DecryptedGroupUtil.isRequesting(previousGroupState, aci))) {
+          // JW: changed logic with more options
+          if (!mayThisPersonAddYouToAGroup(addedBy) && (previousGroupState == null || !DecryptedGroupUtil.isRequesting(previousGroupState, aci))) {
             Log.i(TAG, "Added by a blocked user. Leaving group.")
             AppDependencies.jobManager.add(LeaveGroupV2Job(groupId))
             return
-          } else if ((addedBy.isSystemContact || addedBy.isProfileSharing) && !addedBy.isHidden) {
+          } else if ((addedBy.isSystemContact || addedBy.isProfileSharing) && !addedBy.isHidden && !addedBy.isBlocked) { // JW: added isBlocked explicitly here
             Log.i(TAG, "Group 'adder' is trusted. contact: " + addedBy.isSystemContact + ", profileSharing: " + addedBy.isProfileSharing)
             Log.i(TAG, "Added to a group and auto-enabling profile sharing")
             SignalDatabase.recipients.setProfileSharing(Recipient.externalGroupExact(groupId).id, true)
@@ -594,7 +609,7 @@ class GroupsV2StateProcessor private constructor(
       } else if (selfAsPending != null) {
         val addedBy = UuidUtil.fromByteStringOrNull(selfAsPending.addedByAci)?.let { Recipient.externalPush(ACI.from(it)) }
 
-        if (addedBy?.isBlocked == true) {
+        if (!mayThisPersonAddYouToAGroup(addedBy!!)) { // JW: replaced blocked by more general permission
           Log.i(TAG, "Added to group $groupId by a blocked user ${addedBy.id}. Leaving group.")
           AppDependencies.jobManager.add(LeaveGroupV2Job(groupId))
           return
@@ -735,7 +750,7 @@ class GroupsV2StateProcessor private constructor(
         } catch (e: MmsException) {
           Log.w(TAG, "Failed to insert outgoing update message!", e)
         }
-      } else {
+      } else if (!TextSecurePreferences.whoCanAddYouToGroups(AppDependencies.application).equals("nonblocked") || !Recipient.resolved(RecipientId.from(editor.get())).isBlocked) { // JW: don't store messages from blocked contacts
         try {
           val isGroupAdd = updateDescription
             .groupChangeUpdate!!
