@@ -33,6 +33,7 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
+import android.view.WindowManager; // JW: added
 import android.view.inputmethod.EditorInfo;
 import android.widget.EditText;
 import android.widget.ImageButton;
@@ -271,10 +272,13 @@ public class PassphrasePromptActivity extends PassphraseActivity {
   private void setLockTypeVisibility() {
     if (SignalStore.settings().getScreenLockEnabled()) {
       passphraseAuthContainer.setVisibility(View.GONE);
+      getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN); // JW: to override setSoftInputMode it has to be defined in the manifest file
       unlockView.setVisibility(View.VISIBLE);
       lockScreenButton.setVisibility(View.VISIBLE);
     } else {
       passphraseAuthContainer.setVisibility(View.VISIBLE);
+      getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_VISIBLE); // JW
+      passphraseText.requestFocus(); // JW
       unlockView.setVisibility(View.GONE);
       lockScreenButton.setVisibility(View.GONE);
     }
