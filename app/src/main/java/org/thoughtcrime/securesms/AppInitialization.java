@@ -33,7 +33,7 @@ public final class AppInitialization {
     TextSecurePreferences.setJobManagerVersion(context, JobManager.CURRENT_VERSION);
     TextSecurePreferences.setLastVersionCode(context, Util.getCanonicalVersionCode());
     TextSecurePreferences.setHasSeenStickerIntroTooltip(context, true);
-    SignalStore.settings().setPassphraseDisabled(true);
+    //SignalStore.settings().setPassphraseDisabled(true); // JW: don't do this
     TextSecurePreferences.setReadReceiptsEnabled(context, true);
     TextSecurePreferences.setTypingIndicatorsEnabled(context, true);
     TextSecurePreferences.setHasSeenWelcomeScreen(context, false);
@@ -73,7 +73,7 @@ public final class AppInitialization {
     TextSecurePreferences.setJobManagerVersion(context, JobManager.CURRENT_VERSION);
     TextSecurePreferences.setLastVersionCode(context, Util.getCanonicalVersionCode());
     TextSecurePreferences.setHasSeenStickerIntroTooltip(context, true);
-    SignalStore.settings().setPassphraseDisabled(true);
+    //SignalStore.settings().setPassphraseDisabled(true); // JW
     AppDependencies.getMegaphoneRepository().onFirstEverAppLaunch();
     SignalStore.onFirstEverAppLaunch();
     AppDependencies.getJobManager().add(StickerPackDownloadJob.forInstall(BlessedPacks.ZOZO.getPackId(), BlessedPacks.ZOZO.getPackKey(), false));
