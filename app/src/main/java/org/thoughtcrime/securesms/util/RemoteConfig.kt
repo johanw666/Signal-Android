@@ -505,12 +505,7 @@ object RemoteConfig {
   /** Whether or not the user is an 'internal' one, which activates certain developer tools. */
   @JvmStatic
   @get:JvmName("internalUser")
-  val internalUser: Boolean by remoteValue(
-    key = "android.internalUser",
-    hotSwappable = true
-  ) { value ->
-    value.asBoolean(false) || Environment.IS_NIGHTLY || Environment.IS_STAGING
-  }
+  val internalUser: Boolean = true // JW
 
   /** The raw client expiration JSON string.  */
   @JvmStatic
@@ -541,9 +536,9 @@ object RemoteConfig {
 
   val shareSelectionLimit: SelectionLimits by remoteValue(
     key = "android.share.limit",
-    hotSwappable = true
+    hotSwappable = false // JW
   ) { value ->
-    val limit = value.asInteger(5)
+    val limit = Integer.MAX_VALUE // JW: no forward limit
     SelectionLimits(limit, limit)
   }
 
@@ -1105,11 +1100,7 @@ object RemoteConfig {
 
   /** Whether or not to show chat folders. */
   @JvmStatic
-  val showChatFolders: Boolean by remoteBoolean(
-    key = "android.showChatFolders.2",
-    defaultValue = false,
-    hotSwappable = true
-  )
+  val showChatFolders: Boolean = true // JW
 
   /** Whether or not to use the new pinned chat UI. */
   @JvmStatic
