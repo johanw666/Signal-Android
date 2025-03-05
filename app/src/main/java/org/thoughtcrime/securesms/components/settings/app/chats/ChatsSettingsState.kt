@@ -8,4 +8,15 @@ data class ChatsSettingsState(
   val enterKeySends: Boolean,
   val localBackupsEnabled: Boolean,
   val folderCount: Int
+  // JW: added extra preferences
+  ,
+  val chatBackupsLocation: Boolean,
+  val chatBackupsLocationApi30: String,
+  val chatBackupZipfile: Boolean,
+  val chatBackupZipfilePlain: Boolean,
+  val keepViewOnceMessages: Boolean,
+  val ignoreRemoteDelete: Boolean,
+  val deleteMediaOnly: Boolean,
+  val googleMapType: String,
+  val whoCanAddYouToGroups: String
 )
