@@ -54,6 +54,7 @@ import org.signal.core.ui.compose.theme.SignalTheme
 import org.signal.core.util.concurrent.LifecycleDisposable
 import org.signal.core.util.getSerializableCompat
 import org.signal.donations.StripeApi
+import org.thoughtcrime.securesms.ImportExportActivity // JW
 import org.thoughtcrime.securesms.calls.YouAreAlreadyInACallSnackbar.show
 import org.thoughtcrime.securesms.calls.log.CallLogFilter
 import org.thoughtcrime.securesms.calls.new.NewCallActivity
@@ -513,6 +514,12 @@ class MainActivity : PassphraseRequiredActivity(), VoiceNoteMediaControllerOwner
 
     override fun onSettingsClick() {
       openSettings.launch(AppSettingsActivity.home(this@MainActivity))
+    }
+
+    // JW: added
+    override fun onImportExportClick() {
+      val intent = Intent(this@MainActivity, ImportExportActivity::class.java)
+      startActivity(intent)
     }
 
     override fun onNotificationProfileClick() {
