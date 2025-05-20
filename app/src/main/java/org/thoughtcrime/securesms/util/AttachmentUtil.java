@@ -16,6 +16,7 @@ import org.thoughtcrime.securesms.attachments.DatabaseAttachment;
 import org.thoughtcrime.securesms.database.NoSuchMessageException;
 import org.thoughtcrime.securesms.database.SignalDatabase;
 import org.thoughtcrime.securesms.database.model.MessageRecord;
+import org.thoughtcrime.securesms.dependencies.AppDependencies; // JW: added
 import org.thoughtcrime.securesms.jobmanager.impl.NotInCallConstraint;
 import org.thoughtcrime.securesms.jobs.MultiDeviceDeleteSyncJob;
 import org.thoughtcrime.securesms.recipients.Recipient;
@@ -100,8 +101,14 @@ public class AttachmentUtil {
 
     MessageRecord deletedMessageRecord = null;
     if (attachmentCount <= 1) {
+      // JW: changed
       deletedMessageRecord = SignalDatabase.messages().getMessageRecordOrNull(mmsId);
-      SignalDatabase.messages().deleteMessage(mmsId);
+      if (!TextSecurePreferences.isDeleteMediaOnly(AppDependencies.getApplication())) {
+        SignalDatabase.messages().deleteMessage(mmsId);
+      } else {
+        SignalDatabase.messages().deleteAttachmentsOnly(mmsId);
+        deletedMessageRecord = null; // JW: don't propagate this delete to linked devices here
+      }
     } else {
       SignalDatabase.attachments().deleteAttachment(attachmentId);
       MultiDeviceDeleteSyncJob.enqueueAttachmentDelete(SignalDatabase.messages().getMessageRecordOrNull(mmsId), attachment);
