@@ -23,9 +23,18 @@ plugins {
 apply(from = "static-ips.gradle.kts")
 
 val canonicalVersionCode = 1606
-val canonicalVersionName = "7.62.2"
+val canonicalVersionName = "7.62.2.0-JW"
 val currentHotfixVersion = 0
 val maxHotfixVersions = 100
+
+// JW: re-added
+val abiPostFix: Map<String, Int> = mapOf(
+  "universal" to 0,
+  "armeabi-v7a" to 1,
+  "arm64-v8a" to 2,
+  "x86" to 3,
+  "x86_64" to 4
+)
 
 val keystores: Map<String, Properties?> = mapOf("debug" to loadKeystoreProperties("keystore.debug.properties"))
 
@@ -189,8 +198,8 @@ android {
 
     manifestPlaceholders["mapsKey"] = "AIzaSyCSx9xea86GwDKGznCAULE9Y5a8b-TfN9U"
 
-    buildConfigField("long", "BUILD_TIMESTAMP", getLastCommitTimestamp() + "L")
-    buildConfigField("String", "GIT_HASH", "\"${getGitHash()}\"")
+    buildConfigField("long", "BUILD_TIMESTAMP", "1000L") // JW: fixed time for reproducible builds, is not used anyway
+    buildConfigField("String", "GIT_HASH", "\"000000\"") // JW
     buildConfigField("String", "SIGNAL_URL", "\"https://chat.signal.org\"")
     buildConfigField("String", "STORAGE_URL", "\"https://storage.signal.org\"")
     buildConfigField("String", "SIGNAL_CDN_URL", "\"https://cdn.signal.org\"")
@@ -238,7 +247,7 @@ android {
     buildConfigField("String", "STRIPE_BASE_URL", "\"https://api.stripe.com/v1\"")
     buildConfigField("String", "STRIPE_PUBLISHABLE_KEY", "\"pk_live_6cmGZopuTsV8novGgJJW9JpC00vLIgtQ1D\"")
     buildConfigField("boolean", "TRACING_ENABLED", "false")
-    buildConfigField("boolean", "LINK_DEVICE_UX_ENABLED", "false")
+    buildConfigField("boolean", "LINK_DEVICE_UX_ENABLED", "true") // JW
 
     ndk {
       abiFilters += listOf("armeabi-v7a", "arm64-v8a", "x86", "x86_64")
@@ -299,7 +308,9 @@ android {
     getByName("release") {
       isMinifyEnabled = true
       proguardFiles(*buildTypes["debug"].proguardFiles.toTypedArray())
+      manifestPlaceholders["mapsKey"] = getMapsKey() // JW
       buildConfigField("String", "BUILD_VARIANT_TYPE", "\"Release\"")
+      buildConfigField("boolean", "LINK_DEVICE_UX_ENABLED", "true") // JW
     }
 
     create("instrumentation") {
@@ -319,6 +330,7 @@ android {
       isMinifyEnabled = false
       matchingFallbacks += "debug"
       buildConfigField("String", "BUILD_VARIANT_TYPE", "\"Spinner\"")
+      buildConfigField("boolean", "LINK_DEVICE_UX_ENABLED", "true")
     }
 
     create("perf") {
@@ -444,24 +456,17 @@ android {
     outputs
       .map { it as com.android.build.gradle.internal.api.ApkVariantOutputImpl }
       .forEach { output ->
-        if (output.baseName.contains("nightly")) {
-          var tag = getCurrentGitTag()
-          if (!tag.isNullOrEmpty()) {
-            if (tag.startsWith("v")) {
-              tag = tag.substring(1)
-            }
-            output.versionNameOverride = tag
-            output.outputFileName = output.outputFileName.replace(".apk", "-${output.versionNameOverride}.apk")
-          } else {
-            output.outputFileName = output.outputFileName.replace(".apk", "-$versionName.apk")
-          }
-        } else {
-          output.outputFileName = output.outputFileName.replace(".apk", "-$versionName.apk")
+        // JW: rewrote section
+        output.outputFileName = output.outputFileName.replace(".apk", "-$versionName.apk")
 
-          if (currentHotfixVersion >= maxHotfixVersions) {
-            throw AssertionError("Hotfix version is too large!")
-          }
+        val abiName: String = output.getFilter("ABI") ?: "universal"
+        val postFix: Int = abiPostFix[abiName]!!
+
+        if (postFix >= maxHotfixVersions) {
+          throw AssertionError("maxHotfixVersions is too large")
         }
+
+        output.versionCodeOverride = canonicalVersionCode * maxHotfixVersions + postFix
       }
   }
 
@@ -508,6 +513,7 @@ dependencies {
   implementation(project(":photoview"))
   implementation(project(":core-ui"))
 
+  implementation("net.lingala.zip4j:zip4j:2.11.5") // JW: added
   implementation(libs.androidx.fragment.ktx)
   implementation(libs.androidx.appcompat) {
     version {
