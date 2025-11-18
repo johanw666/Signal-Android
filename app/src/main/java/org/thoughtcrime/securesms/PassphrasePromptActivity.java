@@ -34,6 +34,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.inputmethod.EditorInfo;
+import android.view.inputmethod.InputMethodManager; // JW
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.TextView;
@@ -59,6 +60,7 @@ import org.thoughtcrime.securesms.logsubmit.SubmitDebugLogActivity;
 import org.thoughtcrime.securesms.util.CommunicationActions;
 import org.thoughtcrime.securesms.util.DynamicIntroTheme;
 import org.thoughtcrime.securesms.util.DynamicLanguage;
+import org.thoughtcrime.securesms.util.ServiceUtil; // JW
 import org.thoughtcrime.securesms.util.SupportEmailUtil;
 import org.thoughtcrime.securesms.util.views.LearnMoreTextView;
 
@@ -199,6 +201,8 @@ public class PassphrasePromptActivity extends PassphraseActivity {
       MasterSecret masterSecret = MasterSecretUtil.getMasterSecret(this, passphrase);
 
       setMasterSecret(masterSecret);
+      InputMethodManager imm = ServiceUtil.getInputMethodManager(this); // JW
+      imm.hideSoftInputFromWindow(passphraseText.getWindowToken(), 0); // JW
     } catch (InvalidPassphraseException ipe) {
       passphraseText.setText("");
       passphraseText.setError(
@@ -277,6 +281,9 @@ public class PassphrasePromptActivity extends PassphraseActivity {
       passphraseAuthContainer.setVisibility(View.VISIBLE);
       unlockView.setVisibility(View.GONE);
       lockScreenButton.setVisibility(View.GONE);
+      passphraseText.requestFocus(); // JW
+      InputMethodManager imm = ServiceUtil.getInputMethodManager(this); // JW
+      imm.showSoftInput(passphraseText, InputMethodManager.SHOW_IMPLICIT); // JW
     }
   }
 
