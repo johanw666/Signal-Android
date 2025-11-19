@@ -275,7 +275,7 @@ class BackupValues(store: KeyValueStore) : SignalStoreValues(store) {
     }
 
   /** An internal setting that can override the backup tier for a user. */
-  var backupTierInternalOverride: MessageBackupTier? by enumValue(KEY_BACKUP_TIER_INTERNAL_OVERRIDE, null, MessageBackupTier.Serializer).withPrecondition { Environment.IS_STAGING }
+  var backupTierInternalOverride: MessageBackupTier? by enumValue(KEY_BACKUP_TIER_INTERNAL_OVERRIDE, null, MessageBackupTier.Serializer).withPrecondition { true } // JW
 
   /**
    * Denotes if there was a mismatch detected between the user's Signal subscription, on-device Google Play subscription,
