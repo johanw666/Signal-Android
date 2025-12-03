@@ -1,0 +1,26 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<resources>
+  <!--arrays.xml-->
+  <string name="arrays__import_export_orig">インポート／エクスポート</string>
+  <!--ImportFragment-->
+  <string name="ImportFragment_restore_encrypted_backup">暗号化されたバックアップを復元しますか？</string>
+  <string name="ImportFragment_restoring_an_encrypted_backup_will_completely_replace_your_existing_keys">暗号化されたバックアップを復元すると、キー・設定・メッセージが完全に置き換わります。アプリ内の情報でバックアップにないものはすべて失われます。</string>
+  <string name="ImportFragment_restore">復元</string>
+  <string name="ImportFragment_restoring">復元中…</string>
+  <string name="ImportFragment_restoring_encrypted_backup">暗号化されたバックアップ・ファイルをインポート中…</string>
+  <string name="ImportFragment_no_encrypted_backup_found">暗号化されたバックアップ・ファイルは見つかりませんでした。</string>
+  <string name="ImportFragment_restore_complete">復元完了！</string>
+  <!--ExportFragment-->
+  <string name="ExportFragment_export_to_sd_card">SDカードへエクスポートしますか？</string>
+  <string name="ExportFragment_this_will_export_your_encrypted_keys_settings_and_messages">これで、あなたの暗号化された鍵、設定、及びメッセージはSDカードへエクスポートされますが、よろしいですか？</string>
+  <string name="ExportFragment_exporting_keys_settings_and_messages">暗号化されたキー、設定及びメッセージをエクスポート中…</string>
+  <!--database_upgrade_activity-->
+  <string name="export_fragment__export_encrypted_backup">暗号化されたバックアップ・ファイルをエクスポート</string>
+  <string name="export_fragment__export_an_encrypted_backup_to_the_sd_card">SDカードへ暗号化された\nバックアップ・ファイルをエクスポートします</string>
+  <string name="import_fragment__restore_encrypted_backup">暗号化されたバックアップを復元する</string>
+  <string name="import_fragment__restore_a_previously_exported_encrypted_signal_backup">以前にエクスポートされた暗号化されたバックアップを復元する</string>
+  <string name="import_fragment__import_system_sms_database">システムのSMSデータベースをインポート</string>
+  <string name="import_fragment__import_the_database_from_the_default_system">既定のシステムメッセージアプリからデータベースをインポートする</string>
+  <string name="import_fragment__import_plaintext_backup">テキストのバックアップをインポート</string>
+  <string name="import_fragment__import_a_plaintext_backup_file">テキストのバックアップファイルをインポートします。「SMSのバックアップと復元」と互換性があります。</string>
+</resources>
