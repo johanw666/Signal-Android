@@ -33,6 +33,7 @@ import org.thoughtcrime.securesms.database.MessageType
 import org.thoughtcrime.securesms.database.NoSuchMessageException
 import org.thoughtcrime.securesms.database.PaymentTable.PublicKeyConflictException
 import org.thoughtcrime.securesms.database.SignalDatabase
+import org.thoughtcrime.securesms.database.SignalDatabase.Companion.reactions // JW
 import org.thoughtcrime.securesms.database.model.GroupRecord
 import org.thoughtcrime.securesms.database.model.Mention
 import org.thoughtcrime.securesms.database.model.MessageId
@@ -91,6 +92,7 @@ import org.thoughtcrime.securesms.mms.IncomingMessage
 import org.thoughtcrime.securesms.mms.MmsException
 import org.thoughtcrime.securesms.mms.QuoteModel
 import org.thoughtcrime.securesms.notifications.v2.ConversationId
+import org.thoughtcrime.securesms.notifications.v2.ConversationId.Companion.fromMessageRecord // JW
 import org.thoughtcrime.securesms.polls.Poll
 import org.thoughtcrime.securesms.recipients.Recipient
 import org.thoughtcrime.securesms.recipients.Recipient.HiddenState
@@ -588,6 +590,17 @@ object DataMessageProcessor {
     return targetMessageId
   }
 
+  // JW: add a reaction to a message. Thanks ClauZ for the implementation
+  fun setMessageReaction(context: Context, message: DataMessage, targetMessage: MessageRecord?, reaction: String) {
+    if (targetMessage != null) {
+      val reactionEmoji = EmojiUtil.getCanonicalRepresentation(reaction)
+      val targetMessageId = MessageId(targetMessage.id)
+      val reactionRecord = ReactionRecord(reactionEmoji, Recipient.self().id, message.timestamp!!, System.currentTimeMillis())
+      reactions.addReaction(targetMessageId, reactionRecord)
+      AppDependencies.messageNotifier.updateNotification(context, fromMessageRecord(targetMessage))
+    }
+  }
+
   fun handleRemoteDelete(context: Context, envelope: Envelope, message: DataMessage, senderRecipientId: RecipientId, earlyMessageCacheEntry: EarlyMessageCacheEntry?): MessageId? {
     val delete = message.delete!!
 
@@ -595,6 +608,9 @@ object DataMessageProcessor {
 
     val targetSentTimestamp: Long = delete.targetSentTimestamp!!
     val targetMessage: MessageRecord? = SignalDatabase.messages.getMessageFor(targetSentTimestamp, senderRecipientId)
+
+    // JW: set a reaction to indicate the message was attempted to be remote deleted. Sender is myself, emoji is an exclamation.
+    if (TextSecurePreferences.isIgnoreRemoteDelete(context)) { setMessageReaction(context, message, targetMessage, "\u2757"); return null; }
 
     return if (targetMessage != null && MessageConstraintsUtil.isValidRemoteDeleteReceive(targetMessage, senderRecipientId, envelope.serverTimestamp!!)) {
       SignalDatabase.messages.markAsRemoteDelete(targetMessage)
@@ -911,6 +927,7 @@ object DataMessageProcessor {
     notifyTypingStoppedFromIncomingMessage(context, senderRecipient, threadRecipient.id, metadata.sourceDeviceId)
 
     val insertResult: InsertResult?
+    val viewOnce: Boolean = if (TextSecurePreferences.isKeepViewOnceMessages(context)) false else (message.isViewOnce == true) // JW
 
     SignalDatabase.messages.beginTransaction()
     try {
@@ -931,7 +948,7 @@ object DataMessageProcessor {
         serverTimeMillis = envelope.serverTimestamp!!,
         receivedTimeMillis = receivedTime,
         expiresIn = message.expireTimerDuration.inWholeMilliseconds,
-        isViewOnce = message.isViewOnce == true,
+        isViewOnce = viewOnce, // JW
         isUnidentified = metadata.sealedSender,
         body = message.body?.ifEmpty { null },
         groupId = groupId,
@@ -975,7 +992,12 @@ object DataMessageProcessor {
         AppDependencies.messageNotifier.updateNotification(context, ConversationId.forConversation(insertResult.threadId))
         TrimThreadJob.enqueueAsync(insertResult.threadId)
 
-        if (message.isViewOnce == true) {
+        // JW: add a [1] reaction to indicate the message was sent as viewOnce.
+        if (TextSecurePreferences.isKeepViewOnceMessages(context) && (message.isViewOnce == true)) {
+          val targetMessage = SignalDatabase.messages.getMessageRecordOrNull(insertResult.messageId)
+          setMessageReaction(context, message, targetMessage, "\u0031\uFE0F\u20E3")
+        }
+        if (viewOnce) { // JW
           AppDependencies.viewOnceMessageManager.scheduleIfNecessary()
         }
       }
