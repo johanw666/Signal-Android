@@ -1,0 +1,29 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<resources>
+  <!--arrays.xml-->
+  <string name="arrays__import_export_orig">Importació i exportació</string>
+  <!--ImportFragment-->
+  <string name="ImportFragment_restore_encrypted_backup">Voleu restablir la còpia de seguretat xifrada?</string>
+  <string name="ImportFragment_restoring_an_encrypted_backup_will_completely_replace_your_existing_keys">
+En restablir una còpia de seguretat xifrada, es reemplaçaran totes les claus, preferències i
+missatges. Perdreu qualsevol informació que estigui al Signal però no a la còpia
+de seguretat.</string>
+  <string name="ImportFragment_restore">Restaura</string>
+  <string name="ImportFragment_restoring">S\'està restaurant</string>
+  <string name="ImportFragment_restoring_encrypted_backup">S\'està restaurant la còpia de seguretat xifrada...</string>
+  <string name="ImportFragment_no_encrypted_backup_found">No s\'ha trobat cap còpia de seguretat xifrada.</string>
+  <string name="ImportFragment_restore_complete">Restauració completa!</string>
+  <!--ExportFragment-->
+  <string name="ExportFragment_export_to_sd_card">Exportar a la targeta SD?</string>
+  <string name="ExportFragment_this_will_export_your_encrypted_keys_settings_and_messages">Això exportarà les teves claus encriptades, ajustaments, i missatges a la targeta SD.</string>
+  <string name="ExportFragment_exporting_keys_settings_and_messages">Exportant claus encriptades, ajustaments, i missatges...</string>
+  <!--database_upgrade_activity-->
+  <string name="export_fragment__export_encrypted_backup">Exporta còpia de seguretat encriptada</string>
+  <string name="export_fragment__export_an_encrypted_backup_to_the_sd_card">Exporta una còpia de seguretat\nencriptada a la targeta SD.</string>
+  <string name="import_fragment__restore_encrypted_backup">Recupera la còpia de seguretat xifrada</string>
+  <string name="import_fragment__restore_a_previously_exported_encrypted_signal_backup">Recupera una còpia de seguretat xifrada del Signal exportada prèviament</string>
+  <string name="import_fragment__import_system_sms_database">Importa la base de dades d\'SMS del sistema</string>
+  <string name="import_fragment__import_the_database_from_the_default_system">Importa la base de dades del programa de missatgeria predeterminat del sistema</string>
+  <string name="import_fragment__import_plaintext_backup">Importa la còpia de seguretat en text net</string>
+  <string name="import_fragment__import_a_plaintext_backup_file">Importa una còpia de seguretat en text pla. Compatible amb la «Còpia de seguretat i restauració amb SMS».</string>
+</resources>
