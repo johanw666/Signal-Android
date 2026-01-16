@@ -69,7 +69,9 @@
     <uses-permission android:name="android.permission.VIBRATE" />
     <uses-permission android:name="android.permission.WAKE_LOCK" />
     <uses-permission android:name="android.permission.WRITE_CONTACTS" />
-    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" android:maxSdkVersion="28" />
+    <!-- JW: override for Android 10. For Android 11 and up we use the MANAGE_EXTERNAL_STORAGE permission. -->
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.MANAGE_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.WRITE_SYNC_SETTINGS" />
     <uses-permission android:name="com.android.launcher.permission.INSTALL_SHORTCUT" />
 
@@ -421,12 +423,24 @@
             android:theme="@style/Theme.Signal.DayNight.NoActionBar"
             android:windowSoftInputMode="stateUnchanged" />
 
+        <!-- JW: added the windowSoftInputMode="stateVisible" flag here to show a keyboard on open -->
         <activity
             android:name=".PassphrasePromptActivity"
             android:configChanges="touchscreen|keyboard|keyboardHidden|orientation|screenLayout|screenSize"
             android:exported="false"
             android:launchMode="singleTask"
+            android:windowSoftInputMode="stateVisible"
             android:theme="@style/Theme.Signal.DayNight.NoActionBar" />
+
+        <!-- JW: Add activity used in plaintext backup import / export -->
+        <activity
+            android:name=".ImportExportActivity"
+            android:configChanges="touchscreen|keyboard|keyboardHidden|orientation|screenLayout|screenSize"/>
+
+        <!-- JW: Add activity used in encrypted backup import -->
+        <activity
+            android:name=".ExitActivity"
+            android:theme="@android:style/Theme.NoDisplay" />
 
         <activity
             android:name=".conversation.NewConversationActivity"
