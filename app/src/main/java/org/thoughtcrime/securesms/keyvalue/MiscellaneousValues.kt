@@ -78,14 +78,7 @@ class MiscellaneousValues internal constructor(store: KeyValueStore) : SignalSto
   /**
    * Whether or not the client is currently in a 'deprecated' state, disallowing network access. Send a notification if the client changes from not deprecated to deprecated state.
    */
-  var isClientDeprecated: Boolean
-    get() = getBoolean(CLIENT_DEPRECATED, false)
-    set(isDeprecated) {
-      if (isDeprecated && !isClientDeprecated) {
-        DeprecatedNotificationJob.enqueue()
-      }
-      putBoolean(CLIENT_DEPRECATED, isDeprecated)
-    }
+  var isClientDeprecated: Boolean = false // JW
 
   /**
    * Whether or not we've locked the device after they've transferred to a new one.
