@@ -30,9 +30,18 @@ plugins {
 apply(from = "static-ips.gradle.kts")
 
 val canonicalVersionCode = 1646
-val canonicalVersionName = "7.73.1"
+val canonicalVersionName = "7.73.1.0-JW"
 val currentHotfixVersion = 0
 val maxHotfixVersions = 100
+
+// JW: re-added
+val abiPostFix: Map<String, Int> = mapOf(
+  "universal" to 0,
+  "armeabi-v7a" to 1,
+  "arm64-v8a" to 2,
+  "x86" to 3,
+  "x86_64" to 4
+)
 
 // We don't want versions to ever end in 0 so that they don't conflict with nightly versions
 val possibleHotfixVersions = (0 until maxHotfixVersions).toList().filter { it % 10 != 0 }
@@ -159,6 +168,8 @@ android {
 
   packaging {
     jniLibs {
+      useLegacyPackaging = true // JW: to reduce the apk size for new build target minAPI23
+
       excludes += setOf(
         "**/*.dylib",
         "**/*.dll"
@@ -206,8 +217,8 @@ android {
 
     manifestPlaceholders["mapsKey"] = "AIzaSyCSx9xea86GwDKGznCAULE9Y5a8b-TfN9U"
 
-    buildConfigField("long", "BUILD_TIMESTAMP", getLastCommitTimestamp() + "L")
-    buildConfigField("String", "GIT_HASH", "\"${getGitHash()}\"")
+    buildConfigField("long", "BUILD_TIMESTAMP", "1000L") // JW: fixed time for reproducible builds, is not used anyway
+    buildConfigField("String", "GIT_HASH", "\"000000\"") // JW
     buildConfigField("String", "SIGNAL_URL", "\"https://chat.signal.org\"")
     buildConfigField("String", "STORAGE_URL", "\"https://storage.signal.org\"")
     buildConfigField("String", "SIGNAL_CDN_URL", "\"https://cdn.signal.org\"")
@@ -254,7 +265,7 @@ android {
     buildConfigField("String", "STRIPE_BASE_URL", "\"https://api.stripe.com/v1\"")
     buildConfigField("String", "STRIPE_PUBLISHABLE_KEY", "\"pk_live_6cmGZopuTsV8novGgJJW9JpC00vLIgtQ1D\"")
     buildConfigField("boolean", "TRACING_ENABLED", "false")
-    buildConfigField("boolean", "LINK_DEVICE_UX_ENABLED", "false")
+    buildConfigField("boolean", "LINK_DEVICE_UX_ENABLED", "true") // JW
     buildConfigField("boolean", "USE_STRING_ID", "true")
 
     ndk {
@@ -315,8 +326,10 @@ android {
 
     getByName("release") {
       isMinifyEnabled = true
+      manifestPlaceholders["mapsKey"] = getMapsKey() // JW
       proguardFiles(*buildTypes["debug"].proguardFiles.toTypedArray())
       buildConfigField("String", "BUILD_VARIANT_TYPE", "\"Release\"")
+      buildConfigField("boolean", "LINK_DEVICE_UX_ENABLED", "true") // JW
     }
 
     create("instrumentation") {
@@ -376,18 +389,18 @@ android {
       buildConfigField("String", "BUILD_DISTRIBUTION_TYPE", "\"play\"")
     }
 
-    create("website") {
-      dimension = "distribution"
-      buildConfigField("boolean", "MANAGES_APP_UPDATES", "true")
-      buildConfigField("String", "APK_UPDATE_MANIFEST_URL", "\"https://updates.signal.org/android/latest.json\"")
-      buildConfigField("String", "BUILD_DISTRIBUTION_TYPE", "\"website\"")
-    }
-
     create("github") {
       dimension = "distribution"
       buildConfigField("boolean", "MANAGES_APP_UPDATES", "false")
       buildConfigField("String", "APK_UPDATE_MANIFEST_URL", "null")
       buildConfigField("String", "BUILD_DISTRIBUTION_TYPE", "\"github\"")
+    }
+
+    create("website") {
+      dimension = "distribution"
+      buildConfigField("boolean", "MANAGES_APP_UPDATES", "true")
+      buildConfigField("String", "APK_UPDATE_MANIFEST_URL", "\"https://updates.signal.org/android/latest.json\"")
+      buildConfigField("String", "BUILD_DISTRIBUTION_TYPE", "\"website\"")
     }
 
     create("nightly") {
@@ -458,6 +471,26 @@ android {
     disable += "LintError"
   }
 
+  // JW added
+  applicationVariants.all {
+    outputs
+      .map { it as com.android.build.gradle.internal.api.ApkVariantOutputImpl }
+      .forEach { output ->
+        // JW: rewrote section
+        output.outputFileName = output.outputFileName.replace(".apk", "-$versionName.apk")
+
+        val abiName: String = output.getFilter("ABI") ?: "universal"
+        val postFix: Int = abiPostFix[abiName]!!
+
+        if (postFix >= maxHotfixVersions) {
+          throw AssertionError("maxHotfixVersions is too large")
+        }
+
+        output.versionCodeOverride = canonicalVersionCode * maxHotfixVersions + postFix
+      }
+  }
+  // End JW: added
+
   androidComponents {
     beforeVariants { variant ->
       variant.enable = variant.name in selectableVariants
@@ -508,7 +541,7 @@ android {
   applicationVariants.configureEach {
     outputs.configureEach {
       if (this is com.android.build.gradle.internal.api.BaseVariantOutputImpl) {
-        outputFileName = outputFileName.replace(".apk", "-$versionName.apk")
+        //outputFileName = outputFileName.replace(".apk", "-$versionName.apk") // JW
       }
     }
   }
@@ -538,6 +571,7 @@ dependencies {
   implementation(project(":core:models-jvm"))
   implementation(project(":feature:camera"))
 
+  implementation("net.lingala.zip4j:zip4j:2.11.5") // JW: added
   implementation(libs.androidx.fragment.ktx)
   implementation(libs.androidx.appcompat) {
     version {
@@ -699,18 +733,26 @@ tasks.withType<Test>().configureEach {
 }
 
 fun getLastCommitTimestamp(): String {
+  return "\"000000\"" // JW
+  /*
   return providers.exec {
     commandLine("git", "log", "-1", "--pretty=format:%ct")
   }.standardOutput.asText.get() + "000"
+  */
 }
 
 fun getGitHash(): String {
+  return "\"000000\"" // JW
+  /*
   return providers.exec {
     commandLine("git", "rev-parse", "HEAD")
   }.standardOutput.asText.get().trim().substring(0, 12)
+  */
 }
 
 fun getNightlyTagForCurrentCommit(): String? {
+  return "\"000000\"" // JW
+/*
   val output = providers.exec {
     commandLine("git", "tag", "--points-at", "HEAD")
   }.standardOutput.asText.get().trim()
@@ -721,6 +763,7 @@ fun getNightlyTagForCurrentCommit(): String? {
   } else {
     null
   }
+*/
 }
 
 fun getNightlyBuildNumber(tag: String?): Int {
@@ -732,12 +775,15 @@ fun getNightlyBuildNumber(tag: String?): Int {
   return match?.groupValues?.get(1)?.toIntOrNull() ?: 0
 }
 
+// JW: rewrote function
 fun getMapsKey(): String {
-  return providers
-    .gradleProperty("mapsKey")
-    .orElse(providers.environmentVariable("MAPS_KEY"))
-    .orElse("AIzaSyCSx9xea86GwDKGznCAULE9Y5a8b-TfN9U")
-    .get()
+  val mapKey = file("${project.rootDir}/maps.key")
+
+  return if (mapKey.exists()) {
+    mapKey.readLines()[0]
+  } else {
+    "AIzaSyCSx9xea86GwDKGznCAULE9Y5a8b-TfN9U"
+  }
 }
 
 abstract class LanguageListValueSource : ValueSource<List<String>, LanguageListValueSource.Params> {

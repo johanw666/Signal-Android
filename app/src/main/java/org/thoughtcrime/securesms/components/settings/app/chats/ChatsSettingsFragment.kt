@@ -22,6 +22,18 @@ import org.thoughtcrime.securesms.R
 import org.thoughtcrime.securesms.compose.ComposeFragment
 import org.thoughtcrime.securesms.compose.rememberStatusBarColorNestedScrollModifier
 import org.thoughtcrime.securesms.util.navigation.safeNavigate
+// JW: Added
+import android.app.Activity
+import android.content.Intent
+import android.os.Build
+import androidx.compose.ui.res.stringArrayResource
+import org.thoughtcrime.securesms.backup.BackupDialog
+import org.thoughtcrime.securesms.service.LocalBackupListener
+import org.thoughtcrime.securesms.util.TextSecurePreferences
+import org.thoughtcrime.securesms.keyvalue.SignalStore
+import org.thoughtcrime.securesms.util.UriUtils
+import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.res.vectorResource
 
 /**
  * Displays a list of chats settings options to the user, including
@@ -30,12 +42,32 @@ import org.thoughtcrime.securesms.util.navigation.safeNavigate
 class ChatsSettingsFragment : ComposeFragment() {
 
   private val viewModel: ChatsSettingsViewModel by viewModels()
+  val CHOOSE_BACKUPS_LOCATION_REQUEST_CODE = 1201 // JW: added
 
   override fun onResume() {
     super.onResume()
     viewModel.refresh()
   }
 
+  // JW: added
+  override fun onActivityResult(requestCode: Int, resultCode: Int, intent: Intent?) {
+    super.onActivityResult(requestCode, resultCode, intent)
+
+    if (intent != null && intent.data != null) {
+      if (resultCode == Activity.RESULT_OK) {
+        if (requestCode == CHOOSE_BACKUPS_LOCATION_REQUEST_CODE) {
+          val backupUri = intent.data
+          val takeFlags = Intent.FLAG_GRANT_READ_URI_PERMISSION or Intent.FLAG_GRANT_WRITE_URI_PERMISSION
+          SignalStore.settings.setSignalBackupDirectory(backupUri!!)
+          context?.getContentResolver()?.takePersistableUriPermission(backupUri, takeFlags)
+          TextSecurePreferences.setNextBackupTime(requireContext(), 0)
+          LocalBackupListener.schedule(context)
+          viewModel.setChatBackupLocationApi30(UriUtils.getFullPathFromTreeUri(context, backupUri))
+        }
+      }
+    }
+  }
+  
   @Composable
   override fun FragmentContent() {
     val state by viewModel.state.collectAsStateWithLifecycle()
@@ -79,6 +111,53 @@ class ChatsSettingsFragment : ComposeFragment() {
     override fun onEnterKeySendsChanged(enabled: Boolean) {
       viewModel.setEnterKeySends(enabled)
     }
+
+    // JW: added --------------------------------------------------------------
+    override fun onChatBackupLocationChanged(enabled: Boolean) {
+      viewModel.setChatBackupLocation(enabled)
+    }
+
+    override fun onChatBackupsClick() {
+      findNavController().safeNavigate(R.id.action_chatsSettingsFragment_to_backupsPreferenceFragment)
+    }
+
+    override fun onChatBackupLocationChangedApi30() {
+      val backupUri = SignalStore.settings.signalBackupDirectory
+
+      if (Build.VERSION.SDK_INT >= 30) {
+        BackupDialog.showChooseBackupLocationDialog(this@ChatsSettingsFragment, CHOOSE_BACKUPS_LOCATION_REQUEST_CODE)
+        viewModel.setChatBackupLocationApi30(UriUtils.getFullPathFromTreeUri(context, backupUri))
+      }
+    }
+
+    override fun ontChatBackupZipfileChanged(enabled: Boolean) {
+      viewModel.setChatBackupZipfile(enabled)
+    }
+
+    override fun onChatBackupZipfilePlainChanged(enabled: Boolean) {
+      viewModel.setChatBackupZipfilePlain(enabled)
+    }
+
+    override fun onKeepViewOnceMessagesChanged(enabled: Boolean) {
+      viewModel.keepViewOnceMessages(enabled)
+    }
+
+    override fun onIgnoreRemoteDeleteChanged(enabled: Boolean) {
+      viewModel.setIgnoreRemoteDelete(enabled)
+    }
+
+    override fun onDeleteMediaOnlyChanged(enabled: Boolean) {
+      viewModel.setDeleteMediaOnly(enabled)
+    }
+
+    override fun onWhoCanAddYouToGroupsClicked(selection: String) {
+      viewModel.setWhoCanAddYouToGroups(selection)
+    }
+
+    override fun onSetGoogleMapTypeClicked(selection: String) {
+      viewModel.setGoogleMapType(selection)
+    }  
+    //-------------------------------------------------------------------------
   }
 }
 
@@ -91,6 +170,17 @@ private interface ChatsSettingsCallbacks {
   fun onAddOrEditFoldersClick() = Unit
   fun onUseSystemEmojiChanged(enabled: Boolean) = Unit
   fun onEnterKeySendsChanged(enabled: Boolean) = Unit
+  // JW: added
+  fun onChatBackupsClick() = Unit
+  fun onChatBackupLocationChanged(enabled: Boolean) = Unit
+  fun onChatBackupLocationChangedApi30() = Unit
+  fun ontChatBackupZipfileChanged(enabled: Boolean) = Unit
+  fun onChatBackupZipfilePlainChanged(enabled: Boolean) = Unit
+  fun onKeepViewOnceMessagesChanged(enabled: Boolean) = Unit
+  fun onIgnoreRemoteDeleteChanged(enabled: Boolean) = Unit
+  fun onDeleteMediaOnlyChanged(enabled: Boolean) = Unit
+  fun onWhoCanAddYouToGroupsClicked(selection: String) = Unit
+  fun onSetGoogleMapTypeClicked(selection: String) = Unit
 
   object Empty : ChatsSettingsCallbacks
 }
@@ -192,6 +282,135 @@ private fun ChatsSettingsScreen(
           onCheckChanged = callbacks::onEnterKeySendsChanged
         )
       }
+
+      // JW: added ------------------------------------------------------------
+      item {
+        Dividers.Default()
+      }
+
+      item {
+        Texts.SectionHeader(stringResource(R.string.preferences_chats__backups))
+      }
+
+      item {
+        Rows.TextRow(
+          text = stringResource(R.string.RemoteBackupsSettingsFragment__on_device_backups),
+          icon = ImageVector.vectorResource(R.drawable.symbol_device_phone_24),
+          label = stringResource(R.string.RemoteBackupsSettingsFragment__save_your_backups_to),
+          enabled = true,
+          onClick = callbacks::onChatBackupsClick
+        )
+      }
+
+      if (Build.VERSION.SDK_INT < 30) {
+        item {
+          Rows.ToggleRow(
+            text = stringResource(R.string.preferences_chats__chat_backups_removable),
+            label = stringResource(R.string.preferences_chats__backup_chats_to_removable_storage),
+            checked = state.chatBackupsLocation,
+            onCheckChanged = callbacks::onChatBackupLocationChanged
+          )
+        }
+      } else {
+          item {
+            Rows.TextRow(
+              text = stringResource(R.string.preferences_chats__chat_backups_location_tap_to_change),
+              label = state.chatBackupsLocationApi30,
+              onClick = callbacks::onChatBackupLocationChangedApi30
+            )
+          }
+      }
+
+      item {
+        Rows.ToggleRow(
+          text = stringResource(R.string.preferences_chats__chat_backups_zipfile),
+          label = stringResource(R.string.preferences_chats__backup_chats_to_encrypted_zipfile),
+          checked = state.chatBackupZipfile,
+          onCheckChanged = callbacks::ontChatBackupZipfileChanged
+        )
+      }
+
+      item {
+        Rows.ToggleRow(
+          text = stringResource(R.string.preferences_chats__chat_backups_zipfile_plain),
+          label = stringResource(R.string.preferences_chats__backup_chats_to_encrypted_zipfile_plain),
+          checked = state.chatBackupZipfilePlain,
+          onCheckChanged = callbacks::onChatBackupZipfilePlainChanged
+        )
+      }
+
+      item {
+        Dividers.Default()
+      }
+      
+      item {
+        Texts.SectionHeader(stringResource(R.string.preferences_chats__control_message_deletion))
+      }
+
+      item {
+        Rows.ToggleRow(
+          text = stringResource(R.string.preferences_chats__chat_keep_view_once_messages),
+          label = stringResource(R.string.preferences_chats__keep_view_once_messages_summary),
+          checked = state.keepViewOnceMessages,
+          onCheckChanged = callbacks::onKeepViewOnceMessagesChanged
+        )
+      }
+
+      item {
+        Rows.ToggleRow(
+          text = stringResource(R.string.preferences_chats__chat_ignore_remote_delete),
+          label = stringResource(R.string.preferences_chats__chat_ignore_remote_delete_summary),
+          checked = state.ignoreRemoteDelete,
+          onCheckChanged = callbacks::onIgnoreRemoteDeleteChanged
+        )
+      }
+
+      item {
+        Rows.ToggleRow(
+          text = stringResource(R.string.preferences_chats__delete_media_only),
+          label = stringResource(R.string.preferences_chats__delete_media_only_summary),
+          checked = state.deleteMediaOnly,
+          onCheckChanged = callbacks::onDeleteMediaOnlyChanged
+        )
+      }
+
+      item {
+        Dividers.Default()
+      }
+      
+      item {
+        Texts.SectionHeader(stringResource(R.string.preferences_chats__group_control))
+      }
+
+      item {
+        Rows.RadioListRow(
+          text = stringResource(R.string.preferences_chats__who_can_add_you_to_groups),
+          labels = stringArrayResource(R.array.pref_group_add_entries),
+          values = stringArrayResource(R.array.pref_group_add_values),
+          selectedValue = state.whoCanAddYouToGroups,
+          onSelected = callbacks::onWhoCanAddYouToGroupsClicked
+        )
+      }
+
+      item {
+        Dividers.Default()
+      }
+      
+      item {
+        Texts.SectionHeader(stringResource(R.string.preferences_chats__google_map_type))
+      }
+
+      item {
+        Rows.RadioListRow(
+          text = stringResource(R.string.preferences__map_type),
+          
+          labels = stringArrayResource(R.array.pref_map_type_entries),
+          values = stringArrayResource(R.array.pref_map_type_values),
+          selectedValue = state.googleMapType,
+          onSelected = callbacks::onSetGoogleMapTypeClicked
+        )
+      }
+     // ----------------------------------------------------------------------
     }
   }
 }
@@ -211,6 +430,17 @@ private fun ChatsSettingsScreenPreview() {
         folderCount = 1,
         userUnregistered = false,
         clientDeprecated = false
+        // JW: added
+        ,
+        chatBackupsLocation = false,
+        chatBackupsLocationApi30 = "Disabled",
+        chatBackupZipfile = false,
+        chatBackupZipfilePlain = false,
+        keepViewOnceMessages = false,
+        ignoreRemoteDelete = false,
+        deleteMediaOnly = false,
+        googleMapType = "normal",
+        whoCanAddYouToGroups = "nonblocked"
       ),
       callbacks = ChatsSettingsCallbacks.Empty
     )
