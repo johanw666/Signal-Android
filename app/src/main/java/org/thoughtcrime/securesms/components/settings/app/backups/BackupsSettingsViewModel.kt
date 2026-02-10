@@ -45,7 +45,7 @@ class BackupsSettingsViewModel : ViewModel() {
           it.copy(
             backupState = enabledState,
             lastBackupAt = SignalStore.backup.lastBackupTime.milliseconds,
-            showBackupTierInternalOverride = Environment.IS_STAGING,
+            showBackupTierInternalOverride = true, // JW
             backupTierInternalOverride = SignalStore.backup.backupTierInternalOverride,
             showNewLocalBackup = RemoteConfig.internalUser || Environment.IS_NIGHTLY
           )
