@@ -135,6 +135,12 @@ class AdvancedPrivacySettingsFragment : ComposeFragment() {
       viewModel.setAlwaysRelayCalls(enabled)
     }
 
+    // JW: added
+    override fun onPushNotificationsViaFCM(enabled: Boolean) {
+      viewModel.setPushNotificationsViaFCM(enabled)
+      FCMPreferenceFunctions.onFCMPreferenceChange(context, enabled)
+    }
+
     override fun onCensorshipCircumventionChanged(enabled: Boolean) {
       viewModel.setCensorshipCircumventionEnabled(enabled)
     }
@@ -171,6 +177,7 @@ private interface AdvancedPrivacySettingsCallbacks {
 
   fun onNavigationClick() = Unit
   fun onAlwaysRelayCallsChanged(enabled: Boolean) = Unit
+  fun onPushNotificationsViaFCM(enabled: Boolean) = Unit // JW
   fun onCensorshipCircumventionChanged(enabled: Boolean) = Unit
   fun onShowStatusIconForSealedSenderChanged(enabled: Boolean) = Unit
   fun onAllowSealedSenderFromAnyoneChanged(enabled: Boolean) = Unit
@@ -209,6 +216,19 @@ private fun AdvancedPrivacySettingsScreen(
         Dividers.Default()
       }
 
+      // JW -------------------------------------------------------------------
+      item {
+        Rows.ToggleRow(
+          checked = state.pushNotificationsViaFCM,
+          text = stringResource(R.string.preferences_advanced__push_notifications_fcm),
+          label = stringResource(R.string.preferences_advanced__push_notifications_fcm_summary),
+          onCheckChanged = callbacks::onPushNotificationsViaFCM
+        )
+      }
+      item {
+        Dividers.Default()
+      }
+      //-----------------------------------------------------------------------
       item {
         Texts.SectionHeader(text = stringResource(R.string.preferences_communication__category_censorship_circumvention))
       }
@@ -337,6 +357,7 @@ private fun AdvancedPrivacySettingsScreenPreview() {
       state = AdvancedPrivacySettingsState(
         isPushEnabled = true,
         alwaysRelayCalls = false,
+        pushNotificationsViaFCM = true, // JW
         censorshipCircumventionState = CensorshipCircumventionState.UNAVAILABLE_CONNECTED,
         censorshipCircumventionEnabled = false,
         showSealedSenderStatusIcon = false,
