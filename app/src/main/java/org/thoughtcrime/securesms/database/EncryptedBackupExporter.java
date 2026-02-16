@@ -18,6 +18,7 @@ package org.thoughtcrime.securesms.database;
 
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.net.Uri;
 import android.os.Build;
 import android.os.Environment;
 
@@ -26,15 +27,17 @@ import androidx.annotation.NonNull;
 import org.signal.core.util.Base64;
 import org.signal.core.util.logging.Log;
 import org.signal.core.util.NoExternalStorageException;
+import org.signal.core.ui.util.StorageUtil;
+
 import org.thoughtcrime.securesms.crypto.AttachmentSecret;
 import org.thoughtcrime.securesms.crypto.AttachmentSecretProvider;
 import org.thoughtcrime.securesms.backup.BackupPassphrase;
 import org.thoughtcrime.securesms.crypto.DatabaseSecret;
 import org.thoughtcrime.securesms.crypto.DatabaseSecretProvider;
 import org.thoughtcrime.securesms.crypto.KeyStoreHelper;
+import org.thoughtcrime.securesms.keyvalue.SignalStore;
 import org.thoughtcrime.securesms.util.FileUtilsJW;
 import org.thoughtcrime.securesms.util.JsonUtils;
-import org.thoughtcrime.securesms.util.StorageUtil;
 import org.thoughtcrime.securesms.util.TextSecurePreferences;
 
 import java.io.BufferedReader;
@@ -72,11 +75,11 @@ public class EncryptedBackupExporter {
     exportDirectory(context, "");
     exportSecrets(context, dbs, ats, lgs, bks);
     if (TextSecurePreferences.isRawBackupInZipfile(context)) {
-      File test = new File(getEncryptedZipfileName());
+      File test = new File(getEncryptedZipfileName(context));
       if (test.exists()) {
         test.delete();
       }
-      FileUtilsJW.createEncryptedZipfile(context, getEncryptedZipfileName(), getExportDirectoryPath(context), getExportSecretsDirectory(context));
+      FileUtilsJW.createEncryptedZipfile(context, getEncryptedZipfileName(context), getExportDirectoryPath(context), getExportSecretsDirectory(context));
       deleteRawBackupFiles(context);
     }
   }
@@ -84,9 +87,11 @@ public class EncryptedBackupExporter {
   public static void importFromSd(Context context) throws NoExternalStorageException, IOException {
     // Store in a boolean because settings might change after restore
     boolean rawBackupInZipfile = TextSecurePreferences.isRawBackupInZipfile(context);
+    Uri uri = SignalStore.settings().getSignalBackupDirectory();
+    Boolean isBackupLocationRemovable = TextSecurePreferences.isBackupLocationRemovable(context);
     // Extract the zipfile
     if (rawBackupInZipfile) {
-      FileUtilsJW.extractEncryptedZipfile(context, getEncryptedZipfileName(), StorageUtil.getRawBackupDirectory().getAbsolutePath());
+      FileUtilsJW.extractEncryptedZipfile(context, getEncryptedZipfileName(context), StorageUtil.getRawBackupDirectory(uri, isBackupLocationRemovable).getAbsolutePath());
     }
     verifyExternalStorageForImport(context);
     importDirectory(context, "");
@@ -184,7 +189,9 @@ public class EncryptedBackupExporter {
   private static String getExportBaseDirectory(Context context) {
     String basedir = Environment.getExternalStorageDirectory().getAbsolutePath();
     try {
-      basedir = StorageUtil.getRawBackupDirectory().getAbsolutePath();
+      Uri uri = SignalStore.settings().getSignalBackupDirectory();
+      Boolean isBackupLocationRemovable = TextSecurePreferences.isBackupLocationRemovable(context);
+      basedir = StorageUtil.getRawBackupDirectory(uri, isBackupLocationRemovable).getAbsolutePath();
     } catch (NoExternalStorageException e) {
       Log.w(TAG, "getExportBaseDirectory failed: " + e.toString());
     }
@@ -491,9 +498,11 @@ public class EncryptedBackupExporter {
     return secret;
   }
 
-  private static String getEncryptedZipfileName() {
+  private static String getEncryptedZipfileName(Context context) {
     try {
-      String backupPath = StorageUtil.getRawBackupDirectory().getAbsolutePath();
+      Uri uri = SignalStore.settings().getSignalBackupDirectory();
+      Boolean isBackupLocationRemovable = TextSecurePreferences.isBackupLocationRemovable(context);
+      String backupPath = StorageUtil.getRawBackupDirectory(uri, isBackupLocationRemovable).getAbsolutePath();
       return backupPath + File.separator + "SignalExport.zip";
     } catch (NoExternalStorageException e) {
       Log.w(TAG, "getEncryptedZipfileName failed: " + e.toString());

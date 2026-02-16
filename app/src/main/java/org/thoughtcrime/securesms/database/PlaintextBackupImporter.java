@@ -1,15 +1,17 @@
 package org.thoughtcrime.securesms.database;
 
 import android.content.Context;
+import android.net.Uri;
 import android.os.Environment;
 
 import net.zetetic.database.sqlcipher.SQLiteStatement;
 
-import org.signal.core.util.logging.Log;
 import org.signal.core.util.NoExternalStorageException;
+import org.signal.core.util.logging.Log;
+import org.thoughtcrime.securesms.keyvalue.SignalStore;
 import org.thoughtcrime.securesms.recipients.Recipient;
 import org.thoughtcrime.securesms.util.FileUtilsJW;
-import org.thoughtcrime.securesms.util.StorageUtil;
+import org.signal.core.ui.util.StorageUtil;
 import org.thoughtcrime.securesms.util.TextSecurePreferences;
 import org.xmlpull.v1.XmlPullParserException;
 
@@ -17,6 +19,8 @@ import java.io.File;
 import java.io.IOException;
 import java.util.HashSet;
 import java.util.Set;
+
+import static org.thoughtcrime.securesms.dependencies.AppDependencies.getApplication;
 
 public class PlaintextBackupImporter {
 
@@ -42,14 +46,16 @@ public class PlaintextBackupImporter {
     // Unzip zipfile first if required
     if (TextSecurePreferences.isPlainBackupInZipfile(context)) {
       File zipFile = getPlaintextExportZipFile();
-      FileUtilsJW.extractEncryptedZipfile(context, zipFile.getAbsolutePath(), StorageUtil.getBackupPlaintextDirectory().getAbsolutePath());
+      Boolean isBackupLocationRemovable = TextSecurePreferences.isBackupLocationRemovable(getApplication());
+      Uri     uri    = SignalStore.settings().getSignalBackupDirectory();
+      FileUtilsJW.extractEncryptedZipfile(context, zipFile.getAbsolutePath(), StorageUtil.getBackupPlaintextDirectory(uri, isBackupLocationRemovable).getAbsolutePath());
     }
     MessageTable   table       = SignalDatabase.messages();
     SQLiteDatabase transaction = table.beginTransaction();
 
     try {
       ThreadTable    threadTable     = SignalDatabase.threads();
-      XmlBackup      backup          = new XmlBackup(getPlaintextExportFile().getAbsolutePath());
+      XmlBackup      backup          = new XmlBackup(getPlaintextExportFile(context).getAbsolutePath());
       Set<Long>      modifiedThreads = new HashSet<>();
       XmlBackup.XmlBackupItem item;
 
@@ -93,14 +99,16 @@ public class PlaintextBackupImporter {
     }
     // Delete the plaintext file if zipfile is present
     if (TextSecurePreferences.isPlainBackupInZipfile(context)) {
-      getPlaintextExportFile().delete(); // Insecure, leaves possibly recoverable plaintext on device
-      // FileUtilsJW.secureDelete(getPlaintextExportFile()); // much too slow
+      getPlaintextExportFile(context).delete(); // Insecure, leaves possibly recoverable plaintext on device
+      // FileUtilsJW.secureDelete(getPlaintextExportFile(context)); // much too slow
     }
   }
 
-  private static File getPlaintextExportFile() throws NoExternalStorageException {
-    File backup         = new File(StorageUtil.getBackupPlaintextDirectory(), "SignalPlaintextBackup.xml");
-    File previousBackup = new File(StorageUtil.getLegacyBackupDirectory(), "SignalPlaintextBackup.xml");
+  private static File getPlaintextExportFile(Context context) throws NoExternalStorageException {
+    Boolean isBackupLocationRemovable = TextSecurePreferences.isBackupLocationRemovable(context);
+    Uri     uri                       = SignalStore.settings().getSignalBackupDirectory();
+    File    backup                    = new File(StorageUtil.getBackupPlaintextDirectory(uri, isBackupLocationRemovable), "SignalPlaintextBackup.xml");
+    File previousBackup = new File(StorageUtil.getSignalStorageDir(), "SignalPlaintextBackup.xml");
     File oldBackup      = new File(Environment.getExternalStorageDirectory(), "TextSecurePlaintextBackup.xml");
 
     if (backup.exists()) return backup;
@@ -110,7 +118,9 @@ public class PlaintextBackupImporter {
   }
 
   private static File getPlaintextExportZipFile() throws NoExternalStorageException {
-    return new File(StorageUtil.getBackupPlaintextDirectory(), "SignalPlaintextBackup.zip");
+    Boolean isBackupLocationRemovable = TextSecurePreferences.isBackupLocationRemovable(getApplication());
+    Uri     uri    = SignalStore.settings().getSignalBackupDirectory();
+    return new File(StorageUtil.getBackupPlaintextDirectory(uri, isBackupLocationRemovable), "SignalPlaintextBackup.zip");
   }
 
   @SuppressWarnings("SameParameterValue")

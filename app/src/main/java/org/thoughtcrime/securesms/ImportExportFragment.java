@@ -25,11 +25,10 @@ import android.widget.Toast;
 
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 
-import org.signal.core.util.logging.Log;
 import org.signal.core.util.NoExternalStorageException;
-import org.signal.core.ui.compose.SignalIcons;
 import org.signal.core.ui.permissions.Permissions;
-import org.signal.core.util.NoExternalStorageException;
+import org.signal.core.util.logging.Log;
+import org.signal.core.ui.compose.SignalIcons;
 import org.thoughtcrime.securesms.backup.BackupDialog;
 import org.thoughtcrime.securesms.database.EncryptedBackupExporter;
 import org.thoughtcrime.securesms.database.PlaintextBackupExporter;
@@ -434,7 +433,7 @@ public class ImportExportFragment extends Fragment {
     }
 
     @Override
-    protected Integer doInBackground(Void... params) {
+    protected Integer doInBackground(Void... params)  {
       try {
         EncryptedBackupExporter.importFromSd(getActivity());
         return SUCCESS;

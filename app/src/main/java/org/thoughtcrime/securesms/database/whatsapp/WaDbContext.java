@@ -7,8 +7,6 @@ import android.database.sqlite.SQLiteDatabase;
 import android.os.Environment;
 import android.util.Log;
 
-import org.signal.core.util.NoExternalStorageException;
-
 import java.io.File;
 
 /**

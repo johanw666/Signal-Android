@@ -1,15 +1,17 @@
 package org.thoughtcrime.securesms.database;
 
 import android.content.Context;
+import android.net.Uri;
 
 import androidx.annotation.NonNull;
 
-import org.signal.core.util.logging.Log;
 import org.signal.core.util.NoExternalStorageException;
+import org.signal.core.util.logging.Log;
 import org.thoughtcrime.securesms.database.model.MessageRecord;
+import org.thoughtcrime.securesms.keyvalue.SignalStore;
 import org.thoughtcrime.securesms.recipients.Recipient;
 import org.thoughtcrime.securesms.util.FileUtilsJW;
-import org.thoughtcrime.securesms.util.StorageUtil;
+import org.signal.core.ui.util.StorageUtil;
 import org.thoughtcrime.securesms.util.TextSecurePreferences;
 
 import java.io.File;
@@ -27,12 +29,16 @@ public class PlaintextBackupExporter {
     exportPlaintext(context);
   }
 
-  public static File getPlaintextExportFile() throws NoExternalStorageException {
-    return new File(StorageUtil.getBackupPlaintextDirectory(), FILENAME);
+  public static File getPlaintextExportFile(Context context) throws NoExternalStorageException {
+    Boolean isBackupLocationRemovable = TextSecurePreferences.isBackupLocationRemovable(context);
+    Uri uri = SignalStore.settings().getSignalBackupDirectory();
+    return new File(StorageUtil.getBackupPlaintextDirectory(uri, isBackupLocationRemovable), FILENAME);
   }
 
-  private static File getPlaintextZipFile() throws NoExternalStorageException {
-    return new File(StorageUtil.getBackupPlaintextDirectory(), ZIPFILENAME);
+  private static File getPlaintextZipFile(Context context) throws NoExternalStorageException {
+    Boolean isBackupLocationRemovable = TextSecurePreferences.isBackupLocationRemovable(context);
+    Uri uri = SignalStore.settings().getSignalBackupDirectory();
+    return new File(StorageUtil.getBackupPlaintextDirectory(uri, isBackupLocationRemovable), ZIPFILENAME);
   }
 
   public @NonNull static String getSmsAddress(MessageRecord record) {
@@ -52,7 +58,7 @@ public class PlaintextBackupExporter {
   {
     MessageTable     messagetable = SignalDatabase.messages();
     int              count        = messagetable.getMessageCount();
-    XmlBackup.Writer writer       = new XmlBackup.Writer(getPlaintextExportFile().getAbsolutePath(), count);
+    XmlBackup.Writer writer       = new XmlBackup.Writer(getPlaintextExportFile(context).getAbsolutePath(), count);
 
     MessageRecord record;
 
@@ -95,13 +101,13 @@ public class PlaintextBackupExporter {
     writer.close();
 
     if (TextSecurePreferences.isPlainBackupInZipfile(context)) {
-      File test = new File(getPlaintextZipFile().getAbsolutePath());
+      File test = new File(getPlaintextZipFile(context).getAbsolutePath());
       if (test.exists()) {
         test.delete();
       }
-      FileUtilsJW.createEncryptedPlaintextZipfile(context, getPlaintextZipFile().getAbsolutePath(), getPlaintextExportFile().getAbsolutePath());
-      getPlaintextExportFile().delete(); // Insecure, leaves possibly recoverable plaintext on device
-      // FileUtilsJW.secureDelete(getPlaintextExportFile()); // much too slow
+      FileUtilsJW.createEncryptedPlaintextZipfile(context, getPlaintextZipFile(context).getAbsolutePath(), getPlaintextExportFile(context).getAbsolutePath());
+      getPlaintextExportFile(context).delete(); // Insecure, leaves possibly recoverable plaintext on device
+      // FileUtilsJW.secureDelete(getPlaintextExportFile(context)); // much too slow
     }
   }
 

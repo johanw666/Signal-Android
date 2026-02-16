@@ -10,7 +10,6 @@ import android.database.Cursor;
 import net.zetetic.database.sqlcipher.SQLiteStatement;
 
 import org.signal.core.util.logging.Log;
-import org.signal.core.util.NoExternalStorageException;
 import org.thoughtcrime.securesms.attachments.Attachment;
 import org.thoughtcrime.securesms.attachments.AttachmentId;
 import org.thoughtcrime.securesms.database.model.GroupRecord;
@@ -25,6 +24,8 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+
+import org.signal.core.util.NoExternalStorageException;
 
 import static org.thoughtcrime.securesms.database.MessageTable.DATE_RECEIVED;
 import static org.thoughtcrime.securesms.database.MessageTable.DATE_SENT;

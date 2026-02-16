@@ -56,9 +56,9 @@ public class BackupUtil {
   }
 
   public static boolean isUserSelectionRequired(@NonNull Context context) {
-    // JW: changed this because we need the manifest WRITE permission for the preservelegacy flag.
+    // JW: changed
     //return Build.VERSION.SDK_INT >= 29 && !Permissions.hasAll(context, Manifest.permission.READ_EXTERNAL_STORAGE, Manifest.permission.WRITE_EXTERNAL_STORAGE);
-    return Build.VERSION.SDK_INT >= 29 && !Permissions.hasAll(context, Manifest.permission.READ_EXTERNAL_STORAGE);
+    return Build.VERSION.SDK_INT >= 29;
   }
 
   public static boolean canUserAccessBackupDirectory(@NonNull Context context) {

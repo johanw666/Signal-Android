@@ -31,7 +31,7 @@ plugins {
 apply(from = "static-ips.gradle.kts")
 
 val canonicalVersionCode = 1648
-val canonicalVersionName = "7.74.0.0-JW"
+val canonicalVersionName = "7.74.0.1-JW"
 val currentHotfixVersion = 0
 val maxHotfixVersions = 100
 
@@ -612,7 +612,7 @@ dependencies {
   implementation(project(":core:models-jvm"))
   implementation(project(":feature:camera"))
 
-  implementation("net.lingala.zip4j:zip4j:2.11.5") // JW: added
+  implementation("net.lingala.zip4j:zip4j:2.11.6") // JW: added
   implementation(libs.androidx.fragment.ktx)
   implementation(libs.androidx.appcompat) {
     version {

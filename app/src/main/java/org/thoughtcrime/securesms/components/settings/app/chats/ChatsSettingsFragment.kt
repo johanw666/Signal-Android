@@ -26,6 +26,7 @@ import org.thoughtcrime.securesms.util.navigation.safeNavigate
 import android.app.Activity
 import android.content.Intent
 import android.os.Build
+import android.widget.Toast
 import androidx.compose.ui.res.stringArrayResource
 import org.thoughtcrime.securesms.backup.BackupDialog
 import org.thoughtcrime.securesms.service.LocalBackupListener
@@ -34,6 +35,7 @@ import org.thoughtcrime.securesms.keyvalue.SignalStore
 import org.thoughtcrime.securesms.util.UriUtils
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.vectorResource
+import androidx.core.net.toUri
 
 /**
  * Displays a list of chats settings options to the user, including
@@ -59,6 +61,8 @@ class ChatsSettingsFragment : ComposeFragment() {
           val backupUri = intent.data
           val takeFlags = Intent.FLAG_GRANT_READ_URI_PERMISSION or Intent.FLAG_GRANT_WRITE_URI_PERMISSION
           SignalStore.settings.setSignalBackupDirectory(backupUri!!)
+          //SignalStore.backup.newLocalBackupsDirectory = UriUtils.getFullPathFromTreeUri(context,backupUri!!)
+          //Toast.makeText(context, "newLocalBackupsDirectory and setSignalBackupDirectory to " + UriUtils.getFullPathFromTreeUri(context,backupUri!!), Toast.LENGTH_LONG).show();
           context?.getContentResolver()?.takePersistableUriPermission(backupUri, takeFlags)
           TextSecurePreferences.setNextBackupTime(requireContext(), 0)
           LocalBackupListener.schedule(context)
@@ -122,6 +126,7 @@ class ChatsSettingsFragment : ComposeFragment() {
     }
 
     override fun onChatBackupLocationChangedApi30() {
+      //val backupUri = SignalStore.backup.newLocalBackupsDirectory!!.toUri()
       val backupUri = SignalStore.settings.signalBackupDirectory
 
       if (Build.VERSION.SDK_INT >= 30) {
@@ -314,7 +319,7 @@ private fun ChatsSettingsScreen(
           item {
             Rows.TextRow(
               text = stringResource(R.string.preferences_chats__chat_backups_location_tap_to_change),
-              label = state.chatBackupsLocationApi30,
+              label = if (state.chatBackupsLocationApi30 == null) stringResource(R.string.preferences_storage__none) else state.chatBackupsLocationApi30,
               onClick = callbacks::onChatBackupLocationChangedApi30
             )
           }
