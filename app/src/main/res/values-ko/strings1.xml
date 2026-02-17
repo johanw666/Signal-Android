@@ -1,0 +1,8 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<resources>
+  <string name="arrays__import_export_orig">가져오기 / 내보내기</string>
+  <string name="import_fragment__import_system_sms_database">시스템 SMS 가져오기</string>
+  <string name="import_fragment__import_the_database_from_the_default_system">기본 시스템 SMS 앱의 데이터베이스 가져오기</string>
+  <string name="import_fragment__import_plaintext_backup">암호화되지 않은 백업 가져오기</string>
+  <string name="import_fragment__import_a_plaintext_backup_file">암호화되지 않은 백업을 가져오세요. \'SMS 백업 및 복원\'에 호환됩니다.</string>
+</resources>
