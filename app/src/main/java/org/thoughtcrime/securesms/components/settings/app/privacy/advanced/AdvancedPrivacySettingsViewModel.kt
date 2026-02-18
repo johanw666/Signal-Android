@@ -81,6 +81,12 @@ class AdvancedPrivacySettingsViewModel(
     }
   }
 
+  // JW: added
+  fun setPushNotificationsViaFCM(enabled: Boolean) {
+    SignalStore.account.fcmEnabled = enabled
+    refresh()
+  }
+
   fun refresh() {
     store.update { getState().copy(showProgressSpinner = it.showProgressSpinner) }
   }
@@ -95,6 +101,7 @@ class AdvancedPrivacySettingsViewModel(
     return AdvancedPrivacySettingsState(
       isPushEnabled = SignalStore.account.isRegistered,
       alwaysRelayCalls = TextSecurePreferences.isTurnOnly(AppDependencies.application),
+      pushNotificationsViaFCM = SignalStore.account.fcmEnabled, // JW
       censorshipCircumventionState = censorshipCircumventionState,
       censorshipCircumventionEnabled = getCensorshipCircumventionEnabled(censorshipCircumventionState),
       showSealedSenderStatusIcon = TextSecurePreferences.isShowUnidentifiedDeliveryIndicatorsEnabled(
