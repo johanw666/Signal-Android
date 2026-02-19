@@ -1,0 +1,27 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<resources>
+  <!--arrays.xml-->
+  <string name="arrays__import_export_orig">Importér / eksportér</string>
+  <!--ImportFragment-->
+  <string name="ImportFragment_restore_encrypted_backup">Gendan en krypteret backup?</string>
+  <string name="ImportFragment_restoring_an_encrypted_backup_will_completely_replace_your_existing_keys">
+Gendannelse af en krypteret backup vil overskrive eksisterende nøgler, indstillinger og beskeder. Du vil miste alt information i Signal, som ikke findes i din backup.</string>
+  <string name="ImportFragment_restore">Gendan</string>
+  <string name="ImportFragment_restoring">Gendanner</string>
+  <string name="ImportFragment_restoring_encrypted_backup">Gendanner krypteret backup...</string>
+  <string name="ImportFragment_no_encrypted_backup_found">Der blev ikke fundet en krypteret backup!</string>
+  <string name="ImportFragment_restore_complete">Gendannelse fuldført!</string>
+  <!--ExportFragment-->
+  <string name="ExportFragment_export_to_sd_card">Eksporter til SD-kort?</string>
+  <string name="ExportFragment_this_will_export_your_encrypted_keys_settings_and_messages">Dette vil eksportere dine krypteringsnøgler, indstillinger og beskeder til SD-kortet.</string>
+  <string name="ExportFragment_exporting_keys_settings_and_messages">Eksporterer krypterede nøgler, indstillinger og beskeder...</string>
+  <!--database_upgrade_activity-->
+  <string name="export_fragment__export_encrypted_backup">Eksporter krypteret backup</string>
+  <string name="export_fragment__export_an_encrypted_backup_to_the_sd_card">Eksporter en krypteret backup til SD-kort.</string>
+  <string name="import_fragment__restore_encrypted_backup">Gendan krypteret backup</string>
+  <string name="import_fragment__restore_a_previously_exported_encrypted_signal_backup">Gendan en krypteret Signal-backup, som blev eksporteret tidligere.</string>
+  <string name="import_fragment__import_system_sms_database">Importér system SMS databasen</string>
+  <string name="import_fragment__import_the_database_from_the_default_system">Importér databasen fra systemets standard SMS applikation</string>
+  <string name="import_fragment__import_plaintext_backup">Importér klartekst backup</string>
+  <string name="import_fragment__import_a_plaintext_backup_file">Importér en klartekst backup fil. Kompatibel med \"SMS Backup &amp; Gendan\"</string>
+</resources>
