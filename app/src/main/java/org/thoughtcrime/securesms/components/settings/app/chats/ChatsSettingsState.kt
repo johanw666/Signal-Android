@@ -10,8 +10,20 @@ data class ChatsSettingsState(
   val folderCount: Int,
   val userUnregistered: Boolean,
   val clientDeprecated: Boolean
+  // JW: added extra preferences
+  ,
+  val chatBackupsLocation: Boolean,
+  val chatBackupsLocationApi30: String,
+  val chatBackupZipfile: Boolean,
+  val chatBackupZipfilePlain: Boolean,
+  val keepViewOnceMessages: Boolean,
+  val ignoreRemoteDelete: Boolean,
+  val deleteMediaOnly: Boolean,
+  val googleMapType: String,
+  val whoCanAddYouToGroups: String
 ) {
   fun isRegisteredAndUpToDate(): Boolean {
     return !userUnregistered && !clientDeprecated
   }
 }
+
