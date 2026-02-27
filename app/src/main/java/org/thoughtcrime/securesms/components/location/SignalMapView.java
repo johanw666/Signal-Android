@@ -20,6 +20,7 @@ import com.google.android.gms.maps.model.MarkerOptions;
 import org.signal.core.util.concurrent.ListenableFuture;
 import org.signal.core.util.concurrent.SettableFuture;
 import org.thoughtcrime.securesms.R;
+import org.thoughtcrime.securesms.util.TextSecurePreferences; // JW: added
 
 import java.util.concurrent.ExecutionException;
 
@@ -28,6 +29,7 @@ public class SignalMapView extends LinearLayout {
   private MapView   mapView;
   private ImageView imageView;
   private TextView  textView;
+  public static int mapType; // JW
 
   public SignalMapView(Context context) {
     this(context, null);
@@ -50,6 +52,18 @@ public class SignalMapView extends LinearLayout {
     this.mapView   = findViewById(R.id.map_view);
     this.imageView = findViewById(R.id.image_view);
     this.textView  = findViewById(R.id.address_view);
+    this.mapType   = getGoogleMapType(context); // JW
+  }
+
+  // JW: get the maptype
+  private int getGoogleMapType(Context context) {
+    switch (TextSecurePreferences.getGoogleMapType(context)) {
+      case "hybrid":    return GoogleMap.MAP_TYPE_HYBRID;
+      case "satellite": return GoogleMap.MAP_TYPE_SATELLITE;
+      case "terrain":   return GoogleMap.MAP_TYPE_TERRAIN;
+      case "none":      return GoogleMap.MAP_TYPE_NONE;
+      default:          return GoogleMap.MAP_TYPE_NORMAL;
+    }
   }
 
   public ListenableFuture<Bitmap> display(final SignalPlace place) {
@@ -86,7 +100,7 @@ public class SignalMapView extends LinearLayout {
       googleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(place, 13));
       googleMap.addMarker(new MarkerOptions().position(place));
       googleMap.setBuildingsEnabled(true);
-      googleMap.setMapType(GoogleMap.MAP_TYPE_NORMAL);
+      googleMap.setMapType(mapType); // JW: set maptype
       googleMap.getUiSettings().setAllGesturesEnabled(false);
       googleMap.setOnMapLoadedCallback(() -> googleMap.snapshot(bitmap -> {
         future.set(bitmap);

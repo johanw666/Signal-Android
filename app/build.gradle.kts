@@ -24,10 +24,19 @@ plugins {
 
 apply(from = "static-ips.gradle.kts")
 
-val canonicalVersionCode = 1658
-val canonicalVersionName = "8.1.1"
+val canonicalVersionCode = 1670
+val canonicalVersionName = "8.1.1.0-JW"
 val currentHotfixVersion = 0
 val maxHotfixVersions = 100
+
+// JW: re-added
+val abiPostFix: Map<String, Int> = mapOf(
+  "universal" to 0,
+  "armeabi-v7a" to 1,
+  "arm64-v8a" to 2,
+  "x86" to 3,
+  "x86_64" to 4
+)
 
 // We don't want versions to ever end in 0 so that they don't conflict with nightly versions
 val possibleHotfixVersions = (0 until maxHotfixVersions).toList().filter { it % 10 != 0 }
@@ -214,8 +223,8 @@ android {
 
     manifestPlaceholders["mapsKey"] = "AIzaSyCSx9xea86GwDKGznCAULE9Y5a8b-TfN9U"
 
-    buildConfigField("long", "BUILD_TIMESTAMP", getLastCommitTimestamp() + "L")
-    buildConfigField("String", "GIT_HASH", "\"${getGitHash()}\"")
+    buildConfigField("long", "BUILD_TIMESTAMP", "1000L") // JW: fixed time for reproducible builds, is not used anyway
+    buildConfigField("String", "GIT_HASH", "\"000000\"") // JW
     buildConfigField("String", "SIGNAL_URL", "\"https://chat.signal.org\"")
     buildConfigField("String", "STORAGE_URL", "\"https://storage.signal.org\"")
     buildConfigField("String", "SIGNAL_CDN_URL", "\"https://cdn.signal.org\"")
@@ -262,7 +271,7 @@ android {
     buildConfigField("String", "STRIPE_BASE_URL", "\"https://api.stripe.com/v1\"")
     buildConfigField("String", "STRIPE_PUBLISHABLE_KEY", "\"pk_live_6cmGZopuTsV8novGgJJW9JpC00vLIgtQ1D\"")
     buildConfigField("boolean", "TRACING_ENABLED", "false")
-    buildConfigField("boolean", "LINK_DEVICE_UX_ENABLED", "false")
+    buildConfigField("boolean", "LINK_DEVICE_UX_ENABLED", "true") // JW
     buildConfigField("boolean", "USE_STRING_ID", "false")
 
     ndk {
@@ -323,8 +332,10 @@ android {
 
     getByName("release") {
       isMinifyEnabled = true
+      manifestPlaceholders["mapsKey"] = getMapsKey() // JW
       proguardFiles(*buildTypes["debug"].proguardFiles.toTypedArray())
       buildConfigField("String", "BUILD_VARIANT_TYPE", "\"Release\"")
+      buildConfigField("boolean", "LINK_DEVICE_UX_ENABLED", "true") // JW
     }
 
     create("instrumentation") {
@@ -491,6 +502,26 @@ android {
     lintConfig = rootProject.file("lint.xml")
   }
 
+  // JW added
+  applicationVariants.all {
+    outputs
+      .map { it as com.android.build.gradle.internal.api.ApkVariantOutputImpl }
+      .forEach { output ->
+        // JW: rewrote section
+        output.outputFileName = output.outputFileName.replace(".apk", "-$versionName.apk")
+
+        val abiName: String = output.getFilter("ABI") ?: "universal"
+        val postFix: Int = abiPostFix[abiName]!!
+
+        if (postFix >= maxHotfixVersions) {
+          throw AssertionError("maxHotfixVersions is too large")
+        }
+
+        output.versionCodeOverride = canonicalVersionCode * maxHotfixVersions + postFix
+      }
+  }
+  // End JW: added
+
   androidComponents {
     beforeVariants { variant ->
       variant.enable = variant.name in selectableVariants
@@ -503,9 +534,10 @@ android {
 
       // Starting with minSdk 23, Android leaves native libraries uncompressed, which is fine for the Play Store, but not for our self-distributed APKs.
       // This reverts it to the legacy behavior, compressing the native libraries, and drastically reducing the APK file size.
-      if (variant.name.contains("website", ignoreCase = true) || variant.name.contains("github", ignoreCase = true)) {
+      // JW: Always use it
+      //if (variant.name.contains("website", ignoreCase = true) || variant.name.contains("github", ignoreCase = true)) {
         variant.packaging.jniLibs.useLegacyPackaging.set(true)
-      }
+      //}
 
       // Version overrides
       if (variant.name.contains("nightly", ignoreCase = true)) {
@@ -571,8 +603,8 @@ android {
   applicationVariants.configureEach {
     outputs.configureEach {
       if (this is com.android.build.gradle.internal.api.BaseVariantOutputImpl) {
-        val fileVersionName = versionName.substringBefore(" |")
-        outputFileName = outputFileName.replace(".apk", "-$fileVersionName.apk")
+        //val fileVersionName = versionName.substringBefore(" |") // JW
+        //outputFileName = outputFileName.replace(".apk", "-$fileVersionName.apk")
       }
     }
   }
@@ -617,6 +649,7 @@ dependencies {
   implementation(project(":feature:camera"))
   implementation(project(":feature:registration"))
 
+  implementation("net.lingala.zip4j:zip4j:2.11.6") // JW: added
   implementation(libs.androidx.fragment.ktx)
   implementation(libs.androidx.appcompat) {
     version {
@@ -778,18 +811,22 @@ tasks.withType<Test>().configureEach {
 }
 
 fun getLastCommitTimestamp(): String {
-  return providers.exec {
-    commandLine("git", "log", "-1", "--pretty=format:%ct")
-  }.standardOutput.asText.get() + "000"
+  return "\"000000\"" // JW
+  //return providers.exec {
+  //  commandLine("git", "log", "-1", "--pretty=format:%ct")
+  //}.standardOutput.asText.get() + "000"
 }
 
 fun getGitHash(): String {
-  return providers.exec {
-    commandLine("git", "rev-parse", "HEAD")
-  }.standardOutput.asText.get().trim().substring(0, 12)
+  return "\"000000\"" // JW
+  //return providers.exec {
+  //  commandLine("git", "rev-parse", "HEAD")
+  //}.standardOutput.asText.get().trim().substring(0, 12)
 }
 
 fun getNightlyTagForCurrentCommit(): String? {
+  return "\"000000\"" // JW
+/*
   val output = providers.exec {
     commandLine("git", "tag", "--points-at", "HEAD")
   }.standardOutput.asText.get().trim()
@@ -800,18 +837,24 @@ fun getNightlyTagForCurrentCommit(): String? {
   } else {
     null
   }
+*/
 }
 
 fun getNightlyBuildNumber(tag: String?): Int {
+  return 0 // JW
+/*
   if (tag == null) {
     return 0
   }
 
   val match = Regex("-(\\d{3})$").find(tag)
   return match?.groupValues?.get(1)?.toIntOrNull() ?: 0
+*/
 }
 
 fun getLastCommitDateTimeUtc(): String {
+  return "\"000000\"" // JW
+/*
   val timestamp = providers.exec {
     commandLine("git", "log", "-1", "--pretty=format:%ct")
   }.standardOutput.asText.get().trim().toLong()
@@ -819,14 +862,18 @@ fun getLastCommitDateTimeUtc(): String {
   val formatter = DateTimeFormatter.ofPattern("MMM d '@' HH:mm 'UTC'", Locale.US)
     .withZone(ZoneOffset.UTC)
   return formatter.format(instant)
+*/
 }
 
+// JW: rewrote function
 fun getMapsKey(): String {
-  return providers
-    .gradleProperty("mapsKey")
-    .orElse(providers.environmentVariable("MAPS_KEY"))
-    .orElse("AIzaSyCSx9xea86GwDKGznCAULE9Y5a8b-TfN9U")
-    .get()
+  val mapKey = file("${project.rootDir}/maps.key")
+
+  return if (mapKey.exists()) {
+    mapKey.readLines()[0]
+  } else {
+    "AIzaSyCSx9xea86GwDKGznCAULE9Y5a8b-TfN9U"
+  }
 }
 
 abstract class LanguageListValueSource : ValueSource<List<String>, LanguageListValueSource.Params> {
