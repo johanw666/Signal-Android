@@ -1,0 +1,45 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<resources>
+<!--ExportFragment-->
+  <string name="ExportFragment_export">Bibin derve</string>
+  <string name="ExportFragment_export_plaintext_to_storage">Nivîsana tazî bibin embarê derve?</string>
+  <string name="ExportFragment_warning_this_will_export_the_plaintext_contents">Hişyarî, ev ê naveroka peyamên Signal ên te wek nivîsana tazî derveşîne embarê.</string>
+  <string name="ExportFragment_cancel">Betal</string>
+  <string name="ExportFragment_exporting">Tê derveşandin</string>
+  <string name="ExportFragment_exporting_plaintext_to_storage">Nivîsana tazî tê derveşandin embarê...</string>
+  <string name="ExportFragment_error_unable_to_write_to_storage">Nikarim li embar binivîsim.</string>
+  <string name="ExportFragment_error_while_writing_to_storage">Nikaribûm li embar binivîsim.</string>
+  <string name="ExportFragment_export_successful">Derveşandin çêbû.</string>
+  <string name="export_fragment__export_plaintext_backup">Îxrackirina kopiya ewleriya nivîsa tazî</string>
+  <string name="export_fragment__export_a_plaintext_backup_compatible_with">Îxrackirina kopiya ewleriya nivîsa tazî embarê ku dikare bi \'SMS Backup &amp; Restore\' bikarbîne</string>
+  <!--ImportExportActivity-->
+  <string name="ImportExportActivity_import">Ji derve bînin</string>
+  <string name="ImportExportActivity_export">Bibin derve</string>
+  <!--ImportFragment-->
+  <string name="ImportFragment_import_system_sms_database">Databanka SMS a pergal ji derve bînin?</string>
+  <string name="ImportFragment_this_will_import_messages_from_the_system">Ev ê peyam
+        ji databanka SMS a standar a pergalê ji derve bîne Signalê. Heger te databanka
+       SMS a pergal bere dîsa anî, anîn ê peyam kopî bike.
+    </string>
+  <string name="ImportFragment_import">Ji derve bînin</string>
+  <string name="ImportFragment_cancel">Betal</string>
+  <string name="ImportFragment_import_plaintext_backup">Kopî wek nivîsa tazî ji derve bînin?</string>
+  <string name="ImportFragment_this_will_import_messages_from_a_plaintext_backup">Ev ê peyam
+ji kopî wek nivîsa tazî bîne Signalê. Heger te kopî
+bere dîsa anî, anîn ê peyam kopî bike.</string>
+  <string name="ImportFragment_importing">Ji derve tê anîn</string>
+  <string name="ImportFragment_import_plaintext_backup_elipse">Kopî wek nivîsa tazî tê ji derve anîn...</string>
+  <string name="ImportFragment_no_plaintext_backup_found">Kopiya nivîsa tazî nahat peyda kirin!</string>
+  <string name="ImportFragment_error_importing_backup">Ji derve anîna kopî çênebû!</string>
+  <string name="ImportFragment_import_complete">Ji derve anîn xelasbû!</string>
+  <string name="ImportExportFragment_signal_needs_the_sms_permission_in_order_to_import_sms_messages">Ji bo peyamên SMS ji derve anîn, Signal destûra SMS dixwaze, lê ew hat herdemî rakirin. Li \'Settings\' &gt; \'Destûr &gt; \'SMS\' destûr bide.</string>
+  <string name="ImportExportFragment_signal_needs_the_sms_permission_in_order_to_import_sms_messages_toast">Ji bo anîn SMS, Signal destûra SMS dixwaze</string>
+  <string name="ImportExportFragment_signal_needs_the_storage_permission_in_order_to_read_from_external_storage_but_it_has_been_permanently_denied">Ji bo xwendina embara derve, Signal destûra Embar dixwaze, lê ew hat herdemî rakirin. Li \'Settings\' &gt; \'Destûr\' &gt; \'Embar\' destûr bide.</string>
+  <string name="ImportExportFragment_signal_needs_the_storage_permission_in_order_to_read_from_external_storage">Ji bo xwendina embara derve, Signal destûra embar dixwaze.</string>
+  <string name="ImportExportFragment_signal_needs_the_storage_permission_in_order_to_write_to_external_storage_but_it_has_been_permanently_denied">Ji bo nivîsandin li embara derve, Signal destûra Embar dixwaze, lê ew hat herdemî rakirin. Li \'Settings\' &gt; \'Destûr\' &gt; \'Embar\' destûr bide.</string>
+  <string name="ImportExportFragment_signal_needs_the_storage_permission_in_order_to_write_to_external_storage">Ji bo nivîsandina embara derve re, Signal destûra Embar dixwaze.</string>
+  <string name="import_fragment__import_system_sms_database">Danegeha SMS\'ê ya sîstemê lê bar bike</string>
+  <string name="import_fragment__import_the_database_from_the_default_system">Danegehê ji sepana peyaman ya jixweber bîne</string>
+  <string name="import_fragment__import_plaintext_backup">Kopiya paşkefta nivîsa sade têbixe</string>
+  <string name="import_fragment__import_a_plaintext_backup_file">Pelgeyek paşkeftê ya nivîsa sade têxe. Hevaheng e bi \'Paşkefta SMSê &amp; Vegerandin.\' re.</string>
+</resources>
