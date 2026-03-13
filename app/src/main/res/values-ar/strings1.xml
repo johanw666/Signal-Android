@@ -1,0 +1,27 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<resources>
+  <!--arrays.xml-->
+  <string name="arrays__import_export_orig">استيراد / تصدير</string>
+  <!--ImportFragment-->
+  <string name="ImportFragment_restore_encrypted_backup">استعادة نسخة احتياطية مشفرة؟</string>
+  <string name="ImportFragment_restoring_an_encrypted_backup_will_completely_replace_your_existing_keys">
+ استرجاع نسخة احتياطية مشفرة يؤدي إلى استبدال المفاتيح حالية والإعدادات والرسائل. المعلومات الحالية في سيجنال والغير موجودة في النسخة الاحتياطية سوف تفقد.</string>
+  <string name="ImportFragment_restore">استعادة</string>
+  <string name="ImportFragment_restoring">الاستعادة جارٍ...</string>
+  <string name="ImportFragment_restoring_encrypted_backup">استعادة النسخ الاحتياطية المشفرة جارٍ..</string>
+  <string name="ImportFragment_no_encrypted_backup_found">لم يتم العثور على نسخة احتياطية مشفرة!</string>
+  <string name="ImportFragment_restore_complete">تمت الاستعادة!</string>
+  <!--ExportFragment-->
+  <string name="ExportFragment_export_to_sd_card">تصديرإلى كرت الذاكرة؟</string>
+  <string name="ExportFragment_this_will_export_your_encrypted_keys_settings_and_messages">هذه الخاصية تصدر مفاتيحك المشفرة و إعداداتك و رسائلك لكرت الذاكرة.</string>
+  <string name="ExportFragment_exporting_keys_settings_and_messages">جاري تصدير مفاتيحك المشفرة و إعداداتك و رسائلك</string>
+  <!--database_upgrade_activity-->
+  <string name="export_fragment__export_encrypted_backup">استعادة النسخ الاحتياطية المشفرة</string>
+  <string name="export_fragment__export_an_encrypted_backup_to_the_sd_card">تصدير نسخة احتياطية غير مشفرة لكرت الذاكرة...</string>
+  <string name="import_fragment__restore_encrypted_backup">استعادة نسخة احتياطية مشفرة</string>
+  <string name="import_fragment__restore_a_previously_exported_encrypted_signal_backup"> استعادة نسخة احتياطية مشفرة من سيجنال.</string>
+  <string name="import_fragment__import_system_sms_database">استيراد قاعدة بيانات رسائل SMS بالنظام</string>
+  <string name="import_fragment__import_the_database_from_the_default_system">استيراد قاعدة البيانات من تطبيق الرسائل الافتراضي لنظام التشغيل</string>
+  <string name="import_fragment__import_plaintext_backup">استيراد نسخة احتياطية غير مشفرة</string>
+  <string name="import_fragment__import_a_plaintext_backup_file"> استيراد ملف plaintext كنسخة احتياطية. متوافق مع  \'SMS Backup &amp; Restore.\'</string>
+</resources>

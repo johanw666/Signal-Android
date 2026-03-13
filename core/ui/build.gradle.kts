@@ -45,6 +45,7 @@ dependencies {
   api(libs.material.material)
   api(libs.androidx.window.window)
   api(libs.accompanist.permissions)
+  implementation(libs.stream) // JW
 
   // JUnit is used by test fixtures
   testFixturesImplementation(testLibs.junit.junit)
