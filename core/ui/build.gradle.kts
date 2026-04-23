@@ -45,6 +45,7 @@ dependencies {
   api(libs.material.material)
   api(libs.androidx.window.window)
   api(libs.accompanist.permissions)
+  implementation("com.annimon:stream:1.1.8") // JW
 
   // JUnit is used by test fixtures
   testFixturesImplementation(testLibs.junit.junit)
