@@ -1,0 +1,8 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<resources>
+  <string name="arrays__import_export_orig">Увоз/извоз</string>
+  <string name="import_fragment__import_system_sms_database">Увези системску СМС базу података</string>
+  <string name="import_fragment__import_the_database_from_the_default_system">Увоз базе података из подразумеване системске апликације за размену порука</string>
+  <string name="import_fragment__import_plaintext_backup">Увези текстуалну резерву</string>
+  <string name="import_fragment__import_a_plaintext_backup_file">Увоз обичне текстуалне резерве. Компатибилно са апликацијом „SMS Backup &amp; Restore“.</string>
+</resources>
