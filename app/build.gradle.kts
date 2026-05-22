@@ -30,7 +30,7 @@ val staticIps = Properties().apply { file("static-ips.properties").reader().use 
 staticIps.stringPropertyNames().forEach { rootProject.extra[it] = staticIps.getProperty(it) }
 
 val canonicalVersionCode = 1694
-val canonicalVersionName = "8.12.1.0-JW"
+val canonicalVersionName = "8.12.1.1-JW"
 val currentHotfixVersion = 0
 val maxHotfixVersions = 100
 

@@ -94,7 +94,7 @@ public class FCMPreferenceFunctions {
 
       if (status == PlayServicesUtil.PlayServicesStatus.SUCCESS) {
         SignalStore.account().setFcmEnabled(true);
-        //TextSecurePreferences.setWebsocketRegistered(context, false);
+        SignalStore.internal().setWebsocketModeForced(false);
         Toast.makeText(context, "Setting setFcmDisabled to false", Toast.LENGTH_LONG).show();
         AppDependencies.getJobManager().startChain(new FcmRefreshJob())
           .then(new RefreshAttributesJob())
@@ -110,7 +110,7 @@ public class FCMPreferenceFunctions {
       }
     } else { // switch to websockets
       SignalStore.account().setFcmEnabled(false);
-      //TextSecurePreferences.setWebsocketRegistered(context, true);
+      SignalStore.internal().setWebsocketModeForced(true);
       SignalStore.account().setFcmToken(null);
       cleanGcmId(context);
       AppDependencies.getJobManager().add(new RefreshAttributesJob());

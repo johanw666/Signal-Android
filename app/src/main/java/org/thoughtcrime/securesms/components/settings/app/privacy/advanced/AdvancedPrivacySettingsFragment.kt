@@ -44,6 +44,7 @@ import org.signal.core.ui.compose.SignalIcons
 import org.signal.core.ui.compose.Texts
 import org.thoughtcrime.securesms.R
 import org.thoughtcrime.securesms.compose.rememberStatusBarColorNestedScrollModifier
+import org.thoughtcrime.securesms.keyvalue.SignalStore // JW: added
 import org.thoughtcrime.securesms.util.CommunicationActions
 import org.thoughtcrime.securesms.util.viewModel
 
@@ -218,7 +219,7 @@ private fun AdvancedPrivacySettingsScreen(
       // JW -------------------------------------------------------------------
       item {
         Rows.ToggleRow(
-          checked = state.pushNotificationsViaFCM,
+          checked = state.pushNotificationsViaFCM && !SignalStore.internal.isWebsocketModeForced,
           text = stringResource(R.string.preferences_advanced__push_notifications_fcm),
           label = stringResource(R.string.preferences_advanced__push_notifications_fcm_summary),
           onCheckChanged = callbacks::onPushNotificationsViaFCM
