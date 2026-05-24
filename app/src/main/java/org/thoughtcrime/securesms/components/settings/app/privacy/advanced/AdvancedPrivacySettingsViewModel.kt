@@ -17,6 +17,7 @@ import org.thoughtcrime.securesms.dependencies.AppDependencies
 import org.thoughtcrime.securesms.jobmanager.impl.NetworkConstraint
 import org.thoughtcrime.securesms.jobs.RefreshAttributesJob
 import org.thoughtcrime.securesms.jobs.RefreshOwnProfileJob
+import org.thoughtcrime.securesms.keyvalue.InternalValues
 import org.thoughtcrime.securesms.keyvalue.SettingsValues
 import org.thoughtcrime.securesms.keyvalue.SignalStore
 import org.thoughtcrime.securesms.recipients.Recipient
@@ -82,6 +83,13 @@ class AdvancedPrivacySettingsViewModel(
     }
   }
 
+  // JW: added
+  fun setPushNotificationsViaFCM(enabled: Boolean) {
+    SignalStore.account.fcmEnabled = enabled
+    SignalStore.getPreferenceDataStore().putBoolean(InternalValues.FORCE_WEBSOCKET_MODE, !enabled);
+    refresh()
+  }
+
   fun refresh() {
     store.update { getState().copy(showProgressSpinner = it.showProgressSpinner) }
   }
@@ -96,6 +104,7 @@ class AdvancedPrivacySettingsViewModel(
     return AdvancedPrivacySettingsState(
       isPushEnabled = SignalStore.account.isRegistered,
       alwaysRelayCalls = TextSecurePreferences.isTurnOnly(AppDependencies.application),
+      pushNotificationsViaFCM = SignalStore.account.fcmEnabled && !SignalStore.internal.isWebsocketModeForced , // JW
       censorshipCircumventionState = censorshipCircumventionState,
       censorshipCircumventionEnabled = getCensorshipCircumventionEnabled(censorshipCircumventionState),
       showSealedSenderStatusIcon = TextSecurePreferences.isShowUnidentifiedDeliveryIndicatorsEnabled(
