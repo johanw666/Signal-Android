@@ -44,8 +44,8 @@ import org.signal.core.ui.compose.SignalIcons
 import org.signal.core.ui.compose.Texts
 import org.thoughtcrime.securesms.R
 import org.thoughtcrime.securesms.compose.rememberStatusBarColorNestedScrollModifier
+import org.thoughtcrime.securesms.keyvalue.SignalStore // JW: added
 import org.thoughtcrime.securesms.util.CommunicationActions
-import org.thoughtcrime.securesms.util.RemoteConfig
 import org.thoughtcrime.securesms.util.viewModel
 
 /**
@@ -135,6 +135,12 @@ class AdvancedPrivacySettingsFragment : ComposeFragment() {
       viewModel.setAlwaysRelayCalls(enabled)
     }
 
+    // JW: added
+    override fun onPushNotificationsViaFCM(enabled: Boolean) {
+      viewModel.setPushNotificationsViaFCM(enabled)
+      FCMPreferenceFunctions.onFCMPreferenceChange(context, enabled)
+    }
+
     override fun onCensorshipCircumventionChanged(enabled: Boolean) {
       viewModel.setCensorshipCircumventionEnabled(enabled)
     }
@@ -171,6 +177,7 @@ private interface AdvancedPrivacySettingsCallbacks {
 
   fun onNavigationClick() = Unit
   fun onAlwaysRelayCallsChanged(enabled: Boolean) = Unit
+  fun onPushNotificationsViaFCM(enabled: Boolean) = Unit // JW
   fun onCensorshipCircumventionChanged(enabled: Boolean) = Unit
   fun onShowStatusIconForSealedSenderChanged(enabled: Boolean) = Unit
   fun onAllowSealedSenderFromAnyoneChanged(enabled: Boolean) = Unit
@@ -209,6 +216,19 @@ private fun AdvancedPrivacySettingsScreen(
         Dividers.Default()
       }
 
+      // JW -------------------------------------------------------------------
+      item {
+        Rows.ToggleRow(
+          checked = state.pushNotificationsViaFCM && !SignalStore.internal.isWebsocketModeForced,
+          text = stringResource(R.string.preferences_advanced__push_notifications_fcm),
+          label = stringResource(R.string.preferences_advanced__push_notifications_fcm_summary),
+          onCheckChanged = callbacks::onPushNotificationsViaFCM
+        )
+      }
+      item {
+        Dividers.Default()
+      }
+      //-----------------------------------------------------------------------
       item {
         Texts.SectionHeader(text = stringResource(R.string.preferences_communication__category_censorship_circumvention))
       }
@@ -299,31 +319,29 @@ private fun AdvancedPrivacySettingsScreen(
         )
       }
 
-      if (RemoteConfig.internalUser) {
-        item {
-          Dividers.Default()
-        }
+      item {
+        Dividers.Default()
+      }
 
-        item {
-          val label = buildAnnotatedString {
-            append(stringResource(R.string.preferences_automatic_key_verification_body))
-            append(" ")
-            withLink(
-              LinkAnnotation.Clickable("learn-more", linkInteractionListener = {
-                callbacks.onAutomaticVerificationLearnMoreClick()
-              })
-            ) {
-              append(stringResource(R.string.LearnMoreTextView_learn_more))
-            }
+      item {
+        val label = buildAnnotatedString {
+          append(stringResource(R.string.preferences_automatic_key_verification_body))
+          append(" ")
+          withLink(
+            LinkAnnotation.Clickable("learn-more", linkInteractionListener = {
+              callbacks.onAutomaticVerificationLearnMoreClick()
+            })
+          ) {
+            append(stringResource(R.string.LearnMoreTextView_learn_more))
           }
-
-          Rows.ToggleRow(
-            checked = state.allowAutomaticKeyVerification,
-            text = AnnotatedString(stringResource(R.string.preferences_automatic_key_verification)),
-            label = label,
-            onCheckChanged = callbacks::onAllowAutomaticVerificationChanged
-          )
         }
+
+        Rows.ToggleRow(
+          checked = state.allowAutomaticKeyVerification,
+          text = AnnotatedString(stringResource(R.string.preferences_automatic_key_verification)),
+          label = label,
+          onCheckChanged = callbacks::onAllowAutomaticVerificationChanged
+        )
       }
     }
   }
@@ -337,6 +355,7 @@ private fun AdvancedPrivacySettingsScreenPreview() {
       state = AdvancedPrivacySettingsState(
         isPushEnabled = true,
         alwaysRelayCalls = false,
+        pushNotificationsViaFCM = true, // JW
         censorshipCircumventionState = CensorshipCircumventionState.UNAVAILABLE_CONNECTED,
         censorshipCircumventionEnabled = false,
         showSealedSenderStatusIcon = false,
