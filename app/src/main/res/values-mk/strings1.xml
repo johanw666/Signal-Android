@@ -1,0 +1,6 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<resources>
+  <string name="arrays__import_export_orig">Импортирај / експортирај</string>
+  <string name="import_fragment__import_system_sms_database">Импортирај системска SMS база на податоци</string>
+  <string name="import_fragment__import_plaintext_backup">Импортирајте нешифрирана копија</string>
+</resources>
