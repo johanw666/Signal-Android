@@ -17,6 +17,18 @@ data class ChatsSettingsState(
   val plaintextExportProgress: LocalBackupCreationProgress = LocalExportProgress.plaintextProgress.value,
   val chatExportState: ChatExportState = ChatExportState.None,
   val includeMediaInExport: Boolean = false
+  // JW: added extra preferences
+  ,
+  val chatBackupsLocation: Boolean,
+  val chatBackupsLocationApi30: String,
+  val chatBackupZipfile: Boolean,
+  val chatBackupZipfilePlain: Boolean,
+  val keepViewOnceMessages: Boolean,
+  val ignoreRemoteDelete: Boolean,
+  val ignoreAdminDelete: Boolean,
+  val deleteMediaOnly: Boolean,
+  val googleMapType: String,
+  val whoCanAddYouToGroups: String
 ) {
   fun isRegisteredAndUpToDate(): Boolean {
     return !userUnregistered && !clientDeprecated
