@@ -1,0 +1,15 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<resources>
+  <!--ExportFragment-->
+  <string name="ExportFragment_export_to_sd_card">ಎಸ್.ಡಿ  ಕಾರ್ಡ್ಗೆ ರಫ್ತು ಮಾಡಿ?</string>
+  <string name="ExportFragment_this_will_export_your_encrypted_keys_settings_and_messages">ಇದು\nಏಸ್.ಡಿ ಕಾರ್ಡ್ಗೆ ನಿಮ್ಮ ಗೂಢಲಿಪೀಕರಣಗೊಂಡ ಕೀಲಿಗಳನ್ನು, ಸೆಟ್ಟಿಂಗ್ಗಳನ್ನು ಮತ್ತು ಸಂದೇಶಗಳ ರಫ್ತು ಮಾಡುತ್ತದೆ.</string>
+  <string name="ExportFragment_exporting_keys_settings_and_messages">ಗೂಢಲಿಪೀಕರಣಗೊಂಡ ಕೀಲಿಗಳನ್ನು,\nಸೆಟ್ಟಿಂಗ್ಗಳನ್ನು ಮತ್ತು ಸಂದೇಶಗಳನ್ನು ರಫ್ತು ಮಾಡಲಾಗುತ್ತಿದೆ ...</string>
+
+  <!--database_upgrade_activity-->
+  <string name="export_fragment__export_encrypted_backup">ಗೂಢಲಿಪೀಕರಣಗೊಂಡ ಬ್ಯಾಕ್ಅಪ್ ಅನ್ನು ರಫ್ತು ಮಾಡಿ</string>
+  <string name="export_fragment__export_an_encrypted_backup_to_the_sd_card">ಎಸ್.ಡಿ  ಕಾರ್ಡ್ಗೆ \nಒಂದು ಗೂಢಲಿಪೀಕರಣಗೊಂಡ ⏎ ಬ್ಯಾಕ್ಅಪ್ ಅನ್ನು ರಫ್ತು ಮಾಡಿ.</string>
+  <string name="import_fragment__import_system_sms_database">ಸಿಸ್ಟಂ ಎಸ್‌‌‌ಎಂಎಸ್ ದತ್ತಾಂಶವನ್ನು ಇಂಪೋರ್ಟ್ ಮಾಡಿ</string>
+  <string name="import_fragment__import_the_database_from_the_default_system">ಡೀಫಾಲ್ಟ್ ಸಿಸ್ಟಂ ಮೆಸೆಂಜರ್ ಆ್ಯಪ್‌ನಿಂದ ಡೇಟಾಬೇಸ್ ಅನ್ನು ಇಂಪೋರ್ಟ್ ಮಾಡಿ</string>
+  <string name="import_fragment__import_plaintext_backup">ಸರಳಪಠ್ಯದ  ಬ್ಯಾಕಪ್ ಅನ್ನು ಆಮದು ಮಾಡಿಕೊಳ್ಳಿ</string>
+  <string name="import_fragment__import_a_plaintext_backup_file">ಸರಳ ಪಠ್ಯದ ಬ್ಯಾಕಪ್ ಫೈಲ್ ಇಂಪೋರ್ಟ್ ಮಾಡಿ. \'ಎಸ್‌ಎಂಎಸ್ ಬ್ಯಾಕಪ್ &amp; ಮರುಸ್ಥಾಪನೆ\' ಗೆ ಹೊಂದಿಕೊಳ್ಳುವಂತಿದೆ </string>
+</resources>
