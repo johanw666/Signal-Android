@@ -136,6 +136,11 @@ object ContactDiscovery {
       return
     }
 
+    if (!Recipient.isSelfSet) {
+      Log.w(TAG, "[syncRecipientInfoWithSystemContacts] No self recipient yet, skipping.")
+      return
+    }
+
     syncRecipientsWithSystemContacts(
       context = context,
       rewrites = emptyMap(),
