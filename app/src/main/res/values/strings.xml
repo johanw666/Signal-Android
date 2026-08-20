@@ -6321,13 +6321,15 @@
     <!-- AvatarPickerFragment -->
     <string name="AvatarPickerFragment__avatar_preview">Avatar preview</string>
     <string name="AvatarPickerFragment__camera">Camera</string>
-    <string name="AvatarPickerFragment__take_a_picture">Take a picture</string>
-    <string name="AvatarPickerFragment__choose_a_photo">Choose a photo</string>
     <string name="AvatarPickerFragment__photo">Photo</string>
     <!-- Button label during avatar selection/creation that when tapped lets you generate an avatar from typed in text. -->
     <string name="AvatarPickerFragment__text">Text</string>
     <string name="AvatarPickerFragment__save">Save</string>
     <string name="AvatarPickerFragment__clear_avatar">Clear avatar</string>
+    <!-- Content description for the edit icon displayed over the currently selected avatar. -->
+    <string name="AvatarPickerFragment__edit_avatar">Edit avatar</string>
+    <!-- Accessibility label describing the menu shown when long pressing one of your saved avatars. -->
+    <string name="AvatarPickerFragment__avatar_options">Avatar options</string>
     <string name="AvatarPickerRepository__failed_to_save_avatar">Failed to save avatar</string>
 
     <!-- TextAvatarCreationFragment -->
