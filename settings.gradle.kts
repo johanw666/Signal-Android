@@ -125,6 +125,7 @@ include(":lib:apng")
 include(":lib:emoji")
 include(":lib:archive")
 include(":lib:ui-components")
+include(":lib:signal-login")
 
 // Feature modules
 include(":feature:app-settings")

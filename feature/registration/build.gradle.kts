@@ -62,6 +62,7 @@ dependencies {
   implementation(project(":core:models-jvm"))
   implementation(project(":core:serialization"))
   implementation(project(":lib:device-transfer"))
+  implementation(project(":lib:signal-login"))
   implementation(libs.libsignal.android)
 
   // Compose BOM

@@ -5,32 +5,32 @@
 
 package org.signal.registration.screens.signallogininfo
 
+import org.signal.core.models.AccountEntropyPool
+import org.signal.core.models.ServiceId
 import org.signal.core.util.censor
 
 /**
  * State for the screen that hands the user their newly-purchased Signal Login and asks them to save it.
  *
- * The account and recovery values are shown masked, with only [VISIBLE_SUFFIX_LENGTH] trailing characters revealed,
- * until the user opts into seeing the full credentials.
+ * The credentials are shown masked on the card, with only a few trailing characters revealed, until the user opts
+ * into seeing the full values.
  */
 data class SignalLoginInfoState(
-  val accountIdentifier: String = "",
-  val recoveryKey: String = "",
+  val aci: ServiceId.ACI? = null,
+  val recoveryKey: AccountEntropyPool? = null,
   val isPasswordManagerAvailable: Boolean = false,
   val showSpinner: Boolean = false,
   val dialogs: Dialogs = Dialogs()
 ) {
-  companion object {
-    const val VISIBLE_SUFFIX_LENGTH = 4
-  }
+  /** Full account identifier, as it should be displayed to the user. */
+  val accountDisplay: String
+    get() = aci?.toString()?.uppercase().orEmpty()
 
-  val accountSuffix: String
-    get() = accountIdentifier.takeLast(VISIBLE_SUFFIX_LENGTH)
+  /** Full recovery key, as it should be displayed to the user. */
+  val recoveryDisplay: String
+    get() = recoveryKey?.displayValue.orEmpty()
 
-  val recoverySuffix: String
-    get() = recoveryKey.takeLast(VISIBLE_SUFFIX_LENGTH)
-
-  override fun toString(): String = "SignalLoginInfoState(accountIdentifier=${accountIdentifier.censor()}, recoveryKey=${recoveryKey.censor()}, " +
+  override fun toString(): String = "SignalLoginInfoState(aci=${aci?.logString()}, recoveryKey=${recoveryKey?.value?.censor()}, " +
     "isPasswordManagerAvailable=$isPasswordManagerAvailable, showSpinner=$showSpinner, dialogs=$dialogs)"
 
   data class Dialogs(
