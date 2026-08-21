@@ -63,7 +63,7 @@ object AccountSettingsTestTags {
   const val SCROLLER = "scroller"
   const val CARD_SIGNAL_LOGIN = "card-signal-login"
   const val ROW_AUTHENTICATOR_APP = "row-authenticator-app"
-  const val ROW_SECURITY_KEYS = "row-security-keys"
+  const val ROW_PASSKEYS = "row-passkeys"
   const val ROW_MODIFY_PIN = "row-modify-pin"
   const val ROW_PIN_REMINDER = "row-pin-reminder"
   const val ROW_REGISTRATION_LOCK = "row-registration-lock"
@@ -139,9 +139,10 @@ fun AccountSettingsScreen(
         item {
           Rows.TextRow(
             icon = SignalIcons.Key.imageVector,
-            text = stringResource(R.string.AccountSettingsFragment__security_keys),
-            label = stringResource(R.string.AccountSettingsFragment__set_up_using_a_physical_security_key),
-            modifier = Modifier.testTag(AccountSettingsTestTags.ROW_SECURITY_KEYS)
+            text = stringResource(R.string.AccountSettingsFragment__passkeys),
+            label = stringResource(R.string.AccountSettingsFragment__device_biometrics_or_fido2_security_key),
+            onClick = { onEvent(AccountSettingsEvent.PasskeysClicked) },
+            modifier = Modifier.testTag(AccountSettingsTestTags.ROW_PASSKEYS)
           )
         }
 

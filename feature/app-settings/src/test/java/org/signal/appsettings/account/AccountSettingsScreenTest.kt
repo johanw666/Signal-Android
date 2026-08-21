@@ -308,6 +308,17 @@ class AccountSettingsScreenTest {
     assertThat(events).contains(AccountSettingsEvent.AuthenticatorAppClicked)
   }
 
+  @Test
+  fun givenASignalLogin_whenIClickPasskeys_thenIExpectPasskeysEvent() {
+    setContent(createState(signalLogin = AccountSettingsState.SignalLogin(keyCount = 2, hasAuthenticatorApp = false)))
+
+    scrollTo(AccountSettingsTestTags.ROW_PASSKEYS)
+
+    composeTestRule.onNodeWithTag(AccountSettingsTestTags.ROW_PASSKEYS).performClick()
+
+    assertThat(events).contains(AccountSettingsEvent.PasskeysClicked)
+  }
+
   private fun setContent(state: AccountSettingsState) {
     composeTestRule.setContent {
       AccountSettingsScreen(

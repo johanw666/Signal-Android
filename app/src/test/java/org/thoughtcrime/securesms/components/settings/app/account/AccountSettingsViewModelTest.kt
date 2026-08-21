@@ -320,6 +320,18 @@ class AccountSettingsViewModelTest {
     assertThat(actions.last()).isEqualTo(AccountSettingsAction.NavigateToAuthenticatorAppSetup)
   }
 
+  @Test
+  fun `PasskeysClicked opens the passkeys screen`() = runTest(testDispatcher) {
+    every { repository.isPhoneNumberlessRegistrationEnabled() } returns true
+
+    val viewModel = createViewModel()
+    val actions = collectActions(viewModel.actions)
+
+    viewModel.onEvent(AccountSettingsEvent.PasskeysClicked)
+
+    assertThat(actions.last()).isEqualTo(AccountSettingsAction.NavigateToPasskeys)
+  }
+
   private fun createViewModel(): AccountSettingsViewModel = AccountSettingsViewModel(repository)
 
   private fun TestScope.collectActions(actions: Flow<AccountSettingsAction>): List<AccountSettingsAction> {

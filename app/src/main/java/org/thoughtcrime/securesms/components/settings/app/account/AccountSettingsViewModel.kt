@@ -107,6 +107,9 @@ class AccountSettingsViewModel(
       AccountSettingsEvent.AuthenticatorAppClicked -> {
         _actions.send(AccountSettingsAction.NavigateToAuthenticatorAppSetup)
       }
+      AccountSettingsEvent.PasskeysClicked -> {
+        _actions.send(AccountSettingsAction.NavigateToPasskeys)
+      }
       AccountSettingsEvent.AdvancedPinSettingsClicked -> {
         _actions.send(AccountSettingsAction.NavigateToAdvancedPinSettings)
       }

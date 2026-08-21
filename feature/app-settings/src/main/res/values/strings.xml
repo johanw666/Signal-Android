@@ -63,10 +63,10 @@
     <string name="AccountSettingsFragment__use_an_authenticator_app">Use an authenticator app to generate one-time verification codes</string>
     <!-- Description of the authenticator app setting when one has already been set up -->
     <string name="AccountSettingsFragment__enabled">Enabled</string>
-    <!-- Account setting for setting up a physical security key -->
-    <string name="AccountSettingsFragment__security_keys">Security keys</string>
-    <!-- Description of the security keys setting -->
-    <string name="AccountSettingsFragment__set_up_using_a_physical_security_key">Set up using a physical security key</string>
+    <!-- Account setting that takes the user to the passkeys screen -->
+    <string name="AccountSettingsFragment__passkeys">Passkeys</string>
+    <!-- Description of the passkeys setting -->
+    <string name="AccountSettingsFragment__device_biometrics_or_fido2_security_key">Device biometrics or FIDO2 security key</string>
     <!-- Description of two-factor authentication, shown below the two-factor authentication rows -->
     <string name="AccountSettingsFragment__use_a_second_form_of_authentication">Use a second form of authentication to protect your account when using your Signal Login on a new device.</string>
     <!-- Clickable text that takes the user to a support article -->
@@ -103,6 +103,34 @@
     <string name="AuthenticatorSetupScreen__copy_the_code_thats_generated">Copy the code that\'s generated and return here to continue.</string>
     <!-- Button that advances from the setup instructions to entering a code -->
     <string name="AuthenticatorSetupScreen__continue">Continue</string>
+
+    <!-- PasskeysScreen -->
+    <!-- Title of the screen where the user sets up passkeys -->
+    <string name="PasskeysScreen__passkeys">Passkeys</string>
+    <!-- Description of passkeys shown at the top of the screen -->
+    <string name="PasskeysScreen__with_passkeys_you_can_easily_add">With passkeys you can easily add a secure second form of authentication to your account. Passkeys can use your device\'s biometrics or a compatible FIDO2 security key.</string>
+    <!-- Clickable text that takes the user to a support article -->
+    <string name="PasskeysScreen__learn_more">Learn more</string>
+    <!-- Bullet point explaining that a passkey can be given a name -->
+    <string name="PasskeysScreen__give_your_passkey_a_friendly_name">Give your passkey a friendly name to identify it</string>
+    <!-- Bullet point explaining how a passkey is stored -->
+    <string name="PasskeysScreen__use_your_devices_biometrics">Use your device\'s biometrics or a FIDO2 security key to store your passkey</string>
+    <!-- Bullet point explaining that passkeys can be added and removed -->
+    <string name="PasskeysScreen__add_or_remove_passkeys_at_anytime">Add or remove passkeys at anytime.</string>
+    <!-- Button that starts creating a passkey -->
+    <string name="PasskeysScreen__set_up_a_passkey">Set up a passkey</string>
+    <!-- Description of passkeys shown at the top of the screen once some already exist -->
+    <string name="PasskeysScreen__set_up_a_passkey_with">Set up a passkey with your device\'s biometrics or a compatible FIDO2 security key.</string>
+    <!-- Button that starts creating a passkey once some already exist -->
+    <string name="PasskeysScreen__add_a_new_passkey">Add a new passkey</string>
+    <!-- Label under a passkey\'s name saying when it was added. The placeholder is a relative time like "today, 11:00 AM" -->
+    <string name="PasskeysScreen__added_s">Added %1$s</string>
+    <!-- Accessibility description of the button that opens a passkey\'s menu -->
+    <string name="PasskeysScreen__open_passkey_options">Open passkey options</string>
+    <!-- Menu option that renames a passkey -->
+    <string name="PasskeysScreen__rename">Rename</string>
+    <!-- Menu option that removes a passkey -->
+    <string name="PasskeysScreen__remove">Remove</string>
 
     <!-- AuthenticatorCodeEntryScreen -->
     <!-- Title of the screen where the user enters the code from their authenticator app -->

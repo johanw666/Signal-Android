@@ -28,6 +28,9 @@ sealed interface AccountSettingsAction {
   /** Open the flow that sets up an authenticator app. */
   data object NavigateToAuthenticatorAppSetup : AccountSettingsAction
 
+  /** Open the passkeys screen. */
+  data object NavigateToPasskeys : AccountSettingsAction
+
   /** Open the advanced PIN settings screen. */
   data object NavigateToAdvancedPinSettings : AccountSettingsAction
 
