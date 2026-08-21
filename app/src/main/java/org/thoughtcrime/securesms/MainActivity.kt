@@ -9,6 +9,7 @@ import android.annotation.SuppressLint
 import android.app.Activity
 import android.content.Context
 import android.content.Intent
+import android.graphics.Color
 import android.os.Build
 import android.os.Bundle
 import android.view.MotionEvent
@@ -439,6 +440,33 @@ class MainActivity :
         val listPaneWidth = contentLayoutData.rememberDefaultPanePreferredWidth(maxWidth)
         val navigationType = NavigationType.rememberNavigationType()
 
+        val detailLocation by mainNavigationViewModel.detailLocation.collectAsStateWithLifecycle()
+        val isConversationFullscreen = !isSplitPane &&
+          wrappedNavigator.scaffoldValue.primary == PaneAdaptedValue.Expanded &&
+          detailLocation is MainNavigationDetailLocation.Conversation
+
+        val context = LocalContext.current
+        val isDarkTheme = isSystemInDarkTheme()
+        val navBarColor = when {
+          isSplitPane -> SignalTheme.colors.colorSurface1.toArgb()
+          isConversationFullscreen -> Color.TRANSPARENT
+          else -> ContextCompat.getColor(context, CoreUiR.color.signal_colorSurface2)
+        }
+
+        LaunchedEffect(isDarkTheme, navBarColor) {
+          if (Build.VERSION.SDK_INT >= 26) {
+            enableEdgeToEdge(
+              navigationBarStyle = if (isDarkTheme) {
+                SystemBarStyle.dark(navBarColor)
+              } else {
+                SystemBarStyle.light(navBarColor, navBarColor)
+              }
+            )
+          } else {
+            enableEdgeToEdge()
+          }
+        }
+
         val anchors = remember(contentLayoutData, mainToolbarState, listPaneWidth, navigationType) {
           val halfPartitionWidth = contentLayoutData.partitionWidth / 2
 
@@ -789,23 +817,6 @@ class MainActivity :
           MaterialTheme.colorScheme.surface
         } else {
           SignalTheme.colors.colorSurface1
-        }
-
-        val context = LocalContext.current
-        val isDarkTheme = isSystemInDarkTheme()
-        val navBarColor = if (isSplitPane) backgroundColor.toArgb() else ContextCompat.getColor(context, CoreUiR.color.signal_colorSurface2)
-        LaunchedEffect(isDarkTheme, navBarColor) {
-          if (Build.VERSION.SDK_INT >= 26) {
-            enableEdgeToEdge(
-              navigationBarStyle = if (isDarkTheme) {
-                SystemBarStyle.dark(navBarColor)
-              } else {
-                SystemBarStyle.light(navBarColor, navBarColor)
-              }
-            )
-          } else {
-            enableEdgeToEdge()
-          }
         }
 
         val modifier = when {
