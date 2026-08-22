@@ -9,26 +9,42 @@ import androidx.annotation.VisibleForTesting
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewModelScope
+import kotlinx.coroutines.FlowPreview
+import kotlinx.coroutines.Job
+import kotlinx.coroutines.channels.BufferOverflow
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.debounce
+import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.flow.receiveAsFlow
+import kotlinx.coroutines.launch
 import org.signal.core.ui.compose.EventDrivenViewModel
+import org.signal.core.util.UsernameUtil
 import org.signal.core.util.logging.Log
+import org.signal.libsignal.net.RequestResult
+import org.signal.network.service.UsernameService.ConfirmUsernameError
+import org.signal.network.service.UsernameService.ReserveUsernameError
 import org.signal.registration.RegistrationFlowEvent
 import org.signal.registration.RegistrationRepository
+import org.signal.registration.RegistrationRoute
+import org.signal.registration.screens.util.navigateTo
+import kotlin.time.Duration.Companion.milliseconds
 
 /**
  * View model for [AddUsernameScreen].
  *
- * Username reservation and confirmation endpoints aren't wired into this flow yet, so nothing is validated or
- * submitted. Every event the screen can produce is routed here and handled explicitly so that filling in the business
- * logic is a matter of replacing the TODO branches.
+ * As the user types a nickname, we debounce their input and then validate it locally. If it's valid, we reserve a
+ * username for it on the service (the nickname plus a server-assigned numeric discriminator), which is what lets us
+ * show the discriminator while they type and detect taken nicknames early. Tapping "next" confirms the reservation,
+ * making it the account's actual username.
  */
+@OptIn(FlowPreview::class)
 class AddUsernameViewModel(
   private val repository: RegistrationRepository,
   private val parentEventEmitter: (RegistrationFlowEvent) -> Unit
@@ -36,6 +52,8 @@ class AddUsernameViewModel(
 
   companion object {
     private val TAG = Log.tag(AddUsernameViewModel::class)
+
+    private val NICKNAME_DEBOUNCE = 500.milliseconds
   }
 
   private val _state = MutableStateFlow(AddUsernameState())
@@ -44,9 +62,20 @@ class AddUsernameViewModel(
   private val _actions = Channel<AddUsernameScreenActions>(Channel.BUFFERED)
   val actions: Flow<AddUsernameScreenActions> = _actions.receiveAsFlow()
 
+  private val nicknameChanges = MutableSharedFlow<String>(extraBufferCapacity = 1, onBufferOverflow = BufferOverflow.DROP_OLDEST)
+
+  /** The in-flight reservation request. Only one may be live at a time -- starting a new one cancels the old one. */
+  private var reserveJob: Job? = null
+
   init {
     _state
       .onEach { Log.d(TAG, "[State] $it") }
+      .launchIn(viewModelScope)
+
+    nicknameChanges
+      .distinctUntilChanged()
+      .debounce(NICKNAME_DEBOUNCE)
+      .onEach { onEvent(AddUsernameScreenEvents.NicknameSettled(it)) }
       .launchIn(viewModelScope)
   }
 
@@ -62,36 +91,180 @@ class AddUsernameViewModel(
     stateEmitter: (AddUsernameState) -> Unit
   ) {
     when (event) {
-      is AddUsernameScreenEvents.UsernameChanged -> {
-        // TODO [phonenumberless] Validate the nickname and populate AddUsernameState.validationError.
-        stateEmitter(state.copy(username = event.value))
+      is AddUsernameScreenEvents.UsernameChanged -> applyUsernameChanged(state, event.value, stateEmitter)
+      is AddUsernameScreenEvents.NicknameSettled -> applyNicknameSettled(state, event.value, stateEmitter)
+      is AddUsernameScreenEvents.ReservationCompleted -> applyReservationCompleted(state, event, stateEmitter)
+      is AddUsernameScreenEvents.LearnMoreClicked -> _actions.trySend(AddUsernameScreenActions.OpenLearnMoreArticle)
+      is AddUsernameScreenEvents.SkipClicked -> applySkipClicked(parentEventEmitter)
+      is AddUsernameScreenEvents.NextClicked -> applyNextClicked(state, parentEventEmitter, stateEmitter)
+      is AddUsernameScreenEvents.NetworkErrorDialogDismissed -> applyDialogDismissed(state, stateEmitter) { it.copy(networkError = false) }
+      is AddUsernameScreenEvents.UnknownErrorDialogDismissed -> applyDialogDismissed(state, stateEmitter) { it.copy(unknownError = false) }
+      is AddUsernameScreenEvents.UsernameUnavailableDialogDismissed -> applyDialogDismissed(state, stateEmitter) { it.copy(usernameUnavailable = false) }
+      is AddUsernameScreenEvents.RateLimitedDialogDismissed -> applyDialogDismissed(state, stateEmitter) { it.copy(rateLimited = false) }
+      is AddUsernameScreenEvents.ReservationLapsedDialogDismissed -> applyDialogDismissed(state, stateEmitter) { it.copy(reservationLapsed = false) }
+    }
+  }
+
+  private fun applyUsernameChanged(state: AddUsernameState, username: String, stateEmitter: (AddUsernameState) -> Unit) {
+    if (username == state.username) {
+      return
+    }
+
+    reserveJob?.cancel()
+
+    stateEmitter(
+      state.copy(
+        username = username,
+        validationError = null,
+        reservation = null,
+        isReserving = false
+      )
+    )
+
+    if (username.isNotBlank()) {
+      nicknameChanges.tryEmit(username)
+    }
+  }
+
+  private fun applyNicknameSettled(state: AddUsernameState, nickname: String, stateEmitter: (AddUsernameState) -> Unit) {
+    if (nickname != state.username || nickname.isBlank()) {
+      return
+    }
+
+    val validationError = checkNickname(nickname)
+    if (validationError != null) {
+      stateEmitter(state.copy(validationError = validationError))
+      return
+    }
+
+    stateEmitter(state.copy(isReserving = true))
+
+    reserveJob?.cancel()
+    reserveJob = viewModelScope.launch {
+      val result = repository.reserveUsername(nickname)
+      onEvent(AddUsernameScreenEvents.ReservationCompleted(nickname, result))
+    }
+  }
+
+  private fun applyReservationCompleted(
+    state: AddUsernameState,
+    event: AddUsernameScreenEvents.ReservationCompleted,
+    stateEmitter: (AddUsernameState) -> Unit
+  ) {
+    if (event.nickname != state.username) {
+      return
+    }
+
+    when (val result = event.result) {
+      is RequestResult.Success -> {
+        Log.i(TAG, "Successfully reserved a username.")
+        stateEmitter(state.copy(isReserving = false, reservation = result.result))
       }
 
-      is AddUsernameScreenEvents.LearnMoreClicked -> {
-        _actions.trySend(AddUsernameScreenActions.OpenLearnMoreArticle)
+      is RequestResult.NonSuccess -> when (result.error) {
+        is ReserveUsernameError.NicknameInvalid, is ReserveUsernameError.NotAvailable -> {
+          Log.w(TAG, "Could not reserve a username: ${result.error}")
+          stateEmitter(state.copy(isReserving = false, validationError = AddUsernameState.ValidationError.NOT_AVAILABLE))
+        }
+
+        is ReserveUsernameError.RateLimited -> {
+          Log.w(TAG, "Rate limited while reserving a username.")
+          stateEmitter(state.copy(isReserving = false, dialogs = state.dialogs.copy(rateLimited = true)))
+        }
       }
 
-      is AddUsernameScreenEvents.SkipClicked -> {
-        // TODO [phonenumberless] Advance the flow without reserving a username.
-        Log.i(TAG, "Skip clicked, but the flow isn't implemented yet.")
+      is RequestResult.RetryableNetworkError -> {
+        Log.w(TAG, "Network error while reserving a username.", result.networkError)
+        stateEmitter(state.copy(isReserving = false, dialogs = state.dialogs.copy(networkError = true)))
       }
 
-      is AddUsernameScreenEvents.NextClicked -> {
-        // TODO [phonenumberless] Reserve and confirm the username, then advance the flow.
-        Log.i(TAG, "Next clicked, but the flow isn't implemented yet.")
+      is RequestResult.ApplicationError -> {
+        Log.w(TAG, "Application error while reserving a username.", result.cause)
+        stateEmitter(state.copy(isReserving = false, dialogs = state.dialogs.copy(unknownError = true)))
+      }
+    }
+  }
+
+  private fun applySkipClicked(parentEventEmitter: (RegistrationFlowEvent) -> Unit) {
+    Log.i(TAG, "Skipping username creation.")
+    parentEventEmitter.navigateTo(RegistrationRoute.Profile, popCurrent = true)
+  }
+
+  private suspend fun applyNextClicked(
+    state: AddUsernameState,
+    parentEventEmitter: (RegistrationFlowEvent) -> Unit,
+    stateEmitter: (AddUsernameState) -> Unit
+  ) {
+    val reservation = state.reservation
+    if (!state.isSubmittable || reservation == null) {
+      return
+    }
+
+    stateEmitter(state.copy(showSpinner = true))
+
+    when (val result = repository.confirmUsername(reservation)) {
+      is RequestResult.Success -> {
+        Log.i(TAG, "Username confirmed.")
+        parentEventEmitter.navigateTo(RegistrationRoute.Profile, popCurrent = true)
       }
 
-      is AddUsernameScreenEvents.NetworkErrorDialogDismissed -> {
-        stateEmitter(state.copy(dialogs = state.dialogs.copy(networkError = false)))
+      is RequestResult.NonSuccess -> when (result.error) {
+        is ConfirmUsernameError.ReservationInvalid -> {
+          Log.w(TAG, "The reservation has lapsed or was never made.")
+          stateEmitter(state.copy(showSpinner = false, reservation = null, dialogs = state.dialogs.copy(reservationLapsed = true)))
+        }
+
+        is ConfirmUsernameError.NotAvailable -> {
+          Log.w(TAG, "The reserved username is no longer available.")
+          stateEmitter(state.copy(showSpinner = false, reservation = null, dialogs = state.dialogs.copy(usernameUnavailable = true)))
+        }
+
+        is ConfirmUsernameError.BadRequest, is ConfirmUsernameError.GenerationFailed -> {
+          Log.w(TAG, "Failed to confirm the username: ${result.error}")
+          stateEmitter(state.copy(showSpinner = false, dialogs = state.dialogs.copy(unknownError = true)))
+        }
+
+        is ConfirmUsernameError.RateLimited -> {
+          Log.w(TAG, "Rate limited while confirming the username.")
+          stateEmitter(state.copy(showSpinner = false, dialogs = state.dialogs.copy(rateLimited = true)))
+        }
       }
 
-      is AddUsernameScreenEvents.UnknownErrorDialogDismissed -> {
-        stateEmitter(state.copy(dialogs = state.dialogs.copy(unknownError = false)))
+      is RequestResult.RetryableNetworkError -> {
+        Log.w(TAG, "Network error while confirming the username.", result.networkError)
+        stateEmitter(state.copy(showSpinner = false, dialogs = state.dialogs.copy(networkError = true)))
       }
 
-      is AddUsernameScreenEvents.UsernameUnavailableDialogDismissed -> {
-        stateEmitter(state.copy(dialogs = state.dialogs.copy(usernameUnavailable = false)))
+      is RequestResult.ApplicationError -> {
+        Log.w(TAG, "Application error while confirming the username.", result.cause)
+        stateEmitter(state.copy(showSpinner = false, dialogs = state.dialogs.copy(unknownError = true)))
       }
+    }
+  }
+
+  /**
+   * Clears the dismissed dialog, then restarts the reserve flow if an earlier failure left a valid nickname without a
+   * reservation. Nothing retries while a dialog is up -- recovery is always in response to the user's dismissal.
+   */
+  private fun applyDialogDismissed(
+    state: AddUsernameState,
+    stateEmitter: (AddUsernameState) -> Unit,
+    clearDialog: (AddUsernameState.Dialogs) -> AddUsernameState.Dialogs
+  ) {
+    stateEmitter(state.copy(dialogs = clearDialog(state.dialogs)))
+
+    if (state.username.isNotBlank() && state.validationError == null && state.reservation == null && !state.isReserving) {
+      onEvent(AddUsernameScreenEvents.NicknameSettled(state.username))
+    }
+  }
+
+  private fun checkNickname(nickname: String): AddUsernameState.ValidationError? {
+    return when (UsernameUtil.checkNickname(nickname)) {
+      null -> null
+      UsernameUtil.InvalidReason.TOO_SHORT -> AddUsernameState.ValidationError.TOO_SHORT
+      UsernameUtil.InvalidReason.TOO_LONG -> AddUsernameState.ValidationError.TOO_LONG
+      UsernameUtil.InvalidReason.STARTS_WITH_NUMBER -> AddUsernameState.ValidationError.CANNOT_START_WITH_DIGIT
+      else -> AddUsernameState.ValidationError.INVALID_CHARACTERS
     }
   }
 

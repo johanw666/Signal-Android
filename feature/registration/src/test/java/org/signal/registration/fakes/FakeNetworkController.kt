@@ -12,6 +12,7 @@ import org.signal.core.models.MasterKey
 import org.signal.core.models.ServiceId.ACI
 import org.signal.libsignal.net.RequestResult
 import org.signal.libsignal.protocol.IdentityKeyPair
+import org.signal.libsignal.usernames.Username
 import org.signal.libsignal.zkgroup.receipts.ReceiptCredentialPresentation
 import org.signal.libsignal.zkgroup.receipts.ReceiptCredentialRequest
 import org.signal.network.api.RegistrationApiV2.AccountAttributes
@@ -37,6 +38,9 @@ import org.signal.network.api.RegistrationApiV2.SubmitVerificationCodeError
 import org.signal.network.api.RegistrationApiV2.SvrCredentials
 import org.signal.network.api.RegistrationApiV2.UpdateSessionError
 import org.signal.network.api.RegistrationApiV2.VerificationCodeTransport
+import org.signal.network.service.UsernameService.ConfirmUsernameError
+import org.signal.network.service.UsernameService.ConfirmedUsername
+import org.signal.network.service.UsernameService.ReserveUsernameError
 import org.signal.registration.LinkAndSyncWaitResult
 import org.signal.registration.NetworkController
 import org.signal.registration.NetworkController.BackupMasterKeyError
@@ -53,6 +57,7 @@ import org.signal.registration.NetworkController.RestoreMasterKeyError
 import org.signal.registration.NetworkController.SetAccountAttributesError
 import org.signal.registration.NetworkController.SetProfileError
 import org.signal.registration.NetworkController.SetRegistrationLockError
+import org.whispersystems.signalservice.api.push.UsernameLinkComponents
 import java.util.Locale
 import java.util.UUID
 import kotlin.time.Duration
@@ -106,6 +111,10 @@ class FakeNetworkController(
   var lastSetRestoreMethodRequest: SetRestoreMethodRequest? = null
     private set
   var accountAttributesSyncJobEnqueued = false
+    private set
+  var lastReservedNickname: String? = null
+    private set
+  var lastConfirmedUsername: Username? = null
     private set
 
   /** How many times the flow re-committed the backup-id. */
@@ -200,6 +209,14 @@ class FakeNetworkController(
 
   var onSetRestoreMethod: suspend (SetRestoreMethodRequest) -> RequestResult<Unit, SetRestoreMethodError> = {
     RequestResult.Success(Unit)
+  }
+
+  var onReserveUsername: suspend (nickname: String) -> RequestResult<Username, ReserveUsernameError> = { nickname ->
+    RequestResult.Success(Username("$nickname.42"))
+  }
+
+  var onConfirmUsername: suspend (Username) -> RequestResult<ConfirmedUsername, ConfirmUsernameError> = { username ->
+    RequestResult.Success(ConfirmedUsername(username, UsernameLinkComponents(ByteArray(32), UUID.randomUUID())))
   }
 
   // -- Response factories with happy-path defaults, for handlers that only want to tweak a field or two.
@@ -420,6 +437,16 @@ class FakeNetworkController(
 
   override suspend fun setProfile(givenName: String, familyName: String, avatar: ByteArray?, discoverableByPhoneNumber: Boolean): RequestResult<Unit, SetProfileError> {
     return RequestResult.Success(Unit)
+  }
+
+  override suspend fun reserveUsername(nickname: String): RequestResult<Username, ReserveUsernameError> {
+    lastReservedNickname = nickname
+    return onReserveUsername(nickname)
+  }
+
+  override suspend fun confirmUsername(username: Username): RequestResult<ConfirmedUsername, ConfirmUsernameError> {
+    lastConfirmedUsername = username
+    return onConfirmUsername(username)
   }
 
   private fun notExpected(): Nothing {

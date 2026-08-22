@@ -11,6 +11,7 @@ import org.signal.core.models.MasterKey
 import org.signal.core.models.ServiceId.ACI
 import org.signal.core.util.logging.Log
 import org.signal.libsignal.net.RequestResult
+import org.signal.libsignal.usernames.Username
 import org.signal.libsignal.zkgroup.receipts.ReceiptCredentialPresentation
 import org.signal.libsignal.zkgroup.receipts.ReceiptCredentialRequest
 import org.signal.network.api.RegistrationApiV2.AccountAttributes
@@ -36,6 +37,9 @@ import org.signal.network.api.RegistrationApiV2.SubmitVerificationCodeError
 import org.signal.network.api.RegistrationApiV2.SvrCredentials
 import org.signal.network.api.RegistrationApiV2.UpdateSessionError
 import org.signal.network.api.RegistrationApiV2.VerificationCodeTransport
+import org.signal.network.service.UsernameService.ConfirmUsernameError
+import org.signal.network.service.UsernameService.ConfirmedUsername
+import org.signal.network.service.UsernameService.ReserveUsernameError
 import org.signal.registration.LinkAndSyncWaitResult
 import org.signal.registration.NetworkController
 import org.signal.registration.NetworkController.BackupMasterKeyError
@@ -254,6 +258,22 @@ class DebugNetworkController(
       return it
     }
     return delegate.setProfile(givenName, familyName, avatar, discoverableByPhoneNumber)
+  }
+
+  override suspend fun reserveUsername(nickname: String): RequestResult<Username, ReserveUsernameError> {
+    NetworkDebugState.getOverride<RequestResult<Username, ReserveUsernameError>>("reserveUsername")?.let {
+      Log.d(TAG, "[reserveUsername] Returning debug override")
+      return it
+    }
+    return delegate.reserveUsername(nickname)
+  }
+
+  override suspend fun confirmUsername(username: Username): RequestResult<ConfirmedUsername, ConfirmUsernameError> {
+    NetworkDebugState.getOverride<RequestResult<ConfirmedUsername, ConfirmUsernameError>>("confirmUsername")?.let {
+      Log.d(TAG, "[confirmUsername] Returning debug override")
+      return it
+    }
+    return delegate.confirmUsername(username)
   }
 
   override suspend fun restoreAccountRecord(timeout: kotlin.time.Duration): RequestResult<Unit, RestoreAccountRecordError> {

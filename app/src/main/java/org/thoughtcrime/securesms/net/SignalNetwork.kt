@@ -5,6 +5,7 @@
 
 package org.thoughtcrime.securesms.net
 
+import org.signal.network.api.AccountApiV2
 import org.signal.network.api.ArchiveApi
 import org.signal.network.api.ArchiveApiV2
 import org.signal.network.api.AttachmentApi
@@ -34,6 +35,9 @@ object SignalNetwork {
   @get:JvmName("account")
   val account: AccountApi
     get() = AppDependencies.accountApi
+
+  val accountV2: AccountApiV2
+    get() = AppDependencies.accountApiV2
 
   val archive: ArchiveApi
     get() = AppDependencies.archiveApi

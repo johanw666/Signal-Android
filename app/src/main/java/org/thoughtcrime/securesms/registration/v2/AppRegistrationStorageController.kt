@@ -91,6 +91,7 @@ import org.thoughtcrime.securesms.keyvalue.isDecisionPending
 import org.thoughtcrime.securesms.notifications.NotificationIds
 import org.thoughtcrime.securesms.pin.SvrRepository
 import org.thoughtcrime.securesms.profiles.AvatarHelper
+import org.thoughtcrime.securesms.profiles.manage.UsernameRepository
 import org.thoughtcrime.securesms.recipients.Recipient
 import org.thoughtcrime.securesms.recipients.RecipientId
 import org.thoughtcrime.securesms.registration.util.RegistrationUtil
@@ -102,6 +103,7 @@ import org.thoughtcrime.securesms.util.BackupUtil
 import org.thoughtcrime.securesms.util.Environment
 import org.thoughtcrime.securesms.util.TextSecurePreferences
 import org.whispersystems.signalservice.api.link.TransferArchiveResponse
+import org.whispersystems.signalservice.api.push.UsernameLinkComponents
 import java.io.File
 import java.io.IOException
 import java.time.LocalDateTime
@@ -307,6 +309,11 @@ class AppRegistrationStorageController(private val context: Context) : StorageCo
 
       AppDependencies.resetProtocolStores()
     }
+  }
+
+  override suspend fun saveUsername(username: String, usernameLink: UsernameLinkComponents) = withContext(Dispatchers.IO) {
+    UsernameRepository.persistUsernameAndLink(username, usernameLink)
+    SignalStore.uiHints.markHasSetOrSkippedUsernameCreation()
   }
 
   override suspend fun setRestoreDecision(decision: RestoreDecision) = withContext(Dispatchers.Default) {

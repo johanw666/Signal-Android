@@ -18,6 +18,7 @@ import org.signal.libsignal.net.RequestResult
 import org.signal.libsignal.protocol.IdentityKey
 import org.signal.libsignal.protocol.IdentityKeyPair
 import org.signal.libsignal.protocol.ecc.ECPrivateKey
+import org.signal.libsignal.usernames.Username
 import org.signal.libsignal.zkgroup.receipts.ReceiptCredentialPresentation
 import org.signal.libsignal.zkgroup.receipts.ReceiptCredentialRequest
 import org.signal.network.api.RegistrationApiV2.AccountAttributes
@@ -43,6 +44,9 @@ import org.signal.network.api.RegistrationApiV2.SubmitVerificationCodeError
 import org.signal.network.api.RegistrationApiV2.SvrCredentials
 import org.signal.network.api.RegistrationApiV2.UpdateSessionError
 import org.signal.network.api.RegistrationApiV2.VerificationCodeTransport
+import org.signal.network.service.UsernameService.ConfirmUsernameError
+import org.signal.network.service.UsernameService.ConfirmedUsername
+import org.signal.network.service.UsernameService.ReserveUsernameError
 import org.whispersystems.signalservice.internal.push.ProvisionMessage
 import java.util.Locale
 import kotlin.time.Duration
@@ -410,6 +414,23 @@ interface NetworkController {
    * (e.g. the create-profile screen) can pre-seed themselves from any data that was restored.
    */
   suspend fun restoreAccountRecord(timeout: Duration): RequestResult<Unit, RestoreAccountRecordError>
+
+  /**
+   * Reserves a username composed of [nickname] plus a server-assigned numeric discriminator. The service holds the
+   * reservation for a short time (~5 minutes), during which it can be finalized via [confirmUsername].
+   * Reserving again replaces any previous reservation.
+   *
+   * `PUT /v1/accounts/username_hash/reserve`
+   */
+  suspend fun reserveUsername(nickname: String): RequestResult<Username, ReserveUsernameError>
+
+  /**
+   * Confirms a reservation previously made via [reserveUsername], assigning the username to the account and creating
+   * a new username link for it. Nothing is persisted locally -- see [StorageController.saveUsername].
+   *
+   * `PUT /v1/accounts/username_hash/confirm`
+   */
+  suspend fun confirmUsername(username: Username): RequestResult<ConfirmedUsername, ConfirmUsernameError>
 
   /**
    * Persists the user's chosen profile name (and optional avatar) for the freshly-registered account

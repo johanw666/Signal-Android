@@ -13,6 +13,7 @@ import org.signal.core.models.ServiceId.ACI
 import org.signal.core.models.ServiceId.PNI
 import org.signal.core.ui.fonts.SignalSymbols
 import org.signal.core.util.BidiUtil
+import org.signal.core.util.UsernameUtil.isValidUsernameForSearch
 import org.signal.core.util.Util
 import org.signal.core.util.UuidUtil
 import org.signal.core.util.isNotNullOrBlank
@@ -54,7 +55,6 @@ import org.thoughtcrime.securesms.service.webrtc.links.CallLinkRoomId
 import org.thoughtcrime.securesms.util.RemoteConfig
 import org.thoughtcrime.securesms.util.SignalE164Util
 import org.thoughtcrime.securesms.util.SpanUtil
-import org.thoughtcrime.securesms.util.UsernameUtil.isValidUsernameForSearch
 import org.thoughtcrime.securesms.util.ViewUtil
 import org.thoughtcrime.securesms.wallpaper.ChatWallpaper
 import org.whispersystems.signalservice.api.push.SignalServiceAddress

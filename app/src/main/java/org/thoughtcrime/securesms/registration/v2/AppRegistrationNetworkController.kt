@@ -24,6 +24,7 @@ import org.signal.libsignal.net.RequestResult
 import org.signal.libsignal.protocol.IdentityKey
 import org.signal.libsignal.protocol.IdentityKeyPair
 import org.signal.libsignal.protocol.ecc.ECPrivateKey
+import org.signal.libsignal.usernames.Username
 import org.signal.libsignal.zkgroup.receipts.ReceiptCredentialPresentation
 import org.signal.libsignal.zkgroup.receipts.ReceiptCredentialRequest
 import org.signal.network.NetworkResult
@@ -53,6 +54,9 @@ import org.signal.network.api.RegistrationApiV2.SvrCredentials
 import org.signal.network.api.RegistrationApiV2.UpdateSessionError
 import org.signal.network.api.RegistrationApiV2.VerificationCodeTransport
 import org.signal.network.service.ArchiveError
+import org.signal.network.service.UsernameService.ConfirmUsernameError
+import org.signal.network.service.UsernameService.ConfirmedUsername
+import org.signal.network.service.UsernameService.ReserveUsernameError
 import org.signal.registration.LinkAndSyncWaitResult
 import org.signal.registration.NetworkController
 import org.signal.registration.NetworkController.BackupMasterKeyError
@@ -450,6 +454,14 @@ class AppRegistrationNetworkController(
     RegistrationUtil.maybeMarkRegistrationComplete()
 
     RequestResult.Success(Unit)
+  }
+
+  override suspend fun reserveUsername(nickname: String): RequestResult<Username, ReserveUsernameError> {
+    return AppDependencies.usernameService.reserveUsername(nickname)
+  }
+
+  override suspend fun confirmUsername(username: Username): RequestResult<ConfirmedUsername, ConfirmUsernameError> {
+    return AppDependencies.usernameService.confirmUsername(username)
   }
 
   override suspend fun restoreAccountRecord(

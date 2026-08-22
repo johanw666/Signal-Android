@@ -19,6 +19,7 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
@@ -55,14 +56,17 @@ import androidx.compose.ui.unit.dp
 import org.signal.core.ui.compose.AllDevicePreviews
 import org.signal.core.ui.compose.Buttons
 import org.signal.core.ui.compose.Dialogs
+import org.signal.core.ui.compose.Dividers
 import org.signal.core.ui.compose.Previews
 import org.signal.core.ui.compose.SignalIcons
+import org.signal.libsignal.usernames.Username
 import org.signal.registration.R
 import org.signal.registration.screens.OnePaneRegistrationScaffold
 import org.signal.registration.screens.RegistrationScaffold
 import org.signal.registration.screens.TwoPaneRegistrationScaffold
 import org.signal.registration.screens.attachDebugLogHelper
 import org.signal.registration.test.TestTags
+import org.whispersystems.signalservice.api.util.discriminator
 
 /** Size of the avatar artwork, whose sphere occupies the inner 72dp of its 80dp box. */
 private val AVATAR_SIZE = 80.dp
@@ -82,6 +86,8 @@ fun AddUsernameScreen(
   val simpleError: Pair<String, AddUsernameScreenEvents>? = when {
     state.dialogs.networkError -> stringResource(R.string.VerificationCodeScreen__network_error) to AddUsernameScreenEvents.NetworkErrorDialogDismissed
     state.dialogs.usernameUnavailable -> stringResource(R.string.AddUsernameScreen__this_username_is_not_available) to AddUsernameScreenEvents.UsernameUnavailableDialogDismissed
+    state.dialogs.reservationLapsed -> stringResource(R.string.AddUsernameScreen__your_username_reservation_expired) to AddUsernameScreenEvents.ReservationLapsedDialogDismissed
+    state.dialogs.rateLimited -> stringResource(R.string.VerificationCodeScreen__too_many_attempts) to AddUsernameScreenEvents.RateLimitedDialogDismissed
     state.dialogs.unknownError -> stringResource(R.string.VerificationCodeScreen__an_unexpected_error_occurred) to AddUsernameScreenEvents.UnknownErrorDialogDismissed
     else -> null
   }
@@ -203,7 +209,7 @@ private fun ColumnScope.UsernameEntry(
   UsernameAvatar(modifier = Modifier.align(Alignment.CenterHorizontally))
 
   Text(
-    text = stringResource(R.string.AddUsernameScreen__choose_your_username),
+    text = state.reservation?.username ?: stringResource(R.string.AddUsernameScreen__choose_your_username),
     style = MaterialTheme.typography.bodyLarge,
     color = MaterialTheme.colorScheme.onSurfaceVariant,
     textAlign = TextAlign.Center,
@@ -224,6 +230,7 @@ private fun ColumnScope.UsernameEntry(
     supportingText = state.validationError?.let { error ->
       { Text(stringResource(error.messageId)) }
     },
+    suffix = discriminatorSuffix(state),
     keyboardOptions = KeyboardOptions(
       capitalization = KeyboardCapitalization.None,
       autoCorrectEnabled = false,
@@ -268,6 +275,44 @@ private fun ColumnScope.UsernameEntry(
       .padding(top = 8.dp)
       .testTag(TestTags.ADD_USERNAME_LEARN_MORE_LINK)
   )
+}
+
+/**
+ * The trailing content of the username field: a spinner while a username is being reserved, and once one is
+ * reserved, its discriminator behind a divider (per the design, the discriminator is server-assigned and not
+ * directly editable).
+ */
+private fun discriminatorSuffix(state: AddUsernameState): (@Composable () -> Unit)? {
+  val discriminator = state.reservation?.discriminator
+
+  return when {
+    state.isReserving -> {
+      {
+        CircularProgressIndicator(
+          strokeWidth = 2.dp,
+          modifier = Modifier.size(16.dp)
+        )
+      }
+    }
+
+    discriminator != null -> {
+      {
+        Row(verticalAlignment = Alignment.CenterVertically) {
+          Dividers.Vertical(
+            thickness = 1.dp,
+            color = MaterialTheme.colorScheme.outline,
+            modifier = Modifier.height(20.dp)
+          )
+
+          Spacer(modifier = Modifier.width(16.dp))
+
+          Text(text = discriminator)
+        }
+      }
+    }
+
+    else -> null
+  }
 }
 
 /**
@@ -344,6 +389,7 @@ private val AddUsernameState.ValidationError.messageId: Int
     AddUsernameState.ValidationError.TOO_LONG -> R.string.AddUsernameScreen__usernames_must_be_at_most_32_characters
     AddUsernameState.ValidationError.INVALID_CHARACTERS -> R.string.AddUsernameScreen__usernames_can_only_contain
     AddUsernameState.ValidationError.CANNOT_START_WITH_DIGIT -> R.string.AddUsernameScreen__usernames_cannot_begin_with_a_number
+    AddUsernameState.ValidationError.NOT_AVAILABLE -> R.string.AddUsernameScreen__this_username_is_not_available
   }
 
 @AllDevicePreviews
@@ -362,7 +408,18 @@ private fun AddUsernameScreenPreview() {
 private fun AddUsernameScreenFilledPreview() {
   Previews.Preview {
     AddUsernameScreen(
-      state = AddUsernameState(username = "alice"),
+      state = AddUsernameState(username = "alice", isReserving = true),
+      onEvent = {}
+    )
+  }
+}
+
+@AllDevicePreviews
+@Composable
+private fun AddUsernameScreenReservedPreview() {
+  Previews.Preview {
+    AddUsernameScreen(
+      state = AddUsernameState(username = "alice", reservation = Username("alice.45")),
       onEvent = {}
     )
   }

@@ -40,6 +40,7 @@ import org.signal.libsignal.protocol.kem.KEMKeyPair
 import org.signal.libsignal.protocol.kem.KEMKeyType
 import org.signal.libsignal.protocol.state.KyberPreKeyRecord
 import org.signal.libsignal.protocol.state.SignedPreKeyRecord
+import org.signal.libsignal.usernames.Username
 import org.signal.libsignal.zkgroup.profiles.ProfileKey
 import org.signal.network.api.RegistrationApiV2.AccountAttributes
 import org.signal.network.api.RegistrationApiV2.CheckSvrCredentialsError
@@ -58,6 +59,8 @@ import org.signal.network.api.RegistrationApiV2.SubmitVerificationCodeError
 import org.signal.network.api.RegistrationApiV2.SvrCredentials
 import org.signal.network.api.RegistrationApiV2.UpdateSessionError
 import org.signal.network.api.RegistrationApiV2.VerificationCodeTransport
+import org.signal.network.service.UsernameService.ConfirmUsernameError
+import org.signal.network.service.UsernameService.ReserveUsernameError
 import org.signal.registration.NetworkController.MasterKeyResponse
 import org.signal.registration.NetworkController.ProvisioningEvent
 import org.signal.registration.NetworkController.RestoreMasterKeyError
@@ -753,6 +756,29 @@ class RegistrationRepository(
     discoverableByPhoneNumber: Boolean
   ): RequestResult<Unit, NetworkController.SetProfileError> = withContext(Dispatchers.IO) {
     networkController.setProfile(givenName, familyName, avatar, discoverableByPhoneNumber)
+  }
+
+  /**
+   * Reserves a username made from [nickname] plus a server-assigned discriminator.
+   * See [NetworkController.reserveUsername].
+   */
+  suspend fun reserveUsername(nickname: String): RequestResult<Username, ReserveUsernameError> = withContext(Dispatchers.IO) {
+    networkController.reserveUsername(nickname)
+  }
+
+  /**
+   * Confirms a previously-reserved username on the service and persists it locally as the account's username.
+   * See [NetworkController.confirmUsername].
+   */
+  suspend fun confirmUsername(username: Username): RequestResult<Unit, ConfirmUsernameError> = withContext(Dispatchers.IO) {
+    val result = networkController.confirmUsername(username)
+
+    if (result is RequestResult.Success) {
+      storageController.saveUsername(result.result.username.username, result.result.link)
+    }
+
+    // Drop the success type
+    result.map { }
   }
 
   suspend fun setNewlyCreatedPin(

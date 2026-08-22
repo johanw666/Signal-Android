@@ -8,10 +8,12 @@ import org.signal.core.util.UptimeSleepTimer
 import org.signal.core.util.billing.BillingApi
 import org.signal.libsignal.net.Network
 import org.signal.libsignal.zkgroup.receipts.ClientZkReceiptOperations
+import org.signal.network.api.AccountApiV2
 import org.signal.network.api.ArchiveApi
 import org.signal.network.api.ArchiveApiV2
 import org.signal.network.config.SignalServiceConfiguration
 import org.signal.network.service.ArchiveService
+import org.signal.network.service.UsernameService
 import org.thoughtcrime.securesms.push.SignalServiceNetworkAccess
 import org.thoughtcrime.securesms.recipients.LiveRecipientCache
 import org.thoughtcrime.securesms.testing.endpoints.DonationTestServer
@@ -48,6 +50,10 @@ class InstrumentationApplicationDependencyProvider(val application: Application,
   override fun provideBillingApi(): BillingApi = billingApi
 
   override fun provideAccountApi(authWebSocket: SignalWebSocket.AuthenticatedWebSocket): AccountApi = accountApi
+
+  override fun provideAccountApiV2(authWebSocket: SignalWebSocket.AuthenticatedWebSocket): AccountApiV2 = mockk()
+
+  override fun provideUsernameService(accountApi: AccountApiV2): UsernameService = mockk()
 
   override fun provideRecipientCache(): LiveRecipientCache {
     return recipientCache

@@ -29,6 +29,7 @@ import org.signal.core.models.backup.MessageBackupKey
 import org.signal.core.util.Base64
 import org.signal.core.util.Hex
 import org.signal.core.util.SleepTimer
+import org.signal.core.util.UsernameUtil
 import org.signal.core.util.logging.Log
 import org.signal.devicetransfer.DeviceToDeviceTransferService
 import org.signal.libsignal.net.Network
@@ -36,6 +37,8 @@ import org.signal.libsignal.net.RequestResult
 import org.signal.libsignal.protocol.IdentityKey
 import org.signal.libsignal.protocol.IdentityKeyPair
 import org.signal.libsignal.protocol.ecc.ECPrivateKey
+import org.signal.libsignal.usernames.BaseUsernameException
+import org.signal.libsignal.usernames.Username
 import org.signal.libsignal.zkgroup.GenericServerPublicParams
 import org.signal.libsignal.zkgroup.ServerSecretParams
 import org.signal.libsignal.zkgroup.VerificationFailedException
@@ -70,6 +73,9 @@ import org.signal.network.api.RegistrationApiV2.VerificationCodeTransport
 import org.signal.network.config.SignalServiceConfiguration
 import org.signal.network.rest.SignalRestClient
 import org.signal.network.service.StorageServiceService
+import org.signal.network.service.UsernameService.ConfirmUsernameError
+import org.signal.network.service.UsernameService.ConfirmedUsername
+import org.signal.network.service.UsernameService.ReserveUsernameError
 import org.signal.registration.LinkAndSyncWaitResult
 import org.signal.registration.NetworkController
 import org.signal.registration.NetworkController.ProvisioningEvent
@@ -81,6 +87,7 @@ import org.signal.registration.sample.fcm.PushChallengeReceiver
 import org.signal.registration.sample.storage.RegistrationPreferences
 import org.whispersystems.signalservice.api.link.TransferArchiveResponse
 import org.whispersystems.signalservice.api.provisioning.ProvisioningSocket
+import org.whispersystems.signalservice.api.push.UsernameLinkComponents
 import org.whispersystems.signalservice.api.storage.StorageServiceApi
 import org.whispersystems.signalservice.api.svr.SecureValueRecovery.BackupResponse
 import org.whispersystems.signalservice.api.svr.SecureValueRecovery.RestoreResponse
@@ -950,6 +957,136 @@ class DemoNetworkController(
     RequestResult.Success(Unit)
   }
 
+  override suspend fun reserveUsername(nickname: String): RequestResult<Username, ReserveUsernameError> = withContext(Dispatchers.IO) {
+    val aci = RegistrationPreferences.aci
+    val password = RegistrationPreferences.servicePassword
+
+    if (aci == null || password == null) {
+      Log.w(TAG, "[reserveUsername] Credentials not available")
+      return@withContext RequestResult.ApplicationError(IllegalStateException("Not registered"))
+    }
+
+    val candidates: List<Username> = try {
+      Username.candidatesFrom(nickname, UsernameUtil.MIN_NICKNAME_LENGTH, UsernameUtil.MAX_NICKNAME_LENGTH)
+    } catch (e: BaseUsernameException) {
+      Log.w(TAG, "[reserveUsername] Failed to generate candidates.", e)
+      return@withContext RequestResult.NonSuccess(ReserveUsernameError.NicknameInvalid)
+    }
+
+    val hashes: List<String> = candidates.map { Base64.encodeUrlSafeWithoutPadding(it.hash) }
+
+    try {
+      val credentials = okhttp3.Credentials.basic(authUsername(aci), password)
+      val baseUrl = serviceConfiguration.signalServiceUrls[0].url
+      val requestBody = json.encodeToString(ReserveUsernameRequestJson.serializer(), ReserveUsernameRequestJson(hashes))
+        .toRequestBody("application/json".toMediaType())
+
+      val request = okhttp3.Request.Builder()
+        .url("$baseUrl/v1/accounts/username_hash/reserve")
+        .put(requestBody)
+        .header("Authorization", credentials)
+        .build()
+
+      okHttpClient.newCall(request).execute().use { response ->
+        when (response.code) {
+          200 -> {
+            val reservedHash = json.decodeFromString<ReserveUsernameResponseJson>(response.body.string()).usernameHash
+            val reserved = candidates.firstOrNull { Base64.encodeUrlSafeWithoutPadding(it.hash) == reservedHash }
+            if (reserved == null) {
+              Log.w(TAG, "[reserveUsername] The reserved hash was not one of our candidates.")
+              RequestResult.NonSuccess(ReserveUsernameError.NicknameInvalid)
+            } else {
+              Log.i(TAG, "[reserveUsername] Successfully reserved a username.")
+              RequestResult.Success(reserved)
+            }
+          }
+          409 -> {
+            RequestResult.NonSuccess(ReserveUsernameError.NotAvailable)
+          }
+          422 -> {
+            RequestResult.NonSuccess(ReserveUsernameError.NicknameInvalid)
+          }
+          429 -> {
+            RequestResult.NonSuccess(ReserveUsernameError.RateLimited(response.retryAfter()))
+          }
+          else -> {
+            RequestResult.ApplicationError(IllegalStateException("Unexpected response code: ${response.code}, body: ${response.body.string()}"))
+          }
+        }
+      }
+    } catch (e: IOException) {
+      Log.w(TAG, "[reserveUsername] IOException", e)
+      RequestResult.RetryableNetworkError(e)
+    } catch (e: Exception) {
+      Log.w(TAG, "[reserveUsername] Exception", e)
+      RequestResult.ApplicationError(e)
+    }
+  }
+
+  override suspend fun confirmUsername(username: Username): RequestResult<ConfirmedUsername, ConfirmUsernameError> = withContext(Dispatchers.IO) {
+    val aci = RegistrationPreferences.aci
+    val password = RegistrationPreferences.servicePassword
+
+    if (aci == null || password == null) {
+      Log.w(TAG, "[confirmUsername] Credentials not available")
+      return@withContext RequestResult.ApplicationError(IllegalStateException("Not registered"))
+    }
+
+    try {
+      val link = username.generateLink()
+
+      val credentials = okhttp3.Credentials.basic(authUsername(aci), password)
+      val baseUrl = serviceConfiguration.signalServiceUrls[0].url
+      val requestJson = ConfirmUsernameRequestJson(
+        usernameHash = Base64.encodeUrlSafeWithoutPadding(username.hash),
+        zkProof = Base64.encodeUrlSafeWithoutPadding(username.generateProof()),
+        encryptedUsername = Base64.encodeUrlSafeWithoutPadding(link.encryptedUsername)
+      )
+      val requestBody = json.encodeToString(ConfirmUsernameRequestJson.serializer(), requestJson)
+        .toRequestBody("application/json".toMediaType())
+
+      val request = okhttp3.Request.Builder()
+        .url("$baseUrl/v1/accounts/username_hash/confirm")
+        .put(requestBody)
+        .header("Authorization", credentials)
+        .build()
+
+      okHttpClient.newCall(request).execute().use { response ->
+        when (response.code) {
+          200 -> {
+            val linkHandle = UUID.fromString(json.decodeFromString<ConfirmUsernameResponseJson>(response.body.string()).usernameLinkHandle)
+            Log.i(TAG, "[confirmUsername] Successfully confirmed the username.")
+            RequestResult.Success(ConfirmedUsername(username, UsernameLinkComponents(link.entropy, linkHandle)))
+          }
+          409 -> {
+            RequestResult.NonSuccess(ConfirmUsernameError.ReservationInvalid)
+          }
+          410 -> {
+            RequestResult.NonSuccess(ConfirmUsernameError.NotAvailable)
+          }
+          422 -> {
+            RequestResult.NonSuccess(ConfirmUsernameError.BadRequest)
+          }
+          429 -> {
+            RequestResult.NonSuccess(ConfirmUsernameError.RateLimited(response.retryAfter()))
+          }
+          else -> {
+            RequestResult.ApplicationError(IllegalStateException("Unexpected response code: ${response.code}, body: ${response.body.string()}"))
+          }
+        }
+      }
+    } catch (e: BaseUsernameException) {
+      Log.w(TAG, "[confirmUsername] Failed to generate the username link.", e)
+      RequestResult.NonSuccess(ConfirmUsernameError.GenerationFailed)
+    } catch (e: IOException) {
+      Log.w(TAG, "[confirmUsername] IOException", e)
+      RequestResult.RetryableNetworkError(e)
+    } catch (e: Exception) {
+      Log.w(TAG, "[confirmUsername] Exception", e)
+      RequestResult.ApplicationError(e)
+    }
+  }
+
   override suspend fun restoreAccountRecord(
     timeout: kotlin.time.Duration
   ): RequestResult<Unit, NetworkController.RestoreAccountRecordError> = withContext(Dispatchers.IO) {
@@ -1131,7 +1268,7 @@ class DemoNetworkController(
           401 -> RequestResult.NonSuccess(NetworkController.GetBackupInfoError.BadAuthCredential(response.body.string()))
           403 -> RequestResult.NonSuccess(NetworkController.GetBackupInfoError.Forbidden(response.body.string()))
           404 -> RequestResult.NonSuccess(NetworkController.GetBackupInfoError.NoBackup)
-          429 -> RequestResult.NonSuccess(NetworkController.GetBackupInfoError.RateLimited(response.retryAfter()))
+          429 -> RequestResult.NonSuccess(NetworkController.GetBackupInfoError.RateLimited(response.retryAfter() ?: 0.seconds))
           else -> RequestResult.ApplicationError(IllegalStateException("Unexpected response code: ${response.code}, body: ${response.body?.string()}"))
         }
       }
@@ -1176,7 +1313,7 @@ class DemoNetworkController(
           200, 204 -> RequestResult.Success(Unit)
           400 -> RequestResult.NonSuccess(NetworkController.ReserveBackupIdError.InvalidCredential)
           401 -> RequestResult.NonSuccess(NetworkController.ReserveBackupIdError.Unauthorized)
-          429 -> RequestResult.NonSuccess(NetworkController.ReserveBackupIdError.RateLimited(response.retryAfter()))
+          429 -> RequestResult.NonSuccess(NetworkController.ReserveBackupIdError.RateLimited(response.retryAfter() ?: 0.seconds))
           else -> RequestResult.ApplicationError(IllegalStateException("Unexpected response code: ${response.code}"))
         }
       }
@@ -1350,6 +1487,28 @@ class DemoNetworkController(
   }
 
   @Serializable
+  private data class ReserveUsernameRequestJson(
+    val usernameHashes: List<String>
+  )
+
+  @Serializable
+  private data class ReserveUsernameResponseJson(
+    val usernameHash: String
+  )
+
+  @Serializable
+  private data class ConfirmUsernameRequestJson(
+    val usernameHash: String,
+    val zkProof: String,
+    val encryptedUsername: String
+  )
+
+  @Serializable
+  private data class ConfirmUsernameResponseJson(
+    val usernameLinkHandle: String
+  )
+
+  @Serializable
   private data class CdnReadCredentialsResponse(
     val headers: Map<String, String>
   )
@@ -1412,7 +1571,7 @@ class DemoNetworkController(
     )
   }
 
-  private fun Response.retryAfter(): Duration {
-    return this.header("Retry-After")?.toLongOrNull()?.seconds ?: 0.seconds
+  private fun Response.retryAfter(): Duration? {
+    return this.header("Retry-After")?.toLongOrNull()?.seconds
   }
 }

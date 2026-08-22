@@ -6,11 +6,24 @@
 package org.signal.registration.screens.addusername
 
 import org.signal.core.util.censor
+import org.signal.libsignal.net.RequestResult
+import org.signal.libsignal.usernames.Username
+import org.signal.network.service.UsernameService.ReserveUsernameError
 
 sealed class AddUsernameScreenEvents {
   /** The user edited the username field. */
   data class UsernameChanged(val value: String) : AddUsernameScreenEvents() {
     override fun toString(): String = "UsernameChanged(value=${value.censor()})"
+  }
+
+  /** Internal: the user paused typing long enough for the entered nickname to be validated and reserved. */
+  data class NicknameSettled(val value: String) : AddUsernameScreenEvents() {
+    override fun toString(): String = "NicknameSettled(value=${value.censor()})"
+  }
+
+  /** Internal: a reservation attempt for [nickname] finished with [result]. */
+  data class ReservationCompleted(val nickname: String, val result: RequestResult<Username, ReserveUsernameError>) : AddUsernameScreenEvents() {
+    override fun toString(): String = "ReservationCompleted(nickname=${nickname.censor()}, result=${result.javaClass.simpleName})"
   }
 
   /** The user tapped the "learn more" link under the username field. */
@@ -30,4 +43,10 @@ sealed class AddUsernameScreenEvents {
 
   /** The user dismissed the username-unavailable dialog. */
   data object UsernameUnavailableDialogDismissed : AddUsernameScreenEvents()
+
+  /** The user dismissed the rate-limited dialog. */
+  data object RateLimitedDialogDismissed : AddUsernameScreenEvents()
+
+  /** The user dismissed the reservation-lapsed dialog. */
+  data object ReservationLapsedDialogDismissed : AddUsernameScreenEvents()
 }

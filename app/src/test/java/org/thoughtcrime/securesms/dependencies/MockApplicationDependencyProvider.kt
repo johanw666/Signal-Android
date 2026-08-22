@@ -11,6 +11,7 @@ import org.signal.donations.permits.DonationPermitsRepository
 import org.signal.libsignal.net.Network
 import org.signal.libsignal.zkgroup.profiles.ClientZkProfileOperations
 import org.signal.libsignal.zkgroup.receipts.ClientZkReceiptOperations
+import org.signal.network.api.AccountApiV2
 import org.signal.network.api.ArchiveApi
 import org.signal.network.api.AttachmentApi
 import org.signal.network.api.CallingApi
@@ -26,6 +27,7 @@ import org.signal.network.api.SvrBApi
 import org.signal.network.api.UsernameApi
 import org.signal.network.config.SignalServiceConfiguration
 import org.signal.network.rest.SignalRestClient
+import org.signal.network.service.UsernameService
 import org.signal.video.exo.ExoPlayerPool
 import org.thoughtcrime.securesms.components.TypingStatusRepository
 import org.thoughtcrime.securesms.components.TypingStatusSender
@@ -314,6 +316,14 @@ class MockApplicationDependencyProvider : AppDependencies.Provider {
   }
 
   override fun provideAccountApi(authWebSocket: SignalWebSocket.AuthenticatedWebSocket): AccountApi {
+    return mockk(relaxed = true)
+  }
+
+  override fun provideAccountApiV2(authWebSocket: SignalWebSocket.AuthenticatedWebSocket): AccountApiV2 {
+    return mockk(relaxed = true)
+  }
+
+  override fun provideUsernameService(accountApi: AccountApiV2): UsernameService {
     return mockk(relaxed = true)
   }
 

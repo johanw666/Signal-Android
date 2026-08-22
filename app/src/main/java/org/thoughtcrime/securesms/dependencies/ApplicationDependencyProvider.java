@@ -30,6 +30,7 @@ import org.signal.libsignal.zkgroup.InvalidInputException;
 import org.signal.libsignal.zkgroup.ServerPublicParams;
 import org.signal.libsignal.zkgroup.profiles.ClientZkProfileOperations;
 import org.signal.libsignal.zkgroup.receipts.ClientZkReceiptOperations;
+import org.signal.network.api.AccountApiV2;
 import org.signal.network.api.ArchiveApi;
 import org.signal.network.api.ArchiveApiV2;
 import org.signal.network.api.AttachmentApi;
@@ -49,6 +50,7 @@ import org.signal.network.api.UsernameApi;
 import org.signal.network.rest.SignalRestClient;
 import org.signal.network.service.ArchiveService;
 import org.signal.network.service.MessageService;
+import org.signal.network.service.UsernameService;
 import org.signal.video.exo.ExoPlayerPool;
 import org.thoughtcrime.securesms.backup.v2.SignalStoreArchiveCacheStore;
 import org.thoughtcrime.securesms.BuildConfig;
@@ -611,6 +613,16 @@ public class ApplicationDependencyProvider implements AppDependencies.Provider {
   @Override
   public @NonNull AccountApi provideAccountApi(@NonNull SignalWebSocket.AuthenticatedWebSocket authWebSocket) {
     return new AccountApi(authWebSocket);
+  }
+
+  @Override
+  public @NonNull AccountApiV2 provideAccountApiV2(@NonNull SignalWebSocket.AuthenticatedWebSocket authWebSocket) {
+    return new AccountApiV2(authWebSocket);
+  }
+
+  @Override
+  public @NonNull UsernameService provideUsernameService(@NonNull AccountApiV2 accountApi) {
+    return new UsernameService(accountApi);
   }
 
   @Override

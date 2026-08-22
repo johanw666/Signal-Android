@@ -52,6 +52,7 @@ import org.signal.registration.screens.remotebackuprestore.RemoteBackupRestorePr
 import org.whispersystems.signalservice.api.SignalServiceMessageReceiver
 import org.whispersystems.signalservice.api.messages.AttachmentTransferProgress
 import org.whispersystems.signalservice.api.messages.SignalServiceAttachment
+import org.whispersystems.signalservice.api.push.UsernameLinkComponents
 import org.whispersystems.signalservice.internal.push.PushServiceSocket
 import org.whispersystems.signalservice.internal.util.StaticCredentialsProvider
 import java.io.File
@@ -85,6 +86,12 @@ class DemoStorageController(private val context: Context) : StorageController {
       avatar = RegistrationPreferences.profileAvatar,
       discoverableByPhoneNumber = RegistrationPreferences.profileDiscoverableByPhoneNumber
     )
+  }
+
+  override suspend fun saveUsername(username: String, usernameLink: UsernameLinkComponents) = withContext(Dispatchers.IO) {
+    RegistrationPreferences.username = username
+    RegistrationPreferences.usernameLinkEntropy = usernameLink.entropy
+    RegistrationPreferences.usernameLinkServerId = usernameLink.serverId.toString()
   }
 
   override suspend fun clearAllData() = withContext(Dispatchers.IO) {

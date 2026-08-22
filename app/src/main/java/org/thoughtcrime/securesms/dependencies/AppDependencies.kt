@@ -21,6 +21,7 @@ import org.signal.libsignal.net.Network
 import org.signal.libsignal.zkgroup.profiles.ClientZkProfileOperations
 import org.signal.libsignal.zkgroup.receipts.ClientZkReceiptOperations
 import org.signal.mediasend.MediaSendDependencies
+import org.signal.network.api.AccountApiV2
 import org.signal.network.api.ArchiveApi
 import org.signal.network.api.ArchiveApiV2
 import org.signal.network.api.AttachmentApi
@@ -42,6 +43,7 @@ import org.signal.network.config.SignalServiceConfiguration
 import org.signal.network.rest.SignalRestClient
 import org.signal.network.service.ArchiveService
 import org.signal.network.service.MessageService
+import org.signal.network.service.UsernameService
 import org.signal.video.exo.ExoPlayerPool
 import org.thoughtcrime.securesms.BuildConfig
 import org.thoughtcrime.securesms.components.TypingStatusRepository
@@ -404,6 +406,12 @@ object AppDependencies {
   val accountApi: AccountApi
     get() = networkModule.accountApi
 
+  val accountApiV2: AccountApiV2
+    get() = networkModule.accountApiV2
+
+  val usernameService: UsernameService
+    get() = networkModule.usernameService
+
   val usernameApi: UsernameApi
     get() = networkModule.usernameApi
 
@@ -544,6 +552,8 @@ object AppDependencies {
     fun provideAuthWebSocket(signalServiceConfigurationSupplier: Supplier<SignalServiceConfiguration>, libSignalNetworkSupplier: Supplier<Network>): SignalWebSocket.AuthenticatedWebSocket
     fun provideUnauthWebSocket(signalServiceConfigurationSupplier: Supplier<SignalServiceConfiguration>, libSignalNetworkSupplier: Supplier<Network>): SignalWebSocket.UnauthenticatedWebSocket
     fun provideAccountApi(authWebSocket: SignalWebSocket.AuthenticatedWebSocket): AccountApi
+    fun provideAccountApiV2(authWebSocket: SignalWebSocket.AuthenticatedWebSocket): AccountApiV2
+    fun provideUsernameService(accountApi: AccountApiV2): UsernameService
     fun provideUsernameApi(unauthWebSocket: SignalWebSocket.UnauthenticatedWebSocket): UsernameApi
     fun provideCallingApi(authWebSocket: SignalWebSocket.AuthenticatedWebSocket, unauthWebSocket: SignalWebSocket.UnauthenticatedWebSocket, pushServiceSocket: PushServiceSocket): CallingApi
     fun providePaymentsApi(authWebSocket: SignalWebSocket.AuthenticatedWebSocket): PaymentsApi

@@ -13,6 +13,7 @@ import org.signal.core.util.orNull
 import org.signal.core.util.resettableLazy
 import org.signal.libsignal.net.Network
 import org.signal.libsignal.zkgroup.receipts.ClientZkReceiptOperations
+import org.signal.network.api.AccountApiV2
 import org.signal.network.api.ArchiveApi
 import org.signal.network.api.ArchiveApiV2
 import org.signal.network.api.AttachmentApi
@@ -33,6 +34,7 @@ import org.signal.network.config.TrustStore
 import org.signal.network.rest.SignalRestClient
 import org.signal.network.service.ArchiveService
 import org.signal.network.service.MessageService
+import org.signal.network.service.UsernameService
 import org.signal.network.util.Tls12SocketFactory
 import org.signal.network.util.TlsProxySocketFactory
 import org.thoughtcrime.securesms.crypto.storage.SignalServiceDataStoreImpl
@@ -181,6 +183,12 @@ class NetworkDependenciesModule(
   val accountApi: AccountApi by lazy {
     provider.provideAccountApi(authWebSocket)
   }
+
+  val accountApiV2: AccountApiV2 by lazy {
+    provider.provideAccountApiV2(authWebSocket)
+  }
+
+  val usernameService: UsernameService by lazy { provider.provideUsernameService(accountApiV2) }
 
   val usernameApi: UsernameApi by lazy {
     provider.provideUsernameApi(unauthWebSocket)

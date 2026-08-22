@@ -23,6 +23,7 @@ import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.android.material.textfield.TextInputLayout;
 
 import org.signal.core.util.EditTextUtil;
+import org.signal.core.util.UsernameUtil;
 import org.signal.core.util.concurrent.LifecycleDisposable;
 import org.signal.core.ui.logging.LoggingFragment;
 import org.thoughtcrime.securesms.R;
@@ -31,7 +32,6 @@ import org.thoughtcrime.securesms.databinding.UsernameEditFragmentBinding;
 import org.thoughtcrime.securesms.keyvalue.SignalStore;
 import org.thoughtcrime.securesms.util.FragmentResultContract;
 import org.thoughtcrime.securesms.util.SystemWindowInsetsSetter;
-import org.thoughtcrime.securesms.util.UsernameUtil;
 import org.thoughtcrime.securesms.util.ViewUtil;
 import org.thoughtcrime.securesms.util.views.CircularProgressMaterialButton;
 

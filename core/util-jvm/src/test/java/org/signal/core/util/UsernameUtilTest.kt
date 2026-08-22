@@ -1,11 +1,11 @@
-package org.thoughtcrime.securesms.util
+package org.signal.core.util
 
 import assertk.assertThat
 import assertk.assertions.isEqualTo
 import assertk.assertions.isNull
 import org.junit.Test
-import org.thoughtcrime.securesms.util.UsernameUtil.checkDiscriminator
-import org.thoughtcrime.securesms.util.UsernameUtil.checkNickname
+import org.signal.core.util.UsernameUtil.checkDiscriminator
+import org.signal.core.util.UsernameUtil.checkNickname
 
 class UsernameUtilTest {
   @Test
