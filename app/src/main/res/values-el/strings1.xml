@@ -1,0 +1,27 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<resources>
+  <!--arrays.xml-->
+  <string name="arrays__import_export_orig">Εισαγωγή / εξαγωγή</string>
+  <!--ImportFragment-->
+  <string name="ImportFragment_restore_encrypted_backup">Επαναφορά του κρυπτογραφημένου αντίγραφου ασφαλείας;</string>
+  <string name="ImportFragment_restoring_an_encrypted_backup_will_completely_replace_your_existing_keys">
+Η επαναφορά του κρυπτογραφημένου αντίγραφου ασφαλείας θα αντικαταστήσει πλήρως τα υπάρχοντα κλειδιά, τις ρυθμίσεις και τα μηνύματά σου. Θα χάσεις όλα τα δεδομένα αυτής της εγκατάστασης του Signal, αλλά όχι το αντίγραφο ασφαλείας.</string>
+  <string name="ImportFragment_restore">Επαναφορά</string>
+  <string name="ImportFragment_restoring">Επαναφορά</string>
+  <string name="ImportFragment_restoring_encrypted_backup">Επαναφορά κρυπτογραφημένου αντίγραφου ασφαλείας...</string>
+  <string name="ImportFragment_no_encrypted_backup_found">Δε βρέθηκε κρυπτογραφημένο αντίγραφο ασφαλείας!</string>
+  <string name="ImportFragment_restore_complete">Η επαναφορά ολοκληρώθηκε!</string>
+  <!--ExportFragment-->
+  <string name="ExportFragment_export_to_sd_card">Εξαγωγή Σε Κάρτα Μνήμης;</string>
+  <string name="ExportFragment_this_will_export_your_encrypted_keys_settings_and_messages">Αυτό\n        θα εξάγει τα κρυπτογραφημένα κλειδιά, τις ρυθμίσεις και τα μηνύματά σας στη κάρτα μνήμης.\n</string>
+  <string name="ExportFragment_exporting_keys_settings_and_messages">Γίνεται εξαγωγή κρυπτογραφημένων κλειδιών,\n        ρυθμίσεων και μηνυμάτων...\n</string>
+  <!--database_upgrade_activity-->
+  <string name="export_fragment__export_encrypted_backup">Εξαγωγή Κρυπτογραφημένου Αντιγράφου Ασφαλείας</string>
+  <string name="export_fragment__export_an_encrypted_backup_to_the_sd_card">Κάνετε εξαγωγή κρυπτογραφημένου\n        αντιγράφου ασφαλείας στην κάρτα μνήμης.\n</string>
+  <string name="import_fragment__restore_encrypted_backup">Επαναφορά κρυπτογραφημένου αντίγραφου ασφαλείας</string>
+  <string name="import_fragment__restore_a_previously_exported_encrypted_signal_backup">Επαναφορά ενός υφιστάμενου κρυπτογραφημένου αντίγραφου ασφαλείας του Signal</string>
+  <string name="import_fragment__import_system_sms_database">Εισαγωγή της βάσης δεδομένων SMS του συστήματος</string>
+  <string name="import_fragment__import_the_database_from_the_default_system">Εισαγωγή της βάσης δεδομένων από την προκαθορισμένη συσκευή μηνυμάτων του συστήματος</string>
+  <string name="import_fragment__import_plaintext_backup">Εισαγωγή μη κρυπτογραφημένου αντίγραφου ασφαλείας</string>
+  <string name="import_fragment__import_a_plaintext_backup_file">Εισαγωγή μη κρυπτογραφημένου αντίγραφου ασφαλείας. Συμβατό με το \'SMS Backup &amp; Restore.\'</string>
+</resources>

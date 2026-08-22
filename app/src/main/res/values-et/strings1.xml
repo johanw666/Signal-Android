@@ -1,0 +1,9 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<resources>
+  <!--arrays.xml-->
+  <string name="arrays__import_export_orig">Impordi / ekspordi</string>
+  <string name="import_fragment__import_system_sms_database">Impordi süsteemi SMS-andmebaas</string>
+  <string name="import_fragment__import_the_database_from_the_default_system">Impordi andmebaas vaikimisi süsteemi sõnumirakendusest</string>
+  <string name="import_fragment__import_plaintext_backup">Impordi lihttekstiline varukoopia</string>
+  <string name="import_fragment__import_a_plaintext_backup_file">Impordi lihttekstiline varukoopia. Ühildub valikuga \"SMS-varundus ja taastamine\".</string>
+</resources>
