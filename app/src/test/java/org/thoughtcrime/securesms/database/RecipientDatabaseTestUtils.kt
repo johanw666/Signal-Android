@@ -132,6 +132,7 @@ object RecipientDatabaseTestUtils {
       mentionSetting = mentionSetting,
       callNotificationSetting = RecipientTable.NotificationSetting.ALWAYS_NOTIFY,
       replyNotificationSetting = RecipientTable.NotificationSetting.ALWAYS_NOTIFY,
+      unreadReminder = RecipientTable.NotificationSetting.ALWAYS_NOTIFY,
       wallpaper = wallpaper,
       chatColors = chatColors,
       avatarColor = avatarColor,

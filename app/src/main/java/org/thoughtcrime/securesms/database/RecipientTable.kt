@@ -201,6 +201,7 @@ open class RecipientTable(context: Context, databaseHelper: SignalDatabase) : Da
     const val IDENTITY_STATUS = "identity_status"
     const val IDENTITY_KEY = "identity_key"
     const val KEY_TRANSPARENCY_DATA = "key_transparency_data"
+    const val UNREAD_REMINDER = "unread_reminder"
 
     @JvmField
     val CREATE_TABLE =
@@ -273,7 +274,8 @@ open class RecipientTable(context: Context, databaseHelper: SignalDatabase) : Da
         $KEY_TRANSPARENCY_DATA BLOB DEFAULT NULL,
         $CALL_NOTIFICATION_SETTING INTEGER DEFAULT ${NotificationSetting.SYSTEM_DEFAULT.id},
         $REPLY_NOTIFICATION_SETTING INTEGER DEFAULT ${NotificationSetting.SYSTEM_DEFAULT.id},
-        $BLOCKED_AT INTEGER DEFAULT 0
+        $BLOCKED_AT INTEGER DEFAULT 0,
+        $UNREAD_REMINDER INTEGER DEFAULT ${NotificationSetting.SYSTEM_DEFAULT.id}
       )
       """
 
@@ -325,6 +327,7 @@ open class RecipientTable(context: Context, databaseHelper: SignalDatabase) : Da
       MENTION_SETTING,
       CALL_NOTIFICATION_SETTING,
       REPLY_NOTIFICATION_SETTING,
+      UNREAD_REMINDER,
       CAPABILITIES,
       WALLPAPER,
       WALLPAPER_URI,
@@ -1706,6 +1709,18 @@ open class RecipientTable(context: Context, databaseHelper: SignalDatabase) : Da
   fun setReplyNotificationSetting(id: RecipientId, setting: NotificationSetting) {
     val values = ContentValues().apply {
       put(REPLY_NOTIFICATION_SETTING, setting.id)
+    }
+    if (update(id, values)) {
+      // TODO rotate storageId once this is actually synced in storage service
+//      rotateStorageId(id)
+      AppDependencies.databaseObserver.notifyRecipientChanged(id)
+      StorageSyncHelper.scheduleSyncForDataChange()
+    }
+  }
+
+  fun setUnreadReminder(id: RecipientId, setting: NotificationSetting) {
+    val values = ContentValues().apply {
+      put(UNREAD_REMINDER, setting.id)
     }
     if (update(id, values)) {
       // TODO rotate storageId once this is actually synced in storage service
@@ -4594,6 +4609,7 @@ open class RecipientTable(context: Context, databaseHelper: SignalDatabase) : Da
       MENTION_SETTING to NotificationSetting.SYSTEM_DEFAULT.id,
       CALL_NOTIFICATION_SETTING to NotificationSetting.SYSTEM_DEFAULT.id,
       REPLY_NOTIFICATION_SETTING to NotificationSetting.SYSTEM_DEFAULT.id,
+      UNREAD_REMINDER to NotificationSetting.SYSTEM_DEFAULT.id,
       CAPABILITIES to 0,
       LAST_SESSION_RESET to null,
       WALLPAPER to null,

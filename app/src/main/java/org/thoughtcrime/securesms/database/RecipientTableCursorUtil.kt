@@ -154,6 +154,7 @@ object RecipientTableCursorUtil {
       mentionSetting = RecipientTable.NotificationSetting.fromId(cursor.requireInt(RecipientTable.MENTION_SETTING)),
       callNotificationSetting = RecipientTable.NotificationSetting.fromId(cursor.requireInt(RecipientTable.CALL_NOTIFICATION_SETTING)),
       replyNotificationSetting = RecipientTable.NotificationSetting.fromId(cursor.requireInt(RecipientTable.REPLY_NOTIFICATION_SETTING)),
+      unreadReminder = RecipientTable.NotificationSetting.fromId(cursor.requireInt(RecipientTable.UNREAD_REMINDER)),
       wallpaper = chatWallpaper,
       chatColors = chatColors,
       avatarColor = avatarColor,

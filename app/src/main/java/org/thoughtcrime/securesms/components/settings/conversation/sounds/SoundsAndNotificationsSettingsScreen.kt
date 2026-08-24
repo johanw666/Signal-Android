@@ -108,7 +108,20 @@ fun SoundsAndNotificationsSettingsScreen(
         }
       }
 
-//      TODO(michelle): Unread reminders
+      if (RemoteConfig.internalUser) {
+        item {
+          Dividers.Default()
+        }
+
+        item {
+          Rows.ToggleRow(
+            text = stringResource(R.string.preferences_notifications__unread),
+            label = stringResource(R.string.MutedNotificationsFragment__unread_body),
+            checked = state.unreadReminders == NotificationSetting.ALWAYS_NOTIFY,
+            onCheckChanged = { onEvent(SoundsAndNotificationsEvent.SetUnreadReminder(if (it) NotificationSetting.ALWAYS_NOTIFY else NotificationSetting.DO_NOT_NOTIFY)) }
+          )
+        }
+      }
     }
   }
 

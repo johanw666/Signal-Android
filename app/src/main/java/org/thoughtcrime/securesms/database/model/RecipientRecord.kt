@@ -67,6 +67,7 @@ data class RecipientRecord(
   val mentionSetting: NotificationSetting,
   val callNotificationSetting: NotificationSetting,
   val replyNotificationSetting: NotificationSetting,
+  val unreadReminder: NotificationSetting,
   val wallpaper: ChatWallpaper?,
   val chatColors: ChatColors?,
   val avatarColor: AvatarColor,

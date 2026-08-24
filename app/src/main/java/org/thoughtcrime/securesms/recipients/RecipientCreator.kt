@@ -187,6 +187,7 @@ object RecipientCreator {
       mentionSettingValue = record.mentionSetting,
       callNotificationSettingValue = record.callNotificationSetting,
       replyNotificationSettingValue = record.replyNotificationSetting,
+      unreadReminderValue = record.unreadReminder,
       wallpaperValue = record.wallpaper?.validate(),
       chatColorsValue = record.chatColors,
       avatarColor = avatarColor ?: record.avatarColor,

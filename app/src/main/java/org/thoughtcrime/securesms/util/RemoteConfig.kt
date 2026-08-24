@@ -1464,5 +1464,12 @@ object RemoteConfig {
     defaultValue = 0,
     hotSwappable = true
   )
+
+  /** Interval to send unread reminder notifications **/
+  val unreadReminderIntervalSeconds: Long by remoteLong(
+    key = "client.unreadReminderIntervalSeconds",
+    defaultValue = 3.days.inWholeSeconds,
+    hotSwappable = true
+  )
   // endregion
 }

@@ -69,6 +69,7 @@ import org.thoughtcrime.securesms.jobs.RemoteConfigRefreshJob
 import org.thoughtcrime.securesms.jobs.RetrieveRemoteAnnouncementsJob
 import org.thoughtcrime.securesms.jobs.RotateProfileKeyJob
 import org.thoughtcrime.securesms.jobs.StorageForcePushJob
+import org.thoughtcrime.securesms.jobs.UnreadReminderJob
 import org.thoughtcrime.securesms.keyvalue.SignalStore
 import org.thoughtcrime.securesms.megaphone.MegaphoneRepository
 import org.thoughtcrime.securesms.megaphone.Megaphones
@@ -448,6 +449,14 @@ class InternalSettingsFragment : DSLSettingsFragment(R.string.preferences__inter
         summary = DSLSettingsText.from("Automatically enqueues a job to run KT against yourself without waiting for the elapsed time."),
         onClick = {
           CheckKeyTransparencyJob.enqueueIfNecessary(addDelay = false, force = true)
+        }
+      )
+
+      clickPref(
+        title = DSLSettingsText.from("Run unread reminder job"),
+        summary = DSLSettingsText.from("Generates an unread reminder notification based on unreads and muted preferences."),
+        onClick = {
+          UnreadReminderJob.enqueue()
         }
       )
 

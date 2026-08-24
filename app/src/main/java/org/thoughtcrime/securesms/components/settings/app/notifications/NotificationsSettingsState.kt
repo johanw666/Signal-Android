@@ -20,7 +20,8 @@ data class MessageNotificationsState(
   val messagePrivacy: String,
   val priority: Int,
   val troubleshootNotifications: Boolean,
-  val reactionNotificationEnabled: Boolean
+  val reactionNotificationEnabled: Boolean,
+  val unreadReminderEnabled: Boolean
 )
 
 data class CallNotificationsState(

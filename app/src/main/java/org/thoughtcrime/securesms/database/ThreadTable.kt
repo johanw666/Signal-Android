@@ -41,6 +41,7 @@ import org.signal.core.util.withinTransaction
 import org.signal.libsignal.zkgroup.InvalidInputException
 import org.signal.libsignal.zkgroup.groups.GroupMasterKey
 import org.thoughtcrime.securesms.components.settings.app.chats.folders.ChatFolderRecord
+import org.thoughtcrime.securesms.components.settings.app.notifications.ReminderType
 import org.thoughtcrime.securesms.conversationlist.model.ConversationFilter
 import org.thoughtcrime.securesms.database.MessageTable.MarkedMessageInfo
 import org.thoughtcrime.securesms.database.SignalDatabase.Companion.attachments
@@ -673,6 +674,38 @@ class ThreadTable(context: Context, databaseHelper: SignalDatabase) : DatabaseTa
       }
 
     return allCount + forcedUnreadCount
+  }
+
+  /**
+   * Gets eligible threads that could quality for unread reminders depending on its while muted settings.
+   * e.g. when getting missed calls, we get the muted threads that have opted into unread reminders
+   * and also have notify for calls while muted on.
+   */
+  fun getMutedThreadIds(reminderType: ReminderType): List<Long> {
+    val isGV2Clause = "${RecipientTable.TABLE_NAME}.${RecipientTable.TYPE} = ${RecipientTable.RecipientType.GV2.id}"
+    val unreadReminderClause = getNotificationClause(RecipientTable.UNREAD_REMINDER, SignalStore.settings.unreadReminderEnabled)
+
+    val reminderClause = when (reminderType) {
+      ReminderType.MESSAGES -> unreadReminderClause
+      ReminderType.CALLS -> "$unreadReminderClause AND (${getNotificationClause(RecipientTable.CALL_NOTIFICATION_SETTING, SignalStore.settings.allowCallsWhileMuted)})"
+      ReminderType.MENTIONS -> "$unreadReminderClause AND $isGV2Clause AND (${getNotificationClause(RecipientTable.MENTION_SETTING, SignalStore.settings.allowMentionsWhileMuted)})"
+      ReminderType.REPLIES -> "$unreadReminderClause AND $isGV2Clause AND (${getNotificationClause(RecipientTable.REPLY_NOTIFICATION_SETTING, SignalStore.settings.allowRepliesWhileMuted)})"
+    }
+
+    return readableDatabase
+      .select("$TABLE_NAME.$ID")
+      .from("$TABLE_NAME INNER JOIN ${RecipientTable.TABLE_NAME} ON $TABLE_NAME.$RECIPIENT_ID = ${RecipientTable.TABLE_NAME}.${RecipientTable.ID}")
+      .where("$ARCHIVED = 0 AND ${RecipientTable.MUTE_UNTIL} >= ${System.currentTimeMillis()} AND $reminderClause")
+      .run()
+      .readToList { it.requireLong(ID) }
+  }
+
+  private fun getNotificationClause(column: String, allowByDefault: Boolean): String {
+    return if (allowByDefault) {
+      "${RecipientTable.TABLE_NAME}.$column != ${RecipientTable.NotificationSetting.DO_NOT_NOTIFY.id}"
+    } else {
+      "${RecipientTable.TABLE_NAME}.$column = ${RecipientTable.NotificationSetting.ALWAYS_NOTIFY.id}"
+    }
   }
 
   /**

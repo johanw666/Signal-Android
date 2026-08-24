@@ -193,6 +193,27 @@ class CallTable(context: Context, databaseHelper: SignalDatabase) : DatabaseTabl
       .readToSingleLong()
   }
 
+  /**
+   * Returns the number of unread calls and up to three distinct callers from eligible [threadIds].
+   */
+  fun getUnreadCallsForReminderNotification(threadIds: List<Long>): Pair<Int, List<RecipientId>> {
+    val peerIds = readableDatabase
+      .select("$TABLE_NAME.$PEER")
+      .from("$TABLE_NAME INNER JOIN ${MessageTable.TABLE_NAME} ON $TABLE_NAME.$MESSAGE_ID = ${MessageTable.TABLE_NAME}.${MessageTable.ID}")
+      .where(
+        """
+          ${MessageTable.TABLE_NAME}.${MessageTable.THREAD_ID} IN (${threadIds.joinToString(",")}) AND
+          $TABLE_NAME.$READ = ${ReadState.serialize(ReadState.UNREAD)} AND 
+          ($TABLE_NAME.$EVENT = ${Event.serialize(Event.MISSED)} OR $TABLE_NAME.$EVENT = ${Event.serialize(Event.MISSED_NOTIFICATION_PROFILE)})
+        """
+      )
+      .orderBy("$TABLE_NAME.$TIMESTAMP DESC")
+      .run()
+      .readToList { cursor -> RecipientId.from(cursor.requireLong(PEER)) }
+
+    return peerIds.size to peerIds.distinct().take(3)
+  }
+
   fun insertOneToOneCall(callId: Long, timestamp: Long, peer: RecipientId, type: Type, direction: Direction, event: Event, fromSync: Boolean = false) {
     val messageType: Long = Call.getMessageType(type, direction, event)
 

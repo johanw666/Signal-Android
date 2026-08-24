@@ -64,6 +64,8 @@ public final class SettingsValues extends SignalStoreValues {
   public static final  String MESSAGE_NOTIFICATION_MUTED_CALLS        = "settings.message.notifications.muted.call";
   public static final  String MESSAGE_NOTIFICATION_MUTED_MENTIONS     = "settings.message.notifications.muted.mentions";
   public static final  String MESSAGE_NOTIFICATION_MUTED_REPLIES      = "settings.message.notifications.muted.replies";
+  public static final  String UNREAD_REMINDER_ENABLED                 = "settings.message.notifications.unread.reminder";
+  public static final  String UNREAD_REMINDER_NEXT_NOTIFY_TIME        = "settings.message.notifications.unread.reminder.next.notify.time";
   public static final  String CALL_NOTIFICATIONS_ENABLED              = "settings.call.notifications.enabled";
   public static final  String CALL_RINGTONE                           = "settings.call.ringtone";
   public static final  String CALL_VIBRATE_ENABLED                    = "settings.call.vibrate.enabled";
@@ -477,6 +479,22 @@ public final class SettingsValues extends SignalStoreValues {
 
   public void setAllowRepliesWhileMuted(boolean allow) {
     putBoolean(MESSAGE_NOTIFICATION_MUTED_REPLIES, allow);
+  }
+
+  public boolean getUnreadReminderEnabled() {
+    return getBoolean(UNREAD_REMINDER_ENABLED, true);
+  }
+
+  public void setUnreadReminderEnabled(boolean enabled) {
+    putBoolean(UNREAD_REMINDER_ENABLED, enabled);
+  }
+
+  public long getUnreadReminderNextNotifyTime() {
+    return getLong(UNREAD_REMINDER_NEXT_NOTIFY_TIME, 0L);
+  }
+
+  public void setUnreadReminderNextNotifyTime(long time) { // TODO(michelle): Use in unread job
+    putLong(UNREAD_REMINDER_NEXT_NOTIFY_TIME, time);
   }
 
   public boolean isCallNotificationsEnabled() {

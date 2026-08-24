@@ -72,6 +72,7 @@ import org.thoughtcrime.securesms.attachments.Attachment
 import org.thoughtcrime.securesms.attachments.DatabaseAttachment
 import org.thoughtcrime.securesms.attachments.DatabaseAttachment.DisplayOrderComparator
 import org.thoughtcrime.securesms.backup.v2.exporters.ChatItemArchiveExporter
+import org.thoughtcrime.securesms.components.settings.app.notifications.ReminderType
 import org.thoughtcrime.securesms.contactshare.Contact
 import org.thoughtcrime.securesms.conversation.MessageStyler
 import org.thoughtcrime.securesms.database.CallTable.Event
@@ -5336,6 +5337,39 @@ open class MessageTable(context: Context?, databaseHelper: SignalDatabase) : Dat
       .where("$THREAD_ID = $threadId AND $STORY_TYPE = 0 AND $PARENT_STORY_ID <= 0 AND $ORIGINAL_MESSAGE_ID IS NULL AND $SCHEDULED_DATE = -1 AND $READ = 0 AND $pinnedMessageClause")
       .run()
       .readToSingleInt()
+  }
+
+  /**
+   * Returns the number of unread messages (based on the [ReminderType]) and up to three distinct authors from eligible [threadIds].
+   * For missed calls, see [getUnreadContentForReminderNotification] in the calls table.
+   */
+  fun getUnreadContentForReminderNotification(threadIds: List<Long>, type: ReminderType): Pair<Int, List<RecipientId>> {
+    val categoryClause = when (type) {
+      ReminderType.MENTIONS -> "AND $MENTIONS_SELF = 1"
+      ReminderType.REPLIES -> "AND $QUOTE_AUTHOR = ${Recipient.self().id.serialize()}"
+      else -> ""
+    }
+
+    val authorIds = readableDatabase
+      .select(FROM_RECIPIENT_ID)
+      .from("$TABLE_NAME INDEXED BY $INDEX_THREAD_UNREAD_COUNT")
+      .where(
+        """
+          $THREAD_ID IN (${threadIds.joinToString(",")}) AND
+          $READ = 0 AND 
+          $STORY_TYPE = 0 AND 
+          $PARENT_STORY_ID <= 0 AND 
+          $ORIGINAL_MESSAGE_ID IS NULL AND 
+          $SCHEDULED_DATE = -1 AND 
+          ($TYPE & ${MessageTypes.SPECIAL_TYPES_MASK}) != ${MessageTypes.SPECIAL_TYPE_PINNED_MESSAGE} 
+          $categoryClause
+        """
+      )
+      .orderBy("$DATE_RECEIVED DESC")
+      .run()
+      .readToList { cursor -> RecipientId.from(cursor.requireLong(FROM_RECIPIENT_ID)) }
+
+    return authorIds.size to authorIds.distinct().take(3)
   }
 
   fun messageExists(messageRecord: MessageRecord): Boolean {

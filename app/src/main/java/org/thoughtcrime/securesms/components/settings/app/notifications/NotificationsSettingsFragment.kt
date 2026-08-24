@@ -277,6 +277,10 @@ open class DefaultNotificationsSettingsCallbacks(
   override fun setReactionNotificationEnabled(enabled: Boolean) {
     viewModel.setReactionNotificationEnabled(enabled)
   }
+
+  override fun setUnreadReminderEnabled(enabled: Boolean) {
+    viewModel.setUnreadReminderEnabled(enabled)
+  }
 }
 
 interface NotificationsSettingsCallbacks {
@@ -302,6 +306,7 @@ interface NotificationsSettingsCallbacks {
   fun setNotifyWhenContactJoinsSignal(enabled: Boolean) = Unit
   fun onMutedClicked() = Unit
   fun setReactionNotificationEnabled(enabled: Boolean) = Unit
+  fun setUnreadReminderEnabled(enabled: Boolean) = Unit
 
   object Empty : NotificationsSettingsCallbacks
 }
@@ -369,9 +374,17 @@ fun NotificationsSettingsScreen(
             onCheckChanged = callbacks::setReactionNotificationEnabled
           )
         }
-      }
 
-      // TODO(michelle): Implement unread reminders here
+        item {
+          Rows.ToggleRow(
+            text = stringResource(R.string.preferences_notifications__unread),
+            label = stringResource(R.string.preferences_notifications__notify_unread),
+            enabled = state.messageNotificationsState.canEnableNotifications,
+            checked = state.messageNotificationsState.unreadReminderEnabled,
+            onCheckChanged = callbacks::setUnreadReminderEnabled
+          )
+        }
+      }
 
       item {
         Rows.ToggleRow(
@@ -647,7 +660,8 @@ private fun rememberTestState(): NotificationsSettingsState = remember {
       messagePrivacy = "",
       priority = 1,
       troubleshootNotifications = true,
-      reactionNotificationEnabled = true
+      reactionNotificationEnabled = true,
+      unreadReminderEnabled = true
     ),
     callNotificationsState = CallNotificationsState(
       notificationsEnabled = true,

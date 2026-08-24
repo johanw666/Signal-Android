@@ -113,6 +113,7 @@ class Recipient(
   private val mentionSettingValue: NotificationSetting = NotificationSetting.SYSTEM_DEFAULT,
   private val callNotificationSettingValue: NotificationSetting = NotificationSetting.SYSTEM_DEFAULT,
   private val replyNotificationSettingValue: NotificationSetting = NotificationSetting.SYSTEM_DEFAULT,
+  private val unreadReminderValue: NotificationSetting = NotificationSetting.SYSTEM_DEFAULT,
   private val wallpaperValue: ChatWallpaper? = null,
   private val chatColorsValue: ChatColors? = null,
   val avatarColor: AvatarColor = AvatarColor.UNKNOWN,
@@ -350,6 +351,10 @@ class Recipient(
   /** Whether replies should break through mute for this recipient. */
   val replyNotificationSetting: NotificationSetting
     get() = if (groupIdValue == null) NotificationSetting.DO_NOT_NOTIFY else if (RemoteConfig.internalUser) NotificationSetting.resolve(replyNotificationSettingValue, SignalStore.settings.allowRepliesWhileMuted) else mentionSetting
+
+  /** Whether this conversation's unread content should be included in the periodic unread reminder */
+  val unreadReminderSetting: NotificationSetting
+    get() = NotificationSetting.resolve(unreadReminderValue, SignalStore.settings.unreadReminderEnabled)
 
   /** The state around whether we can send sealed sender to this user. */
   val sealedSenderAccessMode: SealedSenderAccessMode = if (pni.isPresent && pni == serviceId) {
@@ -883,6 +888,7 @@ class Recipient(
       mentionSettingValue == other.mentionSettingValue &&
       callNotificationSettingValue == other.callNotificationSettingValue &&
       replyNotificationSettingValue == other.replyNotificationSettingValue &&
+      unreadReminderValue == other.unreadReminderValue &&
       wallpaperValue == other.wallpaperValue &&
       chatColorsValue == other.chatColorsValue &&
       avatarColor == other.avatarColor &&
