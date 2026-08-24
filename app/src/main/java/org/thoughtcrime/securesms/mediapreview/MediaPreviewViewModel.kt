@@ -29,6 +29,7 @@ import org.thoughtcrime.securesms.database.MediaTable
 import org.thoughtcrime.securesms.database.SignalDatabase
 import org.thoughtcrime.securesms.dependencies.AppDependencies
 import org.thoughtcrime.securesms.logsubmit.SubmitDebugLogActivity
+import org.thoughtcrime.securesms.mms.PartAuthority
 import org.thoughtcrime.securesms.mms.PartUriParser
 import org.thoughtcrime.securesms.notifications.NotificationChannels
 import org.thoughtcrime.securesms.notifications.NotificationIds
@@ -68,6 +69,45 @@ class MediaPreviewViewModel : ViewModel() {
     return currentPosition in store.state.mediaRecords.indices && store.state.mediaRecords[currentPosition].toMedia()?.uri == initialMediaUri
   }
 
+  /**
+   * Publishes the tapped attachment on its own, ahead of [fetchAttachments], so the full-resolution decode is not
+   * gated on the whole-thread gallery query. Everything the record needs beyond the attachment row itself is
+   * already in [args].
+   *
+   * Only ever applies to a fresh load: the [MediaPreviewState.LoadState.INIT] check is re-run inside the state
+   * update so a single-item result can never replace an already-loaded window, whether because the full query won
+   * the race or because [refetchAttachments] is rebuilding it underneath a browsing user.
+   */
+  fun fetchInitialAttachment(args: MediaIntentFactory.MediaPreviewArgs) {
+    if (store.state.loadState != MediaPreviewState.LoadState.INIT) {
+      return
+    }
+
+    disposables += repository.getInitialAttachment(PartAuthority.requireAttachmentId(args.initialMediaUri)).subscribe { attachment ->
+      store.update { oldState ->
+        if (oldState.loadState != MediaPreviewState.LoadState.INIT) {
+          return@update oldState
+        }
+
+        val record = MediaTable.MediaRecord(
+          attachment = attachment,
+          recipientId = args.fromRecipientId,
+          threadRecipientId = args.threadRecipientId,
+          threadId = args.threadId,
+          messageId = args.messageId,
+          date = args.date,
+          isOutgoing = args.outgoing
+        )
+
+        oldState.copy(
+          position = 0,
+          mediaRecords = listOf(record),
+          loadState = MediaPreviewState.LoadState.DATA_LOADED
+        )
+      }
+    }
+  }
+
   fun fetchAttachments(context: Context, startingAttachmentId: AttachmentId, threadId: Long, sorting: MediaTable.Sorting, forceRefresh: Boolean = false) {
     if (store.state.loadState == MediaPreviewState.LoadState.INIT || forceRefresh) {
       disposables += repository.getAttachments(context, startingAttachmentId, threadId, sorting).subscribe { result ->
@@ -80,19 +120,26 @@ class MediaPreviewViewModel : ViewModel() {
             }
             acc
           }
+          // Never downgrade a MEDIA_READY state: the initial attachment may already have finished decoding.
+          val loadState = if (oldState.loadState == MediaPreviewState.LoadState.MEDIA_READY) {
+            MediaPreviewState.LoadState.MEDIA_READY
+          } else {
+            MediaPreviewState.LoadState.DATA_LOADED
+          }
+
           if (oldState.leftIsRecent) {
             oldState.copy(
               position = result.initialPosition,
               mediaRecords = result.records,
               albums = albums,
-              loadState = MediaPreviewState.LoadState.DATA_LOADED
+              loadState = loadState
             )
           } else {
             oldState.copy(
               position = result.records.size - result.initialPosition - 1,
               mediaRecords = result.records.reversed(),
               albums = albums.mapValues { it.value.reversed() },
-              loadState = MediaPreviewState.LoadState.DATA_LOADED
+              loadState = loadState
             )
           }
         }
