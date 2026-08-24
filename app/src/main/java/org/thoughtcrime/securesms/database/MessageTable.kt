@@ -2859,7 +2859,8 @@ open class MessageTable(context: Context?, databaseHelper: SignalDatabase) : Dat
       val expireTimerVersion = cursor.requireInt(EXPIRE_TIMER_VERSION)
       val viewOnce = cursor.requireLong(VIEW_ONCE) == 1L
       val threadId = cursor.requireLong(THREAD_ID)
-      val threadRecipient = Recipient.resolved(threads.getRecipientIdForThreadId(threadId)!!)
+      val threadRecipientId = threads.getRecipientIdForThreadId(threadId) ?: throw NoSuchMessageException("Message $messageId no longer has a thread! (threadId: $threadId)")
+      val threadRecipient = Recipient.resolved(threadRecipientId)
       val distributionType = threads.getDistributionType(threadId)
       val storyType = StoryType.fromCode(cursor.requireInt(STORY_TYPE))
       val parentStoryId = ParentStoryId.deserialize(cursor.requireLong(PARENT_STORY_ID))
