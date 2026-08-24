@@ -289,9 +289,11 @@ class WebRtcCallActivity : BaseActivity(), SafetyNumberChangeDialog.Callback, Re
   }
 
   override fun onNewIntent(intent: Intent) {
+    super.onNewIntent(intent)
+    setIntent(intent)
+
     val callIntent = getCallIntent()
     Log.i(TAG, "onNewIntent(${callIntent.isStartedFromFullScreen})")
-    super.onNewIntent(intent)
     logIntent(callIntent)
     processIntent(callIntent)
   }
@@ -309,8 +311,8 @@ class WebRtcCallActivity : BaseActivity(), SafetyNumberChangeDialog.Callback, Re
     if (!callPermissionsDialogController.isAskingForPermission && !viewModel.isCallStarting && !isChangingConfigurations) {
       val state = viewModel.callParticipantsStateSnapshot
       if (state.callState.isPreJoinOrNetworkUnavailable || (Build.VERSION.SDK_INT >= 27 && state.callState.isIncomingOrHandledElsewhere)) {
-        if (getCallIntent().isStartedFromFullScreen && state.callState == WebRtcViewModel.State.CALL_INCOMING) {
-          Log.w(TAG, "Pausing during full-screen incoming call view. Refusing to finish.")
+        if (state.callState == WebRtcViewModel.State.CALL_INCOMING) {
+          Log.w(TAG, "Pausing during incoming call view. Refusing to finish.")
         } else {
           finish()
         }
