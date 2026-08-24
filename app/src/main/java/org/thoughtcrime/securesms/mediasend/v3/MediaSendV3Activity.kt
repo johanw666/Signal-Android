@@ -10,6 +10,8 @@ import android.content.Intent
 import android.content.pm.ActivityInfo
 import android.os.Bundle
 import android.os.Parcelable
+import android.text.TextUtils
+import android.view.Gravity
 import android.view.KeyEvent
 import android.view.WindowManager
 import androidx.activity.compose.setContent
@@ -65,6 +67,7 @@ import org.thoughtcrime.securesms.safety.SafetyNumberBottomSheet
 import org.thoughtcrime.securesms.scribbles.StickerSelectActivityContract
 import org.thoughtcrime.securesms.util.CommunicationActions
 import org.thoughtcrime.securesms.util.DateUtils
+import org.signal.core.ui.R as CoreUiR
 
 /**
  * Encapsulates the media send flow for v3.
@@ -132,7 +135,14 @@ class MediaSendV3Activity :
       CompositionLocalProvider(
         LocalAddAMessageRowTextField provides { message, modifier ->
           AndroidView(
-            factory = { EmojiTextView(it) },
+            factory = {
+              EmojiTextView(it).apply {
+                setTextAppearance(CoreUiR.style.Signal_Text_Body)
+                gravity = Gravity.CENTER_VERTICAL
+                maxLines = 1
+                ellipsize = TextUtils.TruncateAt.END
+              }
+            },
             update = { view ->
               view.text = message
             },
