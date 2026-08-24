@@ -33,6 +33,8 @@ import org.thoughtcrime.securesms.util.PowerManagerCompat
 import org.thoughtcrime.securesms.util.TextSecurePreferences
 import org.thoughtcrime.securesms.util.VersionTracker.getDaysSinceFirstInstalled
 import java.util.Locale
+import kotlin.math.roundToLong
+import kotlin.time.Duration.Companion.hours
 import kotlin.time.Duration.Companion.milliseconds
 
 class LogSectionSystemInfo : LogSection {
@@ -203,7 +205,12 @@ class LogSectionSystemInfo : LogSection {
       return "Unknown"
     }
 
-    val timeSince = (System.currentTimeMillis() - SignalStore.account.registeredAtTimestamp).milliseconds.toString()
-    return "${SignalStore.account.registeredAtTimestamp} ($timeSince ago)"
+    val timeSince = (System.currentTimeMillis() - SignalStore.account.registeredAtTimestamp).milliseconds
+
+    return if (timeSince < 1.hours) {
+      "< 1 hour ago"
+    } else {
+      "${(timeSince / 1.hours).roundToLong().hours} ago"
+    }
   }
 }
