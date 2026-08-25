@@ -97,27 +97,42 @@ object InAppPaymentsRepository {
    */
   fun updateInAppPaymentWithCancelation(activeSubscription: ActiveSubscription, subscriberType: InAppPaymentSubscriberRecord.Type) {
     if (activeSubscription.isCanceled || (subscriberType == InAppPaymentSubscriberRecord.Type.BACKUP && activeSubscription.willCancelAtPeriodEnd()) || activeSubscription.isFailedPayment) {
-      val subscriber = getSubscriber(subscriberType) ?: return
-      val latestPayment = SignalDatabase.inAppPayments.getLatestBySubscriberId(subscriber.subscriberId) ?: return
-      if (latestPayment.state == InAppPaymentTable.State.END && latestPayment.data.cancellation == null) {
-        synchronized(subscriber.type.lock) {
-          val payment = SignalDatabase.inAppPayments.getLatestBySubscriberId(subscriber.subscriberId) ?: return
-          val chargeFailure: ActiveSubscription.ChargeFailure? = activeSubscription.chargeFailure
+      writeCancelation(subscriberType, activeSubscription.chargeFailure)
+    }
+  }
 
-          Log.i(TAG, "[$subscriberType] Recording cancelation in the database. (has charge failure? ${chargeFailure != null})")
-          SignalDatabase.inAppPayments.update(
-            payment.copy(
-              data = payment.data.newBuilder()
-                .cancellation(
-                  InAppPaymentData.Cancellation(
-                    reason = if (chargeFailure != null) InAppPaymentData.Cancellation.Reason.PAST_DUE else InAppPaymentData.Cancellation.Reason.CANCELED,
-                    chargeFailure = chargeFailure?.toInAppPaymentDataChargeFailure()
-                  )
+  /**
+   * Records a cancelation for a subscriber whose subscription is no longer present on the server at all. None of the
+   * predicates in [updateInAppPaymentWithCancelation] can detect that state, as every one of them requires a subscription
+   * object to inspect. Callers must have confirmed the subscription is gone rather than merely terminal.
+   *
+   * As with [updateInAppPaymentWithCancelation], this only writes if the latest payment is in the END state without
+   * cancelation data.
+   */
+  fun updateInAppPaymentWithLapsedSubscription(subscriberType: InAppPaymentSubscriberRecord.Type) {
+    writeCancelation(subscriberType, chargeFailure = null)
+  }
+
+  private fun writeCancelation(subscriberType: InAppPaymentSubscriberRecord.Type, chargeFailure: ActiveSubscription.ChargeFailure?) {
+    val subscriber = getSubscriber(subscriberType) ?: return
+    val latestPayment = SignalDatabase.inAppPayments.getLatestBySubscriberId(subscriber.subscriberId) ?: return
+    if (latestPayment.state == InAppPaymentTable.State.END && latestPayment.data.cancellation == null) {
+      synchronized(subscriber.type.lock) {
+        val payment = SignalDatabase.inAppPayments.getLatestBySubscriberId(subscriber.subscriberId) ?: return
+
+        Log.i(TAG, "[$subscriberType] Recording cancelation in the database. (has charge failure? ${chargeFailure != null})")
+        SignalDatabase.inAppPayments.update(
+          payment.copy(
+            data = payment.data.newBuilder()
+              .cancellation(
+                InAppPaymentData.Cancellation(
+                  reason = if (chargeFailure != null) InAppPaymentData.Cancellation.Reason.PAST_DUE else InAppPaymentData.Cancellation.Reason.CANCELED,
+                  chargeFailure = chargeFailure?.toInAppPaymentDataChargeFailure()
                 )
-                .build()
-            )
+              )
+              .build()
           )
-        }
+        )
       }
     }
   }

@@ -149,7 +149,12 @@ class InAppPaymentKeepAliveJob private constructor(
 
     val subscription: ActiveSubscription.Subscription? = activeSubscription.activeSubscription
     if (subscription == null) {
-      info(type, "User does not have a subscription. Exiting.")
+      info(type, "User does not have a subscription.")
+
+      if (type == InAppPaymentSubscriberRecord.Type.DONATION) {
+        InAppPaymentsRepository.updateInAppPaymentWithLapsedSubscription(type)
+      }
+
       return
     }
 
