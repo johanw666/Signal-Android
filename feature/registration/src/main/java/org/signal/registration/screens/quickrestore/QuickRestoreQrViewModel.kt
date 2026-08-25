@@ -183,6 +183,15 @@ class QuickRestoreQrViewModel(
               errorMessage = null
             )
           }
+          RegisterAccountError.TotpMissingOrIncorrect,
+          RegisterAccountError.PostQuantumRatchetRequired -> {
+            Log.w(TAG, "[Register] Unexpected registration error: $error")
+            _state.value = _state.value.copy(
+              isRegistering = false,
+              showRegistrationError = true,
+              errorMessage = null
+            )
+          }
         }
       }
       is RequestResult.RetryableNetworkError -> {

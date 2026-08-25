@@ -218,6 +218,11 @@ class PinEntryForRegistrationLockViewModel(
             parentEventEmitter.navigateBack()
             state
           }
+          RegisterAccountError.TotpMissingOrIncorrect,
+          RegisterAccountError.PostQuantumRatchetRequired -> {
+            Log.w(TAG, "[PinEntered] Unexpected error when registering: $error")
+            state.copy(loading = false, dialogs = state.dialogs.copy(unknownError = true))
+          }
         }
       }
       is RequestResult.RetryableNetworkError -> {

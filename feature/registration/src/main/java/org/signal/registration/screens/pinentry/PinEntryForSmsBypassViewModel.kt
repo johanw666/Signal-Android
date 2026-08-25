@@ -217,6 +217,11 @@ class PinEntryForSmsBypassViewModel(
             parentEventEmitter(RegistrationFlowEvent.ResetState)
             state
           }
+          RegisterAccountError.TotpMissingOrIncorrect,
+          RegisterAccountError.PostQuantumRatchetRequired -> {
+            Log.w(TAG, "[Register] Unexpected error when registering: $error")
+            state.copy(loading = false, dialogs = state.dialogs.copy(unknownError = true))
+          }
         }
       }
     }

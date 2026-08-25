@@ -143,6 +143,16 @@ class EnterAepForRemoteBackupPreRegistrationViewModel(
           is RegisterAccountError.DeviceTransferPossible -> {
             error("[Submit] Device transfer possible. This should not happen with RRP-based registration.")
           }
+          RegisterAccountError.TotpMissingOrIncorrect,
+          RegisterAccountError.PostQuantumRatchetRequired -> {
+            Log.w(TAG, "[Submit] Unexpected registration error: $error")
+            stateEmitter(
+              inputState.copy(
+                isRegistering = false,
+                registrationError = RegistrationError.UnknownError
+              )
+            )
+          }
         }
       }
       is RequestResult.RetryableNetworkError -> {

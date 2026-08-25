@@ -354,6 +354,11 @@ class PhoneNumberEntryViewModel(
               parentEventEmitter(RegistrationFlowEvent.RecoveryPasswordInvalid)
               state = state.copy(preExistingRegistrationData = null)
             }
+            RegisterAccountError.TotpMissingOrIncorrect,
+            RegisterAccountError.PostQuantumRatchetRequired -> {
+              Log.w(TAG, "[Register] Unexpected registration error: $error")
+              return state.copy(dialogs = state.dialogs.copy(unknownError = true))
+            }
           }
         }
         is RequestResult.RetryableNetworkError -> {
@@ -458,6 +463,11 @@ class PhoneNumberEntryViewModel(
           is RegisterAccountError.DeviceTransferPossible -> {
             Log.w(TAG, "[LocalRestore] Device transfer possible. Falling back to session-based registration.")
             applySessionBasedRegistration(state, e164, parentEventEmitter)
+          }
+          RegisterAccountError.TotpMissingOrIncorrect,
+          RegisterAccountError.PostQuantumRatchetRequired -> {
+            Log.w(TAG, "[LocalRestore] Unexpected registration error: $error")
+            state.copy(dialogs = state.dialogs.copy(unknownError = true))
           }
         }
       }

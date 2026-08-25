@@ -417,6 +417,11 @@ class VerificationCodeViewModel(
           is RegisterAccountError.RegistrationRecoveryPasswordIncorrect -> {
             error("[Register] Got told the registration recovery password incorrect. We don't use the RRP in this flow, and should never get this error. Resetting. Message: ${error.message}")
           }
+          RegisterAccountError.TotpMissingOrIncorrect,
+          RegisterAccountError.PostQuantumRatchetRequired -> {
+            Log.w(TAG, "[Register] Unexpected error when registering account: $error")
+            state.copy(snackbars = state.snackbars.copy(registrationError = true))
+          }
         }
       }
       is RequestResult.RetryableNetworkError -> {

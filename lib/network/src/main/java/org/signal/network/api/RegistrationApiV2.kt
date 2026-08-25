@@ -39,7 +39,6 @@ import org.signal.network.rest.bodyString
 import org.signal.network.rest.toTypedResult
 import java.net.URLEncoder
 import java.util.Locale
-import java.util.UUID
 import kotlin.time.Duration
 import kotlin.time.Duration.Companion.seconds
 
@@ -59,6 +58,9 @@ class RegistrationApiV2(
 
   companion object {
     private val APPLICATION_JSON = "application/json".toMediaType()
+
+    /** Basic auth username for a fresh registration of an account that has no phone number. Must not parse as an e164 or a UUID. */
+    private const val NO_NUMBER_AUTH_USERNAME = "no_number"
 
     /** Drops null properties instead of emitting explicit nulls, for bodies where a field is meant to be absent entirely. */
     @OptIn(ExperimentalSerializationApi::class)
@@ -280,15 +282,19 @@ class RegistrationApiV2(
    *
    * `POST /v1/registration`
    * - 200: Success, body is the account response
+   * - 400: Session id is invalid
    * - 401: Session not found or not verified
    * - 403: Registration recovery password is incorrect
    * - 409: Device transfer is possible
    * - 422: Request is invalid
    * - 423: Registration lock is active
    * - 429: Rate limited
+   * - 441: A TOTP is required, but none was provided or the provided one was incorrect
+   * - 499: The client must support the post-quantum ratchet
    *
    * @param e164 The phone number in E.164 format (used as username for basic auth)
    * @param password The password for basic auth
+   * @param totp A TOTP one-time password, required when recovering an account that has TOTP keys.
    */
   suspend fun registerAccount(
     e164: String,
@@ -299,7 +305,8 @@ class RegistrationApiV2(
     aciPreKeys: PreKeyCollection,
     pniPreKeys: PreKeyCollection,
     fcmToken: String?,
-    skipDeviceTransfer: Boolean
+    skipDeviceTransfer: Boolean,
+    totp: Int? = null
   ): RequestResult<RegisterAccountResponse, RegisterAccountError> {
     require((sessionId != null) xor (recoveryPassword != null)) { "You must supply one and only one of either: Session ID, or Recovery Password." }
     require(attributes.pniRegistrationId != null) { "Must send PNI key material when registering with a phone number." }
@@ -308,6 +315,7 @@ class RegistrationApiV2(
     val body = RegisterAccountRequestBody(
       sessionId = sessionId,
       recoveryPassword = recoveryPassword,
+      totp = totp,
       accountAttributes = attributes,
       aciIdentityKey = Base64.encodeWithoutPadding(aciPreKeys.identityKey.serialize()),
       pniIdentityKey = Base64.encodeWithoutPadding(pniPreKeys.identityKey.serialize()),
@@ -333,12 +341,14 @@ class RegistrationApiV2(
       parseSuccess = { SignalJson.json.decodeFromString<RegisterAccountResponse>(it.bodyString()) },
       mapError = { error ->
         when (error.statusCode) {
+          400, 422 -> RegisterAccountError.InvalidRequest(error.bodyString())
           401 -> RegisterAccountError.SessionNotFoundOrNotVerified(error.bodyString())
           403 -> RegisterAccountError.RegistrationRecoveryPasswordIncorrect(error.bodyString())
           409 -> RegisterAccountError.DeviceTransferPossible
-          422 -> RegisterAccountError.InvalidRequest(error.bodyString())
           423 -> RegisterAccountError.RegistrationLock(SignalJson.json.decodeFromString<RegistrationLockResponse>(error.bodyString()))
           429 -> RegisterAccountError.RateLimited(error.retryAfter())
+          441 -> RegisterAccountError.TotpMissingOrIncorrect
+          499 -> RegisterAccountError.PostQuantumRatchetRequired
           else -> null
         }
       }
@@ -412,9 +422,10 @@ class RegistrationApiV2(
    * Registers an account that has no phone number, redeeming the [receiptCredentialPresentation] issued by
    * [createLoginPurchaseReceiptCredential].
    *
-   * The basic auth username is ignored by the service for a fresh numberless registration but must not be empty, so a
-   * random one is generated here. (Re-registering an existing numberless account authenticates by ACI instead; the
-   * service has not defined that flow yet.)
+   * The basic auth username is ignored by the service for a fresh numberless registration, but it must be present and
+   * must not parse as either an e164 or a UUID -- the service reads a UUID username as a request to recover the account
+   * with that ACI. (Re-registering an existing numberless account authenticates by ACI instead, and requires a TOTP if
+   * the account has TOTP keys; we don't support that flow yet.)
    *
    * PNI key material must not be sent for an account with no phone number, so [attributes] must have a null
    * `pniRegistrationId` and a null `discoverableByPhoneNumber`.
@@ -425,6 +436,7 @@ class RegistrationApiV2(
    * - 409: Device transfer is possible
    * - 422: Request is invalid
    * - 429: Rate limited
+   * - 499: The client must support the post-quantum ratchet
    *
    * @param password The password for basic auth
    */
@@ -459,7 +471,7 @@ class RegistrationApiV2(
         host = RequestSpec.Host.Service,
         path = "/v1/registration",
         body = body.toJsonRequestBodyOmittingNulls(),
-        auth = RequestSpec.Auth.Header("Authorization", basicAuth(UUID.randomUUID().toString(), password))
+        auth = RequestSpec.Auth.Header("Authorization", basicAuth(NO_NUMBER_AUTH_USERNAME, password))
       )
     )
 
@@ -471,6 +483,7 @@ class RegistrationApiV2(
           409 -> RegisterAccountWithoutPhoneNumberError.DeviceTransferPossible
           422 -> RegisterAccountWithoutPhoneNumberError.InvalidRequest(error.bodyString())
           429 -> RegisterAccountWithoutPhoneNumberError.RateLimited(error.retryAfter())
+          499 -> RegisterAccountWithoutPhoneNumberError.PostQuantumRatchetRequired
           else -> null
         }
       }
@@ -874,6 +887,7 @@ class RegistrationApiV2(
     val sessionId: String? = null,
     val recoveryPassword: String? = null,
     val receiptCredentialPresentation: String? = null,
+    val totp: Int? = null,
     val accountAttributes: AccountAttributes,
     val aciIdentityKey: String,
     val pniIdentityKey: String?,
@@ -983,6 +997,12 @@ class RegistrationApiV2(
     data class InvalidRequest(val message: String) : RegisterAccountError()
     data class RegistrationLock(val data: RegistrationLockResponse) : RegisterAccountError()
     data class RateLimited(val retryAfter: Duration) : RegisterAccountError()
+
+    /** The account being recovered has TOTP keys, and no TOTP or an incorrect TOTP was supplied. */
+    data object TotpMissingOrIncorrect : RegisterAccountError()
+
+    /** The service requires that the registering client support the post-quantum ratchet. */
+    data object PostQuantumRatchetRequired : RegisterAccountError()
   }
 
   sealed class RegisterAccountWithoutPhoneNumberError : BadRequestError {
@@ -990,6 +1010,9 @@ class RegistrationApiV2(
     data object DeviceTransferPossible : RegisterAccountWithoutPhoneNumberError()
     data class InvalidRequest(val message: String) : RegisterAccountWithoutPhoneNumberError()
     data class RateLimited(val retryAfter: Duration) : RegisterAccountWithoutPhoneNumberError()
+
+    /** The service requires that the registering client support the post-quantum ratchet. */
+    data object PostQuantumRatchetRequired : RegisterAccountWithoutPhoneNumberError()
   }
 
   sealed class CreateLoginReceiptCredentialError : BadRequestError {
