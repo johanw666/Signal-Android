@@ -21,7 +21,9 @@ import org.signal.core.ui.compose.EventDrivenViewModel
 import org.signal.core.util.logging.Log
 import org.signal.registration.RegistrationFlowEvent
 import org.signal.registration.RegistrationRepository
+import org.signal.registration.RegistrationRoute
 import org.signal.registration.screens.util.navigateBack
+import org.signal.registration.screens.util.navigateTo
 
 class SignalLoginPaymentViewModel(
   private val repository: RegistrationRepository,
@@ -75,8 +77,12 @@ class SignalLoginPaymentViewModel(
       }
 
       is SignalLoginPaymentScreenEvents.ContinueClicked -> {
-        // TODO [phonenumberless] Launch the purchase flow, or navigate to account key entry for an existing login.
-        Log.i(TAG, "Continue clicked for ${state.selectedOption}, but the flow isn't implemented yet.")
+        if (state.selectedOption == SignalLoginPaymentState.Option.ExistingLogin) {
+          parentEventEmitter.navigateTo(RegistrationRoute.SignalLogin)
+        } else {
+          // TODO [phonenumberless] Launch the purchase flow.
+          Log.i(TAG, "Continue clicked for ${state.selectedOption}, but the purchase flow isn't implemented yet.")
+        }
       }
 
       is SignalLoginPaymentScreenEvents.NetworkErrorDialogDismissed -> {

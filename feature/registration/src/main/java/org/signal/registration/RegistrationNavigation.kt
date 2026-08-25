@@ -109,6 +109,9 @@ import org.signal.registration.screens.restoreselection.ArchiveRestoreOption
 import org.signal.registration.screens.restoreselection.ArchiveRestoreSelectionScreen
 import org.signal.registration.screens.restoreselection.ArchiveRestoreSelectionViewModel
 import org.signal.registration.screens.restoreselection.RegisteredState
+import org.signal.registration.screens.signallogin.SignalLoginScreen
+import org.signal.registration.screens.signallogin.SignalLoginScreenActions
+import org.signal.registration.screens.signallogin.SignalLoginViewModel
 import org.signal.registration.screens.signallogininfo.SignalLoginInfoScreen
 import org.signal.registration.screens.signallogininfo.SignalLoginInfoViewModel
 import org.signal.registration.screens.signalloginpayment.SignalLoginPaymentScreen
@@ -164,6 +167,10 @@ sealed interface RegistrationRoute : NavKey, Parcelable {
   /** Presents a freshly-purchased Signal Login and asks the user to save it. */
   @Serializable
   data object SignalLoginInfo : RegistrationRoute
+
+  /** Log in with the account key of a Signal Login the user already owns. */
+  @Serializable
+  data object SignalLogin : RegistrationRoute
 
   /** Optional username selection for a phone-numberless account. */
   @Serializable
@@ -660,6 +667,28 @@ private fun EntryProviderScope<NavKey>.navigationEntries(
     val state by viewModel.state.collectAsStateWithLifecycle()
 
     SignalLoginInfoScreen(
+      state = state,
+      onEvent = { viewModel.onEvent(it) }
+    )
+  }
+
+  // -- Signal Login Screen
+  entry<RegistrationRoute.SignalLogin> {
+    val viewModel: SignalLoginViewModel = viewModel(
+      factory = SignalLoginViewModel.Factory(
+        repository = registrationRepository,
+        parentEventEmitter = registrationViewModel::onEvent
+      )
+    )
+    val state by viewModel.state.collectAsStateWithLifecycle()
+    val context = LocalContext.current
+    CollectActions(viewModel.actions) { action ->
+      when (action) {
+        SignalLoginScreenActions.OpenNeedHelpArticle -> openUrl(context, SIGNAL_LOGIN_LEARN_MORE_URL)
+      }
+    }
+
+    SignalLoginScreen(
       state = state,
       onEvent = { viewModel.onEvent(it) }
     )
