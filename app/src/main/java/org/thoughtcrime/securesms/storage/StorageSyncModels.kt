@@ -220,7 +220,7 @@ object StorageSyncModels {
       unregisteredAtTimestamp = recipient.syncExtras.unregisteredTimestamp
       hidden = recipient.hiddenState != Recipient.HiddenState.NOT_HIDDEN
       username = recipient.username ?: ""
-      pniSignatureVerified = recipient.syncExtras.pniSignatureVerified
+      pniSignatureVerified = recipient.pni?.isValid == true && recipient.syncExtras.pniSignatureVerified
       nickname = recipient.nickname.takeUnless { it.isEmpty }?.let { ContactRecord.Name(given = it.givenName, family = it.familyName) }
       note = recipient.note ?: ""
       avatarColor = localToRemoteAvatarColor(recipient.avatarColor)

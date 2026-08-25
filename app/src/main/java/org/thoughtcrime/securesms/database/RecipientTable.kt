@@ -989,9 +989,10 @@ open class RecipientTable(context: Context, databaseHelper: SignalDatabase) : Da
 
     try {
       val oldIdentityRecord = identityStore.getIdentityRecord(recipientId)
-      if (update.new.proto.identityKey.isNotEmpty() && update.new.proto.signalAci != null) {
+      if (update.new.proto.identityKey.isNotEmpty() && (update.new.proto.signalAci != null || update.new.proto.signalPni != null)) {
+        val serviceId: ServiceId = update.new.proto.signalAci ?: update.new.proto.signalPni!!
         val identityKey = IdentityKey(update.new.proto.identityKey.toByteArray(), 0)
-        identities.updateIdentityAfterSync(update.new.proto.signalAci!!.toString(), recipientId, identityKey, StorageSyncModels.remoteToLocalIdentityStatus(update.new.proto.identityState))
+        identities.updateIdentityAfterSync(serviceId.toString(), recipientId, identityKey, StorageSyncModels.remoteToLocalIdentityStatus(update.new.proto.identityState))
       }
 
       val newIdentityRecord = identityStore.getIdentityRecord(recipientId)
@@ -2599,7 +2600,8 @@ open class RecipientTable(context: Context, databaseHelper: SignalDatabase) : Da
       REGISTERED to RegisteredState.NOT_REGISTERED.id,
       UNREGISTERED_TIMESTAMP to System.currentTimeMillis(),
       E164 to null,
-      PNI_COLUMN to null
+      PNI_COLUMN to null,
+      PNI_SIGNATURE_VERIFIED to 0
     )
 
     if (update(id, contentValues)) {
@@ -2659,7 +2661,8 @@ open class RecipientTable(context: Context, databaseHelper: SignalDatabase) : Da
       .update(TABLE_NAME)
       .values(
         PNI_COLUMN to null,
-        E164 to null
+        E164 to null,
+        PNI_SIGNATURE_VERIFIED to 0
       )
       .where("$ID = ?", record.id)
       .run()
@@ -4478,7 +4481,7 @@ open class RecipientTable(context: Context, databaseHelper: SignalDatabase) : Da
       put(MUTE_UNTIL, contact.proto.mutedUntilTimestamp)
       put(STORAGE_SERVICE_ID, Base64.encodeWithPadding(contact.id.raw))
       put(HIDDEN, contact.proto.hidden)
-      put(PNI_SIGNATURE_VERIFIED, contact.proto.pniSignatureVerified.toInt())
+      put(PNI_SIGNATURE_VERIFIED, (contact.proto.pniSignatureVerified && contact.proto.signalPni?.isValid == true).toInt())
       put(NICKNAME_GIVEN_NAME, nickname.givenName.nullIfBlank())
       put(NICKNAME_FAMILY_NAME, nickname.familyName.nullIfBlank())
       put(NICKNAME_JOINED_NAME, nickname.toString().nullIfBlank())
