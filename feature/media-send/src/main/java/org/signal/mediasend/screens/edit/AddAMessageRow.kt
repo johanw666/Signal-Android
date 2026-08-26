@@ -28,6 +28,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.semantics.Role
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
+import org.signal.core.ui.compose.ColorProfiles
 import org.signal.core.ui.compose.DayNightPreviews
 import org.signal.core.ui.compose.DropdownMenus
 import org.signal.core.ui.compose.IconButtons
@@ -36,9 +37,6 @@ import org.signal.core.ui.compose.SignalIcons
 import org.signal.core.ui.compose.theme.SignalTheme
 import org.signal.mediasend.R
 import org.signal.mediasend.test.TestTags
-
-/** Mirrors the legacy send button's disabled tint, which has no equivalent in the core-ui color scheme. */
-private val DisabledNextButtonColor = Color(0xFF777777)
 
 /**
  * Mirrors the legacy send button's size. Has to be stated rather than left to the [IconButtons.IconButton] default of
@@ -146,6 +144,8 @@ fun AddAMessageRow(
     Box {
       val scheduleSendMenuController = remember { DropdownMenus.MenuController() }
 
+      val nextButtonColor = recipientChatColor ?: MaterialTheme.colorScheme.primaryContainer
+
       IconButtons.IconButton(
         enabled = enabled,
         onClick = onNextClick,
@@ -153,10 +153,10 @@ fun AddAMessageRow(
         onLongClick = if (canScheduleSend) scheduleSendMenuController::show else null,
         onLongClickLabel = stringResource(R.string.AddAMessageRow__schedule_send),
         colors = IconButtons.iconButtonColors(
-          containerColor = recipientChatColor ?: MaterialTheme.colorScheme.primaryContainer,
+          containerColor = nextButtonColor,
           contentColor = if (recipientChatColor != null) SignalTheme.colors.colorOnCustom else MaterialTheme.colorScheme.onPrimaryContainer,
-          disabledContainerColor = DisabledNextButtonColor,
-          disabledContentColor = MaterialTheme.colorScheme.secondaryContainer
+          disabledContainerColor = ColorProfiles.disabledContainer(nextButtonColor),
+          disabledContentColor = ColorProfiles.disabledContent()
         ),
         modifier = Modifier
           .testTag(TestTags.ADD_A_MESSAGE_NEXT_BUTTON)
@@ -249,8 +249,36 @@ private fun AddAMessageRowDisabledPreview() {
       message = null,
       onEvent = {},
       onNextClick = {},
+      enabled = false
+    )
+  }
+}
+
+@DayNightPreviews
+@Composable
+private fun AddAMessageRowDisabledKnownRecipientPreview() {
+  Previews.Preview {
+    AddAMessageRow(
+      message = null,
+      onEvent = {},
+      onNextClick = {},
       enabled = false,
       recipientChatColor = Color(0xFF3B7845)
+    )
+  }
+}
+
+/** A chat color that starts out pale, where a plain interpolation towards the chrome would barely move. */
+@DayNightPreviews
+@Composable
+private fun AddAMessageRowDisabledPaleRecipientPreview() {
+  Previews.Preview {
+    AddAMessageRow(
+      message = null,
+      onEvent = {},
+      onNextClick = {},
+      enabled = false,
+      recipientChatColor = Color(0xFFF5E0A0)
     )
   }
 }
