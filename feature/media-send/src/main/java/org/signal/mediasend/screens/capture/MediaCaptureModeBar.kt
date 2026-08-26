@@ -18,6 +18,7 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.layout.widthIn
 import androidx.compose.foundation.selection.selectable
 import androidx.compose.foundation.selection.selectableGroup
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -64,6 +65,9 @@ internal val MODE_BAR_HEIGHT = 44.dp
 
 /** How far the modes are inset from the edges of the bar they sit on. */
 private val MODE_BAR_PADDING = 6.dp
+
+/** Minimum width for a text entry in the bar */
+private val MODE_BAR_MINIMUM_ENTRY_WIDTH = 80.dp
 
 /** No bounce, so a mode does not wobble once it has landed under the highlight. */
 private val MODE_SETTLE_SPEC = spring<Float>(dampingRatio = Spring.DampingRatioNoBouncy, stiffness = Spring.StiffnessMediumLow)
@@ -112,12 +116,13 @@ internal fun MediaCaptureModeBar(
         Box(
           contentAlignment = Alignment.Center,
           modifier = Modifier
+            .widthIn(min = MODE_BAR_MINIMUM_ENTRY_WIDTH)
             .clip(MODE_BAR_SHAPE)
             .selectable(
               selected = captureMode == selectedCaptureMode,
               onClick = { onEvent(MediaCaptureScreenEvents.CaptureModeSelected(captureMode)) }
             )
-            .padding(horizontal = 12.dp)
+            .padding(horizontal = 20.dp)
             .testTag(captureMode.testTag)
         ) {
           Text(
