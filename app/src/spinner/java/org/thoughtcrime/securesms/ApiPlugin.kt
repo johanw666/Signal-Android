@@ -34,6 +34,7 @@ import org.thoughtcrime.securesms.database.SignalDatabase
 import org.thoughtcrime.securesms.dependencies.AppDependencies
 import org.thoughtcrime.securesms.mms.IncomingMessage
 import org.thoughtcrime.securesms.mms.OutgoingMessage
+import org.thoughtcrime.securesms.notifications.v2.ConversationId
 import org.thoughtcrime.securesms.profiles.ProfileName
 import org.thoughtcrime.securesms.recipients.Recipient
 import org.thoughtcrime.securesms.recipients.RecipientId
@@ -100,6 +101,7 @@ class ApiPlugin : Plugin {
       )
     ),
     "createThread" to ApiSpec(::createThread, listOf(Param("recipientId", "1"))),
+    "updateNotification" to ApiSpec(::updateNotification, listOf(Param("threadId", "", placeholder = "blank = all threads"))),
     "createMessage" to ApiSpec(
       ::createMessage,
       listOf(
@@ -513,6 +515,30 @@ class ApiPlugin : Plugin {
     }
   }
 
+  /**
+   * Drives a notification pass on demand.
+   */
+  private fun updateNotification(parameters: Map<String, List<String>>): PluginResult {
+    val threadIdParam = parameters["threadId"]?.firstOrNull()?.takeIf { it.isNotBlank() }
+    val threadId = if (threadIdParam != null) {
+      threadIdParam.toLongOrNull() ?: return PluginResult.ErrorResult(message = "Invalid 'threadId' parameter")
+    } else {
+      null
+    }
+
+    return try {
+      if (threadId != null) {
+        AppDependencies.messageNotifier.updateNotification(AppDependencies.application, ConversationId.forConversation(threadId))
+      } else {
+        AppDependencies.messageNotifier.updateNotification(AppDependencies.application)
+      }
+      UpdateNotificationResponse(threadId ?: -1).toJsonResult()
+    } catch (e: Exception) {
+      Log.w(TAG, "Failed to update notification", e)
+      PluginResult.ErrorResult(message = "Failed: ${e.message}")
+    }
+  }
+
   private fun createMessage(parameters: Map<String, List<String>>): PluginResult {
     val threadId = parameters["threadId"]?.firstOrNull()?.toLongOrNull()
       ?: return PluginResult.ErrorResult(message = "Missing or invalid 'threadId' parameter")
@@ -683,6 +709,10 @@ class ApiPlugin : Plugin {
   data class CreateGroupResponse @JsonCreator constructor(
     @field:JsonProperty val recipientId: Long,
     @field:JsonProperty val groupId: String
+  )
+
+  data class UpdateNotificationResponse @JsonCreator constructor(
+    @JsonProperty("threadId") val threadId: Long
   )
 
   data class CreateThreadResponse @JsonCreator constructor(

@@ -135,6 +135,7 @@ import org.thoughtcrime.securesms.mms.MmsException
 import org.thoughtcrime.securesms.mms.OutgoingMessage
 import org.thoughtcrime.securesms.mms.QuoteModel
 import org.thoughtcrime.securesms.mms.SlideDeck
+import org.thoughtcrime.securesms.notifications.v2.ConversationId
 import org.thoughtcrime.securesms.notifications.v2.DefaultMessageNotifier.StickyThread
 import org.thoughtcrime.securesms.polls.Poll
 import org.thoughtcrime.securesms.polls.PollRecord
@@ -2572,16 +2573,75 @@ open class MessageTable(context: Context?, databaseHelper: SignalDatabase) : Dat
     }
   }
 
-  fun markAsNotified(id: Long) {
+  fun markAsNotified(ids: Collection<Long>) {
+    if (ids.isEmpty()) {
+      return
+    }
+
+    val now = System.currentTimeMillis()
+    val idQuery = SqlUtil.buildFastCollectionQuery(ID, ids)
+    val originalQuery = SqlUtil.buildFastCollectionQuery(ORIGINAL_MESSAGE_ID, ids)
+    val revisionQuery = SqlUtil.buildFastCollectionQuery(LATEST_REVISION_ID, ids)
+
     writableDatabase
       .update(TABLE_NAME)
       .values(
         NOTIFIED to 1,
-        REACTIONS_LAST_SEEN to System.currentTimeMillis(),
-        VOTES_LAST_SEEN to System.currentTimeMillis()
+        REACTIONS_LAST_SEEN to now,
+        VOTES_LAST_SEEN to now
       )
-      .where("$ID = ? OR $ORIGINAL_MESSAGE_ID = ? OR $LATEST_REVISION_ID = ?", id, id, id)
+      .where(
+        "(${idQuery.where}) OR (${originalQuery.where}) OR (${revisionQuery.where})",
+        idQuery.whereArgs + originalQuery.whereArgs + revisionQuery.whereArgs
+      )
       .run()
+  }
+
+  /**
+   * Marks everything not yet notified in [conversationIds] as notified, up to and including [maxMessageId].
+   */
+  fun markConversationsAsNotified(conversationIds: Collection<ConversationId>, maxMessageId: Long) {
+    if (conversationIds.isEmpty() || maxMessageId <= 0) {
+      return
+    }
+
+    val now = System.currentTimeMillis()
+    val (storyReplies, chats) = conversationIds.partition { it.groupStoryId != null }
+
+    writableDatabase.withinTransaction { db ->
+      if (chats.isNotEmpty()) {
+        val query = SqlUtil.buildFastCollectionQuery(
+          column = THREAD_ID,
+          values = chats.map { it.threadId }.distinct(),
+          prefix = "$NOTIFIED = 0 AND $STORY_TYPE = 0 AND $PARENT_STORY_ID <= 0 AND $ID <= $maxMessageId AND"
+        )
+
+        db.update(TABLE_NAME)
+          .values(
+            NOTIFIED to 1,
+            REACTIONS_LAST_SEEN to now,
+            VOTES_LAST_SEEN to now
+          )
+          .where(query.where, query.whereArgs)
+          .run()
+      }
+
+      storyReplies.forEach { conversationId ->
+        db.update(TABLE_NAME)
+          .values(
+            NOTIFIED to 1,
+            REACTIONS_LAST_SEEN to now,
+            VOTES_LAST_SEEN to now
+          )
+          .where(
+            "$NOTIFIED = 0 AND $STORY_TYPE = 0 AND $PARENT_STORY_ID = ? AND $THREAD_ID = ? AND $ID <= ?",
+            conversationId.groupStoryId!!,
+            conversationId.threadId,
+            maxMessageId
+          )
+          .run()
+      }
+    }
   }
 
   fun markAsNotNotified(id: Long) {

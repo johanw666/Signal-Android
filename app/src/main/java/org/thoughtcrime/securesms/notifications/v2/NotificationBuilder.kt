@@ -37,8 +37,6 @@ import java.util.Optional
 import androidx.core.app.Person as PersonCompat
 import org.signal.core.ui.R as CoreUiR
 
-private const val BIG_PICTURE_DIMEN = 500
-
 /**
  * Wraps the compat and OS versions of the Notification builders so we can more easily access native
  * features in newer versions. Also provides some domain-specific helpers.
@@ -199,6 +197,13 @@ sealed class NotificationBuilder(protected val context: Context) {
    * Notification builder using solely androidx/compat libraries.
    */
   private class NotificationBuilderCompat(context: Context) : NotificationBuilder(context) {
+    companion object {
+      private const val BIG_PICTURE_DIMEN = 500
+
+      /** Cap on messages rendered into a single notification. */
+      private const val MAX_DISPLAYED_MESSAGES = 25
+    }
+
     val builder: NotificationCompat.Builder = NotificationCompat.Builder(context, NotificationChannels.getInstance().messagesChannel)
 
     override fun addActions(replyMethod: ReplyMethod, conversation: NotificationConversation) {
@@ -299,7 +304,7 @@ sealed class NotificationBuilder(protected val context: Context) {
       messagingStyle.conversationTitle = conversation.getConversationTitle(context)
       messagingStyle.isGroupConversation = conversation.isGroup
 
-      conversation.notificationItems.forEach { notificationItem ->
+      conversation.notificationItems.takeLast(MAX_DISPLAYED_MESSAGES).forEach { notificationItem ->
         var person: PersonCompat? = null
         val isNoteToSelf = notificationItem.isPersonSelf && conversation.recipient.isSelf
 
@@ -332,7 +337,7 @@ sealed class NotificationBuilder(protected val context: Context) {
 
       val style: NotificationCompat.InboxStyle = NotificationCompat.InboxStyle()
 
-      for (notificationItem: NotificationItem in state.notificationItems) {
+      for (notificationItem: NotificationItem in state.notificationItems.takeLast(MAX_DISPLAYED_MESSAGES)) {
         val line: CharSequence? = notificationItem.getInboxLine(context)
         if (line != null) {
           style.addLine(line)
