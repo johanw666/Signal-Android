@@ -52,6 +52,7 @@ import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.semantics.Role
+import androidx.compose.ui.tooling.preview.PreviewWrapper
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.lerp
 import kotlinx.coroutines.flow.first
@@ -61,9 +62,9 @@ import org.signal.core.ui.compose.Buttons
 import org.signal.core.ui.compose.Dividers
 import org.signal.core.ui.compose.DropdownMenus
 import org.signal.core.ui.compose.IconButtons
-import org.signal.core.ui.compose.Previews
 import org.signal.core.ui.compose.Scaffolds
 import org.signal.core.ui.compose.SignalIcons
+import org.signal.core.ui.compose.SignalPreviewWrapper
 import org.signal.core.ui.compose.Snackbars
 import org.signal.core.ui.compose.horizontalGutters
 import org.signal.core.ui.compose.theme.SignalTheme
@@ -381,22 +382,21 @@ private val Avatar.gridKey: String
 private val Avatar.canDelete: Boolean
   get() = databaseId is Avatar.DatabaseId.Saved && (this is Avatar.Photo || this is Avatar.Text)
 
+@PreviewWrapper(SignalPreviewWrapper::class)
 @AllDevicePreviews
 @Composable
 private fun AvatarPickerScreenPreview() {
-  Previews.Preview {
-    val avatars = remember { AvatarPickerRepository.getDefaultAvatarsForSelf() }
+  val avatars = remember { AvatarPickerRepository.getDefaultAvatarsForSelf() }
 
-    AvatarPickerScreen(
-      state = remember {
-        AvatarPickerState(
-          currentAvatar = avatars.first(),
-          selectableAvatars = avatars,
-          canSave = true,
-          canClear = true
-        )
-      },
-      onEvent = {}
-    )
-  }
+  AvatarPickerScreen(
+    state = remember {
+      AvatarPickerState(
+        currentAvatar = avatars.first(),
+        selectableAvatars = avatars,
+        canSave = true,
+        canClear = true
+      )
+    },
+    onEvent = {}
+  )
 }
