@@ -507,7 +507,7 @@ object StorageSyncModels {
     return recipientIds.mapNotNull { id ->
       val recipient = SignalDatabase.recipients.getRecordForSync(id)
       if (recipient == null) {
-        Log.w(TAG, "Recipient $id from notification profile cannot be found")
+        Log.w(TAG, "Recipient $id cannot be found")
         null
       } else {
         when (recipient.recipientType) {
@@ -521,10 +521,22 @@ object StorageSyncModels {
             )
           }
           RecipientType.GV1 -> {
-            RemoteRecipient(legacyGroupId = recipient.groupId!!.requireV1().decodedId.toByteString())
+            val groupId = recipient.groupId
+            if (groupId == null || !groupId.isV1) {
+              Log.w(TAG, "Recipient $id is a GV1 recipient without a V1 group id. Skipping.")
+              null
+            } else {
+              RemoteRecipient(legacyGroupId = groupId.requireV1().decodedId.toByteString())
+            }
           }
           RecipientType.GV2 -> {
-            RemoteRecipient(groupMasterKey = recipient.syncExtras.groupMasterKey!!.serialize().toByteString())
+            val masterKey = recipient.syncExtras.groupMasterKey
+            if (masterKey == null) {
+              Log.w(TAG, "Recipient $id is a GV2 recipient without a master key. Skipping.")
+              null
+            } else {
+              RemoteRecipient(groupMasterKey = masterKey.serialize().toByteString())
+            }
           }
           else -> null
         }
