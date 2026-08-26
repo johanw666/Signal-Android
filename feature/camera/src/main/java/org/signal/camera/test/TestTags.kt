@@ -21,6 +21,7 @@ object TestTags {
   const val CAMERA_HUD_SWITCH_BUTTON = "camera_hud_switch_button"
   const val CAMERA_HUD_CAPTURE_BUTTON = "camera_hud_capture_button"
   const val CAMERA_HUD_RECORDING_DURATION = "camera_hud_recording_duration"
+  const val CAMERA_HUD_RECORDING_PAUSED = "camera_hud_recording_paused"
   const val CAMERA_HUD_ZOOM_BAR = "camera_hud_zoom_bar"
 
   // What the gallery's corner holds, one at a time

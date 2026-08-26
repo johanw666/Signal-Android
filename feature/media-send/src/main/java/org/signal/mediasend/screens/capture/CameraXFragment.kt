@@ -631,7 +631,8 @@ fun CameraXScreen(
             },
             stringResources = StringResources(
               photoCaptureFailed = R.string.CameraXFragment_photo_capture_failed,
-              photoProcessingFailed = R.string.CameraXFragment_photo_processing_failed
+              photoProcessingFailed = R.string.CameraXFragment_photo_processing_failed,
+              recordingPaused = R.string.CameraXFragment_paused
             )
           )
         }

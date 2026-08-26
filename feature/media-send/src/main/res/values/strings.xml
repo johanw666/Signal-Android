@@ -183,6 +183,8 @@
   <string name="CameraXFragment_flash_auto">Flash auto</string>
   <!-- Accessibility label for the send button in media selection -->
   <string name="CameraXFragment_send">Send</string>
+  <!-- Label shown below the elapsed time while a video recording is paused -->
+  <string name="CameraXFragment_paused">Paused</string>
   <!-- Displayed in a permissions dialog when the user has denied access to hardware for image and video capture. -->
   <string name="CameraXFragment_signal_needs_the_recording_permissions_to_capture_video">Signal needs microphone permissions to record videos, but they have been denied. Please continue to app settings, select \"Permissions\", and enable \"Microphone\" and \"Camera\".</string>
 

@@ -18,6 +18,7 @@ import androidx.compose.animation.fadeIn
 import androidx.compose.animation.fadeOut
 import androidx.compose.foundation.background
 import androidx.compose.foundation.focusable
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.BoxScope
 import androidx.compose.foundation.layout.Column
@@ -50,6 +51,7 @@ import androidx.compose.ui.focus.focusRequester
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.graphicsLayer
+import androidx.compose.ui.graphics.lerp
 import androidx.compose.ui.input.key.onPreviewKeyEvent
 import androidx.compose.ui.layout.boundsInRoot
 import androidx.compose.ui.layout.onGloballyPositioned
@@ -87,6 +89,9 @@ private val ZOOM_BAR_BOTTOM_MARGIN = 16.dp
 /** How far the zoom bar sits in from the start edge on anything larger than a phone. */
 private val ZOOM_BAR_SIDE_MARGIN = 16.dp
 
+/** How long the time and the paused label take to trade the recording red between them. */
+private const val PAUSED_TRANSITION_MS = 200
+
 data class StringResources(
   @param:StringRes val photoCaptureFailed: Int = 0,
   @param:StringRes val photoProcessingFailed: Int = 0,
@@ -94,7 +99,8 @@ data class StringResources(
   @param:StringRes val flashOff: Int = 0,
   @param:StringRes val flashOn: Int = 0,
   @param:StringRes val flashAuto: Int = 0,
-  @param:StringRes val send: Int = 0
+  @param:StringRes val send: Int = 0,
+  @param:StringRes val recordingPaused: Int = 0
 )
 
 /**
@@ -309,6 +315,8 @@ private fun BoxScope.StandardCameraHudContent(
   if (state.isRecording) {
     RecordingDurationDisplay(
       durationMillis = state.recordingDuration,
+      isPaused = state.isRecordingPaused,
+      pausedLabel = if (stringResources.recordingPaused != 0) stringResource(stringResources.recordingPaused) else null,
       modifier = Modifier
         .align(Alignment.TopCenter)
         .padding(top = 16.dp)
@@ -716,27 +724,66 @@ private fun FlashAndCameraTogglePill(
   }
 }
 
+/**
+ * The elapsed time, and below it while paused, the caller's label for a paused recording.
+ *
+ * @param pausedLabel What to call a paused recording, or null to show the time alone.
+ */
 @Composable
 private fun RecordingDurationDisplay(
   durationMillis: Long,
+  isPaused: Boolean,
+  pausedLabel: String?,
   modifier: Modifier = Modifier
 ) {
   val seconds = (durationMillis / 1000) % 60
   val minutes = (durationMillis / 1000) / 60
   val timeText = String.format(Locale.US, "%02d:%02d", minutes, seconds)
 
-  Box(
+  val pausedProgress by animateFloatAsState(
+    targetValue = if (isPaused) 1f else 0f,
+    animationSpec = tween(PAUSED_TRANSITION_MS),
+    label = "RecordingPausedProgress"
+  )
+
+  val recordingRed = colorResource(R.color.CameraHud_control_red_background)
+  val pausedGray = colorResource(R.color.CameraHud_control_background)
+
+  Column(
+    horizontalAlignment = Alignment.CenterHorizontally,
     modifier = modifier
-      .background(colorResource(R.color.CameraHud_control_red_background), shape = CircleShape)
-      .padding(horizontal = 16.dp, vertical = 4.dp)
-      .testTag(TestTags.CAMERA_HUD_RECORDING_DURATION)
   ) {
-    Text(
-      text = timeText,
-      color = Color.White,
-      fontSize = 18.sp,
-      fontWeight = FontWeight.Medium
-    )
+    Box(
+      modifier = Modifier
+        .background(lerp(recordingRed, pausedGray, pausedProgress), shape = CircleShape)
+        .padding(horizontal = 16.dp, vertical = 4.dp)
+        .testTag(TestTags.CAMERA_HUD_RECORDING_DURATION)
+    ) {
+      Text(
+        text = timeText,
+        color = Color.White,
+        fontSize = 18.sp,
+        fontWeight = FontWeight.Medium
+      )
+    }
+
+    if (pausedLabel != null && pausedProgress > 0f) {
+      Box(
+        modifier = Modifier
+          .padding(top = 8.dp)
+          .graphicsLayer { alpha = pausedProgress }
+          .background(recordingRed, shape = CircleShape)
+          .padding(horizontal = 16.dp, vertical = 4.dp)
+          .testTag(TestTags.CAMERA_HUD_RECORDING_PAUSED)
+      ) {
+        Text(
+          text = pausedLabel,
+          color = Color.White,
+          fontSize = 16.sp,
+          fontWeight = FontWeight.Medium
+        )
+      }
+    }
   }
 }
 
@@ -900,6 +947,20 @@ private fun StandardCameraHudLockedRecordingPreview() {
       captureButtonMode = CaptureButtonMode.VIDEO,
       emitter = {}
     )
+  }
+}
+
+/** Both pills, which the HUD previews cannot show without a caller to supply the label. */
+@Preview(name = "Recording duration", showBackground = true, backgroundColor = 0xFF444444)
+@Composable
+private fun RecordingDurationDisplayPreview() {
+  Column(
+    horizontalAlignment = Alignment.CenterHorizontally,
+    verticalArrangement = Arrangement.spacedBy(16.dp),
+    modifier = Modifier.padding(16.dp)
+  ) {
+    RecordingDurationDisplay(durationMillis = 12_000L, isPaused = false, pausedLabel = "Paused")
+    RecordingDurationDisplay(durationMillis = 12_000L, isPaused = true, pausedLabel = "Paused")
   }
 }
 

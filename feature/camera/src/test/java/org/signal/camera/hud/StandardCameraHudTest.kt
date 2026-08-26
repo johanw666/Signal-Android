@@ -27,6 +27,7 @@ import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
 import org.robolectric.RobolectricTestRunner
+import org.robolectric.RuntimeEnvironment
 import org.robolectric.annotation.Config
 import org.signal.camera.CameraScreenState
 import org.signal.camera.test.TestTags
@@ -48,6 +49,9 @@ class StandardCameraHudTest {
   private val events = mutableListOf<StandardCameraHudEvents>()
 
   private var longPressTimeoutMillis = 0L
+
+  private val pausedLabel: String
+    get() = RuntimeEnvironment.getApplication().getString(PAUSED_LABEL_RES)
 
   //region What holds the corner beside the capture button
 
@@ -266,6 +270,32 @@ class StandardCameraHudTest {
     composeTestRule.onNodeWithText("01:05").assertIsDisplayed()
   }
 
+  @Test
+  fun `Given a recording that is running, when displayed, then nothing says it is paused`() {
+    setContent(state = lockedRecording(), stringResources = pausedStringResources())
+
+    composeTestRule.onNodeWithTag(TestTags.CAMERA_HUD_RECORDING_PAUSED).assertDoesNotExist()
+  }
+
+  @Test
+  fun `Given a paused recording, when displayed, then the caller's word for it is shown below the time`() {
+    setContent(state = pausedRecording().copy(recordingDuration = 12_000L), stringResources = pausedStringResources())
+
+    composeTestRule.onNodeWithTag(TestTags.CAMERA_HUD_RECORDING_DURATION).assertIsDisplayed()
+    composeTestRule.onNodeWithTag(TestTags.CAMERA_HUD_RECORDING_PAUSED).assertIsDisplayed()
+    composeTestRule.onNodeWithText(pausedLabel).assertIsDisplayed()
+    composeTestRule.onNodeWithText("00:12").assertIsDisplayed()
+  }
+
+  /** A caller that leaves the label out gets the time alone rather than an empty pill under it. */
+  @Test
+  fun `Given a paused recording and a caller with no word for it, when displayed, then only the time is shown`() {
+    setContent(state = pausedRecording())
+
+    composeTestRule.onNodeWithTag(TestTags.CAMERA_HUD_RECORDING_DURATION).assertIsDisplayed()
+    composeTestRule.onNodeWithTag(TestTags.CAMERA_HUD_RECORDING_PAUSED).assertDoesNotExist()
+  }
+
   //endregion
 
   //region The same controls on a window too large for the bottom bar
@@ -345,10 +375,15 @@ class StandardCameraHudTest {
     zoomRange = ZOOM_RANGE
   )
 
+  private fun pausedRecording() = lockedRecording().copy(isRecordingPaused = true)
+
+  private fun pausedStringResources() = StringResources(recordingPaused = PAUSED_LABEL_RES)
+
   private fun setContent(
     state: CameraScreenState = CameraScreenState(zoomRange = ZOOM_RANGE),
     captureButtonMode: CaptureButtonMode = CaptureButtonMode.PHOTO,
-    maxRecordingDurationMs: Long = 0L
+    maxRecordingDurationMs: Long = 0L,
+    stringResources: StringResources = StringResources()
   ) {
     composeTestRule.setContent {
       longPressTimeoutMillis = LocalViewConfiguration.current.longPressTimeoutMillis
@@ -358,7 +393,8 @@ class StandardCameraHudTest {
           state = state,
           emitter = { events += it },
           captureButtonMode = captureButtonMode,
-          maxRecordingDurationMs = maxRecordingDurationMs
+          maxRecordingDurationMs = maxRecordingDurationMs,
+          stringResources = stringResources
         )
       }
     }
@@ -379,5 +415,8 @@ class StandardCameraHudTest {
     private val ZOOM_RANGE = 0.5f..10f
 
     private const val MAX_DURATION = 30_000L
+
+    /** The camera module carries no strings of its own, so a framework one stands in for the caller's label. */
+    private val PAUSED_LABEL_RES = android.R.string.ok
   }
 }
