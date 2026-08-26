@@ -75,6 +75,7 @@ import org.signal.camera.CameraScreenViewModel
 import org.signal.camera.CameraXUtil
 import org.signal.camera.VideoCaptureResult
 import org.signal.camera.VideoOutput
+import org.signal.camera.hud.CaptureButtonMode
 import org.signal.camera.hud.GalleryThumbnailButton
 import org.signal.camera.hud.StandardCameraHud
 import org.signal.camera.hud.StandardCameraHudEvents
@@ -344,6 +345,8 @@ private fun CameraFragment.Controller.onCameraXScreenEvent(event: CameraXScreenE
     is CameraXScreenEvents.ImageCaptured -> onImageCaptured(event.data, event.width, event.height)
     is CameraXScreenEvents.VideoCaptured -> onVideoCaptured(event.fd, event.durationMs)
     is CameraXScreenEvents.QrCodeFound -> onQrCodeFound(event.data)
+    // The chrome the legacy hosts put up does not move for a recording, so there is nothing to tell them.
+    is CameraXScreenEvents.RecordingStateChanged -> Unit
     CameraXScreenEvents.VideoCaptureError -> onVideoCaptureError()
     CameraXScreenEvents.GalleryClicked -> onGalleryClicked()
     CameraXScreenEvents.CameraCloseClicked -> onCameraCloseClicked()
@@ -370,7 +373,9 @@ data class CameraXScreenState(
   val isVideoEnabled: Boolean = true,
   val isQrScanEnabled: Boolean = false,
   val controlsVisible: Boolean = true,
-  val selectedMediaCount: Int = 0
+  val selectedMediaCount: Int = 0,
+  /** Which kind of capture the capture button offers, which is the mode the flow's bottom bar has selected. */
+  val captureButtonMode: CaptureButtonMode = CaptureButtonMode.PHOTO
 )
 
 /** A descriptor to record into, paired with the duration cap that the descriptor actually supports. */
@@ -516,6 +521,11 @@ fun CameraXScreen(
     }
   }
 
+  LaunchedEffect(cameraViewModel) {
+    snapshotFlow { cameraState.isRecording }
+      .collect { isRecording -> onEvent(CameraXScreenEvents.RecordingStateChanged(isRecording)) }
+  }
+
   LaunchedEffect(cameraViewModel, state.isQrScanEnabled) {
     if (state.isQrScanEnabled) {
       cameraViewModel.qrCodeDetected.collect { qrCode ->
@@ -600,6 +610,7 @@ fun CameraXScreen(
             state = cameraState,
             modifier = Modifier.padding(bottom = if (isPortraitPhone) hudBottomPaddingInsideViewport else 0.dp),
             maxRecordingDurationMs = activeRecordingMaxDurationMs,
+            captureButtonMode = state.captureButtonMode,
             hasAudioPermission = { context.checkSelfPermission(Manifest.permission.RECORD_AUDIO) == PackageManager.PERMISSION_GRANTED },
             emitter = { event ->
               handleHudEvent(
@@ -727,12 +738,18 @@ private fun handleHudEvent(
     }
 
     is StandardCameraHudEvents.VideoCaptureStarted -> {
+      if (cameraViewModel.hasActiveRecording) {
+        Log.d(TAG, "Ignoring a recording asked for while one is already running")
+        return
+      }
+
       val recording = if (Build.VERSION.SDK_INT >= 26 && isVideoEnabled) createVideoFileDescriptor() else null
 
       if (recording != null) {
         cameraViewModel.startRecording(
           context = context,
           output = VideoOutput.FileDescriptorOutput(recording.parcelFd),
+          isRecordingLocked = event.isLocked,
           onVideoCaptured = { result ->
             handleVideoCaptured(result, releaseVideoFileDescriptor, onVideoCaptureFailed, onEvent)
           }
@@ -745,6 +762,14 @@ private fun handleHudEvent(
 
     is StandardCameraHudEvents.VideoCaptureStopped -> {
       cameraViewModel.stopRecording()
+    }
+
+    is StandardCameraHudEvents.VideoCaptureLocked -> {
+      cameraViewModel.onEvent(CameraScreenEvents.LockRecording)
+    }
+
+    is StandardCameraHudEvents.RecordingPauseToggled -> {
+      cameraViewModel.onEvent(CameraScreenEvents.ToggleRecordingPaused)
     }
 
     is StandardCameraHudEvents.GalleryClick -> {
@@ -769,6 +794,10 @@ private fun handleHudEvent(
 
     is StandardCameraHudEvents.SetZoomLevel -> {
       cameraViewModel.onEvent(CameraScreenEvents.LinearZoom(event.zoomLevel))
+    }
+
+    is StandardCameraHudEvents.SetZoomRatio -> {
+      cameraViewModel.onEvent(CameraScreenEvents.SetZoomRatio(event.zoomRatio))
     }
 
     is StandardCameraHudEvents.AudioPermissionRequired -> {

@@ -20,6 +20,7 @@ import kotlinx.coroutines.launch
 import org.signal.core.models.media.Media
 import org.signal.core.ui.compose.EventDrivenViewModel
 import org.signal.core.util.logging.Log
+import org.signal.mediasend.MediaConstraints
 import org.signal.mediasend.MediaSendFlowEvent
 import org.signal.mediasend.MediaSendFlowState
 import org.signal.mediasend.MediaSendRoute
@@ -57,8 +58,10 @@ internal class MediaCaptureViewModel(
         isStory = isStory,
         storiesEnabled = storiesEnabled,
         mode = mode,
+        recipientId = recipientId,
         mediaConstraints = mediaConstraints,
-        storyMaxVideoDuration = storyMaxVideoDuration
+        storyMaxVideoDuration = storyMaxVideoDuration,
+        isVideoCaptureSupported = MediaConstraints.isVideoTranscodeAvailable()
       )
     }
   )
@@ -76,10 +79,23 @@ internal class MediaCaptureViewModel(
     when (event) {
       is MediaCaptureScreenEvents.ParentStateChanged -> _state.update { it.copy(selectedMedia = event.parentState.selectedMedia) }
       is MediaCaptureScreenEvents.SelectedCaptureScreenChanged -> _state.update { it.copy(selectedCaptureScreen = event.selectedCaptureScreen) }
-      MediaCaptureScreenEvents.ShowCamera -> parentEventEmitter(MediaSendFlowEvent.NavigateToCamera)
-      MediaCaptureScreenEvents.ShowTextStory -> parentEventEmitter(MediaSendFlowEvent.NavigateToTextStory)
+      is MediaCaptureScreenEvents.CaptureModeSelected -> selectCaptureMode(event.mode)
       MediaCaptureScreenEvents.NextClicked -> parentEventEmitter(MediaSendFlowEvent.NavigateToEdit)
       is MediaCaptureScreenEvents.Camera -> processCameraEvent(event.event)
+    }
+  }
+
+  /**
+   * Moving to the screen a mode needs is navigation's job, so that leaves as a request. The camera's own two modes share
+   * a screen and are recorded here instead.
+   */
+  private fun selectCaptureMode(mode: MediaCaptureMode) {
+    when (mode.captureScreen) {
+      MediaSendRoute.Capture.TextStory -> parentEventEmitter(MediaSendFlowEvent.NavigateToTextStory)
+      else -> {
+        _state.update { it.copy(selectedCameraMode = mode) }
+        parentEventEmitter(MediaSendFlowEvent.NavigateToCamera)
+      }
     }
   }
 
@@ -93,6 +109,7 @@ internal class MediaCaptureViewModel(
         repository.writeCapturedVideo(event.fd)
       }
 
+      is CameraXScreenEvents.RecordingStateChanged -> _state.update { it.copy(isRecording = event.isRecording) }
       CameraXScreenEvents.VideoCaptureError -> showSnackbar(R.string.MediaSendViewModel__error_recording_video)
       is CameraXScreenEvents.QrCodeFound -> parentEventEmitter(MediaSendFlowEvent.QrCodeScanned(event.data))
       CameraXScreenEvents.GalleryClicked -> parentEventEmitter(MediaSendFlowEvent.NavigateToFolders)
