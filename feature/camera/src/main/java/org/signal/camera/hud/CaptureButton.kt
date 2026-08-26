@@ -171,6 +171,9 @@ private val CaptureButtonState.innerShape: CaptureButtonInnerShape
  * @param onLongPressEnd Callback when long press ends (video recording stop)
  * @param onZoomChange Callback for zoom level changes during recording (0f to 1f)
  * @param onLock Callback when a drag has reached the lock, asking for the recording to run unheld
+ * @param onOverLockChanged Callback when a drag arrives over the lock or leaves it again, so the lock can show that
+ *   lifting there is what takes it. The circle this button carries there arrives underneath it, so the lock is what is
+ *   seen at the end of the drag.
  * @param lockOffset Where the lock sits relative to this button's center, in pixels of this button's own frame.
  *   [Offset.Zero] for a recording that has no lock to be dragged to.
  * @param modifier Modifier to be applied to the button
@@ -183,6 +186,7 @@ fun CaptureButton(
   onLongPressEnd: () -> Unit,
   onZoomChange: (Float) -> Unit,
   onLock: () -> Unit = {},
+  onOverLockChanged: (Boolean) -> Unit = {},
   lockOffset: Offset = Offset.Zero,
   modifier: Modifier = Modifier
 ) {
@@ -200,6 +204,7 @@ fun CaptureButton(
   val currentOnLongPressEnd by rememberUpdatedState(onLongPressEnd)
   val currentOnZoomChange by rememberUpdatedState(onZoomChange)
   val currentOnLock by rememberUpdatedState(onLock)
+  val currentOnOverLockChanged by rememberUpdatedState(onOverLockChanged)
   val currentLockOffset by rememberUpdatedState(lockOffset)
 
   // A drag toward the lock takes the shape part of the way to what it will be once it gets there, so the button shows
@@ -299,10 +304,14 @@ fun CaptureButton(
               val wasOverLock = overLock
               overLock = isOverLock(pointer.position, wasOverLock)
 
-              // Taking hold is felt as it happens, so the finger knows it has arrived without having to commit to find
-              // out. Only the crossing plays, not every event that follows it.
-              if (overLock && !wasOverLock) {
-                haptics.performHapticFeedback(LockSnapHaptic)
+              // Taking hold is felt as it happens, and the lock is told so it can show it, so the finger knows it has
+              // arrived without having to commit to find out. Only the crossing is reported, not every event after it.
+              if (overLock != wasOverLock) {
+                currentOnOverLockChanged(overLock)
+
+                if (overLock) {
+                  haptics.performHapticFeedback(LockSnapHaptic)
+                }
               }
 
               if (!pointer.pressed) {
@@ -347,6 +356,7 @@ fun CaptureButton(
           } finally {
             isPressed = false
             lockProgress = 0f
+            currentOnOverLockChanged(false)
           }
         }
       },

@@ -103,9 +103,22 @@ class CaptureButtonStateTest {
     assertThat(GallerySlotContent.of(CaptureButtonState.RECORDING_HELD)).isEqualTo(GallerySlotContent.LOCK)
   }
 
+  /** The thumb covers the lock on the way to it, so the lock answering for itself is all there is to go by. */
+  @Test
+  fun `Given a thumb over the lock, when the gallery's corner is filled, then the engaged lock is what fills it`() {
+    assertThat(GallerySlotContent.of(CaptureButtonState.RECORDING_HELD, isOverLock = true)).isEqualTo(GallerySlotContent.LOCK_ENGAGED)
+  }
+
   @Test
   fun `Given a recording that is locked, when the gallery's corner is filled, then the pause is what fills it`() {
     assertThat(GallerySlotContent.of(CaptureButtonState.RECORDING_LOCKED)).isEqualTo(GallerySlotContent.PAUSE)
+  }
+
+  /** Only a held recording has a lock on offer, so nothing else has any use for a thumb being over one. */
+  @Test
+  fun `Given no lock on offer, when a thumb is reported over one, then the corner is filled as it would have been`() {
+    assertThat(GallerySlotContent.of(CaptureButtonState.PHOTO, isOverLock = true)).isEqualTo(GallerySlotContent.GALLERY)
+    assertThat(GallerySlotContent.of(CaptureButtonState.RECORDING_LOCKED, isOverLock = true)).isEqualTo(GallerySlotContent.PAUSE)
   }
 
   private fun stateOf(

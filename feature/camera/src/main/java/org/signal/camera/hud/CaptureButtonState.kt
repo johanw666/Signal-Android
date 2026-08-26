@@ -55,11 +55,16 @@ enum class CaptureButtonState {
 enum class GallerySlotContent {
   GALLERY,
   LOCK,
+
+  /** The lock with a thumb over it, which says that lifting there is what takes it. */
+  LOCK_ENGAGED,
   PAUSE;
 
   companion object {
-    fun of(captureButtonState: CaptureButtonState): GallerySlotContent = when (captureButtonState) {
-      CaptureButtonState.RECORDING_HELD -> LOCK
+
+    /** @param isOverLock Whether a drag from the capture button has reached the lock, which only it has any use for. */
+    fun of(captureButtonState: CaptureButtonState, isOverLock: Boolean = false): GallerySlotContent = when (captureButtonState) {
+      CaptureButtonState.RECORDING_HELD -> if (isOverLock) LOCK_ENGAGED else LOCK
       CaptureButtonState.RECORDING_LOCKED -> PAUSE
       CaptureButtonState.PHOTO, CaptureButtonState.VIDEO -> GALLERY
     }

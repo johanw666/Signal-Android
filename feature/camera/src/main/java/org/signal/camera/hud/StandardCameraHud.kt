@@ -416,17 +416,19 @@ private enum class RequestedRecording {
 /**
  * What stands in the gallery's corner. Everything it can hold is the same circle, so each fades into the next in place.
  *
+ * @param isOverLock Whether a drag from the capture button has reached the lock, which the lock answers for itself.
  * @param onLockCenterChanged Where the lock sits in the root's frame, which is one end of the drag that takes it.
  */
 @Composable
 private fun GallerySlot(
   captureButtonState: CaptureButtonState,
   isRecordingPaused: Boolean,
+  isOverLock: Boolean,
   emitter: (StandardCameraHudEvents) -> Unit,
   onLockCenterChanged: (Offset) -> Unit
 ) {
   AnimatedContent(
-    targetState = GallerySlotContent.of(captureButtonState),
+    targetState = GallerySlotContent.of(captureButtonState, isOverLock),
     transitionSpec = { CameraHudMotion.swap },
     label = "GallerySlotContent",
     modifier = Modifier.onGloballyPositioned { onLockCenterChanged(it.boundsInRoot().center) }
@@ -438,6 +440,7 @@ private fun GallerySlot(
       )
 
       GallerySlotContent.LOCK -> RecordingLockButton()
+      GallerySlotContent.LOCK_ENGAGED -> RecordingLockButton(isEngaged = true)
       GallerySlotContent.PAUSE -> RecordingPauseButton(
         isPaused = isRecordingPaused,
         onClick = { emitter(StandardCameraHudEvents.RecordingPauseToggled) }
@@ -483,11 +486,16 @@ private fun CameraControls(
   var captureButtonCenter by remember { mutableStateOf(Offset.Zero) }
   var lockCenter by remember { mutableStateOf(Offset.Zero) }
 
+  // Whether the thumb dragging from the capture button has reached the lock. The lock is the one that shows it: the
+  // circle the drag carries there arrives underneath it, since this corner is drawn after the capture button.
+  var isOverLock by remember { mutableStateOf(false) }
+
   val gallery: @Composable (CaptureButtonState) -> Unit = remember {
     movableContentOf { captureButtonState ->
       GallerySlot(
         captureButtonState = captureButtonState,
         isRecordingPaused = currentIsRecordingPaused,
+        isOverLock = isOverLock,
         emitter = currentEmitter,
         onLockCenterChanged = { lockCenter = it }
       )
@@ -539,6 +547,7 @@ private fun CameraControls(
           requestedRecording = RequestedRecording.UNHELD
           currentEmitter(StandardCameraHudEvents.VideoCaptureLocked)
         },
+        onOverLockChanged = { isOverLock = it },
         onTap = { captureButtonState.tapRequest?.let { request(it) } },
         onLongPressStart = {
           if (!captureButtonState.isRecording) {

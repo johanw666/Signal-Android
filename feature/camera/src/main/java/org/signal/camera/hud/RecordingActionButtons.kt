@@ -41,12 +41,22 @@ private val ActionIconSize = 24.dp
  * recording is held, which puts it within reach of the finger already on the capture button.
  *
  * There is nothing to tap: sliding onto it is what takes the offer up.
+ *
+ * @param isEngaged Whether a thumb has arrived over it, which it answers in the recording red so that letting go there
+ *   reads as taking the offer rather than as landing on an offer still being made. It is swapped for rather than
+ *   animated in place, so the two looks are told apart the same way every other control in this corner is.
  */
 @Composable
-fun RecordingLockButton(modifier: Modifier = Modifier) {
-  RecordingActionButton(modifier = modifier.testTag(TestTags.CAMERA_HUD_LOCK_BUTTON)) {
+fun RecordingLockButton(
+  isEngaged: Boolean = false,
+  modifier: Modifier = Modifier
+) {
+  RecordingActionButton(
+    backgroundColor = colorResource(if (isEngaged) R.color.CameraHud_control_red_background else R.color.CameraHud_control_background),
+    modifier = modifier.testTag(TestTags.CAMERA_HUD_LOCK_BUTTON)
+  ) {
     Icon(
-      imageVector = SignalIcons.Lock.imageVector,
+      imageVector = if (isEngaged) SignalIcons.LockFill.imageVector else SignalIcons.Lock.imageVector,
       contentDescription = null,
       tint = Color.White,
       modifier = Modifier.size(ActionIconSize)
@@ -107,6 +117,7 @@ fun RecordingPauseButton(
 @Composable
 private fun RecordingActionButton(
   modifier: Modifier = Modifier,
+  backgroundColor: Color = colorResource(R.color.CameraHud_control_background),
   onClick: (() -> Unit)? = null,
   content: @Composable () -> Unit
 ) {
@@ -115,7 +126,7 @@ private fun RecordingActionButton(
     modifier = modifier
       .size(RecordingActionButtonSize)
       .clip(CircleShape)
-      .background(colorResource(R.color.CameraHud_control_background), CircleShape)
+      .background(backgroundColor, CircleShape)
       .then(if (onClick != null) Modifier.clickable(onClick = onClick) else Modifier)
   ) {
     content()
@@ -127,6 +138,14 @@ private fun RecordingActionButton(
 private fun RecordingLockButtonPreview() {
   Previews.Preview {
     RecordingLockButton()
+  }
+}
+
+@NightPreview
+@Composable
+private fun RecordingLockButtonEngagedPreview() {
+  Previews.Preview {
+    RecordingLockButton(isEngaged = true)
   }
 }
 
