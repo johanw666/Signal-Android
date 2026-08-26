@@ -58,7 +58,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.zIndex
 import kotlinx.coroutines.launch
 import org.signal.core.ui.WindowBreakpoint
-import org.signal.core.ui.compose.AllDevicePreviews
+import org.signal.core.ui.compose.BreakpointPreviews
 import org.signal.core.ui.compose.Previews
 import org.signal.core.ui.getWindowBreakpoint
 import org.signal.core.ui.rememberIsSplitPane
@@ -399,7 +399,7 @@ private fun ListAndNavigation(
 }
 
 @OptIn(ExperimentalMaterial3AdaptiveApi::class)
-@AllDevicePreviews
+@BreakpointPreviews
 @Composable
 private fun AppScaffoldPreview() {
   Previews.Preview {

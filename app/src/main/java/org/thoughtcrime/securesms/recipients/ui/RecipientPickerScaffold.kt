@@ -29,7 +29,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalResources
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
-import org.signal.core.ui.compose.AllDevicePreviews
+import org.signal.core.ui.compose.BreakpointPreviews
 import org.signal.core.ui.compose.Previews
 import org.signal.core.ui.compose.Scaffolds
 import org.signal.core.ui.compose.SignalIcons
@@ -127,7 +127,7 @@ private fun BoxScope.FloatingActionButtonContainer(
   }
 }
 
-@AllDevicePreviews
+@BreakpointPreviews
 @Composable
 private fun RecipientPickerScaffoldPreview() {
   Previews.Preview {

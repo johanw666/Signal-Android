@@ -38,8 +38,7 @@ import androidx.compose.ui.unit.sp
 import org.signal.camera.CameraDisplay
 import org.signal.camera.R
 import org.signal.camera.test.TestTags
-import org.signal.core.ui.compose.FoldableNightPreviews
-import org.signal.core.ui.compose.PhoneNightPreviews
+import org.signal.core.ui.compose.AllNightPreviews
 import org.signal.core.ui.compose.Previews
 
 private object ZoomBarColors {
@@ -184,14 +183,14 @@ private fun ZoomLevels(
   }
 }
 
-@PhoneNightPreviews
+@AllNightPreviews
 @Composable
 private fun ZoomBarPreviews() {
   ZoomBarPreview()
 }
 
 /** Anything larger than a portrait phone runs the levels down the start side instead. */
-@FoldableNightPreviews
+@AllNightPreviews
 @Composable
 private fun ZoomBarStackedPreviews() {
   ZoomBarPreview(cameraDisplay = CameraDisplay.LARGE_PORTRAIT)

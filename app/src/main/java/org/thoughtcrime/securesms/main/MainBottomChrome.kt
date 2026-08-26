@@ -20,7 +20,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalResources
-import org.signal.core.ui.compose.AllDevicePreviews
+import org.signal.core.ui.compose.BreakpointPreviews
 import org.signal.core.ui.compose.Previews
 import org.signal.core.ui.compose.Snackbars
 import org.signal.core.ui.compose.showSnackbar
@@ -145,7 +145,7 @@ fun MainSnackbar(
   }
 }
 
-@AllDevicePreviews
+@BreakpointPreviews
 @Composable
 fun MainBottomChromePreview() {
   Previews.Preview {

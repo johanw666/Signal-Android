@@ -39,7 +39,7 @@ import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import org.signal.core.ui.WindowBreakpoint
-import org.signal.core.ui.compose.AllDevicePreviews
+import org.signal.core.ui.compose.BreakpointPreviews
 import org.signal.core.ui.compose.Previews
 import org.signal.core.ui.getWindowSizeClass
 import org.signal.core.ui.isHeightCompact
@@ -295,7 +295,7 @@ private fun PreviewPane(
   )
 }
 
-@AllDevicePreviews
+@BreakpointPreviews
 @Composable
 private fun RegistrationScaffoldPreview() = Previews.Preview {
   when (val params = RegistrationScaffold.rememberLayoutParams()) {
