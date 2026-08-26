@@ -85,14 +85,12 @@
   <!-- Snackbar shown when the user denies the permission to read their photos and videos. -->
   <string name="MediaSelectScreen__signal_needs_access_to_show_your_photos_and_videos">Signal cần quyền truy cập để hiển thị ảnh và video của bạn.</string>
 
-  <!-- Label for the button that switches the capture screen to the camera. -->
-  <string name="MediaCaptureScreen__camera">Máy ảnh</string>
+  <!-- Label for the button that switches the capture screen to taking a photo. -->
+  <string name="MediaCaptureScreen__photo">Photo</string>
+  <!-- Label for the button that switches the capture screen to recording a video. -->
+  <string name="MediaCaptureScreen__video">Video</string>
   <!-- Label for the button that switches the capture screen to the text story editor. -->
   <string name="MediaCaptureScreen__text">Văn bản</string>
-    <!-- Label for the pill that displays the media count -->
-    <plurals name="MediaCaptureScreen_n_items">
-        <item quantity="other">%1$d Mục</item>
-    </plurals>
 
   <!-- Content description for the button that attaches a link to the text story being created -->
   <string name="TextStoryBar__add_link">Thêm liên kết</string>
@@ -185,6 +183,8 @@
   <string name="CameraXFragment_flash_auto">Flash tự động</string>
   <!-- Accessibility label for the send button in media selection -->
   <string name="CameraXFragment_send">Gửi</string>
+  <!-- Label shown below the elapsed time while a video recording is paused -->
+  <string name="CameraXFragment_paused">Paused</string>
   <!-- Displayed in a permissions dialog when the user has denied access to hardware for image and video capture. -->
   <string name="CameraXFragment_signal_needs_the_recording_permissions_to_capture_video">Signal cần quyền truy cập micro để quay video nhưng đã bị từ chối. Vui lòng mở cài đặt ứng dụng, chọn \"Quyền\" và bật \"Micro\" và \"Máy ảnh\".</string>
 

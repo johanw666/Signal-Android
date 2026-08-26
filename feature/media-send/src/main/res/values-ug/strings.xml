@@ -85,14 +85,12 @@
   <!-- Snackbar shown when the user denies the permission to read their photos and videos. -->
   <string name="MediaSelectScreen__signal_needs_access_to_show_your_photos_and_videos">رەسىم ۋە سىنلىرىڭىزنى كۆرسىتىش ئۈچۈن سىگنال زىيارەت قىلىش ئجازىتىڭىزگە موھتاج.</string>
 
-  <!-- Label for the button that switches the capture screen to the camera. -->
-  <string name="MediaCaptureScreen__camera">كامېرا</string>
+  <!-- Label for the button that switches the capture screen to taking a photo. -->
+  <string name="MediaCaptureScreen__photo">Photo</string>
+  <!-- Label for the button that switches the capture screen to recording a video. -->
+  <string name="MediaCaptureScreen__video">Video</string>
   <!-- Label for the button that switches the capture screen to the text story editor. -->
   <string name="MediaCaptureScreen__text">تېكىست</string>
-    <!-- Label for the pill that displays the media count -->
-    <plurals name="MediaCaptureScreen_n_items">
-        <item quantity="other">%1$d تۈر</item>
-    </plurals>
 
   <!-- Content description for the button that attaches a link to the text story being created -->
   <string name="TextStoryBar__add_link">ئۇلانما قوشۇش</string>
@@ -185,6 +183,8 @@
   <string name="CameraXFragment_flash_auto">ئاپتوماتىك چاقماق چىراق</string>
   <!-- Accessibility label for the send button in media selection -->
   <string name="CameraXFragment_send">ئەۋەت</string>
+  <!-- Label shown below the elapsed time while a video recording is paused -->
+  <string name="CameraXFragment_paused">Paused</string>
   <!-- Displayed in a permissions dialog when the user has denied access to hardware for image and video capture. -->
   <string name="CameraXFragment_signal_needs_the_recording_permissions_to_capture_video">سىنغا ئېلىش ئۈچۈن Signal مىكروفون ھوقۇقىغا موھتاج ، ئەمما ئۇلار رەت قىلىندى. ئەپ تەڭشەكلىرىدىن «ھوقۇقلار» نى تاللاپ ۋە «مىكروفون» ۋە «كامېرا» نى قوزغىتىڭ.</string>
 

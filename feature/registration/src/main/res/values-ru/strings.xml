@@ -647,12 +647,6 @@
     <string name="SignalLoginInfoScreen__your_signal_login">Ваш Signal Login</string>
     <!-- Description warning the user that a lost Signal Login cannot be recovered. -->
     <string name="SignalLoginInfoScreen__thanks_for_your_purchase">Спасибо за вашу покупку. Используйте Signal Login для входа и восстановления своей учётной записи. Если вы забудете свои ключи, вы не сможете восстановить вашу учётную запись.</string>
-    <!-- Label for the account portion of the Signal Login on the credential card. -->
-    <string name="SignalLoginInfoScreen__account">Учётная запись</string>
-    <!-- Label for the recovery portion of the Signal Login on the credential card. -->
-    <string name="SignalLoginInfoScreen__recovery">Восстановление</string>
-    <!-- Button on the credential card that reveals the full Signal Login. -->
-    <string name="SignalLoginInfoScreen__view_details">Показать детали</string>
     <!-- Body of the dialog revealing the full Signal Login. First placeholder is the account key, second is the recovery key. -->
     <string name="SignalLoginInfoScreen__account_s_recovery_s">Учётная запись: %1$s\n\nВосстановление: %2$s</string>
     <!-- Action button that stores the Signal Login in the device password manager. -->
@@ -661,6 +655,24 @@
     <string name="SignalLoginInfoScreen__save_manually">Сохранить вручную</string>
     <!-- Error shown when the Signal Login could not be stored in the password manager. -->
     <string name="SignalLoginInfoScreen__your_signal_login_could_not_be_saved">Не удалось сохранить ваш Signal Login. Пожалуйста, сохраните его вручную.</string>
+
+    <!-- Signal Login account key entry screen -->
+    <!-- Title of the screen where a user with an existing Signal Login types in their account key. -->
+    <string name="SignalLoginScreen__signal_login">Signal Login</string>
+    <!-- Description telling the user what to enter to log in. -->
+    <string name="SignalLoginScreen__enter_your_32_character_account_key">Enter your 32-character account key to get started.</string>
+    <!-- Label of the text field the account key is typed into. -->
+    <string name="SignalLoginScreen__account_key">Account key</string>
+    <!-- Button that opens a support article for users who can\'t find their account key. -->
+    <string name="SignalLoginScreen__need_help">Need help?</string>
+    <!-- Action button that submits the entered account key. -->
+    <string name="SignalLoginScreen__next">Next</string>
+    <!-- Error shown when too many characters were entered. First placeholder is how many were entered, second is the maximum. -->
+    <string name="SignalLoginScreen__too_long">Too long. %1$d/%2$d characters.</string>
+    <!-- Error shown when the entered account key contains characters that can\'t appear in one. -->
+    <string name="SignalLoginScreen__invalid_account_key">Invalid account key</string>
+    <!-- Error shown when the service doesn\'t recognize the entered account key. -->
+    <string name="SignalLoginScreen__incorrect_account_key">Incorrect account key</string>
 
     <!-- Add username screen -->
     <!-- Title of the screen offering the user an optional username. -->
@@ -689,6 +701,8 @@
     <string name="AddUsernameScreen__usernames_cannot_begin_with_a_number">Имя пользователя не может начинаться с цифры</string>
     <!-- Error shown when the chosen username cannot be reserved. -->
     <string name="AddUsernameScreen__this_username_is_not_available">Это имя пользователя недоступно. Пожалуйста, попробуйте другое.</string>
+    <!-- Error shown when the user\'s temporary hold on a username expired before they submitted it. -->
+    <string name="AddUsernameScreen__your_username_reservation_expired">Your username reservation expired. Please try again.</string>
 
     <!-- ContactSupportDialog -->
     <!-- Title of the dialog asking the user whether they want to attach a debug log to their support request -->

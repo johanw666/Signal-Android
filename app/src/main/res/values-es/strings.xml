@@ -293,7 +293,7 @@
     <string name="ClientDeprecatedActivity_this_version_of_the_app_is_no_longer_supported">Esta versión de Signal es antigua y ya no se admite. Para continuar recibiendo y enviando mensajes, actualiza a la última versión.</string>
     <string name="ClientDeprecatedActivity_update">Actualizar</string>
     <string name="ClientDeprecatedActivity_dont_update">No actualizar</string>
-    <string name="ClientDeprecatedActivity_warning">Advertencia</string>
+    <string name="ClientDeprecatedActivity_warning">Aviso importante</string>
     <string name="ClientDeprecatedActivity_your_version_of_signal_has_expired_you_can_view_your_message_history">Esta versión de Signal ha caducado. Puedes ver tus mensajes, pero no podrás enviar ni recibir mensajes hasta que actualices la app.</string>
 
     <!-- ClockSkewActivity -->
@@ -1143,7 +1143,7 @@
     <!-- Toast shown when the process of linking a device has been cancelled -->
     <string name="LinkDeviceFragment__linking_cancelled">Vinculación cancelada</string>
     <!-- Snackbar shown when the user tries to link a new device but has already reached the maximum number of linked devices. Placeholder is the maximum count. -->
-    <string name="LinkDeviceFragment__you_can_only_have_d_linked_devices">Solo puedes tener %1$d dispositivos vinculados.</string>
+    <string name="LinkDeviceFragment__you_can_only_have_d_linked_devices">Solo puedes tener un máximo de %1$d dispositivos vinculados.</string>
     <!-- Message shown in progress dialog telling users to avoid closing the app while messages are being synced -->
     <string name="LinkDeviceFragment__do_not_close">No cierres Signal</string>
     <!-- Dialog title shown when a device is unlinked -->
@@ -1191,7 +1191,7 @@
     <!-- Button in dialog to retry linking a device with a qr code -->
     <string name="AddLinkDeviceFragment__retry">Reintentar</string>
     <!-- Text shown in a dialog when the device being linked is too out-of-date to be linked to this account -->
-    <string name="AddLinkDeviceFragment__the_device_you_are_trying_to_link_is_out_of_date">The device you\'re trying to link is out of date. Please upgrade and try again.</string>
+    <string name="AddLinkDeviceFragment__the_device_you_are_trying_to_link_is_out_of_date">El dispositivo que estás intentando vincular no está actualizado. Actualízalo e inténtalo de nuevo.</string>
 
     <!-- LinkDeviceSyncBottomSheet -->
     <!-- Option in bottom sheet to transfer message history -->
@@ -2381,7 +2381,7 @@
         <item quantity="one">Te queda %1$d intento. Si agotas los intentos, podrás crear un nuevo PIN. Podrás registrar y usar tu cuenta, pero se perderán algunos ajustes ya guardados, como tu información de perfil.</item>
         <item quantity="other">Te quedan %1$d intentos. Si agotas los intentos, podrás crear un nuevo PIN. Podrás registrar y usar tu cuenta, pero se perderán algunos ajustes ya guardados, como tu información de perfil.</item>
     </plurals>
-    <string name="PinRestoreEntryFragment_signal_registration_need_help_with_pin">Registro en Signal: Ayuda con el PIN en Android</string>
+    <string name="PinRestoreEntryFragment_signal_registration_need_help_with_pin">Registrarte en Signal: Ayuda con el PIN en Android</string>
 
     <!-- PinRestoreLockedFragment -->
     <string name="PinRestoreLockedFragment_create_your_pin">Crea tu PIN</string>
@@ -2392,7 +2392,7 @@
     <!-- Dialog button text indicating user wishes to send an sms code isntead of skipping it -->
     <string name="ReRegisterWithPinFragment_send_sms_code">Enviar código por SMS</string>
     <!-- Email subject used when user contacts support about an issue with the reregister flow. -->
-    <string name="ReRegisterWithPinFragment_support_email_subject">Registro en Signal: Ayuda para volver a registrarme con el PIN en Android</string>
+    <string name="ReRegisterWithPinFragment_support_email_subject">Registrarte en Signal: Ayuda para volver a registrarme con el PIN en Android</string>
     <!-- Dialog message shown in reregister flow when tapping a informational button to to learn about pins or contact support for help -->
     <string name="ReRegisterWithPinFragment_need_help_local">Tu PIN es un código numérico o alfanumérico de %1$d o más caracteres que has creado.\n\nSi olvidas tu PIN, puedes crear uno nuevo.</string>
     <!-- Dialog message shown in reregister flow when user requests to skip this flow and return to the normal flow -->
@@ -2401,7 +2401,7 @@
     <string name="ReRegisterWithPinFragment_out_of_guesses_local">Te has quedado sin intentos para verificar el PIN. Podrás acceder a tu cuenta de Signal si creas un PIN nuevo.</string>
 
     <!-- PinOptOutDialog -->
-    <string name="PinOptOutDialog_warning">Advertencia</string>
+    <string name="PinOptOutDialog_warning">Aviso importante</string>
     <string name="PinOptOutDialog_if_you_disable_the_pin_you_will_lose_all_data">Si desactivas el PIN, perderás todos los datos de tu cuenta en caso de volver a registrarte en Signal, a menos que hagas una copia de seguridad manual y la restaures. No se puede activar el bloqueo de registro mientras el PIN esté desactivado.</string>
     <string name="PinOptOutDialog_disable_pin">Desactivar PIN</string>
 
@@ -3254,7 +3254,7 @@
     <!-- Title for a dialog where a user chooses how long they\'d like to mute notifications for -->
     <string name="MuteDialog_mute_notifications">Silenciar notificaciones</string>
     <!-- Dialog option that, when pressed, will open a time picker to let the user choose how long they\'d like to mute notifications for -->
-    <string name="MuteDialog__mute_until">Until…</string>
+    <string name="MuteDialog__mute_until">Hasta…</string>
 
     <!-- MuteUntilTimePickerBottomSheet -->
     <!-- Title for a dialog where a user chooses how long they\'d like to mute notifications for -->
@@ -4342,15 +4342,15 @@
     <string name="preferences_notifications__in_chat_sounds">Sonidos en el chat</string>
     <string name="preferences_notifications__show">Mostrar</string>
     <!-- Preference item to set notification settings when chats are muted -->
-    <string name="preferences_notifications__while_muted">While muted</string>
+    <string name="preferences_notifications__while_muted">En chats silenciados</string>
     <!-- Option in settings to turn on reaction notifications -->
-    <string name="preferences_notifications__reaction">Reaction notifications</string>
+    <string name="preferences_notifications__reaction">Notificaciones de reacciones</string>
     <!-- Body option in settings to turn on reaction notifications    -->
-    <string name="preferences_notifications__notify_reaction">Show notifications for reactions to messages you send</string>
+    <string name="preferences_notifications__notify_reaction">Mostrar notificaciones de las reacciones a tus mensajes.</string>
     <!-- Option in settings to turn on unread reminders -->
-    <string name="preferences_notifications__unread">Unread reminders</string>
+    <string name="preferences_notifications__unread">Recordatorios de mensajes no leídos</string>
     <!-- Body option to turn on unread reminders -->
-    <string name="preferences_notifications__notify_unread">Occasionally notify when there are unread messages in muted chats</string>
+    <string name="preferences_notifications__notify_unread">Mostrar una notificación de forma ocasional cuando haya mensajes no leídos en chats silenciados.</string>
     <string name="preferences_notifications__ringtone">Tono de llamada</string>
     <string name="preferences_chats__message_text_size">Tamaño de fuente de los mensajes</string>
     <!-- Option in settings that will provide a shortcut to notification system settings to control the priority of Signal notifications -->
@@ -4883,7 +4883,7 @@
     <string name="RegistrationLockFragment__incorrect_pin">PIN incorrecto</string>
     <string name="RegistrationLockFragment__forgot_your_pin">¿No recuerdas tu PIN?</string>
     <string name="RegistrationLockFragment__not_many_tries_left">No te quedan muchos intentos.</string>
-    <string name="RegistrationLockFragment__signal_registration_need_help_with_pin_for_android_v2_pin">Registro en Signal: Ayuda con el PIN en Android (PIN v2)</string>
+    <string name="RegistrationLockFragment__signal_registration_need_help_with_pin_for_android_v2_pin">Registrarte en Signal: Ayuda con el PIN en Android (PIN v2)</string>
 
     <plurals name="RegistrationLockFragment__for_your_privacy_and_security_there_is_no_way_to_recover">
         <item quantity="one">Para proteger tu privacidad y seguridad, tu PIN de Signal no se puede recuperar. Si no lo recuerdas, podrás volver a verificar tu cuenta por SMS después de %1$d día de inactividad. En ese caso, se eliminará tu cuenta y se borrarán todos tus datos.</item>
@@ -4906,8 +4906,8 @@
     </plurals>
 
     <plurals name="RegistrationLockFragment__d_attempts_remaining">
-        <item quantity="one">%1$d intento más.</item>
-        <item quantity="other">%1$d intentos más.</item>
+        <item quantity="one">Te queda %1$d intento.</item>
+        <item quantity="other">Te quedan %1$d intentos.</item>
     </plurals>
 
     <!-- CalleeMustAcceptMessageRequestDialogFragment -->
@@ -5004,7 +5004,7 @@
     <!--    Countdown to when the user can request a new SMS code during registration.-->
     <string name="RegistrationActivity_resend_sms_available_in">Reenviar clave (%1$02d:%2$02d)</string>
     <string name="RegistrationActivity_contact_signal_support">Contacta con el equipo de Asistencia de Signal</string>
-    <string name="RegistrationActivity_code_support_subject">Registro de Signal: Clave de verificación en Android</string>
+    <string name="RegistrationActivity_code_support_subject">Registrarte en Signal: Clave de verificación en Android</string>
     <string name="RegistrationActivity_incorrect_code">Clave incorrecta</string>
     <string name="BackupUtil_never">Nunca</string>
     <!-- Subtext below last backup time when we do not know when the last backup was -->
@@ -5113,9 +5113,9 @@
     <!-- Emphasized lead-in phrase shown in bold at the start of the learn more sheet body. Must appear verbatim within LinkedDeviceAccountLearnMoreBottomSheet__linked_devices_let_you_access. -->
     <string name="LinkedDeviceAccountLearnMoreBottomSheet__linked_devices">Dispositivos vinculados</string>
     <!-- Body text of the linked devices learn more sheet. The leading \"Linked Devices\" is shown in bold. -->
-    <string name="LinkedDeviceAccountLearnMoreBottomSheet__linked_devices_let_you_access">Los dispositivos vinculados te permiten acceder de forma segura a tu cuenta y mensajes de Signal desde cualquiera de tus dispositivos adicionales.</string>
+    <string name="LinkedDeviceAccountLearnMoreBottomSheet__linked_devices_let_you_access">Los dispositivos vinculados te permiten acceder de forma segura a tu cuenta y a tus mensajes de Signal desde cualquiera de tus dispositivos adicionales.</string>
     <!-- Bullet point describing what devices can be linked -->
-    <string name="LinkedDeviceAccountLearnMoreBottomSheet__you_can_link_a_desktop">Puedes vincular un dispositivo de escritorio, una tablet o un teléfono adicional.</string>
+    <string name="LinkedDeviceAccountLearnMoreBottomSheet__you_can_link_a_desktop">Puedes vincular un dispositivo de escritorio, una tablet u otro teléfono.</string>
     <!-- Bullet point describing that the primary device manages linked devices -->
     <string name="LinkedDeviceAccountLearnMoreBottomSheet__your_primary_device_manages">En tu dispositivo principal puedes vincular y gestionar hasta 5 dispositivos vinculados.</string>
     <!-- Bullet point describing that some settings are only available on the primary device -->
@@ -5929,13 +5929,13 @@
     <string name="NotificationsSettingsFragment__sounds">Sonidos</string>
     <string name="NotificationsSettingsFragment__contact_joins_signal">Alguien comienza a usar Signal</string>
     <!-- Notification body to get notified when someone joins Signal -->
-    <string name="NotificationsSettingsFragment__notify_contact">Show a notification when a phone contact joins Signal</string>
+    <string name="NotificationsSettingsFragment__notify_contact">Mostrar una notificación cuando un contacto de tu teléfono se una a Signal.</string>
     <!-- Option to reset their notification settings -->
-    <string name="NotificationsSettingsFragment__reset">Reset notification settings</string>
+    <string name="NotificationsSettingsFragment__reset">Restablecer ajustes de notificaciones</string>
     <!-- Option body to reset their notification settings -->
-    <string name="NotificationsSettingsFragment__reset_notifications">Reset notification settings to default, including custom settings for your chats</string>
+    <string name="NotificationsSettingsFragment__reset_notifications">Se restablecerán los ajustes de notificaciones a su configuración por defecto, incluidos los ajustes personalizados de tus chats.</string>
     <!-- Dialog to reset their notification settings -->
-    <string name="NotificationsSettingsFragment__reset_body">Reset all notification settings to default for all chats?</string>
+    <string name="NotificationsSettingsFragment__reset_body">¿Restablecer todos los ajustes de notificaciones a su configuración por defecto para todos los chats?</string>
     <!-- Confirmation button to reset dialog -->
     <string name="NotificationsSettingsFragment__reset_confirm">Restablecer</string>
     <!-- Notification preference header -->
@@ -5946,25 +5946,27 @@
     <string name="NotificationsSettingsFragment__create_a_profile_to_receive_notifications_only_from_people_and_groups_you_choose">Crea un perfil para recibir notificaciones solo de las personas y los grupos que tú decidas.</string>
 
     <!-- Header to describe screen that shows while muted settings -->
-    <string name="MutedNotificationsFragment__while">While muted</string>
+    <string name="MutedNotificationsFragment__while">En chats silenciados</string>
     <!-- Title for toggle row to control call settings while muted -->
     <string name="MutedNotificationsFragment__calls">Llamadas</string>
     <!-- Description for toggle row to control call settings while muted -->
-    <string name="MutedNotificationsFragment__calls_body_global">Ring or notify when a call is started in muted chats.</string>
+    <string name="MutedNotificationsFragment__calls_body_global">Sonar o mostrar una notificación cuando se inicia una llamada en chats silenciados.</string>
     <!-- Title for toggle row to control mentions settings while muted -->
     <string name="MutedNotificationsFragment__mentions">Menciones</string>
     <!-- Description for toggle row to control mentions settings while muted -->
-    <string name="MutedNotificationsFragment__mentions_body_global">Notify when you are mentioned in muted chats.</string>
+    <string name="MutedNotificationsFragment__mentions_body_global">Mostrar una notificación cuando te mencionan en chats silenciados.</string>
     <!-- Title for toggle row to control replies settings while muted -->
     <string name="MutedNotificationsFragment__replies">Respuestas</string>
     <!-- Description for toggle row to control replies settings while muted -->
-    <string name="MutedNotificationsFragment__replies_body_global">Notify when someone replies to your message in muted chats.</string>
+    <string name="MutedNotificationsFragment__replies_body_global">Mostrar una notificación cuando responden a tus mensajes en chats silenciados.</string>
     <!-- Description for toggle row to control call settings while muted -->
-    <string name="MutedNotificationsFragment__calls_body">Ring or notify when a call is started while this chat is muted.</string>
+    <string name="MutedNotificationsFragment__calls_body">Sonar o mostrar una notificación cuando se inicia una llamada si el chat está silenciado.</string>
     <!-- Description for toggle row to control mentions settings while muted -->
-    <string name="MutedNotificationsFragment__mentions_body">Notify when you are mentioned while this chat is muted.</string>
+    <string name="MutedNotificationsFragment__mentions_body">Mostrar una notificación cuando te mencionan si el chat está silenciado.</string>
     <!-- Description for toggle row to control replies settings while muted -->
-    <string name="MutedNotificationsFragment__replies_body">Notify when someone replies to your message while this chat is muted.</string>
+    <string name="MutedNotificationsFragment__replies_body">Mostrar una notificación cuando responden a tus mensajes si el chat está silenciado.</string>
+    <!-- Description for toggle row to control unread reminders while muted -->
+    <string name="MutedNotificationsFragment__unread_body">Occasionally notify when there are unread messages while this chat is muted.</string>
 
     <!-- NotificationProfilesFragment -->
     <!-- Title for notification profiles screen that shows all existing profiles; Title with hyphenation. Translation can use soft hyphen - Unicode U+00AD -->
@@ -6316,13 +6318,15 @@
     <!-- AvatarPickerFragment -->
     <string name="AvatarPickerFragment__avatar_preview">Vista previa de la imagen</string>
     <string name="AvatarPickerFragment__camera">Cámara</string>
-    <string name="AvatarPickerFragment__take_a_picture">Hacer una foto</string>
-    <string name="AvatarPickerFragment__choose_a_photo">Elegir una foto</string>
     <string name="AvatarPickerFragment__photo">Foto</string>
     <!-- Button label during avatar selection/creation that when tapped lets you generate an avatar from typed in text. -->
     <string name="AvatarPickerFragment__text">Texto</string>
     <string name="AvatarPickerFragment__save">Guardar</string>
     <string name="AvatarPickerFragment__clear_avatar">Eliminar imagen</string>
+    <!-- Content description for the edit icon displayed over the currently selected avatar. -->
+    <string name="AvatarPickerFragment__edit_avatar">Edit avatar</string>
+    <!-- Accessibility label describing the menu shown when long pressing one of your saved avatars. -->
+    <string name="AvatarPickerFragment__avatar_options">Avatar options</string>
     <string name="AvatarPickerRepository__failed_to_save_avatar">No se ha podido guardar la imagen</string>
 
     <!-- TextAvatarCreationFragment -->
@@ -7364,18 +7368,18 @@
     <string name="ContactSearchMediator__delete">Eliminar</string>
     <!-- Donation for a friend expiry days remaining -->
     <plurals name="Gifts__d_days_remaining">
-        <item quantity="one">Queda %1$d día</item>
-        <item quantity="other">Quedan %1$d días</item>
+        <item quantity="one">Caduca en %1$d día</item>
+        <item quantity="other">Caduca en %1$d días</item>
     </plurals>
     <!-- Donation for a friend expiry hours remaining -->
     <plurals name="Gifts__d_hours_remaining">
-        <item quantity="one">Queda %1$d hora</item>
-        <item quantity="other">Quedan %1$d horas</item>
+        <item quantity="one">Caduca en %1$d hora</item>
+        <item quantity="other">Caduca en %1$d horas</item>
     </plurals>
     <!-- Gift expiry minutes remaining -->
     <plurals name="Gifts__d_minutes_remaining">
-        <item quantity="one">Queda %1$d minuto</item>
-        <item quantity="other">Quedan %1$d minutos</item>
+        <item quantity="one">Caduca en %1$d minuto</item>
+        <item quantity="other">Caduca en %1$d minutos</item>
     </plurals>
     <!-- Donation for a friend expiry expired -->
     <string name="Gifts__expired">Caducada</string>
@@ -8214,7 +8218,7 @@
     <!-- Text describing how to restore a backup displayed on the on-device backups screen -->
     <string name="OnDeviceBackupsScreen__to_restore_a_backup">"Para restaurar una copia de seguridad, reinstala Signal. Abre la aplicación, toca \"Restaurar copia\" y busca el archivo de copia de seguridad."</string>
     <!-- Body of a dialog shown when turning on on-device backups while "Optimize Signal storage" is enabled, warning that optimized media won\'t be included -->
-    <string name="OnDeviceBackupsScreen__you_have_optimize_signal_storage_on">Tienes activada la opción \"Optimizar el almacenamiento de Signal\". Desactívala si quieres incluir todos tus archivos multimedia en tu copia de seguridad local.</string>
+    <string name="OnDeviceBackupsScreen__you_have_optimize_signal_storage_on">Tienes activada la opción \"Optimizar almacenamiento de Signal\". Desactívala si quieres incluir todos tus archivos multimedia en tu copia de seguridad local.</string>
     <!-- Dialog action that takes the user to the "Optimize Signal storage" setting -->
     <string name="OnDeviceBackupsScreen__view_setting">Ver ajuste</string>
     <!-- Dialog action to proceed with turning on on-device backups without turning off "Optimize Signal storage" -->
@@ -8605,7 +8609,7 @@
     <!-- Title of a dialog shown when turning on "Optimize Signal storage" while on-device backups are enabled -->
     <string name="ManageStorageSettingsFragment__media_will_be_removed_from_your_on_device_backup">Se eliminarán los archivos multimedia de tu copia de seguridad local</string>
     <!-- Body of a dialog shown when turning on "Optimize Signal storage" while on-device backups are enabled -->
-    <string name="ManageStorageSettingsFragment__turning_on_optimize_signal_storage_will_offload">Activar la opción \"Optimizar el almacenamiento de Signal\" eliminará los archivos multimedia antiguos de tu dispositivo. Podrás volver a descargarlos en cualquier momento. También se eliminarán los archivos multimedia antiguos de tu copia de seguridad local.</string>
+    <string name="ManageStorageSettingsFragment__turning_on_optimize_signal_storage_will_offload">Si activas la opción \"Optimizar almacenamiento de Signal\", se eliminarán los archivos multimedia antiguos de tu dispositivo. Podrás volver a descargarlos en cualquier momento. También se eliminarán los archivos multimedia antiguos de tu copia de seguridad local.</string>
     <!-- Dialog action to confirm turning on "Optimize Signal storage" -->
     <string name="ManageStorageSettingsFragment__turn_on">Activar</string>
 
@@ -9089,13 +9093,13 @@
     <!-- Dialog title for confirming you need to disable optimized storage and download media to rotate AEP key -->
     <string name="MessageBackupsKeyRecordScreen__download_media">Descargar archivos</string>
     <!-- Dialog body for confirming you need to disable optimized storage and download media to rotate AEP key -->
-    <string name="MessageBackupsKeyRecordScreen__to_create_a_new_backup_key">Para crear una nueva clave de recuperación, debes desactivar \"Optimizar almacenamiento de Signal\" y esperar hasta que se hayan descargado tus archivos. Cuando se complete la descarga, podrás crear una nueva clave.</string>
+    <string name="MessageBackupsKeyRecordScreen__to_create_a_new_backup_key">Para crear una nueva clave de recuperación, debes desactivar \"Optimizar almacenamiento de Signal\" y esperar a que se hayan descargado tus archivos. Cuando se complete la descarga, podrás crear una nueva clave.</string>
     <!-- Action label to turn off optimized storage and download media -->
     <string name="MessageBackupsKeyRecordScreen__turn_off_and_download">Desactivar y descargar</string>
     <!-- Bottom Sheet title for creating a new AEP key -->
     <string name="MessageBackupsKeyRecordScreen__create_a_new_backup_key">Crea una nueva clave de recuperación</string>
     <!-- Bottom Sheet body for creating a new AEP key -->
-    <string name="MessageBackupsKeyRecordScreen__creating_a_new_key_is_only_necessary">Solo necesitas crear una clave nueva si otra persona sabe tu clave actual. Tendrás que volver a cargar tu copia de seguridad, incluidos los archivos multimedia. Si has activado la función \"Optimizar almacenamiento de Signal\", primero deberás descargar los archivos que se han eliminado del dispositivo.</string>
+    <string name="MessageBackupsKeyRecordScreen__creating_a_new_key_is_only_necessary">Solo necesitas crear una clave nueva si alguien más sabe tu clave actual. Tendrás que volver a cargar tu copia de seguridad, incluidos los archivos multimedia. Si has activado \"Optimizar almacenamiento de Signal\", primero deberás descargar los archivos que se han eliminado del dispositivo.</string>
     <!-- Dialog title shown when user attempts to exit backup setup before completion -->
     <string name="MessageBackupsKeyRecordScreen__exit_backup_setup">¿Salir de los ajustes de las copias de seguridad?</string>
     <!-- Dialog body warning user that backup setup is incomplete -->
@@ -9943,6 +9947,51 @@
     <string name="RecoveryKeyWarningDialog__paste_key">Pegar clave</string>
     <!-- Button declining to paste the recovery key -->
     <string name="RecoveryKeyWarningDialog__dont_share">No compartir</string>
+
+    <!-- Notification body for unread reminders. First two placeholders are the number of unread messages and calls, last two are the summaries for mentions and replies -->
+    <string name="UnreadReminderJob__calls_and_unread_full_summary">You have %1$s and %2$s including %3$s and %4$s.</string>
+    <!-- Notification body for unread reminders. First two placeholders are the number of unread messages and calls, third is a summary of mentions or replies -->
+    <string name="UnreadReminderJob__calls_and_unread_summary">You have %1$s and %2$s including %3$s.</string>
+    <!-- Notification body for unread reminders. First two placeholders are the number of unread messages and calls, third is a list of recipients who sent them -->
+    <string name="UnreadReminderJob__calls_and_unread_author">You have %1$s and %2$s from %3$s.</string>
+    <!-- Notification body for unread reminders. First placeholder is unread messages, second is a summary of unread mentions or replies -->
+    <string name="UnreadReminderJob__unread_one_summary">You have %1$s, including %2$s.</string>
+    <!-- Notification body for unread reminders. First placeholder is unread messages, second is a summary of unread mentions, third replies -->
+    <string name="UnreadReminderJob__unread_both_summary">You have %1$s, including %2$s and %3$s.</string>
+    <!-- Notification body for unread reminders. First placeholder is unread messages, second is a list of people who sent them -->
+    <string name="UnreadReminderJob__calls_or_unread_author">You have %1$s from %2$s.</string>
+    <!-- Notification body for unread reminders. First placeholder is unread messages or unread calls -->
+    <string name="UnreadReminderJob__calls_or_unread">You have %1$s.</string>
+    <!-- Notification body for unread reminders. First placeholder is unread messages, second is unread calls. -->
+    <string name="UnreadReminderJob__calls_and_unread">You have %1$s and %2$s.</string>
+    <!-- Notification placeholder for unread calls -->
+    <plurals name="UnreadReminderJob__calls">
+        <item quantity="one">%1$d missed call</item>
+        <item quantity="other">%1$d missed calls</item>
+    </plurals>
+    <!-- Notification placeholder for unread messages -->
+    <plurals name="UnreadReminderJob__messages">
+        <item quantity="one">%1$d unread message</item>
+        <item quantity="other">%1$d unread messages</item>
+    </plurals>
+    <!-- Notification placeholder for a single recipient who sent unread messages -->
+    <string name="UnreadReminderJob__authors_one">%1$s</string>
+    <!-- Notification placeholder for two recipients who sent unread messages -->
+    <string name="UnreadReminderJob__authors_two">%1$s and %2$s</string>
+    <!-- Notification placeholder for three or more recipients who sent unread messages -->
+    <string name="UnreadReminderJob__authors_many">%1$s and others</string>
+    <!-- Notification placeholder that sums up a single unread mention. Placeholder is the name of the person who sent the message -->
+    <string name="UnreadReminderJob__mentions_one">a mention of you by %1$s</string>
+    <!-- Notification placeholder that sums up unread mentions from two people. First placeholder is the number of mentions, second and third are the names of the people who sent them -->
+    <string name="UnreadReminderJob__mentions_two">%1$d mentions of you by %2$s and %3$s</string>
+    <!-- Notification placeholder that sums up unread mentions from three or more people. First placeholder is the number of mentions, second is the name of one person who sent them -->
+    <string name="UnreadReminderJob__mentions_many">%1$d mentions of you by %2$s and others</string>
+    <!-- Notification placeholder that sums up a single unread reply. Placeholder is the name of the person who sent the message -->
+    <string name="UnreadReminderJob__replies_one">a reply from %1$s</string>
+    <!-- Notification placeholder that sums up unread replies from two people. First placeholder is the number of replies, second and third are the names of the people who sent them -->
+    <string name="UnreadReminderJob__replies_two">%1$d replies from %2$s and %3$s</string>
+    <!-- Notification placeholder that sums up unread replies from three or more people. First placeholder is the number of replies, second is the name of one person who sent them -->
+    <string name="UnreadReminderJob__replies_many">%1$d replies from %2$s and others</string>
 
     <!-- EOF -->
 </resources>

@@ -85,14 +85,12 @@
   <!-- Snackbar shown when the user denies the permission to read their photos and videos. -->
   <string name="MediaSelectScreen__signal_needs_access_to_show_your_photos_and_videos">Signal သည် သင်၏ဓာတ်ပုံနှင့် ဗီဒီယိုများကိုပြသရန် ရယူသုံးစွဲခွင့် လိုအပ်သည်။</string>
 
-  <!-- Label for the button that switches the capture screen to the camera. -->
-  <string name="MediaCaptureScreen__camera">ကင်မရာ</string>
+  <!-- Label for the button that switches the capture screen to taking a photo. -->
+  <string name="MediaCaptureScreen__photo">Photo</string>
+  <!-- Label for the button that switches the capture screen to recording a video. -->
+  <string name="MediaCaptureScreen__video">Video</string>
   <!-- Label for the button that switches the capture screen to the text story editor. -->
   <string name="MediaCaptureScreen__text">စာသား</string>
-    <!-- Label for the pill that displays the media count -->
-    <plurals name="MediaCaptureScreen_n_items">
-        <item quantity="other">Item %1$d ခု</item>
-    </plurals>
 
   <!-- Content description for the button that attaches a link to the text story being created -->
   <string name="TextStoryBar__add_link">လင့်ခ်ပေါင်းထည့်ရန်</string>
@@ -185,6 +183,8 @@
   <string name="CameraXFragment_flash_auto">အော်တို ဖလက်ရှ်</string>
   <!-- Accessibility label for the send button in media selection -->
   <string name="CameraXFragment_send">ပို့ပါ</string>
+  <!-- Label shown below the elapsed time while a video recording is paused -->
+  <string name="CameraXFragment_paused">Paused</string>
   <!-- Displayed in a permissions dialog when the user has denied access to hardware for image and video capture. -->
   <string name="CameraXFragment_signal_needs_the_recording_permissions_to_capture_video">ဗီဒီယိုရိုက်ကူးရန် မိုက်ခရိုဖုန်း ခွင့်ပြုချက်များ လိုအပ်ပြီး ယင်းတို့ကို ငြင်းဆိုခြင်း ခံထားရပါသည်။ အက်ပလီကေးရှင်း ဆက်တင်သို့ သွား၍ \"ခွင့်ပြုချက်များ\" ကို ရွေးချယ်ကာ \"မိုက်ခရိုဖုန်း\" နှင့် \"ကင်မရာ\" ကို ဖွင့်ပါ။</string>
 

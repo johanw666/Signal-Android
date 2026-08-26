@@ -697,7 +697,7 @@
     <string name="AddUsernameScreen__usernames_cannot_begin_with_a_number">Usernames cannot begin with a number</string>
     <!-- Error shown when the chosen username cannot be reserved. -->
     <string name="AddUsernameScreen__this_username_is_not_available">This username is not available. Please try another.</string>
-    <!-- Error shown when the user's temporary hold on a username expired before they submitted it. -->
+    <!-- Error shown when the user\'s temporary hold on a username expired before they submitted it. -->
     <string name="AddUsernameScreen__your_username_reservation_expired">Your username reservation expired. Please try again.</string>
 
     <!-- ContactSupportDialog -->

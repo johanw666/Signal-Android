@@ -1249,7 +1249,7 @@
     <!-- Button in dialog to retry linking a device with a qr code -->
     <string name="AddLinkDeviceFragment__retry">Паспрабаваць зноў</string>
     <!-- Text shown in a dialog when the device being linked is too out-of-date to be linked to this account -->
-    <string name="AddLinkDeviceFragment__the_device_you_are_trying_to_link_is_out_of_date">The device you\'re trying to link is out of date. Please upgrade and try again.</string>
+    <string name="AddLinkDeviceFragment__the_device_you_are_trying_to_link_is_out_of_date">На прыладзе, якую вы спрабуеце прывязаць, усталявана састарэлая версія аперацыйнай сістэмы. Абнавіце і паўтарыце спробу.</string>
 
     <!-- LinkDeviceSyncBottomSheet -->
     <!-- Option in bottom sheet to transfer message history -->
@@ -3456,7 +3456,7 @@
     <!-- Title for a dialog where a user chooses how long they\'d like to mute notifications for -->
     <string name="MuteDialog_mute_notifications">Адключыць апавяшчэнні</string>
     <!-- Dialog option that, when pressed, will open a time picker to let the user choose how long they\'d like to mute notifications for -->
-    <string name="MuteDialog__mute_until">Until…</string>
+    <string name="MuteDialog__mute_until">Да…</string>
 
     <!-- MuteUntilTimePickerBottomSheet -->
     <!-- Title for a dialog where a user chooses how long they\'d like to mute notifications for -->
@@ -4429,9 +4429,9 @@
     <string name="preferences__inactivity_timeout_interval">Перыяд бяздзейнасці</string>
     <string name="preferences__notifications">Апавяшчэнні</string>
     <!-- Preference item menu to enable notifications -->
-    <string name="preferences__enable_notifications">Enable notifications</string>
+    <string name="preferences__enable_notifications">Уключыць апавяшчэнні</string>
     <!-- Preference header for call notifications -->
-    <string name="preferences__call_notifications">Call notifications</string>
+    <string name="preferences__call_notifications">Апавяшчэнні аб званках</string>
     <string name="preferences__led_color">Колер святлодыёда</string>
     <string name="preferences__led_color_unknown">Невядома</string>
     <string name="preferences__pref_led_blink_title">Мігаценне святлодыёда</string>
@@ -4594,15 +4594,15 @@
     <string name="preferences_notifications__in_chat_sounds">Гукі ўнутры чата</string>
     <string name="preferences_notifications__show">Паказаць</string>
     <!-- Preference item to set notification settings when chats are muted -->
-    <string name="preferences_notifications__while_muted">While muted</string>
+    <string name="preferences_notifications__while_muted">Калi адключаны апавяшчэннi</string>
     <!-- Option in settings to turn on reaction notifications -->
-    <string name="preferences_notifications__reaction">Reaction notifications</string>
+    <string name="preferences_notifications__reaction">Апавяшчэнні аб рэакцыях</string>
     <!-- Body option in settings to turn on reaction notifications    -->
-    <string name="preferences_notifications__notify_reaction">Show notifications for reactions to messages you send</string>
+    <string name="preferences_notifications__notify_reaction">Паказваць апавяшчэнні аб рэакцыях на паведамленні, што вы дасылалі</string>
     <!-- Option in settings to turn on unread reminders -->
-    <string name="preferences_notifications__unread">Unread reminders</string>
+    <string name="preferences_notifications__unread">Непрачытаныя напаміны</string>
     <!-- Body option to turn on unread reminders -->
-    <string name="preferences_notifications__notify_unread">Occasionally notify when there are unread messages in muted chats</string>
+    <string name="preferences_notifications__notify_unread">Час ад часу апавяшчаць пра непрачытаныя паведамленні ў чатах з адключанымі апавяшчэннямі</string>
     <string name="preferences_notifications__ringtone">Рынгтон</string>
     <string name="preferences_chats__message_text_size">Памер шрыфту для паведамлення</string>
     <!-- Option in settings that will provide a shortcut to notification system settings to control the priority of Signal notifications -->
@@ -6231,13 +6231,13 @@
     <string name="NotificationsSettingsFragment__sounds">Гукі</string>
     <string name="NotificationsSettingsFragment__contact_joins_signal">Кантакт далучаецца да Signal</string>
     <!-- Notification body to get notified when someone joins Signal -->
-    <string name="NotificationsSettingsFragment__notify_contact">Show a notification when a phone contact joins Signal</string>
+    <string name="NotificationsSettingsFragment__notify_contact">Паказваць апавяшчэнне, калі кантакт з тэлефоннай кнігі далучаецца да Signal</string>
     <!-- Option to reset their notification settings -->
-    <string name="NotificationsSettingsFragment__reset">Reset notification settings</string>
+    <string name="NotificationsSettingsFragment__reset">Скінуць налады апавяшчэнняў</string>
     <!-- Option body to reset their notification settings -->
-    <string name="NotificationsSettingsFragment__reset_notifications">Reset notification settings to default, including custom settings for your chats</string>
+    <string name="NotificationsSettingsFragment__reset_notifications">Скінуць налады апавяшчэнняў да стандартных, уключаючы карыстальніцкія налады для вашых чатаў</string>
     <!-- Dialog to reset their notification settings -->
-    <string name="NotificationsSettingsFragment__reset_body">Reset all notification settings to default for all chats?</string>
+    <string name="NotificationsSettingsFragment__reset_body">Скінуць усе налады апавяшчэнняў да стандартных для ўсіх чатаў?</string>
     <!-- Confirmation button to reset dialog -->
     <string name="NotificationsSettingsFragment__reset_confirm">Скінуць</string>
     <!-- Notification preference header -->
@@ -6248,25 +6248,27 @@
     <string name="NotificationsSettingsFragment__create_a_profile_to_receive_notifications_only_from_people_and_groups_you_choose">Стварыце профіль, каб атрымліваць апавяшчэнні выключна ад выбраных вамі людзей і груп.</string>
 
     <!-- Header to describe screen that shows while muted settings -->
-    <string name="MutedNotificationsFragment__while">While muted</string>
+    <string name="MutedNotificationsFragment__while">Калi адключаны апавяшчэннi</string>
     <!-- Title for toggle row to control call settings while muted -->
     <string name="MutedNotificationsFragment__calls">Званкі</string>
     <!-- Description for toggle row to control call settings while muted -->
-    <string name="MutedNotificationsFragment__calls_body_global">Ring or notify when a call is started in muted chats.</string>
+    <string name="MutedNotificationsFragment__calls_body_global">Даваць званок або апавяшчаць, калі пачынаецца званок у чатах з адключанымі апавяшчэннямі.</string>
     <!-- Title for toggle row to control mentions settings while muted -->
     <string name="MutedNotificationsFragment__mentions">Згадванні</string>
     <!-- Description for toggle row to control mentions settings while muted -->
-    <string name="MutedNotificationsFragment__mentions_body_global">Notify when you are mentioned in muted chats.</string>
+    <string name="MutedNotificationsFragment__mentions_body_global">Апавяшчаць, калі вас згадваюць у чатах з адключанымі апавяшчэннямі.</string>
     <!-- Title for toggle row to control replies settings while muted -->
     <string name="MutedNotificationsFragment__replies">Адказы</string>
     <!-- Description for toggle row to control replies settings while muted -->
-    <string name="MutedNotificationsFragment__replies_body_global">Notify when someone replies to your message in muted chats.</string>
+    <string name="MutedNotificationsFragment__replies_body_global">Апавяшчаць, калі хтосьці адказвае на ваша паведамленне ў чатах з адключанымі апавяшчэннямі.</string>
     <!-- Description for toggle row to control call settings while muted -->
-    <string name="MutedNotificationsFragment__calls_body">Ring or notify when a call is started while this chat is muted.</string>
+    <string name="MutedNotificationsFragment__calls_body">Даваць званок або апавяшчаць, калі пачынаецца званок у чаце з адключанымі апавяшчэннямі.</string>
     <!-- Description for toggle row to control mentions settings while muted -->
-    <string name="MutedNotificationsFragment__mentions_body">Notify when you are mentioned while this chat is muted.</string>
+    <string name="MutedNotificationsFragment__mentions_body">Апавяшчаць, калі вас згадваюць у чаце з адключанымі апавяшчэннямі.</string>
     <!-- Description for toggle row to control replies settings while muted -->
-    <string name="MutedNotificationsFragment__replies_body">Notify when someone replies to your message while this chat is muted.</string>
+    <string name="MutedNotificationsFragment__replies_body">Апавяшчаць, калі хтосьці адказвае на ваша паведамленне ў чаце з адключанымі апавяшчэннямі.</string>
+    <!-- Description for toggle row to control unread reminders while muted -->
+    <string name="MutedNotificationsFragment__unread_body">Occasionally notify when there are unread messages while this chat is muted.</string>
 
     <!-- NotificationProfilesFragment -->
     <!-- Title for notification profiles screen that shows all existing profiles; Title with hyphenation. Translation can use soft hyphen - Unicode U+00AD -->
@@ -6628,13 +6630,15 @@
     <!-- AvatarPickerFragment -->
     <string name="AvatarPickerFragment__avatar_preview">Папярэдні прагляд аватара</string>
     <string name="AvatarPickerFragment__camera">Камера</string>
-    <string name="AvatarPickerFragment__take_a_picture">Зрабіць здымак</string>
-    <string name="AvatarPickerFragment__choose_a_photo">Выбраць фота</string>
     <string name="AvatarPickerFragment__photo">Фота</string>
     <!-- Button label during avatar selection/creation that when tapped lets you generate an avatar from typed in text. -->
     <string name="AvatarPickerFragment__text">Тэкст</string>
     <string name="AvatarPickerFragment__save">Захаваць</string>
     <string name="AvatarPickerFragment__clear_avatar">Ачысціць аватар</string>
+    <!-- Content description for the edit icon displayed over the currently selected avatar. -->
+    <string name="AvatarPickerFragment__edit_avatar">Edit avatar</string>
+    <!-- Accessibility label describing the menu shown when long pressing one of your saved avatars. -->
+    <string name="AvatarPickerFragment__avatar_options">Avatar options</string>
     <string name="AvatarPickerRepository__failed_to_save_avatar">Не атрымалася захаваць аватар</string>
 
     <!-- TextAvatarCreationFragment -->
@@ -8590,7 +8594,7 @@
     <!-- Text describing how to restore a backup displayed on the on-device backups screen -->
     <string name="OnDeviceBackupsScreen__to_restore_a_backup">"Каб аднавіць рэзервовую копію, усталюйце новую копію Signal. Адкрыйце праграму і націсніце «Аднавіць рэзервовую копію», потым выберыце файл рэзервовай копіі."</string>
     <!-- Body of a dialog shown when turning on on-device backups while "Optimize Signal storage" is enabled, warning that optimized media won\'t be included -->
-    <string name="OnDeviceBackupsScreen__you_have_optimize_signal_storage_on">У вас уключана опцыя «Аптымізаваць сховішча Signal». Калі вы жадаеце ўключыць усе медыяфайлы ў рэзервовую копію на прыладзе, адключыце гэту опцыю.</string>
+    <string name="OnDeviceBackupsScreen__you_have_optimize_signal_storage_on">У вас уключана опцыя «Зрабіць аптымізацыю сховішча Signal». Калі вы жадаеце ўключыць усе медыяфайлы ў рэзервовую копію на прыладзе, адключыце гэту опцыю.</string>
     <!-- Dialog action that takes the user to the "Optimize Signal storage" setting -->
     <string name="OnDeviceBackupsScreen__view_setting">Прагледзець налады</string>
     <!-- Dialog action to proceed with turning on on-device backups without turning off "Optimize Signal storage" -->
@@ -8987,7 +8991,7 @@
     <!-- Title of a dialog shown when turning on "Optimize Signal storage" while on-device backups are enabled -->
     <string name="ManageStorageSettingsFragment__media_will_be_removed_from_your_on_device_backup">Медыяфайлы будуць выдалены з рэзервовай копіі на прыладзе</string>
     <!-- Body of a dialog shown when turning on "Optimize Signal storage" while on-device backups are enabled -->
-    <string name="ManageStorageSettingsFragment__turning_on_optimize_signal_storage_will_offload">Калі вы ўключыце опцыю «Аптымізаваць сховішча Signal», усе старыя медыяфайлы будуць выгружаны з прылады. Вы ў любы час можаце спампаваць іх нанова. Праз гэта таксама старыя медыяфайлы будуць выдалены з рэзервовай копіі на прыладзе.</string>
+    <string name="ManageStorageSettingsFragment__turning_on_optimize_signal_storage_will_offload">Калі вы ўключыце опцыю «Зрабіць аптымізацыю сховішча Signal», усе старыя медыяфайлы будуць выгружаны з прылады. Вы ў любы час можаце спампаваць іх нанова. Праз гэта таксама старыя медыяфайлы будуць выдалены з рэзервовай копіі на прыладзе.</string>
     <!-- Dialog action to confirm turning on "Optimize Signal storage" -->
     <string name="ManageStorageSettingsFragment__turn_on">Уключыць</string>
 
@@ -10351,6 +10355,55 @@
     <string name="RecoveryKeyWarningDialog__paste_key">Уставіць код</string>
     <!-- Button declining to paste the recovery key -->
     <string name="RecoveryKeyWarningDialog__dont_share">Не паказваць</string>
+
+    <!-- Notification body for unread reminders. First two placeholders are the number of unread messages and calls, last two are the summaries for mentions and replies -->
+    <string name="UnreadReminderJob__calls_and_unread_full_summary">You have %1$s and %2$s including %3$s and %4$s.</string>
+    <!-- Notification body for unread reminders. First two placeholders are the number of unread messages and calls, third is a summary of mentions or replies -->
+    <string name="UnreadReminderJob__calls_and_unread_summary">You have %1$s and %2$s including %3$s.</string>
+    <!-- Notification body for unread reminders. First two placeholders are the number of unread messages and calls, third is a list of recipients who sent them -->
+    <string name="UnreadReminderJob__calls_and_unread_author">You have %1$s and %2$s from %3$s.</string>
+    <!-- Notification body for unread reminders. First placeholder is unread messages, second is a summary of unread mentions or replies -->
+    <string name="UnreadReminderJob__unread_one_summary">You have %1$s, including %2$s.</string>
+    <!-- Notification body for unread reminders. First placeholder is unread messages, second is a summary of unread mentions, third replies -->
+    <string name="UnreadReminderJob__unread_both_summary">You have %1$s, including %2$s and %3$s.</string>
+    <!-- Notification body for unread reminders. First placeholder is unread messages, second is a list of people who sent them -->
+    <string name="UnreadReminderJob__calls_or_unread_author">You have %1$s from %2$s.</string>
+    <!-- Notification body for unread reminders. First placeholder is unread messages or unread calls -->
+    <string name="UnreadReminderJob__calls_or_unread">You have %1$s.</string>
+    <!-- Notification body for unread reminders. First placeholder is unread messages, second is unread calls. -->
+    <string name="UnreadReminderJob__calls_and_unread">You have %1$s and %2$s.</string>
+    <!-- Notification placeholder for unread calls -->
+    <plurals name="UnreadReminderJob__calls">
+        <item quantity="one">%1$d missed call</item>
+        <item quantity="few">%1$d missed calls</item>
+        <item quantity="many">%1$d missed calls</item>
+        <item quantity="other">%1$d missed calls</item>
+    </plurals>
+    <!-- Notification placeholder for unread messages -->
+    <plurals name="UnreadReminderJob__messages">
+        <item quantity="one">%1$d unread message</item>
+        <item quantity="few">%1$d unread messages</item>
+        <item quantity="many">%1$d unread messages</item>
+        <item quantity="other">%1$d unread messages</item>
+    </plurals>
+    <!-- Notification placeholder for a single recipient who sent unread messages -->
+    <string name="UnreadReminderJob__authors_one">%1$s</string>
+    <!-- Notification placeholder for two recipients who sent unread messages -->
+    <string name="UnreadReminderJob__authors_two">%1$s and %2$s</string>
+    <!-- Notification placeholder for three or more recipients who sent unread messages -->
+    <string name="UnreadReminderJob__authors_many">%1$s and others</string>
+    <!-- Notification placeholder that sums up a single unread mention. Placeholder is the name of the person who sent the message -->
+    <string name="UnreadReminderJob__mentions_one">a mention of you by %1$s</string>
+    <!-- Notification placeholder that sums up unread mentions from two people. First placeholder is the number of mentions, second and third are the names of the people who sent them -->
+    <string name="UnreadReminderJob__mentions_two">%1$d mentions of you by %2$s and %3$s</string>
+    <!-- Notification placeholder that sums up unread mentions from three or more people. First placeholder is the number of mentions, second is the name of one person who sent them -->
+    <string name="UnreadReminderJob__mentions_many">%1$d mentions of you by %2$s and others</string>
+    <!-- Notification placeholder that sums up a single unread reply. Placeholder is the name of the person who sent the message -->
+    <string name="UnreadReminderJob__replies_one">a reply from %1$s</string>
+    <!-- Notification placeholder that sums up unread replies from two people. First placeholder is the number of replies, second and third are the names of the people who sent them -->
+    <string name="UnreadReminderJob__replies_two">%1$d replies from %2$s and %3$s</string>
+    <!-- Notification placeholder that sums up unread replies from three or more people. First placeholder is the number of replies, second is the name of one person who sent them -->
+    <string name="UnreadReminderJob__replies_many">%1$d replies from %2$s and others</string>
 
     <!-- EOF -->
 </resources>

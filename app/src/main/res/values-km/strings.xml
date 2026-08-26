@@ -1162,7 +1162,7 @@
     <!-- Button in dialog to retry linking a device with a qr code -->
     <string name="AddLinkDeviceFragment__retry">ព្យាយាមម្តងទៀត</string>
     <!-- Text shown in a dialog when the device being linked is too out-of-date to be linked to this account -->
-    <string name="AddLinkDeviceFragment__the_device_you_are_trying_to_link_is_out_of_date">The device you\'re trying to link is out of date. Please upgrade and try again.</string>
+    <string name="AddLinkDeviceFragment__the_device_you_are_trying_to_link_is_out_of_date">ឧបករណ៍ដែលអ្នកកំពុងព្យាយាមភ្ជាប់គឺហួសសម័យហើយ។ សូមដំឡើងកំណែ រួចព្យាយាមម្តងទៀត។</string>
 
     <!-- LinkDeviceSyncBottomSheet -->
     <!-- Option in bottom sheet to transfer message history -->
@@ -3153,7 +3153,7 @@
     <!-- Title for a dialog where a user chooses how long they\'d like to mute notifications for -->
     <string name="MuteDialog_mute_notifications">បិទសំឡេងការជូនដំណឹង</string>
     <!-- Dialog option that, when pressed, will open a time picker to let the user choose how long they\'d like to mute notifications for -->
-    <string name="MuteDialog__mute_until">Until…</string>
+    <string name="MuteDialog__mute_until">រហូតដល់…</string>
 
     <!-- MuteUntilTimePickerBottomSheet -->
     <!-- Title for a dialog where a user chooses how long they\'d like to mute notifications for -->
@@ -4000,7 +4000,7 @@
     <string name="arrays__use_custom">ប្រើផ្សេងៗ</string>
 
     <string name="arrays__mute_for_one_hour">1 ម៉ោង</string>
-    <string name="arrays__mute_for_eight_hours">៨ ម៉ោង</string>
+    <string name="arrays__mute_for_eight_hours">8 ម៉ោង</string>
     <string name="arrays__mute_for_one_day">1 ថ្ងៃ</string>
     <string name="arrays__mute_for_seven_days">1 សប្តាហ៍</string>
     <string name="arrays__always">ជានិច្ច</string>
@@ -4057,9 +4057,9 @@
     <string name="preferences__inactivity_timeout_interval">ចន្លោះពេលអសកម្ម</string>
     <string name="preferences__notifications">សារជូនដំណឹង</string>
     <!-- Preference item menu to enable notifications -->
-    <string name="preferences__enable_notifications">បើកសារជូនដំណឹង</string>
+    <string name="preferences__enable_notifications">បើកការជូនដំណឹង</string>
     <!-- Preference header for call notifications -->
-    <string name="preferences__call_notifications">ការជូនដំណឹងអំពីការហៅ</string>
+    <string name="preferences__call_notifications">ការជូនដំណឹងអំពីការហៅទូរសព្ទ</string>
     <string name="preferences__led_color">ពណ៌​LED</string>
     <string name="preferences__led_color_unknown">មិនដឹង</string>
     <string name="preferences__pref_led_blink_title">លំនាំលោតភ្លើង LED</string>
@@ -4216,15 +4216,15 @@
     <string name="preferences_notifications__in_chat_sounds">សំឡេងក្នុងការជជែក</string>
     <string name="preferences_notifications__show">បង្ហាញ</string>
     <!-- Preference item to set notification settings when chats are muted -->
-    <string name="preferences_notifications__while_muted">While muted</string>
+    <string name="preferences_notifications__while_muted">ពេលបិទសំឡេង</string>
     <!-- Option in settings to turn on reaction notifications -->
-    <string name="preferences_notifications__reaction">Reaction notifications</string>
+    <string name="preferences_notifications__reaction">ការជូនដំណឹងអំពីប្រតិកម្ម</string>
     <!-- Body option in settings to turn on reaction notifications    -->
-    <string name="preferences_notifications__notify_reaction">Show notifications for reactions to messages you send</string>
+    <string name="preferences_notifications__notify_reaction">បង្ហាញការជូនដំណឹងសម្រាប់ប្រតិកម្មចំពោះសារដែលអ្នកផ្ញើ</string>
     <!-- Option in settings to turn on unread reminders -->
-    <string name="preferences_notifications__unread">Unread reminders</string>
+    <string name="preferences_notifications__unread">ការរំលឹកដែលមិនទាន់អាន</string>
     <!-- Body option to turn on unread reminders -->
-    <string name="preferences_notifications__notify_unread">Occasionally notify when there are unread messages in muted chats</string>
+    <string name="preferences_notifications__notify_unread">ជូនដំណឹងម្តងម្កាល នៅពេលមានសារដែលមិនទាន់អាននៅក្នុងការជជែកដែលបិទសំឡេង</string>
     <string name="preferences_notifications__ringtone">សំឡេងរោទិ៍</string>
     <string name="preferences_chats__message_text_size">ទំហំអក្សរសារ</string>
     <!-- Option in settings that will provide a shortcut to notification system settings to control the priority of Signal notifications -->
@@ -5775,16 +5775,16 @@
     <string name="NotificationsSettingsFragment__messages">សារ</string>
     <string name="NotificationsSettingsFragment__calls">ការហៅ</string>
     <!-- Notification header for sounds -->
-    <string name="NotificationsSettingsFragment__sounds">Sounds</string>
+    <string name="NotificationsSettingsFragment__sounds">សំឡេង</string>
     <string name="NotificationsSettingsFragment__contact_joins_signal">លេខទំនាក់ទំនងដែលបានចូលរួមជាមួយ Signal</string>
     <!-- Notification body to get notified when someone joins Signal -->
-    <string name="NotificationsSettingsFragment__notify_contact">Show a notification when a phone contact joins Signal</string>
+    <string name="NotificationsSettingsFragment__notify_contact">បង្ហាញការជូនដំណឹងនៅពេលដែលទំនាក់ទំនងតាមទូរសព្ទចូលរួមប្រើ Signal</string>
     <!-- Option to reset their notification settings -->
-    <string name="NotificationsSettingsFragment__reset">Reset notification settings</string>
+    <string name="NotificationsSettingsFragment__reset">កំណត់ឡើងវិញនូវការកំណត់ការជូនដំណឹង</string>
     <!-- Option body to reset their notification settings -->
-    <string name="NotificationsSettingsFragment__reset_notifications">Reset notification settings to default, including custom settings for your chats</string>
+    <string name="NotificationsSettingsFragment__reset_notifications">កំណត់ឡើងវិញនូវការកំណត់ការជូនដំណឹង ទៅជាលំនាំដើម រួមទាំងការកំណត់ផ្ទាល់ខ្លួនសម្រាប់ការជជែករបស់អ្នក</string>
     <!-- Dialog to reset their notification settings -->
-    <string name="NotificationsSettingsFragment__reset_body">Reset all notification settings to default for all chats?</string>
+    <string name="NotificationsSettingsFragment__reset_body">កំណត់ឡើងវិញនូវការកំណត់ការជូនដំណឹងទាំងអស់ ទៅជាលំនាំដើមសម្រាប់ការជជែកទាំងអស់?</string>
     <!-- Confirmation button to reset dialog -->
     <string name="NotificationsSettingsFragment__reset_confirm">កំណត់ឡើងវិញ</string>
     <!-- Notification preference header -->
@@ -5795,25 +5795,27 @@
     <string name="NotificationsSettingsFragment__create_a_profile_to_receive_notifications_only_from_people_and_groups_you_choose">បង្កើតគណនីមួយដើម្បីទទួលសារជូនដំណឹងតែពីមនុស្ស និងក្រុមដែលអ្នកបានរើស</string>
 
     <!-- Header to describe screen that shows while muted settings -->
-    <string name="MutedNotificationsFragment__while">While muted</string>
+    <string name="MutedNotificationsFragment__while">ពេលបិទសំឡេង</string>
     <!-- Title for toggle row to control call settings while muted -->
-    <string name="MutedNotificationsFragment__calls">ការហៅ</string>
+    <string name="MutedNotificationsFragment__calls">ការហៅទូរសព្ទ</string>
     <!-- Description for toggle row to control call settings while muted -->
-    <string name="MutedNotificationsFragment__calls_body_global">Ring or notify when a call is started in muted chats.</string>
+    <string name="MutedNotificationsFragment__calls_body_global">រោទ៍ ឬជូនដំណឹង នៅពេលដែលការហៅទូរសព្ទត្រូវបានចាប់ផ្តើមនៅក្នុងការជជែកដែលបានបិទសំឡេង។</string>
     <!-- Title for toggle row to control mentions settings while muted -->
-    <string name="MutedNotificationsFragment__mentions">ការនិយាយ</string>
+    <string name="MutedNotificationsFragment__mentions">ការលើកឡើង</string>
     <!-- Description for toggle row to control mentions settings while muted -->
-    <string name="MutedNotificationsFragment__mentions_body_global">Notify when you are mentioned in muted chats.</string>
+    <string name="MutedNotificationsFragment__mentions_body_global">ជូនដំណឹងនៅពេលអ្នកត្រូវបានលើកឡើងនៅក្នុងការជជែកដែលបានបិទសំឡេង។</string>
     <!-- Title for toggle row to control replies settings while muted -->
     <string name="MutedNotificationsFragment__replies">ការឆ្លើយតប</string>
     <!-- Description for toggle row to control replies settings while muted -->
-    <string name="MutedNotificationsFragment__replies_body_global">Notify when someone replies to your message in muted chats.</string>
+    <string name="MutedNotificationsFragment__replies_body_global">ជូនដំណឹងនៅពេលដែលមាននរណាម្នាក់ឆ្លើយតបសាររបស់អ្នកនៅក្នុងការជជែកដែលបានបិទសំឡេង។</string>
     <!-- Description for toggle row to control call settings while muted -->
-    <string name="MutedNotificationsFragment__calls_body">Ring or notify when a call is started while this chat is muted.</string>
+    <string name="MutedNotificationsFragment__calls_body">រោទ៍ ឬជូនដំណឹង នៅពេលដែលការហៅទូរសព្ទត្រូវបានចាប់ផ្តើម ខណៈពេលដែលការជជែកនេះត្រូវបានបិទសំឡេង។</string>
     <!-- Description for toggle row to control mentions settings while muted -->
-    <string name="MutedNotificationsFragment__mentions_body">Notify when you are mentioned while this chat is muted.</string>
+    <string name="MutedNotificationsFragment__mentions_body">ជូនដំណឹងនៅពេលដែលអ្នកត្រូវបានលើកឡើង ខណៈពេលដែលការជជែកនេះត្រូវបានបិទសំឡេង។</string>
     <!-- Description for toggle row to control replies settings while muted -->
-    <string name="MutedNotificationsFragment__replies_body">Notify when someone replies to your message while this chat is muted.</string>
+    <string name="MutedNotificationsFragment__replies_body">ជូនដំណឹងនៅពេលដែលមាននរណាម្នាក់ឆ្លើយតបសាររបស់អ្នក ខណៈពេលដែលការជជែកនេះត្រូវបានបិទសំឡេង។</string>
+    <!-- Description for toggle row to control unread reminders while muted -->
+    <string name="MutedNotificationsFragment__unread_body">Occasionally notify when there are unread messages while this chat is muted.</string>
 
     <!-- NotificationProfilesFragment -->
     <!-- Title for notification profiles screen that shows all existing profiles; Title with hyphenation. Translation can use soft hyphen - Unicode U+00AD -->
@@ -6160,13 +6162,15 @@
     <!-- AvatarPickerFragment -->
     <string name="AvatarPickerFragment__avatar_preview">ពិនិត្យរូបតំណាងឡើងវិញ</string>
     <string name="AvatarPickerFragment__camera">កាមេរ៉ា</string>
-    <string name="AvatarPickerFragment__take_a_picture">ថតរូប</string>
-    <string name="AvatarPickerFragment__choose_a_photo">ជ្រើសរើសរូបថត</string>
     <string name="AvatarPickerFragment__photo">រូបភាព</string>
     <!-- Button label during avatar selection/creation that when tapped lets you generate an avatar from typed in text. -->
     <string name="AvatarPickerFragment__text">អក្សរ</string>
     <string name="AvatarPickerFragment__save">រក្សាទុក</string>
     <string name="AvatarPickerFragment__clear_avatar">លុបរូបតំណាង</string>
+    <!-- Content description for the edit icon displayed over the currently selected avatar. -->
+    <string name="AvatarPickerFragment__edit_avatar">Edit avatar</string>
+    <!-- Accessibility label describing the menu shown when long pressing one of your saved avatars. -->
+    <string name="AvatarPickerFragment__avatar_options">Avatar options</string>
     <string name="AvatarPickerRepository__failed_to_save_avatar">បរាជ័យក្នុងការរក្សារទុករូបតំណាង</string>
 
     <!-- TextAvatarCreationFragment -->
@@ -9739,6 +9743,49 @@
     <string name="RecoveryKeyWarningDialog__paste_key">បិទភ្ជាប់សោស្តារ</string>
     <!-- Button declining to paste the recovery key -->
     <string name="RecoveryKeyWarningDialog__dont_share">កុំចែករំលែក</string>
+
+    <!-- Notification body for unread reminders. First two placeholders are the number of unread messages and calls, last two are the summaries for mentions and replies -->
+    <string name="UnreadReminderJob__calls_and_unread_full_summary">You have %1$s and %2$s including %3$s and %4$s.</string>
+    <!-- Notification body for unread reminders. First two placeholders are the number of unread messages and calls, third is a summary of mentions or replies -->
+    <string name="UnreadReminderJob__calls_and_unread_summary">You have %1$s and %2$s including %3$s.</string>
+    <!-- Notification body for unread reminders. First two placeholders are the number of unread messages and calls, third is a list of recipients who sent them -->
+    <string name="UnreadReminderJob__calls_and_unread_author">You have %1$s and %2$s from %3$s.</string>
+    <!-- Notification body for unread reminders. First placeholder is unread messages, second is a summary of unread mentions or replies -->
+    <string name="UnreadReminderJob__unread_one_summary">You have %1$s, including %2$s.</string>
+    <!-- Notification body for unread reminders. First placeholder is unread messages, second is a summary of unread mentions, third replies -->
+    <string name="UnreadReminderJob__unread_both_summary">You have %1$s, including %2$s and %3$s.</string>
+    <!-- Notification body for unread reminders. First placeholder is unread messages, second is a list of people who sent them -->
+    <string name="UnreadReminderJob__calls_or_unread_author">You have %1$s from %2$s.</string>
+    <!-- Notification body for unread reminders. First placeholder is unread messages or unread calls -->
+    <string name="UnreadReminderJob__calls_or_unread">You have %1$s.</string>
+    <!-- Notification body for unread reminders. First placeholder is unread messages, second is unread calls. -->
+    <string name="UnreadReminderJob__calls_and_unread">You have %1$s and %2$s.</string>
+    <!-- Notification placeholder for unread calls -->
+    <plurals name="UnreadReminderJob__calls">
+        <item quantity="other">%1$d missed calls</item>
+    </plurals>
+    <!-- Notification placeholder for unread messages -->
+    <plurals name="UnreadReminderJob__messages">
+        <item quantity="other">%1$d unread messages</item>
+    </plurals>
+    <!-- Notification placeholder for a single recipient who sent unread messages -->
+    <string name="UnreadReminderJob__authors_one">%1$s</string>
+    <!-- Notification placeholder for two recipients who sent unread messages -->
+    <string name="UnreadReminderJob__authors_two">%1$s and %2$s</string>
+    <!-- Notification placeholder for three or more recipients who sent unread messages -->
+    <string name="UnreadReminderJob__authors_many">%1$s and others</string>
+    <!-- Notification placeholder that sums up a single unread mention. Placeholder is the name of the person who sent the message -->
+    <string name="UnreadReminderJob__mentions_one">a mention of you by %1$s</string>
+    <!-- Notification placeholder that sums up unread mentions from two people. First placeholder is the number of mentions, second and third are the names of the people who sent them -->
+    <string name="UnreadReminderJob__mentions_two">%1$d mentions of you by %2$s and %3$s</string>
+    <!-- Notification placeholder that sums up unread mentions from three or more people. First placeholder is the number of mentions, second is the name of one person who sent them -->
+    <string name="UnreadReminderJob__mentions_many">%1$d mentions of you by %2$s and others</string>
+    <!-- Notification placeholder that sums up a single unread reply. Placeholder is the name of the person who sent the message -->
+    <string name="UnreadReminderJob__replies_one">a reply from %1$s</string>
+    <!-- Notification placeholder that sums up unread replies from two people. First placeholder is the number of replies, second and third are the names of the people who sent them -->
+    <string name="UnreadReminderJob__replies_two">%1$d replies from %2$s and %3$s</string>
+    <!-- Notification placeholder that sums up unread replies from three or more people. First placeholder is the number of replies, second is the name of one person who sent them -->
+    <string name="UnreadReminderJob__replies_many">%1$d replies from %2$s and others</string>
 
     <!-- EOF -->
 </resources>

@@ -392,7 +392,7 @@
     <!-- Title of the dialog confirming that the user wants to disable their Signal PIN. -->
     <string name="PinCreationScreen__warning">Attenzione</string>
     <!-- Warning shown in the dialog confirming that the user wants to disable their Signal PIN. -->
-    <string name="PinCreationScreen__disable_pin_warning">Se disabiliti il PIN, perderai tutti i dati quando ti registrerai nuovamente con Signal, a meno che tu non esegua manualmente il backup e il ripristino. Non è possibile attivare il Blocco registrazione mentre il PIN è disabilitato.</string>
+    <string name="PinCreationScreen__disable_pin_warning">Se disattivi il PIN, perderai i tuoi dati in caso di nuova registrazione a Signal, a meno che tu non abbia eseguito un backup manuale. Inoltre, non potrai attivare il Blocco della registrazione con il PIN disattivato.</string>
     <!-- Overflow menu item and dialog button that disables the Signal PIN. -->
     <string name="PinCreationScreen__disable_pin">Disabilita PIN</string>
     <!-- Labels the button that cancels disabling the Signal PIN. -->
@@ -532,9 +532,9 @@
     <string name="DeviceTransferSetup__grant_location_permission">Concedi i permessi</string>
     <string name="DeviceTransferSetup__location_services_required">Signal ha bisogno che i servizi di localizzazione siano attivi per trovare e connettersi con il tuo vecchio dispositivo.</string>
     <string name="DeviceTransferSetup__turn_on_location_services">Attiva i servizi di localizzazione</string>
-    <string name="DeviceTransferSetup__wifi_required">Signal necessita che il Wi-Fi sia attivo per trovare e connettersi al tuo vecchio dispositivo.</string>
+    <string name="DeviceTransferSetup__wifi_required">Signal richiede che il Wi-Fi sia acceso per trovare e connettersi al tuo vecchio dispositivo.</string>
     <string name="DeviceTransferSetup__turn_on_wifi">Attiva il Wi-Fi</string>
-    <string name="DeviceTransferSetup__wifi_direct_unavailable">Ci risulta che il tuo dispositivo non supporta il Wi-Fi Direct.</string>
+    <string name="DeviceTransferSetup__wifi_direct_unavailable">Spiacenti, questo dispositivo non supporta il Wi-Fi Direct.</string>
     <string name="DeviceTransferSetup__restore_a_backup">Ripristina un backup</string>
     <string name="DeviceTransferSetup__unexpected_error_connecting">Si è verificato un errore imprevisto durante il tentativo di connessione al tuo vecchio dispositivo.</string>
     <string name="DeviceTransferSetup__retry">Riprova</string>
@@ -542,7 +542,7 @@
     <string name="DeviceTransferSetup__troubleshooting_tips">• Assicurati di aver concesso le autorizzazioni per la geolocalizzazione.\n• Assicurati che il Wi-Fi sia attivo e non ci siano gruppi Wi-Fi Direct in memoria.\n• Prova a disattivare e attivare il Wi-Fi su entrambi i dispositivi.\n• Assicurati che entrambi i dispositivi siano in modalità trasferimento.</string>
     <string name="DeviceTransferSetup__try_again">Riprova</string>
     <string name="DeviceTransferSetup__the_numbers_do_not_match">I numeri non corrispondono</string>
-    <string name="DeviceTransferSetup__if_numbers_dont_match_wrong_device">Se i numeri sui tuoi dispositivi non corrispondono, è possibile che ti sia collegato al dispositivo sbagliato.</string>
+    <string name="DeviceTransferSetup__if_numbers_dont_match_wrong_device">Se i codici di sicurezza non corrispondono, potresti aver associato il dispositivo errato.</string>
     <string name="DeviceTransferSetup__stop_transfer">Interrompi trasferimento</string>
 
     <!-- Device transfer: Progress screen -->
@@ -643,12 +643,6 @@
     <string name="SignalLoginInfoScreen__your_signal_login">Il tuo Signal Login</string>
     <!-- Description warning the user that a lost Signal Login cannot be recovered. -->
     <string name="SignalLoginInfoScreen__thanks_for_your_purchase">Grazie del tuo acquisto. Usa il tuo Signal Login per registrare e ripristinare l\'account. Se dimentichi le tue chiavi, non potrai più ripristinare l\'account.</string>
-    <!-- Label for the account portion of the Signal Login on the credential card. -->
-    <string name="SignalLoginInfoScreen__account">Account</string>
-    <!-- Label for the recovery portion of the Signal Login on the credential card. -->
-    <string name="SignalLoginInfoScreen__recovery">Ripristino</string>
-    <!-- Button on the credential card that reveals the full Signal Login. -->
-    <string name="SignalLoginInfoScreen__view_details">Vedi dettagli</string>
     <!-- Body of the dialog revealing the full Signal Login. First placeholder is the account key, second is the recovery key. -->
     <string name="SignalLoginInfoScreen__account_s_recovery_s">Account: %1$s\n\nRipristino: %2$s</string>
     <!-- Action button that stores the Signal Login in the device password manager. -->
@@ -657,6 +651,24 @@
     <string name="SignalLoginInfoScreen__save_manually">Salva manualmente</string>
     <!-- Error shown when the Signal Login could not be stored in the password manager. -->
     <string name="SignalLoginInfoScreen__your_signal_login_could_not_be_saved">Non è stato possibile salvare il tuo Signal Login. Salvalo manualmente per continuare.</string>
+
+    <!-- Signal Login account key entry screen -->
+    <!-- Title of the screen where a user with an existing Signal Login types in their account key. -->
+    <string name="SignalLoginScreen__signal_login">Signal Login</string>
+    <!-- Description telling the user what to enter to log in. -->
+    <string name="SignalLoginScreen__enter_your_32_character_account_key">Enter your 32-character account key to get started.</string>
+    <!-- Label of the text field the account key is typed into. -->
+    <string name="SignalLoginScreen__account_key">Account key</string>
+    <!-- Button that opens a support article for users who can\'t find their account key. -->
+    <string name="SignalLoginScreen__need_help">Need help?</string>
+    <!-- Action button that submits the entered account key. -->
+    <string name="SignalLoginScreen__next">Next</string>
+    <!-- Error shown when too many characters were entered. First placeholder is how many were entered, second is the maximum. -->
+    <string name="SignalLoginScreen__too_long">Too long. %1$d/%2$d characters.</string>
+    <!-- Error shown when the entered account key contains characters that can\'t appear in one. -->
+    <string name="SignalLoginScreen__invalid_account_key">Invalid account key</string>
+    <!-- Error shown when the service doesn\'t recognize the entered account key. -->
+    <string name="SignalLoginScreen__incorrect_account_key">Incorrect account key</string>
 
     <!-- Add username screen -->
     <!-- Title of the screen offering the user an optional username. -->
@@ -685,6 +697,8 @@
     <string name="AddUsernameScreen__usernames_cannot_begin_with_a_number">I nomi utente non possono iniziare con un numero</string>
     <!-- Error shown when the chosen username cannot be reserved. -->
     <string name="AddUsernameScreen__this_username_is_not_available">Questo nome utente non è disponibile. Prova con un altro.</string>
+    <!-- Error shown when the user\'s temporary hold on a username expired before they submitted it. -->
+    <string name="AddUsernameScreen__your_username_reservation_expired">Your username reservation expired. Please try again.</string>
 
     <!-- ContactSupportDialog -->
     <!-- Title of the dialog asking the user whether they want to attach a debug log to their support request -->

@@ -85,15 +85,12 @@
   <!-- Snackbar shown when the user denies the permission to read their photos and videos. -->
   <string name="MediaSelectScreen__signal_needs_access_to_show_your_photos_and_videos">Signal inahitaji ufikiaji ili kuonyesha picha na video zako.</string>
 
-  <!-- Label for the button that switches the capture screen to the camera. -->
-  <string name="MediaCaptureScreen__camera">Kamera</string>
+  <!-- Label for the button that switches the capture screen to taking a photo. -->
+  <string name="MediaCaptureScreen__photo">Photo</string>
+  <!-- Label for the button that switches the capture screen to recording a video. -->
+  <string name="MediaCaptureScreen__video">Video</string>
   <!-- Label for the button that switches the capture screen to the text story editor. -->
   <string name="MediaCaptureScreen__text">Maandishi</string>
-    <!-- Label for the pill that displays the media count -->
-    <plurals name="MediaCaptureScreen_n_items">
-        <item quantity="one">Kitu %1$d</item>
-        <item quantity="other">Vitu %1$d</item>
-    </plurals>
 
   <!-- Content description for the button that attaches a link to the text story being created -->
   <string name="TextStoryBar__add_link">Ongeza kiungo</string>
@@ -186,6 +183,8 @@
   <string name="CameraXFragment_flash_auto">Mweko kiotomatiki</string>
   <!-- Accessibility label for the send button in media selection -->
   <string name="CameraXFragment_send">Tuma</string>
+  <!-- Label shown below the elapsed time while a video recording is paused -->
+  <string name="CameraXFragment_paused">Paused</string>
   <!-- Displayed in a permissions dialog when the user has denied access to hardware for image and video capture. -->
   <string name="CameraXFragment_signal_needs_the_recording_permissions_to_capture_video">Signal inahitaji ruhusa za kipaza sauti kurekodi video, lakini imekataliwa. Tafadhali enda kwenye mipangilio ya programu, chagua \"Ruhusa\", na uwezeshe \"Kipaza Sauti\" na \"Kamera\".</string>
 

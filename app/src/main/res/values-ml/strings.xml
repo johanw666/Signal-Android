@@ -1191,7 +1191,7 @@
     <!-- Button in dialog to retry linking a device with a qr code -->
     <string name="AddLinkDeviceFragment__retry">വീണ്ടും ശ്രമിക്കുക</string>
     <!-- Text shown in a dialog when the device being linked is too out-of-date to be linked to this account -->
-    <string name="AddLinkDeviceFragment__the_device_you_are_trying_to_link_is_out_of_date">The device you\'re trying to link is out of date. Please upgrade and try again.</string>
+    <string name="AddLinkDeviceFragment__the_device_you_are_trying_to_link_is_out_of_date">നിങ്ങൾ ലിങ്ക് ചെയ്യാൻ ശ്രമിക്കുന്ന ഉപകരണം കാലഹരണപ്പെട്ടതാണ്. ദയവായി അപ്‌ഗ്രേഡ് ചെയ്‌ത് വീണ്ടും ശ്രമിക്കുക.</string>
 
     <!-- LinkDeviceSyncBottomSheet -->
     <!-- Option in bottom sheet to transfer message history -->
@@ -3254,7 +3254,7 @@
     <!-- Title for a dialog where a user chooses how long they\'d like to mute notifications for -->
     <string name="MuteDialog_mute_notifications">അറിയിപ്പുകൾ മ്യൂട്ട് ചെയ്യുക</string>
     <!-- Dialog option that, when pressed, will open a time picker to let the user choose how long they\'d like to mute notifications for -->
-    <string name="MuteDialog__mute_until">Until…</string>
+    <string name="MuteDialog__mute_until">ഇതുവരെ…</string>
 
     <!-- MuteUntilTimePickerBottomSheet -->
     <!-- Title for a dialog where a user chooses how long they\'d like to mute notifications for -->
@@ -4342,15 +4342,15 @@
     <string name="preferences_notifications__in_chat_sounds">ഇൻ-ചാറ്റ് ശബ്‌ദങ്ങള്‍</string>
     <string name="preferences_notifications__show">കാണിക്കുക</string>
     <!-- Preference item to set notification settings when chats are muted -->
-    <string name="preferences_notifications__while_muted">While muted</string>
+    <string name="preferences_notifications__while_muted">മ്യൂട്ട് ചെയ്‌തിരിക്കുമ്പോൾ</string>
     <!-- Option in settings to turn on reaction notifications -->
-    <string name="preferences_notifications__reaction">Reaction notifications</string>
+    <string name="preferences_notifications__reaction">പ്രതികരണ അറിയിപ്പുകൾ</string>
     <!-- Body option in settings to turn on reaction notifications    -->
-    <string name="preferences_notifications__notify_reaction">Show notifications for reactions to messages you send</string>
+    <string name="preferences_notifications__notify_reaction">നിങ്ങൾ അയയ്ക്കുന്ന സന്ദേശങ്ങൾക്കുള്ള പ്രതികരണങ്ങളുടെ അറിയിപ്പുകൾ കാണിക്കുക</string>
     <!-- Option in settings to turn on unread reminders -->
-    <string name="preferences_notifications__unread">Unread reminders</string>
+    <string name="preferences_notifications__unread">വായിക്കാത്തവയുടെ ഓർമ്മപ്പെടുത്തലുകൾ</string>
     <!-- Body option to turn on unread reminders -->
-    <string name="preferences_notifications__notify_unread">Occasionally notify when there are unread messages in muted chats</string>
+    <string name="preferences_notifications__notify_unread">മ്യൂട്ട് ചെയ്ത ചാറ്റുകളിൽ വായിക്കാത്ത സന്ദേശങ്ങൾ ഉള്ളപ്പോൾ ഇടയ്ക്കിടെ അറിയിക്കുക</string>
     <string name="preferences_notifications__ringtone">റിംഗ്‌ടോൺ</string>
     <string name="preferences_chats__message_text_size">സന്ദേശ ഫോണ്ട് വലുപ്പം</string>
     <!-- Option in settings that will provide a shortcut to notification system settings to control the priority of Signal notifications -->
@@ -5926,16 +5926,16 @@
     <string name="NotificationsSettingsFragment__messages">സന്ദേശങ്ങൾ</string>
     <string name="NotificationsSettingsFragment__calls">കോളുകൾ</string>
     <!-- Notification header for sounds -->
-    <string name="NotificationsSettingsFragment__sounds">Sounds</string>
+    <string name="NotificationsSettingsFragment__sounds">ശബ്ദങ്ങൾ</string>
     <string name="NotificationsSettingsFragment__contact_joins_signal">കോൺടാക്റ്റ് Signal ചേരുന്നു</string>
     <!-- Notification body to get notified when someone joins Signal -->
-    <string name="NotificationsSettingsFragment__notify_contact">Show a notification when a phone contact joins Signal</string>
+    <string name="NotificationsSettingsFragment__notify_contact">ഒരു ഫോൺ കോൺടാക്റ്റ് Signal-ൽ ചേരുമ്പോൾ അറിയിപ്പ് കാണിക്കുക</string>
     <!-- Option to reset their notification settings -->
-    <string name="NotificationsSettingsFragment__reset">Reset notification settings</string>
+    <string name="NotificationsSettingsFragment__reset">അറിയിപ്പ് ക്രമീകരണങ്ങൾ പുനഃക്രമീകരിക്കുക</string>
     <!-- Option body to reset their notification settings -->
-    <string name="NotificationsSettingsFragment__reset_notifications">Reset notification settings to default, including custom settings for your chats</string>
+    <string name="NotificationsSettingsFragment__reset_notifications">നിങ്ങളുടെ ചാറ്റുകൾക്കായുള്ള ഇഷ്‌ടാനുസൃത ക്രമീകരണങ്ങൾ ഉൾപ്പെടെയുള്ള അറിയിപ്പ് ക്രമീകരണങ്ങൾ ഡിഫോൾട്ടിലേക്ക് പുനഃക്രമീകരിക്കുക</string>
     <!-- Dialog to reset their notification settings -->
-    <string name="NotificationsSettingsFragment__reset_body">Reset all notification settings to default for all chats?</string>
+    <string name="NotificationsSettingsFragment__reset_body">എല്ലാ ചാറ്റുകൾക്കുമുള്ള അറിയിപ്പ് ക്രമീകരണങ്ങൾ ഡിഫോൾട്ടിലേക്ക് പുനഃക്രമീകരിക്കണോ?</string>
     <!-- Confirmation button to reset dialog -->
     <string name="NotificationsSettingsFragment__reset_confirm">പുനഃക്രമീകരിക്കുക</string>
     <!-- Notification preference header -->
@@ -5946,25 +5946,27 @@
     <string name="NotificationsSettingsFragment__create_a_profile_to_receive_notifications_only_from_people_and_groups_you_choose">നിങ്ങൾ തിരഞ്ഞെടുക്കുന്ന ആളുകളിൽ നിന്നും ഗ്രൂപ്പുകളിൽ നിന്നും മാത്രം അറിയിപ്പുകൾ ലഭിക്കുന്നതിന് ഒരു രൂപരേഖ സൃഷ്‌ടിക്കുക.</string>
 
     <!-- Header to describe screen that shows while muted settings -->
-    <string name="MutedNotificationsFragment__while">While muted</string>
+    <string name="MutedNotificationsFragment__while">മ്യൂട്ട് ചെയ്‌തിരിക്കുമ്പോൾ</string>
     <!-- Title for toggle row to control call settings while muted -->
     <string name="MutedNotificationsFragment__calls">കോളുകൾ</string>
     <!-- Description for toggle row to control call settings while muted -->
-    <string name="MutedNotificationsFragment__calls_body_global">Ring or notify when a call is started in muted chats.</string>
+    <string name="MutedNotificationsFragment__calls_body_global">മ്യൂട്ട് ചെയ്ത ചാറ്റുകളിൽ ഒരു കോൾ ആരംഭിച്ചാൽ റിംഗ് ചെയ്യുക അല്ലെങ്കിൽ അറിയിക്കുക.</string>
     <!-- Title for toggle row to control mentions settings while muted -->
     <string name="MutedNotificationsFragment__mentions">സൂചനകൾ</string>
     <!-- Description for toggle row to control mentions settings while muted -->
-    <string name="MutedNotificationsFragment__mentions_body_global">Notify when you are mentioned in muted chats.</string>
+    <string name="MutedNotificationsFragment__mentions_body_global">മ്യൂട്ട് ചെയ്ത ചാറ്റുകളിൽ നിങ്ങളെ പരാമർശിക്കുമ്പോൾ അറിയിക്കുക.</string>
     <!-- Title for toggle row to control replies settings while muted -->
     <string name="MutedNotificationsFragment__replies">മറുപടികൾ</string>
     <!-- Description for toggle row to control replies settings while muted -->
-    <string name="MutedNotificationsFragment__replies_body_global">Notify when someone replies to your message in muted chats.</string>
+    <string name="MutedNotificationsFragment__replies_body_global">മ്യൂട്ട് ചെയ്ത ചാറ്റുകളിൽ ആരെങ്കിലും നിങ്ങളുടെ സന്ദേശത്തിന് മറുപടി നൽകുമ്പോൾ അറിയിക്കുക.</string>
     <!-- Description for toggle row to control call settings while muted -->
-    <string name="MutedNotificationsFragment__calls_body">Ring or notify when a call is started while this chat is muted.</string>
+    <string name="MutedNotificationsFragment__calls_body">ഈ ചാറ്റ് മ്യൂട്ട് ചെയ്‌തിരിക്കുമ്പോൾ ഒരു കോൾ ആരംഭിച്ചാൽ റിംഗ് ചെയ്യുക അല്ലെങ്കിൽ അറിയിക്കുക.</string>
     <!-- Description for toggle row to control mentions settings while muted -->
-    <string name="MutedNotificationsFragment__mentions_body">Notify when you are mentioned while this chat is muted.</string>
+    <string name="MutedNotificationsFragment__mentions_body">ഈ ചാറ്റ് മ്യൂട്ട് ചെയ്തിരിക്കുമ്പോൾ നിങ്ങളെ പരാമർശിച്ചാൽ അറിയിക്കുക.</string>
     <!-- Description for toggle row to control replies settings while muted -->
-    <string name="MutedNotificationsFragment__replies_body">Notify when someone replies to your message while this chat is muted.</string>
+    <string name="MutedNotificationsFragment__replies_body">ഈ ചാറ്റ് മ്യൂട്ട് ചെയ്തിരിക്കുമ്പോൾ ആരെങ്കിലും നിങ്ങളുടെ സന്ദേശത്തിന് മറുപടി നൽകിയാൽ അറിയിക്കുക.</string>
+    <!-- Description for toggle row to control unread reminders while muted -->
+    <string name="MutedNotificationsFragment__unread_body">Occasionally notify when there are unread messages while this chat is muted.</string>
 
     <!-- NotificationProfilesFragment -->
     <!-- Title for notification profiles screen that shows all existing profiles; Title with hyphenation. Translation can use soft hyphen - Unicode U+00AD -->
@@ -6316,13 +6318,15 @@
     <!-- AvatarPickerFragment -->
     <string name="AvatarPickerFragment__avatar_preview">അവതാർ പ്രിവ്യൂ</string>
     <string name="AvatarPickerFragment__camera">ക്യാമറ</string>
-    <string name="AvatarPickerFragment__take_a_picture">ഒരു ഫോട്ടോ എടുക്ക്</string>
-    <string name="AvatarPickerFragment__choose_a_photo">ഒരു ചിത്രം തിരഞ്ഞെടുക്കുക</string>
     <string name="AvatarPickerFragment__photo">ഫോട്ടോ</string>
     <!-- Button label during avatar selection/creation that when tapped lets you generate an avatar from typed in text. -->
     <string name="AvatarPickerFragment__text">വാചകം</string>
     <string name="AvatarPickerFragment__save">സംരക്ഷിക്കൂ</string>
     <string name="AvatarPickerFragment__clear_avatar">അവതാർ മായ്‌ക്കുക</string>
+    <!-- Content description for the edit icon displayed over the currently selected avatar. -->
+    <string name="AvatarPickerFragment__edit_avatar">Edit avatar</string>
+    <!-- Accessibility label describing the menu shown when long pressing one of your saved avatars. -->
+    <string name="AvatarPickerFragment__avatar_options">Avatar options</string>
     <string name="AvatarPickerRepository__failed_to_save_avatar">അവതാർ സംരക്ഷിക്കുന്നതിൽ പരാജയപ്പെട്ടു</string>
 
     <!-- TextAvatarCreationFragment -->
@@ -9943,6 +9947,51 @@
     <string name="RecoveryKeyWarningDialog__paste_key">കീ പേസ്റ്റ് ചെയ്യുക</string>
     <!-- Button declining to paste the recovery key -->
     <string name="RecoveryKeyWarningDialog__dont_share">പങ്കിടരുത്</string>
+
+    <!-- Notification body for unread reminders. First two placeholders are the number of unread messages and calls, last two are the summaries for mentions and replies -->
+    <string name="UnreadReminderJob__calls_and_unread_full_summary">You have %1$s and %2$s including %3$s and %4$s.</string>
+    <!-- Notification body for unread reminders. First two placeholders are the number of unread messages and calls, third is a summary of mentions or replies -->
+    <string name="UnreadReminderJob__calls_and_unread_summary">You have %1$s and %2$s including %3$s.</string>
+    <!-- Notification body for unread reminders. First two placeholders are the number of unread messages and calls, third is a list of recipients who sent them -->
+    <string name="UnreadReminderJob__calls_and_unread_author">You have %1$s and %2$s from %3$s.</string>
+    <!-- Notification body for unread reminders. First placeholder is unread messages, second is a summary of unread mentions or replies -->
+    <string name="UnreadReminderJob__unread_one_summary">You have %1$s, including %2$s.</string>
+    <!-- Notification body for unread reminders. First placeholder is unread messages, second is a summary of unread mentions, third replies -->
+    <string name="UnreadReminderJob__unread_both_summary">You have %1$s, including %2$s and %3$s.</string>
+    <!-- Notification body for unread reminders. First placeholder is unread messages, second is a list of people who sent them -->
+    <string name="UnreadReminderJob__calls_or_unread_author">You have %1$s from %2$s.</string>
+    <!-- Notification body for unread reminders. First placeholder is unread messages or unread calls -->
+    <string name="UnreadReminderJob__calls_or_unread">You have %1$s.</string>
+    <!-- Notification body for unread reminders. First placeholder is unread messages, second is unread calls. -->
+    <string name="UnreadReminderJob__calls_and_unread">You have %1$s and %2$s.</string>
+    <!-- Notification placeholder for unread calls -->
+    <plurals name="UnreadReminderJob__calls">
+        <item quantity="one">%1$d missed call</item>
+        <item quantity="other">%1$d missed calls</item>
+    </plurals>
+    <!-- Notification placeholder for unread messages -->
+    <plurals name="UnreadReminderJob__messages">
+        <item quantity="one">%1$d unread message</item>
+        <item quantity="other">%1$d unread messages</item>
+    </plurals>
+    <!-- Notification placeholder for a single recipient who sent unread messages -->
+    <string name="UnreadReminderJob__authors_one">%1$s</string>
+    <!-- Notification placeholder for two recipients who sent unread messages -->
+    <string name="UnreadReminderJob__authors_two">%1$s and %2$s</string>
+    <!-- Notification placeholder for three or more recipients who sent unread messages -->
+    <string name="UnreadReminderJob__authors_many">%1$s and others</string>
+    <!-- Notification placeholder that sums up a single unread mention. Placeholder is the name of the person who sent the message -->
+    <string name="UnreadReminderJob__mentions_one">a mention of you by %1$s</string>
+    <!-- Notification placeholder that sums up unread mentions from two people. First placeholder is the number of mentions, second and third are the names of the people who sent them -->
+    <string name="UnreadReminderJob__mentions_two">%1$d mentions of you by %2$s and %3$s</string>
+    <!-- Notification placeholder that sums up unread mentions from three or more people. First placeholder is the number of mentions, second is the name of one person who sent them -->
+    <string name="UnreadReminderJob__mentions_many">%1$d mentions of you by %2$s and others</string>
+    <!-- Notification placeholder that sums up a single unread reply. Placeholder is the name of the person who sent the message -->
+    <string name="UnreadReminderJob__replies_one">a reply from %1$s</string>
+    <!-- Notification placeholder that sums up unread replies from two people. First placeholder is the number of replies, second and third are the names of the people who sent them -->
+    <string name="UnreadReminderJob__replies_two">%1$d replies from %2$s and %3$s</string>
+    <!-- Notification placeholder that sums up unread replies from three or more people. First placeholder is the number of replies, second is the name of one person who sent them -->
+    <string name="UnreadReminderJob__replies_many">%1$d replies from %2$s and others</string>
 
     <!-- EOF -->
 </resources>

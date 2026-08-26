@@ -85,15 +85,12 @@
   <!-- Snackbar shown when the user denies the permission to read their photos and videos. -->
   <string name="MediaSelectScreen__signal_needs_access_to_show_your_photos_and_videos">Signal skal have adgang for at vise dine billeder og videoer.</string>
 
-  <!-- Label for the button that switches the capture screen to the camera. -->
-  <string name="MediaCaptureScreen__camera">Kamera</string>
+  <!-- Label for the button that switches the capture screen to taking a photo. -->
+  <string name="MediaCaptureScreen__photo">Photo</string>
+  <!-- Label for the button that switches the capture screen to recording a video. -->
+  <string name="MediaCaptureScreen__video">Video</string>
   <!-- Label for the button that switches the capture screen to the text story editor. -->
   <string name="MediaCaptureScreen__text">Tekst</string>
-    <!-- Label for the pill that displays the media count -->
-    <plurals name="MediaCaptureScreen_n_items">
-        <item quantity="one">%1$d Enheder</item>
-        <item quantity="other">%1$d emner</item>
-    </plurals>
 
   <!-- Content description for the button that attaches a link to the text story being created -->
   <string name="TextStoryBar__add_link">Tilføj link</string>
@@ -186,6 +183,8 @@
   <string name="CameraXFragment_flash_auto">Automatisk blitz</string>
   <!-- Accessibility label for the send button in media selection -->
   <string name="CameraXFragment_send">Send</string>
+  <!-- Label shown below the elapsed time while a video recording is paused -->
+  <string name="CameraXFragment_paused">Paused</string>
   <!-- Displayed in a permissions dialog when the user has denied access to hardware for image and video capture. -->
   <string name="CameraXFragment_signal_needs_the_recording_permissions_to_capture_video">Signal beder om tilladelse til at tilgå mikrofonen, for at kunne optage videoer, men er blevet afvist. Gå venligst til appindstillinger, vælg \"Tilladelser\" og tilvælg \"Mikrofon\" og \"Kamera\".</string>
 
