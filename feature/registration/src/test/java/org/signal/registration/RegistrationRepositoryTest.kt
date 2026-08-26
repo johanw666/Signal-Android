@@ -7,8 +7,12 @@ package org.signal.registration
 
 import android.content.Context
 import assertk.assertThat
+import assertk.assertions.isEmpty
 import assertk.assertions.isEqualTo
 import assertk.assertions.isInstanceOf
+import assertk.assertions.isNotNull
+import assertk.assertions.isNull
+import assertk.assertions.isTrue
 import io.mockk.mockk
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.test.runTest
@@ -17,9 +21,12 @@ import org.junit.Test
 import org.signal.core.models.AccountEntropyPool
 import org.signal.core.util.logging.Log
 import org.signal.libsignal.net.RequestResult
+import org.signal.network.api.RegistrationApiV2.SvrCredentials
 import org.signal.registration.NetworkController.GetBackupInfoError
 import org.signal.registration.NetworkController.GetBackupInfoResponse
+import org.signal.registration.NetworkController.MasterKeyResponse
 import org.signal.registration.NetworkController.ReserveBackupIdError
+import org.signal.registration.NetworkController.RestoreMasterKeyError
 import org.signal.registration.fakes.FakeNetworkController
 import org.signal.registration.fakes.FakeStorageController
 import org.signal.registration.fakes.SystemOutLogger
@@ -33,19 +40,23 @@ import kotlin.time.Duration.Companion.seconds
 class RegistrationRepositoryTest {
 
   private lateinit var networkController: FakeNetworkController
+  private lateinit var storageController: FakeStorageController
   private lateinit var repository: RegistrationRepository
 
   private val aep = AccountEntropyPool.generate()
+  private val masterKey = aep.deriveMasterKey()
+  private val svrCredentials = SvrCredentials(username = "user", password = "pass")
   private val backupInfo = GetBackupInfoResponse(cdn = 3, backupDir = "dir", mediaDir = "media", backupName = "backup", usedSpace = 1024L)
 
   @Before
   fun setup() {
     Log.initialize(SystemOutLogger())
     networkController = FakeNetworkController()
+    storageController = FakeStorageController()
     repository = RegistrationRepository(
       context = mockk<Context>(relaxed = true),
       networkController = networkController,
-      storageController = FakeStorageController(),
+      storageController = storageController,
       isLinkAndSyncAvailable = false
     )
   }
@@ -131,5 +142,52 @@ class RegistrationRepositoryTest {
     val result = repository.getAndMaybeHealRemoteBackupInfo(aep)
 
     assertThat((result as RequestResult.ApplicationError).cause).isEqualTo(cause)
+  }
+
+  // ==================== restoreMasterKeyFromSvr ====================
+
+  @Test
+  fun `restoreMasterKeyFromSvr commits the restored data when already registered`() = runTest {
+    networkController.onRestoreMasterKeyFromSvr = { RequestResult.Success(MasterKeyResponse(masterKey)) }
+
+    val result = repository.restoreMasterKeyFromSvr(svrCredentials, pin = "1234", forRegistrationLock = false, isRegistered = true)
+
+    assertThat(result).isInstanceOf(RequestResult.Success::class)
+    assertThat(storageController.committedData).isNotNull()
+    assertThat(storageController.committedData!!.pin).isEqualTo("1234")
+  }
+
+  @Test
+  fun `restoreMasterKeyFromSvr does not commit the restored data when not yet registered`() = runTest {
+    networkController.onRestoreMasterKeyFromSvr = { RequestResult.Success(MasterKeyResponse(masterKey)) }
+
+    val result = repository.restoreMasterKeyFromSvr(svrCredentials, pin = "1234", forRegistrationLock = false, isRegistered = false)
+
+    assertThat(result).isInstanceOf(RequestResult.Success::class)
+    assertThat(storageController.committedData).isNull()
+  }
+
+  @Test
+  fun `restoreMasterKeyFromSvr still records the in-progress data when not yet registered`() = runTest {
+    networkController.onRestoreMasterKeyFromSvr = { RequestResult.Success(MasterKeyResponse(masterKey)) }
+
+    repository.restoreMasterKeyFromSvr(svrCredentials, pin = "1234", forRegistrationLock = true, isRegistered = false)
+
+    val inProgress = storageController.readInProgressRegistrationData()
+    assertThat(inProgress.pin).isEqualTo("1234")
+    assertThat(inProgress.masterKeyForInitialDataRestore?.toByteArray()?.toList()).isEqualTo(masterKey.serialize().toList())
+    assertThat(inProgress.registrationLockEnabled).isTrue()
+    assertThat(inProgress.svrCredentials.map { it.username }).isEqualTo(listOf("user"))
+  }
+
+  @Test
+  fun `restoreMasterKeyFromSvr does not record or commit anything on failure`() = runTest {
+    networkController.onRestoreMasterKeyFromSvr = { RequestResult.NonSuccess(RestoreMasterKeyError.WrongPin(triesRemaining = 5)) }
+
+    val result = repository.restoreMasterKeyFromSvr(svrCredentials, pin = "1234", forRegistrationLock = false, isRegistered = true)
+
+    assertThat(result).isInstanceOf(RequestResult.NonSuccess::class)
+    assertThat(storageController.committedData).isNull()
+    assertThat(storageController.readInProgressRegistrationData().pin).isEmpty()
   }
 }

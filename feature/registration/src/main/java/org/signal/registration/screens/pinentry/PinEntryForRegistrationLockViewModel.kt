@@ -103,7 +103,7 @@ class PinEntryForRegistrationLockViewModel(
   private suspend fun applyPinEntered(state: PinEntryState, event: PinEntryScreenEvents.PinEntered, parentEventEmitter: (RegistrationFlowEvent) -> Unit): PinEntryState {
     Log.d(TAG, "[PinEntered] Attempting to restore master key from SVR...")
 
-    val restoreResult = repository.restoreMasterKeyFromSvr(svrCredentials, event.pin, forRegistrationLock = true)
+    val restoreResult = repository.restoreMasterKeyFromSvr(svrCredentials, event.pin, forRegistrationLock = true, isRegistered = false)
 
     val masterKey: MasterKey = when (restoreResult) {
       is RequestResult.Success -> {

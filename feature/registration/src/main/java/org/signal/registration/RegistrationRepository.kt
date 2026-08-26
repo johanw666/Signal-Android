@@ -242,10 +242,15 @@ class RegistrationRepository(
     networkController.checkSvrCredentials(e164, credentials)
   }
 
+  /**
+   * @param isRegistered Whether the account is already registered. This can be called before registration (e.g. to unlock a reglocked account), and in that
+   *   case we must not commit the restored data to persistent storage yet.
+   */
   suspend fun restoreMasterKeyFromSvr(
     svrCredentials: SvrCredentials,
     pin: String,
-    forRegistrationLock: Boolean
+    forRegistrationLock: Boolean,
+    isRegistered: Boolean
   ): RequestResult<MasterKeyResponse, RestoreMasterKeyError> = withContext(Dispatchers.IO) {
     networkController.restoreMasterKeyFromSvr(
       svrCredentials = svrCredentials,
@@ -258,7 +263,12 @@ class RegistrationRepository(
           this.registrationLockEnabled = forRegistrationLock
           this.svrCredentials += SvrCredential(username = svrCredentials.username, password = svrCredentials.password)
         }
-        storageController.commitRegistrationData()
+
+        if (isRegistered) {
+          storageController.commitRegistrationData()
+        } else {
+          Log.i(TAG, "[restoreMasterKeyFromSvr] Not yet registered. Skipping commit of registration data.")
+        }
       }
     }
   }

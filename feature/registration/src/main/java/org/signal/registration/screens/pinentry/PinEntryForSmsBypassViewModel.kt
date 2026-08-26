@@ -117,7 +117,7 @@ class PinEntryForSmsBypassViewModel(
       return state
     }
 
-    return when (val result = repository.restoreMasterKeyFromSvr(svrCredentials, event.pin, forRegistrationLock = false)) {
+    return when (val result = repository.restoreMasterKeyFromSvr(svrCredentials, event.pin, forRegistrationLock = false, isRegistered = false)) {
       is RequestResult.Success -> {
         Log.i(TAG, "[PinEntered] Successfully restored master key from SVR.")
         parentEventEmitter(RegistrationFlowEvent.MasterKeyRestoredFromSvr(result.result.masterKey))
