@@ -9,6 +9,7 @@ import kotlinx.coroutines.withContext
 import org.signal.core.util.concurrent.SignalDispatchers
 import org.signal.core.util.logging.Log
 import org.thoughtcrime.securesms.components.settings.app.account.authenticator.AuthenticatorRepository
+import org.thoughtcrime.securesms.components.settings.app.account.passkeys.AppPasskeysRepository
 import org.thoughtcrime.securesms.dependencies.AppDependencies
 import org.thoughtcrime.securesms.keyvalue.SignalStore
 import org.thoughtcrime.securesms.lock.v2.PinKeyboardType
@@ -28,6 +29,7 @@ class AccountSettingsRepository {
   }
 
   private val authenticatorRepository = AuthenticatorRepository()
+  private val passkeysRepository = AppPasskeysRepository()
 
   fun hasPin(): Boolean = SignalStore.svr.hasPin() && !SignalStore.svr.hasOptedOut()
 
@@ -47,7 +49,9 @@ class AccountSettingsRepository {
 
   fun isPhoneNumberlessRegistrationEnabled(): Boolean = Environment.PHONENUMBERLESS_REGISTRATION
 
-  fun hasAuthenticatorApp(): Boolean = authenticatorRepository.hasAuthenticatorApp()
+  fun getAuthenticatorAppCount(): Int = authenticatorRepository.getAuthenticatorApps().size
+
+  fun getPasskeyCount(): Int = passkeysRepository.getPasskeys().size
 
   fun verifyLocalPin(pin: String): Boolean {
     val localPinHash = SignalStore.svr.localPinHash

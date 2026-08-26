@@ -105,7 +105,7 @@ class AccountSettingsViewModel(
         }
       }
       AccountSettingsEvent.AuthenticatorAppClicked -> {
-        _actions.send(AccountSettingsAction.NavigateToAuthenticatorAppSetup)
+        _actions.send(AccountSettingsAction.NavigateToAuthenticatorApps)
       }
       AccountSettingsEvent.PasskeysClicked -> {
         _actions.send(AccountSettingsAction.NavigateToPasskeys)
@@ -159,7 +159,8 @@ class AccountSettingsViewModel(
         signalLogin = if (repository.isPhoneNumberlessRegistrationEnabled()) {
           AccountSettingsState.SignalLogin(
             keyCount = MOCK_SIGNAL_LOGIN_KEY_COUNT,
-            hasAuthenticatorApp = repository.hasAuthenticatorApp()
+            authenticatorAppCount = repository.getAuthenticatorAppCount(),
+            passkeyCount = repository.getPasskeyCount()
           )
         } else {
           null

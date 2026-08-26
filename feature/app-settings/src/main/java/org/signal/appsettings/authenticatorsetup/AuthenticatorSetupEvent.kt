@@ -10,7 +10,7 @@ package org.signal.appsettings.authenticatorsetup
  */
 sealed interface AuthenticatorSetupEvent {
 
-  /** The user tapped the navigation (close) icon. */
+  /** The user tapped the navigation (back) icon. */
   data object NavigateBackClicked : AuthenticatorSetupEvent
 
   /** The user tapped the button that hands the setup key off to their authenticator app. */

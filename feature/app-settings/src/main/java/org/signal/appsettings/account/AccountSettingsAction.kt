@@ -25,8 +25,8 @@ sealed interface AccountSettingsAction {
   /** Tell the user their PIN was created. */
   data object ShowPinCreatedConfirmation : AccountSettingsAction
 
-  /** Open the flow that sets up an authenticator app. */
-  data object NavigateToAuthenticatorAppSetup : AccountSettingsAction
+  /** Open the screen listing the account's authenticator apps. */
+  data object NavigateToAuthenticatorApps : AccountSettingsAction
 
   /** Open the passkeys screen. */
   data object NavigateToPasskeys : AccountSettingsAction

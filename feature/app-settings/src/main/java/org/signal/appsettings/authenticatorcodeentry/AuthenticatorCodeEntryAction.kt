@@ -16,9 +16,12 @@ sealed interface AuthenticatorCodeEntryAction {
   /** Leave the screen. */
   data object NavigateBack : AuthenticatorCodeEntryAction
 
-  /** The authenticator app is set up, so go back to account settings. */
-  data object NavigateToAccountSettings : AuthenticatorCodeEntryAction
+  /** The new authenticator app is confirmed, so go name it. */
+  data object NavigateToNaming : AuthenticatorCodeEntryAction
 
-  /** Tell the user their authenticator app was added. */
-  data object ShowAuthenticatorAppAdded : AuthenticatorCodeEntryAction
+  /** The removal is done, so go back to the list of authenticator apps. */
+  data object NavigateToAuthenticatorApps : AuthenticatorCodeEntryAction
+
+  /** Tell the user their authenticator app was removed. */
+  data object ShowAuthenticatorAppRemoved : AuthenticatorCodeEntryAction
 }

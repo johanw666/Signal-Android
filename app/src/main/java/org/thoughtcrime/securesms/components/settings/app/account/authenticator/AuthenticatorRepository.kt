@@ -5,13 +5,21 @@
 
 package org.thoughtcrime.securesms.components.settings.app.account.authenticator
 
+import org.signal.appsettings.authenticatorapps.AuthenticatorApp
+
 class AuthenticatorRepository {
 
   fun getSetupKey(): String = AuthenticatorAppStore.MOCK_SETUP_KEY
 
-  fun hasAuthenticatorApp(): Boolean = AuthenticatorAppStore.hasAuthenticatorApp
+  fun getMaxApps(): Int = AuthenticatorAppStore.MAX_APPS
 
-  fun setHasAuthenticatorApp(hasAuthenticatorApp: Boolean) {
-    AuthenticatorAppStore.hasAuthenticatorApp = hasAuthenticatorApp
-  }
+  fun getAuthenticatorApps(): List<AuthenticatorApp> = AuthenticatorAppStore.getApps()
+
+  fun getAuthenticatorApp(id: Long): AuthenticatorApp? = AuthenticatorAppStore.getApp(id)
+
+  fun addAuthenticatorApp(name: String): Long = AuthenticatorAppStore.addApp(name, System.currentTimeMillis())
+
+  fun renameAuthenticatorApp(id: Long, name: String) = AuthenticatorAppStore.renameApp(id, name)
+
+  fun removeAuthenticatorApp(id: Long) = AuthenticatorAppStore.removeApp(id)
 }

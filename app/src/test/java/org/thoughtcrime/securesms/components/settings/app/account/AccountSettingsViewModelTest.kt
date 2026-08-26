@@ -63,7 +63,8 @@ class AccountSettingsViewModelTest {
     every { repository.isClientDeprecated() } returns false
     every { repository.getPinKeyboardType() } returns PinKeyboardType.NUMERIC
     every { repository.isPhoneNumberlessRegistrationEnabled() } returns false
-    every { repository.hasAuthenticatorApp() } returns false
+    every { repository.getAuthenticatorAppCount() } returns 0
+    every { repository.getPasskeyCount() } returns 0
     every { repository.verifyLocalPin(any()) } answers { firstArg<String>() == CORRECT_PIN }
     coEvery { repository.setRegistrationLockEnabled(any()) } returns true
   }
@@ -301,15 +302,17 @@ class AccountSettingsViewModelTest {
   @Test
   fun `the Signal Login section is filled in when phone-numberless registration is on`() = runTest(testDispatcher) {
     every { repository.isPhoneNumberlessRegistrationEnabled() } returns true
-    every { repository.hasAuthenticatorApp() } returns true
+    every { repository.getAuthenticatorAppCount() } returns 2
+    every { repository.getPasskeyCount() } returns 8
 
     val viewModel = createViewModel()
 
-    assertThat(viewModel.state.value.signalLogin?.hasAuthenticatorApp).isEqualTo(true)
+    assertThat(viewModel.state.value.signalLogin?.authenticatorAppCount).isEqualTo(2)
+    assertThat(viewModel.state.value.signalLogin?.passkeyCount).isEqualTo(8)
   }
 
   @Test
-  fun `AuthenticatorAppClicked opens the authenticator setup flow`() = runTest(testDispatcher) {
+  fun `AuthenticatorAppClicked opens the authenticator apps screen`() = runTest(testDispatcher) {
     every { repository.isPhoneNumberlessRegistrationEnabled() } returns true
 
     val viewModel = createViewModel()
@@ -317,7 +320,7 @@ class AccountSettingsViewModelTest {
 
     viewModel.onEvent(AccountSettingsEvent.AuthenticatorAppClicked)
 
-    assertThat(actions.last()).isEqualTo(AccountSettingsAction.NavigateToAuthenticatorAppSetup)
+    assertThat(actions.last()).isEqualTo(AccountSettingsAction.NavigateToAuthenticatorApps)
   }
 
   @Test

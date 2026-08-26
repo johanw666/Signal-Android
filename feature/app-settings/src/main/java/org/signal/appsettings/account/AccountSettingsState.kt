@@ -26,7 +26,8 @@ data class AccountSettingsState(
    */
   data class SignalLogin(
     val keyCount: Int,
-    val hasAuthenticatorApp: Boolean
+    val authenticatorAppCount: Int,
+    val passkeyCount: Int
   )
 
   /** Whichever dialog the screen is showing, if any. Only one is ever up at a time. */

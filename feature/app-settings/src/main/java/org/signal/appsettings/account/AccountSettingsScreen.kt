@@ -126,10 +126,10 @@ fun AccountSettingsScreen(
           Rows.TextRow(
             icon = SignalIcons.DevicePhone.imageVector,
             text = stringResource(R.string.AccountSettingsFragment__authenticator_app),
-            label = if (state.signalLogin.hasAuthenticatorApp) {
-              stringResource(R.string.AccountSettingsFragment__enabled)
+            label = if (state.signalLogin.authenticatorAppCount > 0) {
+              pluralStringResource(R.plurals.AccountSettingsFragment__d_configured, state.signalLogin.authenticatorAppCount, state.signalLogin.authenticatorAppCount)
             } else {
-              stringResource(R.string.AccountSettingsFragment__use_an_authenticator_app)
+              stringResource(R.string.AccountSettingsFragment__one_time_verification_codes)
             },
             onClick = { onEvent(AccountSettingsEvent.AuthenticatorAppClicked) },
             modifier = Modifier.testTag(AccountSettingsTestTags.ROW_AUTHENTICATOR_APP)
@@ -140,7 +140,11 @@ fun AccountSettingsScreen(
           Rows.TextRow(
             icon = SignalIcons.Key.imageVector,
             text = stringResource(R.string.AccountSettingsFragment__passkeys),
-            label = stringResource(R.string.AccountSettingsFragment__device_biometrics_or_fido2_security_key),
+            label = if (state.signalLogin.passkeyCount > 0) {
+              pluralStringResource(R.plurals.AccountSettingsFragment__d_passkeys, state.signalLogin.passkeyCount, state.signalLogin.passkeyCount)
+            } else {
+              stringResource(R.string.AccountSettingsFragment__device_biometrics_or_fido2_security_key)
+            },
             onClick = { onEvent(AccountSettingsEvent.PasskeysClicked) },
             modifier = Modifier.testTag(AccountSettingsTestTags.ROW_PASSKEYS)
           )
@@ -565,7 +569,7 @@ private fun AccountSettingsScreenSignalLoginPreview() {
       state = AccountSettingsState(
         hasPin = true,
         pinRemindersEnabled = true,
-        signalLogin = AccountSettingsState.SignalLogin(keyCount = 2, hasAuthenticatorApp = false)
+        signalLogin = AccountSettingsState.SignalLogin(keyCount = 2, authenticatorAppCount = 2, passkeyCount = 8)
       ),
       onEvent = {}
     )

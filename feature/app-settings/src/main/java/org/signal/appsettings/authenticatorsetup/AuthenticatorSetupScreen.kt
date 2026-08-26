@@ -68,9 +68,9 @@ fun AuthenticatorSetupScreen(
   onEvent: (AuthenticatorSetupEvent) -> Unit
 ) {
   Scaffolds.Settings(
-    title = stringResource(R.string.AuthenticatorSetupScreen__authenticator_app),
+    title = stringResource(R.string.AuthenticatorSetupScreen__set_up_your_authenticator_app),
     onNavigationClick = { onEvent(AuthenticatorSetupEvent.NavigateBackClicked) },
-    navigationIcon = SignalIcons.X.imageVector
+    navigationIcon = SignalIcons.ArrowStart.imageVector
   ) { contentPadding ->
     Column(
       modifier = Modifier

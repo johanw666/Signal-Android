@@ -10,7 +10,6 @@ import assertk.assertions.contains
 import assertk.assertions.isEmpty
 import assertk.assertions.isEqualTo
 import assertk.assertions.isFalse
-import assertk.assertions.isTrue
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.Flow
@@ -27,6 +26,7 @@ import org.junit.Rule
 import org.junit.Test
 import org.signal.appsettings.authenticatorcodeentry.AuthenticatorCodeEntryAction
 import org.signal.appsettings.authenticatorcodeentry.AuthenticatorCodeEntryEvent
+import org.signal.appsettings.authenticatorcodeentry.AuthenticatorCodeEntryState.Purpose
 import org.thoughtcrime.securesms.testing.CoroutineDispatcherRule
 
 @OptIn(ExperimentalCoroutinesApi::class)
@@ -44,18 +44,18 @@ class AuthenticatorCodeEntryViewModelTest {
   @Before
   fun setUp() {
     Dispatchers.setMain(testDispatcher)
-    AuthenticatorAppStore.hasAuthenticatorApp = false
+    clearApps()
   }
 
   @After
   fun tearDown() {
     Dispatchers.resetMain()
-    AuthenticatorAppStore.hasAuthenticatorApp = false
+    clearApps()
   }
 
   @Test
   fun `non-digits are dropped and the code is capped at six digits`() = runTest(testDispatcher) {
-    val viewModel = AuthenticatorCodeEntryViewModel()
+    val viewModel = createViewModel()
 
     viewModel.onEvent(AuthenticatorCodeEntryEvent.CodeChanged("12a34 5678"))
 
@@ -64,7 +64,7 @@ class AuthenticatorCodeEntryViewModelTest {
 
   @Test
   fun `a partial code can't be submitted`() = runTest(testDispatcher) {
-    val viewModel = AuthenticatorCodeEntryViewModel()
+    val viewModel = createViewModel()
     val actions = collectActions(viewModel.actions)
 
     viewModel.onEvent(AuthenticatorCodeEntryEvent.CodeChanged("123"))
@@ -74,30 +74,47 @@ class AuthenticatorCodeEntryViewModelTest {
     viewModel.onEvent(AuthenticatorCodeEntryEvent.DoneClicked)
 
     assertThat(actions).isEmpty()
-    assertThat(AuthenticatorAppStore.hasAuthenticatorApp).isFalse()
   }
 
   @Test
-  fun `a full code is accepted and sends the user back to account settings`() = runTest(testDispatcher) {
-    val viewModel = AuthenticatorCodeEntryViewModel()
+  fun `a full code entered while adding sends the user on to name the app`() = runTest(testDispatcher) {
+    val viewModel = createViewModel(purpose = Purpose.Add)
     val actions = collectActions(viewModel.actions)
 
     viewModel.onEvent(AuthenticatorCodeEntryEvent.CodeChanged(FULL_CODE))
     viewModel.onEvent(AuthenticatorCodeEntryEvent.DoneClicked)
 
-    assertThat(AuthenticatorAppStore.hasAuthenticatorApp).isTrue()
-    assertThat(actions).contains(AuthenticatorCodeEntryAction.ShowAuthenticatorAppAdded)
-    assertThat(actions.last()).isEqualTo(AuthenticatorCodeEntryAction.NavigateToAccountSettings)
+    assertThat(actions.last()).isEqualTo(AuthenticatorCodeEntryAction.NavigateToNaming)
+  }
+
+  @Test
+  fun `a full code entered while removing removes the app and goes back to the list`() = runTest(testDispatcher) {
+    val appId = AuthenticatorAppStore.addApp(name = "Bitwarden Authenticator", createdAt = 0)
+    val viewModel = createViewModel(purpose = Purpose.Remove(appId))
+    val actions = collectActions(viewModel.actions)
+
+    viewModel.onEvent(AuthenticatorCodeEntryEvent.CodeChanged(FULL_CODE))
+    viewModel.onEvent(AuthenticatorCodeEntryEvent.DoneClicked)
+
+    assertThat(AuthenticatorAppStore.getApps()).isEmpty()
+    assertThat(actions).contains(AuthenticatorCodeEntryAction.ShowAuthenticatorAppRemoved)
+    assertThat(actions.last()).isEqualTo(AuthenticatorCodeEntryAction.NavigateToAuthenticatorApps)
   }
 
   @Test
   fun `NavigateBackClicked leaves the screen`() = runTest(testDispatcher) {
-    val viewModel = AuthenticatorCodeEntryViewModel()
+    val viewModel = createViewModel()
     val actions = collectActions(viewModel.actions)
 
     viewModel.onEvent(AuthenticatorCodeEntryEvent.NavigateBackClicked)
 
     assertThat(actions.last()).isEqualTo(AuthenticatorCodeEntryAction.NavigateBack)
+  }
+
+  private fun createViewModel(purpose: Purpose = Purpose.Add) = AuthenticatorCodeEntryViewModel(purpose = purpose)
+
+  private fun clearApps() {
+    AuthenticatorAppStore.getApps().forEach { AuthenticatorAppStore.removeApp(it.id) }
   }
 
   private fun TestScope.collectActions(actions: Flow<AuthenticatorCodeEntryAction>): List<AuthenticatorCodeEntryAction> {

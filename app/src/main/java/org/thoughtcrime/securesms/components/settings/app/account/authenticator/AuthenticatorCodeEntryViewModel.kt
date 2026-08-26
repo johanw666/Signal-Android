@@ -15,14 +15,17 @@ import kotlinx.coroutines.flow.update
 import org.signal.appsettings.authenticatorcodeentry.AuthenticatorCodeEntryAction
 import org.signal.appsettings.authenticatorcodeentry.AuthenticatorCodeEntryEvent
 import org.signal.appsettings.authenticatorcodeentry.AuthenticatorCodeEntryState
+import org.signal.appsettings.authenticatorcodeentry.AuthenticatorCodeEntryState.Purpose
 import org.signal.core.ui.compose.EventDrivenViewModel
 import org.signal.core.util.logging.Log
 
 /**
- * Drives the screen that collects a code from the user's authenticator app. There's nothing to verify the code
- * against yet, so any code of the right length is treated as correct.
+ * Drives the screen that collects a code from the user's authenticator app, which is required both to confirm a newly
+ * paired app and to remove one that already exists. There's nothing to verify the code against yet, so any code of the
+ * right length is treated as correct.
  */
 class AuthenticatorCodeEntryViewModel(
+  purpose: Purpose = Purpose.Add,
   private val repository: AuthenticatorRepository = AuthenticatorRepository()
 ) : EventDrivenViewModel<AuthenticatorCodeEntryEvent>(TAG) {
 
@@ -30,7 +33,7 @@ class AuthenticatorCodeEntryViewModel(
     private val TAG = Log.tag(AuthenticatorCodeEntryViewModel::class)
   }
 
-  private val _state = MutableStateFlow(AuthenticatorCodeEntryState())
+  private val _state = MutableStateFlow(AuthenticatorCodeEntryState(purpose = purpose))
   private val _actions = Channel<AuthenticatorCodeEntryAction>(Channel.BUFFERED)
 
   val state: StateFlow<AuthenticatorCodeEntryState> = _state.asStateFlow()
@@ -52,10 +55,17 @@ class AuthenticatorCodeEntryViewModel(
 
         Log.i(TAG, "Accepting the entered code without verifying it, which is all we can do until this is wired up.")
         _state.update { it.copy(submitting = true) }
-        repository.setHasAuthenticatorApp(true)
 
-        _actions.send(AuthenticatorCodeEntryAction.ShowAuthenticatorAppAdded)
-        _actions.send(AuthenticatorCodeEntryAction.NavigateToAccountSettings)
+        when (val purpose = _state.value.purpose) {
+          Purpose.Add -> {
+            _actions.send(AuthenticatorCodeEntryAction.NavigateToNaming)
+          }
+          is Purpose.Remove -> {
+            repository.removeAuthenticatorApp(purpose.appId)
+            _actions.send(AuthenticatorCodeEntryAction.ShowAuthenticatorAppRemoved)
+            _actions.send(AuthenticatorCodeEntryAction.NavigateToAuthenticatorApps)
+          }
+        }
       }
     }
   }
