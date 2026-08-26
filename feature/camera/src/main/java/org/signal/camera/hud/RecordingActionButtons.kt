@@ -5,10 +5,12 @@
 
 package org.signal.camera.hud
 
-import androidx.compose.animation.AnimatedContent
+import androidx.compose.animation.Crossfade
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material3.Icon
@@ -68,18 +70,30 @@ fun RecordingPauseButton(
     onClick = onClick,
     modifier = modifier.testTag(TestTags.CAMERA_HUD_PAUSE_BUTTON)
   ) {
-    // The same swap the corner makes when the lock gives way to this button, so the two read as one movement.
-    AnimatedContent(
+    Crossfade(
       targetState = isPaused,
-      transitionSpec = { CameraHudMotion.swap },
       label = "RecordingPaused"
     ) { paused ->
-      Icon(
-        imageVector = if (paused) SignalIcons.Play.imageVector else SignalIcons.Pause.imageVector,
-        contentDescription = null,
-        tint = Color.White,
-        modifier = Modifier.size(ActionIconSize)
-      )
+      if (!paused) {
+        Icon(
+          imageVector = SignalIcons.Pause.imageVector,
+          contentDescription = null,
+          tint = Color.White,
+          modifier = Modifier
+            .fillMaxSize()
+            .padding(14.dp)
+        )
+      } else {
+        Box(
+          modifier = Modifier
+            .fillMaxSize()
+            .padding(8.dp)
+            .background(
+              color = colorResource(R.color.CameraHud_control_red_background),
+              shape = CircleShape
+            )
+        )
+      }
     }
   }
 }
