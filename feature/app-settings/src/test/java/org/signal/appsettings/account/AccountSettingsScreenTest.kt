@@ -298,6 +298,15 @@ class AccountSettingsScreenTest {
   }
 
   @Test
+  fun givenASignalLogin_whenIClickTheSignalLoginCard_thenIExpectAccountAndRecoveryEvent() {
+    setContent(createState(signalLogin = AccountSettingsState.SignalLogin(keyCount = 2, authenticatorAppCount = 0, passkeyCount = 0)))
+
+    composeTestRule.onNodeWithTag(AccountSettingsTestTags.CARD_SIGNAL_LOGIN).performClick()
+
+    assertThat(events).contains(AccountSettingsEvent.AccountAndRecoveryClicked)
+  }
+
+  @Test
   fun givenASignalLogin_whenIClickAuthenticatorApp_thenIExpectAuthenticatorAppEvent() {
     setContent(createState(signalLogin = AccountSettingsState.SignalLogin(keyCount = 2, authenticatorAppCount = 0, passkeyCount = 0)))
 

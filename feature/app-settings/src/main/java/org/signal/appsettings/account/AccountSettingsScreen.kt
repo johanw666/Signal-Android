@@ -9,6 +9,7 @@ import androidx.annotation.StringRes
 import androidx.annotation.VisibleForTesting
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -105,7 +106,10 @@ fun AccountSettingsScreen(
         }
 
         item {
-          SignalLoginCard(keyCount = state.signalLogin.keyCount)
+          SignalLoginCard(
+            keyCount = state.signalLogin.keyCount,
+            onClick = { onEvent(AccountSettingsEvent.AccountAndRecoveryClicked) }
+          )
         }
 
         item {
@@ -324,12 +328,13 @@ fun AccountSettingsScreen(
 }
 
 /**
- * The card at the top of the screen that summarizes the user's Signal Login. It has no destination yet, so it isn't
- * clickable.
+ * The card at the top of the screen that summarizes the user's Signal Login, which opens the screen showing the full
+ * keys.
  */
 @Composable
 private fun SignalLoginCard(
   keyCount: Int,
+  onClick: () -> Unit,
   modifier: Modifier = Modifier
 ) {
   Row(
@@ -338,6 +343,7 @@ private fun SignalLoginCard(
       .padding(horizontal = 20.dp)
       .clip(RoundedCornerShape(18.dp))
       .background(SignalTheme.colors.colorSurface2)
+      .clickable(onClick = onClick)
       .padding(horizontal = 18.dp, vertical = 20.dp)
       .testTag(AccountSettingsTestTags.CARD_SIGNAL_LOGIN),
     verticalAlignment = Alignment.CenterVertically

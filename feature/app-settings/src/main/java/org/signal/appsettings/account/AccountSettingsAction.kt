@@ -25,6 +25,9 @@ sealed interface AccountSettingsAction {
   /** Tell the user their PIN was created. */
   data object ShowPinCreatedConfirmation : AccountSettingsAction
 
+  /** Open the screen that shows the account and recovery keys that make up the Signal Login. */
+  data object NavigateToSignalLoginDetails : AccountSettingsAction
+
   /** Open the screen listing the account's authenticator apps. */
   data object NavigateToAuthenticatorApps : AccountSettingsAction
 

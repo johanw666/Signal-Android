@@ -705,6 +705,7 @@ dependencies {
   implementation(project(":lib:password-manager"))
   implementation(project(":lib:photoview"))
   implementation(project(":lib:qr"))
+  implementation(project(":lib:signal-login"))
   implementation(project(":lib:sticky-header-grid"))
   implementation(project(":lib:ui-components"))
   implementation(project(":lib:video"))

@@ -16,6 +16,9 @@ sealed interface AccountSettingsEvent {
   /** The user tapped the navigation (back) icon. */
   data object NavigateBackClicked : AccountSettingsEvent
 
+  /** The user tapped the Signal Login card, which shows the account and recovery keys. */
+  data object AccountAndRecoveryClicked : AccountSettingsEvent
+
   /** The user tapped the row that either creates or changes their PIN. */
   data object ModifyPinClicked : AccountSettingsEvent
 

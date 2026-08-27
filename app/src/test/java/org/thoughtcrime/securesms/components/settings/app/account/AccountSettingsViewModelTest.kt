@@ -314,6 +314,18 @@ class AccountSettingsViewModelTest {
   }
 
   @Test
+  fun `AccountAndRecoveryClicked opens the Signal Login details screen`() = runTest(testDispatcher) {
+    every { repository.isPhoneNumberless() } returns true
+
+    val viewModel = createViewModel()
+    val actions = collectActions(viewModel.actions)
+
+    viewModel.onEvent(AccountSettingsEvent.AccountAndRecoveryClicked)
+
+    assertThat(actions.last()).isEqualTo(AccountSettingsAction.NavigateToSignalLoginDetails)
+  }
+
+  @Test
   fun `AuthenticatorAppClicked opens the authenticator apps screen`() = runTest(testDispatcher) {
     every { repository.isPhoneNumberless() } returns true
 

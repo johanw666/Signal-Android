@@ -104,6 +104,9 @@ class AccountSettingsViewModel(
           )
         }
       }
+      AccountSettingsEvent.AccountAndRecoveryClicked -> {
+        _actions.send(AccountSettingsAction.NavigateToSignalLoginDetails)
+      }
       AccountSettingsEvent.AuthenticatorAppClicked -> {
         _actions.send(AccountSettingsAction.NavigateToAuthenticatorApps)
       }

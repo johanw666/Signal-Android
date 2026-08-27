@@ -74,6 +74,7 @@ class AccountSettingsFragment : ComposeFragment() {
       AccountSettingsAction.LaunchCreatePinFlow -> pinFlowLauncher.launch(CreateSvrPinActivity.getIntentForPinCreate(requireContext()))
       AccountSettingsAction.LaunchChangePinFlow -> pinFlowLauncher.launch(CreateSvrPinActivity.getIntentForPinChangeFromSettings(requireContext()))
       AccountSettingsAction.ShowPinCreatedConfirmation -> Snackbar.make(requireView(), R.string.ConfirmKbsPinFragment__pin_created, Snackbar.LENGTH_LONG).show()
+      AccountSettingsAction.NavigateToSignalLoginDetails -> findNavController().safeNavigate(R.id.action_accountSettingsFragment_to_signalLoginViewDetailsFragment)
       AccountSettingsAction.NavigateToAuthenticatorApps -> findNavController().safeNavigate(R.id.action_accountSettingsFragment_to_authenticatorAppsFragment)
       AccountSettingsAction.NavigateToPasskeys -> findNavController().safeNavigate(R.id.action_accountSettingsFragment_to_passkeysFragment)
       AccountSettingsAction.NavigateToAdvancedPinSettings -> findNavController().safeNavigate(R.id.action_accountSettingsFragment_to_advancedPinSettingsActivity)
