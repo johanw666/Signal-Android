@@ -1016,14 +1016,14 @@ object RemoteConfig {
   /** Whether or not SEPA debit payments for donations are enabled. */
   val sepaDebitDonations: Boolean by remoteBoolean(
     key = "android.sepa.debit.donations.5",
-    defaultValue = false,
-    hotSwappable = false
+    defaultValue = true,
+    hotSwappable = true
   )
 
   val idealDonations: Boolean by remoteBoolean(
     key = "android.ideal.donations.5",
-    defaultValue = false,
-    hotSwappable = false
+    defaultValue = true,
+    hotSwappable = true
   )
 
   @JvmStatic
@@ -1031,7 +1031,7 @@ object RemoteConfig {
   val idealEnabledRegions: String by remoteString(
     key = "global.donations.idealEnabledRegions",
     defaultValue = "",
-    hotSwappable = false
+    hotSwappable = true
   )
 
   @JvmStatic
@@ -1039,7 +1039,7 @@ object RemoteConfig {
   val sepaEnabledRegions: String by remoteString(
     key = "global.donations.sepaEnabledRegions",
     defaultValue = "",
-    hotSwappable = false
+    hotSwappable = true
   )
 
   /** List of device products that are blocked from showing notification thumbnails.  */
