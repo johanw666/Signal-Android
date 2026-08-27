@@ -519,11 +519,11 @@ object BackupRepository {
       AppDependencies.jobManager.add(ArchiveThumbnailBackfillJob())
     }
 
-    val pendingBytes = SignalDatabase.attachments.getPendingArchiveUploadBytes()
-    if (pendingBytes == 0L) {
+    if (!SignalDatabase.attachments.areAnyAttachmentsPendingArchiveUpload()) {
       return
     }
 
+    val pendingBytes = SignalDatabase.attachments.getPendingArchiveUploadBytes()
     Log.w(TAG, "There are ${pendingBytes.bytes.toUnitString(maxPlaces = 2)} of attachments that need to be uploaded to the archive, but no jobs for them! Attempting to fix.")
     val resetCount = SignalDatabase.attachments.clearArchiveTransferStateForInProgressItems()
     Log.w(TAG, "Cleared the archive transfer state of $resetCount attachments.")

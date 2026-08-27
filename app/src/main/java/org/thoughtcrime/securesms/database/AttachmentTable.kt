@@ -55,6 +55,7 @@ import org.signal.core.util.logging.Log
 import org.signal.core.util.nullIfEmpty
 import org.signal.core.util.readToList
 import org.signal.core.util.readToSet
+import org.signal.core.util.readToSingleBoolean
 import org.signal.core.util.readToSingleInt
 import org.signal.core.util.readToSingleLong
 import org.signal.core.util.readToSingleObject
@@ -1492,7 +1493,8 @@ class AttachmentTable(
   /**
    * Returns sum of the file sizes of attachments that are not fully uploaded to the archive CDN.
    *
-   * Should be the same or subset of that returned by [getAttachmentsThatNeedArchiveUpload].
+   * Should be the same or subset of that returned by [getAttachmentsThatNeedArchiveUpload] and
+   * also match query in [areAnyAttachmentsPendingArchiveUpload].
    */
   fun getPendingArchiveUploadBytes(): Long {
     val archiveTransferStateFilter = "$ARCHIVE_TRANSFER_STATE NOT IN (${ArchiveTransferState.FINISHED.value}, ${ArchiveTransferState.PERMANENT_FAILURE.value})"
@@ -1508,6 +1510,26 @@ class AttachmentTable(
         """.trimIndent()
       )
       .readToSingleLong()
+  }
+
+  /**
+   * Whether any attachments are not fully uploaded to the archive CDN.
+   *
+   * Matches the rows summed by [getPendingArchiveUploadBytes], but stops at the first hit.
+   */
+  fun areAnyAttachmentsPendingArchiveUpload(): Boolean {
+    val archiveTransferStateFilter = "$ARCHIVE_TRANSFER_STATE NOT IN (${ArchiveTransferState.FINISHED.value}, ${ArchiveTransferState.PERMANENT_FAILURE.value})"
+    return readableDatabase
+      .rawQuery(
+        """
+          SELECT EXISTS (
+            SELECT 1
+            FROM $TABLE_NAME LEFT JOIN ${MessageTable.TABLE_NAME} ON $TABLE_NAME.$MESSAGE_ID = ${MessageTable.TABLE_NAME}.${MessageTable.ID}
+            WHERE ${buildAttachmentsThatCanArchiveQuery(archiveTransferStateFilter)}
+          )
+        """.trimIndent()
+      )
+      .readToSingleBoolean()
   }
 
   fun areAnyThumbnailsPendingUpload(): Boolean {
