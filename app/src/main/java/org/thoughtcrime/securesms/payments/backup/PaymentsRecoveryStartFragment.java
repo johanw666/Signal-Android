@@ -2,6 +2,7 @@ package org.thoughtcrime.securesms.payments.backup;
 
 import android.os.Bundle;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.TextView;
 
 import androidx.activity.OnBackPressedCallback;
@@ -11,6 +12,7 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.widget.Toolbar;
 import androidx.biometric.BiometricManager;
 import androidx.biometric.BiometricPrompt;
+import androidx.core.view.WindowInsetsCompat;
 import androidx.fragment.app.Fragment;
 import androidx.navigation.Navigation;
 
@@ -22,6 +24,7 @@ import org.thoughtcrime.securesms.BiometricDeviceLockContract;
 import org.thoughtcrime.securesms.R;
 import org.thoughtcrime.securesms.keyvalue.SignalStore;
 import org.signal.core.util.ServiceUtil;
+import org.thoughtcrime.securesms.util.SystemWindowInsetsSetter;
 import org.thoughtcrime.securesms.util.navigation.SafeNavigation;
 import org.thoughtcrime.securesms.util.views.LearnMoreTextView;
 import org.whispersystems.signalservice.api.payments.PaymentsConstants;
@@ -51,6 +54,10 @@ public class PaymentsRecoveryStartFragment extends Fragment {
     OnBackPressed                     onBackPressed = new OnBackPressed(state);
 
     finishOnConfirm = args.getFinishOnConfirm();
+
+    toolbar.getLayoutParams().height = ViewGroup.LayoutParams.WRAP_CONTENT;
+    SystemWindowInsetsSetter.attach(toolbar, getViewLifecycleOwner(), WindowInsetsCompat.Type.statusBars());
+    SystemWindowInsetsSetter.attach(view.findViewById(R.id.payments_recovery_start_fragment_scroll_view), getViewLifecycleOwner(), WindowInsetsCompat.Type.navigationBars());
 
     if (args.getIsRestore()) {
       title.setText(R.string.PaymentsRecoveryStartFragment__enter_recovery_phrase);
