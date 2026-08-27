@@ -120,9 +120,9 @@ class QuickRestoreQrViewModel(
 
     when (registerResult) {
       is RequestResult.Success -> {
-        val (response, keyMaterial) = registerResult.result
+        val (response, keyMaterial, aci) = registerResult.result
         Log.i(TAG, "[Register] Success! reregistration: ${response.reregistration}")
-        parentEventEmitter(RegistrationFlowEvent.Registered(keyMaterial.accountEntropyPool, response.storageCapable))
+        parentEventEmitter(RegistrationFlowEvent.Registered(aci, keyMaterial.accountEntropyPool, response.storageCapable))
         parentEventEmitter.navigateTo(
           RegistrationRoute.ArchiveRestoreSelection.forQuickRestore(
             aep = AccountEntropyPool(message.accountEntropyPool),
@@ -183,6 +183,7 @@ class QuickRestoreQrViewModel(
               errorMessage = null
             )
           }
+          is RegisterAccountError.InvalidReceiptCredentialPresentation,
           RegisterAccountError.TotpMissingOrIncorrect,
           RegisterAccountError.PostQuantumRatchetRequired -> {
             Log.w(TAG, "[Register] Unexpected registration error: $error")

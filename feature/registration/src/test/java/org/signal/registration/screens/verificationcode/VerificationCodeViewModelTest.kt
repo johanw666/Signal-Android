@@ -29,6 +29,7 @@ import org.junit.After
 import org.junit.Before
 import org.junit.Ignore
 import org.junit.Test
+import org.signal.core.models.ServiceId.ACI
 import org.signal.libsignal.net.RequestResult
 import org.signal.network.api.RegistrationApiV2.RegisterAccountError
 import org.signal.network.api.RegistrationApiV2.RegisterAccountResponse
@@ -40,16 +41,20 @@ import org.signal.network.api.RegistrationApiV2.VerificationCodeTransport
 import org.signal.registration.KeyMaterial
 import org.signal.registration.PendingRestoreOption
 import org.signal.registration.PreExistingRegistrationData
+import org.signal.registration.RegisteredAccountData
 import org.signal.registration.RegistrationFlowEvent
 import org.signal.registration.RegistrationFlowState
 import org.signal.registration.RegistrationRepository
 import org.signal.registration.RegistrationRoute
 import org.signal.registration.VerificationCodeRequest
+import java.util.UUID
 import kotlin.time.Duration.Companion.minutes
 import kotlin.time.Duration.Companion.seconds
 
 @OptIn(ExperimentalCoroutinesApi::class)
 class VerificationCodeViewModelTest {
+
+  private val testAci = ACI.from(UUID.fromString("aaaaaaaa-bbbb-cccc-dddd-eeeeeeeeeeee"))
 
   private val testDispatcher = StandardTestDispatcher()
 
@@ -552,7 +557,7 @@ class VerificationCodeViewModelTest {
     coEvery { mockRepository.submitVerificationCode(any(), any()) } returns
       RequestResult.Success(sessionMetadata)
     coEvery { mockRepository.registerAccountWithSession(any(), any(), any()) } returns
-      RequestResult.Success(registerResponse to keyMaterial)
+      RequestResult.Success(RegisteredAccountData(registerResponse, keyMaterial, testAci))
 
     viewModel.applyEvent(initialState, VerificationCodeScreenEvents.CodeEntered("123456"), stateEmitter)
 
@@ -582,7 +587,7 @@ class VerificationCodeViewModelTest {
     coEvery { mockRepository.submitVerificationCode(any(), any()) } returns
       RequestResult.Success(sessionMetadata)
     coEvery { mockRepository.registerAccountWithSession(any(), any(), any()) } returns
-      RequestResult.Success(registerResponse to keyMaterial)
+      RequestResult.Success(RegisteredAccountData(registerResponse, keyMaterial, testAci))
 
     viewModel.applyEvent(initialState, VerificationCodeScreenEvents.CodeEntered("123456"), stateEmitter)
 
@@ -608,7 +613,7 @@ class VerificationCodeViewModelTest {
     coEvery { mockRepository.submitVerificationCode(any(), any()) } returns
       RequestResult.Success(sessionMetadata)
     coEvery { mockRepository.registerAccountWithSession(any(), any(), any()) } returns
-      RequestResult.Success(registerResponse to keyMaterial)
+      RequestResult.Success(RegisteredAccountData(registerResponse, keyMaterial, testAci))
 
     viewModel.applyEvent(initialState, VerificationCodeScreenEvents.CodeEntered("123456"), stateEmitter)
 
@@ -634,7 +639,7 @@ class VerificationCodeViewModelTest {
     coEvery { mockRepository.submitVerificationCode(any(), any()) } returns
       RequestResult.Success(sessionMetadata)
     coEvery { mockRepository.registerAccountWithSession(any(), any(), any()) } returns
-      RequestResult.Success(registerResponse to keyMaterial)
+      RequestResult.Success(RegisteredAccountData(registerResponse, keyMaterial, testAci))
 
     viewModel.applyEvent(initialState, VerificationCodeScreenEvents.CodeEntered("123456"), stateEmitter)
 
@@ -701,7 +706,7 @@ class VerificationCodeViewModelTest {
         SubmitVerificationCodeError.SessionAlreadyVerifiedOrNoCodeRequested(verifiedSession)
       )
     coEvery { mockRepository.registerAccountWithSession(any(), any(), any()) } returns
-      RequestResult.Success(registerResponse to keyMaterial)
+      RequestResult.Success(RegisteredAccountData(registerResponse, keyMaterial, testAci))
 
     viewModel.applyEvent(initialState, VerificationCodeScreenEvents.CodeEntered("123456"), stateEmitter)
 

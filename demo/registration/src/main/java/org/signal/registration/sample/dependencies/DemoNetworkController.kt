@@ -44,6 +44,8 @@ import org.signal.libsignal.zkgroup.ServerSecretParams
 import org.signal.libsignal.zkgroup.VerificationFailedException
 import org.signal.libsignal.zkgroup.backups.BackupAuthCredentialRequestContext
 import org.signal.libsignal.zkgroup.backups.BackupAuthCredentialResponse
+import org.signal.libsignal.zkgroup.receipts.ClientZkReceiptOperations
+import org.signal.libsignal.zkgroup.receipts.ReceiptCredential
 import org.signal.libsignal.zkgroup.receipts.ReceiptCredentialPresentation
 import org.signal.libsignal.zkgroup.receipts.ReceiptCredentialRequest
 import org.signal.libsignal.zkgroup.receipts.ServerZkReceiptOperations
@@ -108,7 +110,6 @@ import java.time.Instant
 import java.time.temporal.ChronoUnit
 import java.util.Locale
 import java.util.UUID
-import kotlin.random.Random
 import kotlin.time.Duration
 import kotlin.time.Duration.Companion.days
 import kotlin.time.Duration.Companion.hours
@@ -202,13 +203,14 @@ class DemoNetworkController(
   }
 
   override suspend fun registerAccount(
-    e164: String,
+    e164: String?,
     password: String,
     sessionId: String?,
     recoveryPassword: String?,
+    receiptCredentialPresentation: ReceiptCredentialPresentation?,
     attributes: AccountAttributes,
     aciPreKeys: PreKeyCollection,
-    pniPreKeys: PreKeyCollection,
+    pniPreKeys: PreKeyCollection?,
     fcmToken: String?,
     skipDeviceTransfer: Boolean
   ): RequestResult<RegisterAccountResponse, RegisterAccountError> {
@@ -217,6 +219,7 @@ class DemoNetworkController(
       password = password,
       sessionId = sessionId,
       recoveryPassword = recoveryPassword,
+      receiptCredentialPresentation = receiptCredentialPresentation,
       attributes = attributes,
       aciPreKeys = aciPreKeys,
       pniPreKeys = pniPreKeys,
@@ -243,28 +246,8 @@ class DemoNetworkController(
     return RequestResult.Success(CreateLoginReceiptCredentialResult.Issued(response))
   }
 
-  /** The endpoint is not deployed yet, so the demo fabricates the account the service would have created. */
-  override suspend fun registerAccountWithoutPhoneNumber(
-    password: String,
-    receiptCredentialPresentation: ReceiptCredentialPresentation,
-    attributes: AccountAttributes,
-    aciPreKeys: PreKeyCollection,
-    fcmToken: String?,
-    skipDeviceTransfer: Boolean
-  ): RequestResult<RegisterAccountResponse, RegistrationApiV2.RegisterAccountWithoutPhoneNumberError> {
-    Log.i(TAG, "[registerAccountWithoutPhoneNumber] Returning a fabricated numberless account.")
-
-    return RequestResult.Success(
-      RegisterAccountResponse(
-        aci = UUID.randomUUID().toString(),
-        usernameHash = null,
-        usernameLinkHandle = null,
-        storageCapable = true,
-        entitlements = null,
-        authCredentialSalt = Base64.encodeWithPadding(Random.nextBytes(16)),
-        reregistration = false
-      )
-    )
+  override fun createReceiptCredentialPresentation(receiptCredential: ReceiptCredential): ReceiptCredentialPresentation {
+    return ClientZkReceiptOperations(demoReceiptServerSecretParams.publicParams).createReceiptCredentialPresentation(receiptCredential)
   }
 
   override suspend fun getFcmToken(): String? {

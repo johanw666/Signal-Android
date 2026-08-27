@@ -33,6 +33,7 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
+import androidx.compose.material3.TextField
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -82,6 +83,7 @@ fun SignalLoginPaymentScreen(
     state.dialogs.networkError -> stringResource(R.string.VerificationCodeScreen__network_error) to SignalLoginPaymentScreenEvents.NetworkErrorDialogDismissed
     state.dialogs.purchaseFailed -> stringResource(R.string.SignalLoginPaymentScreen__your_purchase_could_not_be_completed) to SignalLoginPaymentScreenEvents.PurchaseFailedDialogDismissed
     state.dialogs.unknownError -> stringResource(R.string.VerificationCodeScreen__an_unexpected_error_occurred) to SignalLoginPaymentScreenEvents.UnknownErrorDialogDismissed
+    state.dialogs.invalidReceiptCredential -> stringResource(R.string.SignalLoginPaymentScreen__this_receipt_credential_is_invalid) to SignalLoginPaymentScreenEvents.InvalidReceiptCredentialDialogDismissed
     else -> null
   }
 
@@ -132,6 +134,10 @@ private fun OnePaneLayout(
         Spacer(modifier = Modifier.height(32.dp))
 
         OptionCards(state = state, onEvent = onEvent)
+
+        if (state.showManualReceiptCredentialEntry) {
+          ManualReceiptCredentialEntry(state = state, onEvent = onEvent)
+        }
       }
     },
     footer = { Footer(params, state, scrollState.canScrollForward, onEvent) }
@@ -174,6 +180,10 @@ private fun TwoPaneLayout(
           .padding(paddingValues)
       ) {
         OptionCards(state = state, onEvent = onEvent)
+
+        if (state.showManualReceiptCredentialEntry) {
+          ManualReceiptCredentialEntry(state = state, onEvent = onEvent)
+        }
       }
     },
     footer = { Footer(params, state, firstPaneScrollState.canScrollForward || secondPaneScrollState.canScrollForward, onEvent) }
@@ -271,6 +281,29 @@ private fun OptionCards(
     FeatureRow(SignalIcons.DevicePhone.painter, stringResource(R.string.SignalLoginPaymentScreen__login_and_restore_your_account))
     FeatureRow(painterResource(R.drawable.symbol_heart_24), stringResource(R.string.SignalLoginPaymentScreen__thanks_for_supporting_signal))
   }
+}
+
+/**
+ * Testing escape hatch shown while the purchase flow is unfinished: pasting a base64-encoded receipt credential here
+ * lets us skip payment and register directly. Debug builds only.
+ */
+@Composable
+private fun ManualReceiptCredentialEntry(
+  state: SignalLoginPaymentState,
+  onEvent: (SignalLoginPaymentScreenEvents) -> Unit
+) {
+  Spacer(modifier = Modifier.height(16.dp))
+
+  TextField(
+    value = state.manualReceiptCredential.value,
+    onValueChange = { onEvent(SignalLoginPaymentScreenEvents.ManualReceiptCredentialChanged(ManualReceiptCredential(it))) },
+    label = { Text(stringResource(R.string.SignalLoginPaymentScreen__paste_a_receipt_credential)) },
+    enabled = !state.showSpinner,
+    maxLines = 3,
+    modifier = Modifier
+      .fillMaxWidth()
+      .testTag(TestTags.SIGNAL_LOGIN_PAYMENT_RECEIPT_CREDENTIAL_FIELD)
+  )
 }
 
 @Composable
@@ -372,6 +405,7 @@ private fun Footer(
         } else {
           Text(
             text = when {
+              state.manualReceiptCredential.isNotBlank -> stringResource(R.string.SignalLoginPaymentScreen__continue)
               state.selectedOption == Option.ExistingLogin -> stringResource(R.string.SignalLoginPaymentScreen__continue)
               state.formattedPrice != null -> stringResource(R.string.SignalLoginPaymentScreen__pay_s, state.formattedPrice)
               else -> stringResource(R.string.SignalLoginPaymentScreen__pay)
@@ -402,6 +436,20 @@ private fun SignalLoginPaymentScreenExistingLoginPreview() {
       state = SignalLoginPaymentState(
         formattedPrice = "$1.99",
         selectedOption = Option.ExistingLogin
+      ),
+      onEvent = {}
+    )
+  }
+}
+
+@AllDevicePreviews
+@Composable
+private fun SignalLoginPaymentScreenManualReceiptCredentialPreview() {
+  Previews.Preview {
+    SignalLoginPaymentScreen(
+      state = SignalLoginPaymentState(
+        formattedPrice = "$1.99",
+        manualReceiptCredential = ManualReceiptCredential("AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA")
       ),
       onEvent = {}
     )

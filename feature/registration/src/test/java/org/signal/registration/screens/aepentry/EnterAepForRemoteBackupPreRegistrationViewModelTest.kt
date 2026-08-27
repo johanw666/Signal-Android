@@ -18,18 +18,23 @@ import kotlinx.coroutines.test.runTest
 import org.junit.Before
 import org.junit.Test
 import org.signal.core.models.AccountEntropyPool
+import org.signal.core.models.ServiceId.ACI
 import org.signal.libsignal.net.RequestResult
 import org.signal.network.api.RegistrationApiV2.RegisterAccountError
 import org.signal.network.api.RegistrationApiV2.RegisterAccountResponse
 import org.signal.network.api.RegistrationApiV2.RegistrationLockResponse
 import org.signal.network.api.RegistrationApiV2.SvrCredentials
 import org.signal.registration.KeyMaterial
+import org.signal.registration.RegisteredAccountData
 import org.signal.registration.RegistrationFlowEvent
 import org.signal.registration.RegistrationRepository
 import org.signal.registration.RegistrationRoute
+import java.util.UUID
 import kotlin.time.Duration
 
 class EnterAepForRemoteBackupPreRegistrationViewModelTest {
+
+  private val testAci = ACI.from(UUID.fromString("aaaaaaaa-bbbb-cccc-dddd-eeeeeeeeeeee"))
 
   private lateinit var viewModel: EnterAepForRemoteBackupPreRegistrationViewModel
   private lateinit var mockRepository: RegistrationRepository
@@ -76,7 +81,7 @@ class EnterAepForRemoteBackupPreRegistrationViewModelTest {
     val initialState = EnterAepState(backupKey = VALID_AEP, isBackupKeyValid = true)
 
     coEvery { mockRepository.registerAccountWithRecoveryPassword(any(), any(), any(), any(), any(), any()) } returns
-      RequestResult.Success(mockResponse to mockKeyMaterial)
+      RequestResult.Success(RegisteredAccountData(mockResponse, mockKeyMaterial, testAci))
 
     viewModel.applyEvent(initialState, EnterAepEvents.Submit, stateEmitter)
 
@@ -99,7 +104,7 @@ class EnterAepForRemoteBackupPreRegistrationViewModelTest {
     val initialState = EnterAepState(backupKey = VALID_AEP, isBackupKeyValid = true)
 
     coEvery { mockRepository.registerAccountWithRecoveryPassword(any(), any(), any(), any(), any(), any()) } returns
-      RequestResult.Success(mockResponse to mockKeyMaterial)
+      RequestResult.Success(RegisteredAccountData(mockResponse, mockKeyMaterial, testAci))
 
     viewModel.applyEvent(initialState, EnterAepEvents.Submit, stateEmitter)
 
@@ -155,7 +160,7 @@ class EnterAepForRemoteBackupPreRegistrationViewModelTest {
     )
 
     coEvery { mockRepository.registerAccountWithRecoveryPassword(any(), any(), registrationLock = any<String>(), any(), any(), any()) } returns
-      RequestResult.Success(mockResponse to mockKeyMaterial)
+      RequestResult.Success(RegisteredAccountData(mockResponse, mockKeyMaterial, testAci))
     coEvery { mockRepository.registerAccountWithRecoveryPassword(any(), any(), registrationLock = null, any(), any(), any()) } returns
       RequestResult.NonSuccess(
         RegisterAccountError.RegistrationLock(registrationLockData)

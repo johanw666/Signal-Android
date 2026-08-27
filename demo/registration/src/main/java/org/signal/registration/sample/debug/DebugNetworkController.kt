@@ -12,6 +12,7 @@ import org.signal.core.models.ServiceId.ACI
 import org.signal.core.util.logging.Log
 import org.signal.libsignal.net.RequestResult
 import org.signal.libsignal.usernames.Username
+import org.signal.libsignal.zkgroup.receipts.ReceiptCredential
 import org.signal.libsignal.zkgroup.receipts.ReceiptCredentialPresentation
 import org.signal.libsignal.zkgroup.receipts.ReceiptCredentialRequest
 import org.signal.network.api.RegistrationApiV2.AccountAttributes
@@ -27,7 +28,6 @@ import org.signal.network.api.RegistrationApiV2.LoginPurchasePaymentProvider
 import org.signal.network.api.RegistrationApiV2.PreKeyCollection
 import org.signal.network.api.RegistrationApiV2.RegisterAccountError
 import org.signal.network.api.RegistrationApiV2.RegisterAccountResponse
-import org.signal.network.api.RegistrationApiV2.RegisterAccountWithoutPhoneNumberError
 import org.signal.network.api.RegistrationApiV2.RegisterAsLinkedDeviceError
 import org.signal.network.api.RegistrationApiV2.RequestVerificationCodeError
 import org.signal.network.api.RegistrationApiV2.RestoreMethod
@@ -130,13 +130,14 @@ class DebugNetworkController(
   }
 
   override suspend fun registerAccount(
-    e164: String,
+    e164: String?,
     password: String,
     sessionId: String?,
     recoveryPassword: String?,
+    receiptCredentialPresentation: ReceiptCredentialPresentation?,
     attributes: AccountAttributes,
     aciPreKeys: PreKeyCollection,
-    pniPreKeys: PreKeyCollection,
+    pniPreKeys: PreKeyCollection?,
     fcmToken: String?,
     skipDeviceTransfer: Boolean
   ): RequestResult<RegisterAccountResponse, RegisterAccountError> {
@@ -144,7 +145,7 @@ class DebugNetworkController(
       Log.d(TAG, "[registerAccount] Returning debug override")
       return it
     }
-    return delegate.registerAccount(e164, password, sessionId, recoveryPassword, attributes, aciPreKeys, pniPreKeys, fcmToken, skipDeviceTransfer)
+    return delegate.registerAccount(e164, password, sessionId, recoveryPassword, receiptCredentialPresentation, attributes, aciPreKeys, pniPreKeys, fcmToken, skipDeviceTransfer)
   }
 
   override suspend fun createLoginPurchaseReceiptCredential(
@@ -159,19 +160,9 @@ class DebugNetworkController(
     return delegate.createLoginPurchaseReceiptCredential(purchaseIdentifier, receiptCredentialRequest, paymentProvider)
   }
 
-  override suspend fun registerAccountWithoutPhoneNumber(
-    password: String,
-    receiptCredentialPresentation: ReceiptCredentialPresentation,
-    attributes: AccountAttributes,
-    aciPreKeys: PreKeyCollection,
-    fcmToken: String?,
-    skipDeviceTransfer: Boolean
-  ): RequestResult<RegisterAccountResponse, RegisterAccountWithoutPhoneNumberError> {
-    NetworkDebugState.getOverride<RequestResult<RegisterAccountResponse, RegisterAccountWithoutPhoneNumberError>>("registerAccountWithoutPhoneNumber")?.let {
-      Log.d(TAG, "[registerAccountWithoutPhoneNumber] Returning debug override")
-      return it
-    }
-    return delegate.registerAccountWithoutPhoneNumber(password, receiptCredentialPresentation, attributes, aciPreKeys, fcmToken, skipDeviceTransfer)
+  override fun createReceiptCredentialPresentation(receiptCredential: ReceiptCredential): ReceiptCredentialPresentation {
+    // No override support for pure computations
+    return delegate.createReceiptCredentialPresentation(receiptCredential)
   }
 
   override suspend fun getFcmToken(): String? {

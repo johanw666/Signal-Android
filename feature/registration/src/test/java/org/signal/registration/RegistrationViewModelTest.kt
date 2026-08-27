@@ -26,8 +26,10 @@ import org.junit.Before
 import org.junit.Test
 import org.signal.core.models.AccountEntropyPool
 import org.signal.core.models.MasterKey
+import org.signal.core.models.ServiceId.ACI
 import org.signal.network.api.RegistrationApiV2.SessionMetadata
 import org.signal.network.api.RegistrationApiV2.SvrCredentials
+import java.util.UUID
 
 @OptIn(ExperimentalCoroutinesApi::class)
 class RegistrationViewModelTest {
@@ -284,7 +286,7 @@ class RegistrationViewModelTest {
     val viewModel = RegistrationViewModel(mockRepository, SavedStateHandle())
     advanceUntilIdle()
 
-    viewModel.onEvent(RegistrationFlowEvent.Registered(AccountEntropyPool.generate(), storageCapable = false))
+    viewModel.onEvent(RegistrationFlowEvent.Registered(ACI.from(UUID.randomUUID()), AccountEntropyPool.generate(), storageCapable = false))
     advanceUntilIdle()
 
     coVerify(exactly = 0) { mockRepository.saveFlowState(any()) }
@@ -732,12 +734,14 @@ class RegistrationViewModelTest {
     advanceUntilIdle()
 
     val aep = AccountEntropyPool.generate()
+    val aci = ACI.from(UUID.randomUUID())
 
     val result = viewModel.applyEvent(
       RegistrationFlowState(),
-      RegistrationFlowEvent.Registered(aep, storageCapable = true)
+      RegistrationFlowEvent.Registered(aci, aep, storageCapable = true)
     )
 
+    assertThat(result.aci).isEqualTo(aci)
     assertThat(result.accountEntropyPool).isEqualTo(aep)
     assertThat(result.storageCapable).isTrue()
   }

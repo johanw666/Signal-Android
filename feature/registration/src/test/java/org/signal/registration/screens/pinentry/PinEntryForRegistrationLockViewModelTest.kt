@@ -21,6 +21,7 @@ import org.junit.Before
 import org.junit.Test
 import org.signal.core.models.AccountEntropyPool
 import org.signal.core.models.MasterKey
+import org.signal.core.models.ServiceId.ACI
 import org.signal.libsignal.net.RequestResult
 import org.signal.network.api.RegistrationApiV2.RegisterAccountError
 import org.signal.network.api.RegistrationApiV2.RegisterAccountResponse
@@ -31,14 +32,18 @@ import org.signal.registration.KeyMaterial
 import org.signal.registration.NetworkController
 import org.signal.registration.PendingRestoreOption
 import org.signal.registration.PreExistingRegistrationData
+import org.signal.registration.RegisteredAccountData
 import org.signal.registration.RegistrationFlowEvent
 import org.signal.registration.RegistrationFlowState
 import org.signal.registration.RegistrationRepository
 import org.signal.registration.RegistrationRoute
+import java.util.UUID
 import kotlin.time.Duration.Companion.days
 import kotlin.time.Duration.Companion.seconds
 
 class PinEntryForRegistrationLockViewModelTest {
+
+  private val testAci = ACI.from(UUID.fromString("aaaaaaaa-bbbb-cccc-dddd-eeeeeeeeeeee"))
 
   private lateinit var viewModel: PinEntryForRegistrationLockViewModel
   private lateinit var mockRepository: RegistrationRepository
@@ -87,7 +92,7 @@ class PinEntryForRegistrationLockViewModelTest {
     coEvery { mockRepository.restoreMasterKeyFromSvr(any(), any(), forRegistrationLock = true, isRegistered = false) } returns
       RequestResult.Success(NetworkController.MasterKeyResponse(masterKey))
     coEvery { mockRepository.registerAccountWithSession(any(), any(), any(), any()) } returns
-      RequestResult.Success(registerResponse to keyMaterial)
+      RequestResult.Success(RegisteredAccountData(registerResponse, keyMaterial, testAci))
 
     viewModel.applyEvent(initialState, PinEntryScreenEvents.PinEntered("123456"), parentEventEmitter, stateEmitter)
 
@@ -109,7 +114,7 @@ class PinEntryForRegistrationLockViewModelTest {
     coEvery { mockRepository.restoreMasterKeyFromSvr(any(), any(), forRegistrationLock = true, isRegistered = false) } returns
       RequestResult.Success(NetworkController.MasterKeyResponse(masterKey))
     coEvery { mockRepository.registerAccountWithSession(any(), any(), any(), any()) } returns
-      RequestResult.Success(registerResponse to keyMaterial)
+      RequestResult.Success(RegisteredAccountData(registerResponse, keyMaterial, testAci))
 
     viewModel.applyEvent(initialState, PinEntryScreenEvents.PinEntered("123456"), parentEventEmitter, stateEmitter)
 
@@ -136,7 +141,7 @@ class PinEntryForRegistrationLockViewModelTest {
     coEvery { mockRepository.restoreMasterKeyFromSvr(any(), any(), forRegistrationLock = true, isRegistered = false) } returns
       RequestResult.Success(NetworkController.MasterKeyResponse(masterKey))
     coEvery { mockRepository.registerAccountWithSession(any(), any(), any(), any()) } returns
-      RequestResult.Success(registerResponse to keyMaterial)
+      RequestResult.Success(RegisteredAccountData(registerResponse, keyMaterial, testAci))
 
     viewModel.applyEvent(initialState, PinEntryScreenEvents.PinEntered("123456"), parentEventEmitter, stateEmitter)
 
@@ -158,7 +163,7 @@ class PinEntryForRegistrationLockViewModelTest {
     coEvery { mockRepository.restoreMasterKeyFromSvr(any(), any(), forRegistrationLock = true, isRegistered = false) } returns
       RequestResult.Success(NetworkController.MasterKeyResponse(masterKey))
     coEvery { mockRepository.registerAccountWithSession(any(), any(), any(), any()) } returns
-      RequestResult.Success(createRegisterAccountResponse() to keyMaterial)
+      RequestResult.Success(RegisteredAccountData(createRegisterAccountResponse(), keyMaterial, testAci))
 
     viewModel.applyEvent(initialState, PinEntryScreenEvents.PinEntered("123456"), parentEventEmitter, stateEmitter)
 
@@ -185,7 +190,7 @@ class PinEntryForRegistrationLockViewModelTest {
     coEvery { mockRepository.restoreMasterKeyFromSvr(any(), any(), forRegistrationLock = true, isRegistered = false) } returns
       RequestResult.Success(NetworkController.MasterKeyResponse(masterKey))
     coEvery { mockRepository.registerAccountWithSession(any(), any(), any(), any()) } returns
-      RequestResult.Success(createRegisterAccountResponse() to keyMaterial)
+      RequestResult.Success(RegisteredAccountData(createRegisterAccountResponse(), keyMaterial, testAci))
 
     viewModel.applyEvent(initialState, PinEntryScreenEvents.PinEntered("123456"), parentEventEmitter, stateEmitter)
 
@@ -318,7 +323,7 @@ class PinEntryForRegistrationLockViewModelTest {
     coEvery { mockRepository.restoreMasterKeyFromSvr(any(), any(), forRegistrationLock = true, isRegistered = false) } returns
       RequestResult.Success(NetworkController.MasterKeyResponse(masterKey))
     coEvery { mockRepository.registerAccountWithRecoveryPassword(any(), any(), any(), any()) } returns
-      RequestResult.Success(registerResponse to keyMaterial)
+      RequestResult.Success(RegisteredAccountData(registerResponse, keyMaterial, testAci))
 
     viewModel.applyEvent(initialState, PinEntryScreenEvents.PinEntered("123456"), parentEventEmitter, stateEmitter)
 
@@ -573,7 +578,7 @@ class PinEntryForRegistrationLockViewModelTest {
     coEvery { mockRepository.restoreMasterKeyFromSvr(any(), any(), any(), any()) } returns
       RequestResult.Success(NetworkController.MasterKeyResponse(masterKey))
     coEvery { mockRepository.registerAccountWithSession(any(), any(), any(), any()) } returns
-      RequestResult.Success(registerResponse to keyMaterial)
+      RequestResult.Success(RegisteredAccountData(registerResponse, keyMaterial, testAci))
 
     viewModel.applyEvent(initialState, PinEntryScreenEvents.PinEntered("123456"), parentEventEmitter, stateEmitter)
 

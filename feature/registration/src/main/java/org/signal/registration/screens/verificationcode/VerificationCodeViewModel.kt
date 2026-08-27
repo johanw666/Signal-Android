@@ -370,9 +370,9 @@ class VerificationCodeViewModel(
 
     return when (registerResult) {
       is RequestResult.Success -> {
-        val (response, keyMaterial) = registerResult.result
+        val (response, keyMaterial, aci) = registerResult.result
 
-        parentEventEmitter(RegistrationFlowEvent.Registered(keyMaterial.accountEntropyPool, response.storageCapable))
+        parentEventEmitter(RegistrationFlowEvent.Registered(aci, keyMaterial.accountEntropyPool, response.storageCapable))
 
         val pendingRestore = pendingRestoreNavigation()
         when {
@@ -417,6 +417,7 @@ class VerificationCodeViewModel(
           is RegisterAccountError.RegistrationRecoveryPasswordIncorrect -> {
             error("[Register] Got told the registration recovery password incorrect. We don't use the RRP in this flow, and should never get this error. Resetting. Message: ${error.message}")
           }
+          is RegisterAccountError.InvalidReceiptCredentialPresentation,
           RegisterAccountError.TotpMissingOrIncorrect,
           RegisterAccountError.PostQuantumRatchetRequired -> {
             Log.w(TAG, "[Register] Unexpected error when registering account: $error")

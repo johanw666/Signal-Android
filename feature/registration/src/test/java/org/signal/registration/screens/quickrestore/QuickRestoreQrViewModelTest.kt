@@ -28,6 +28,7 @@ import org.junit.After
 import org.junit.Before
 import org.junit.Test
 import org.signal.core.models.AccountEntropyPool
+import org.signal.core.models.ServiceId.ACI
 import org.signal.libsignal.net.RequestResult
 import org.signal.network.api.RegistrationApiV2.RegisterAccountError
 import org.signal.network.api.RegistrationApiV2.RegisterAccountResponse
@@ -35,13 +36,17 @@ import org.signal.network.api.RegistrationApiV2.RegistrationLockResponse
 import org.signal.network.api.RegistrationApiV2.SvrCredentials
 import org.signal.registration.KeyMaterial
 import org.signal.registration.NetworkController
+import org.signal.registration.RegisteredAccountData
 import org.signal.registration.RegistrationFlowEvent
 import org.signal.registration.RegistrationRepository
 import org.signal.registration.RegistrationRoute
 import org.signal.registration.fakes.FakeNetworkController
+import java.util.UUID
 
 @OptIn(ExperimentalCoroutinesApi::class)
 class QuickRestoreQrViewModelTest {
+
+  private val testAci = ACI.from(UUID.fromString("aaaaaaaa-bbbb-cccc-dddd-eeeeeeeeeeee"))
 
   private val testDispatcher = UnconfinedTestDispatcher()
 
@@ -174,7 +179,7 @@ class QuickRestoreQrViewModelTest {
         RegisterAccountError.RegistrationLock(registrationLockResponse())
       )
     coEvery { mockRepository.registerAccountWithProvisioningData(any(), provideRegistrationLock = true) } returns
-      RequestResult.Success(response to keyMaterial)
+      RequestResult.Success(RegisteredAccountData(response, keyMaterial, testAci))
 
     createViewModel()
     flow.emit(NetworkController.ProvisioningEvent.MessageReceived(message))

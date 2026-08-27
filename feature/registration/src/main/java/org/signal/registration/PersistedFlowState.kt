@@ -8,6 +8,7 @@ package org.signal.registration
 import kotlinx.serialization.Serializable
 import org.signal.core.models.AccountEntropyPool
 import org.signal.core.models.MasterKey
+import org.signal.core.models.ServiceId.ACI
 import org.signal.network.api.RegistrationApiV2.SessionMetadata
 
 /**
@@ -23,6 +24,7 @@ data class PersistedFlowState(
   val sessionMetadata: SessionMetadata?,
   val sessionE164: String?,
   val submittedVerificationCode: String? = null,
+  val aci: String? = null,
   val doNotAttemptRecoveryPassword: Boolean,
   val pendingRestoreOption: PendingRestoreOption? = null,
   val restoredAepValue: String? = null,
@@ -41,6 +43,7 @@ fun RegistrationFlowState.toPersistedFlowState(): PersistedFlowState {
     sessionMetadata = sessionMetadata,
     sessionE164 = sessionE164,
     submittedVerificationCode = submittedVerificationCode,
+    aci = aci?.toString(),
     doNotAttemptRecoveryPassword = doNotAttemptRecoveryPassword,
     pendingRestoreOption = pendingRestoreOption,
     restoredAepValue = unverifiedRestoredAep?.value,
@@ -69,6 +72,7 @@ fun PersistedFlowState.toRegistrationFlowState(
     sessionE164 = sessionE164,
     submittedVerificationCode = submittedVerificationCode,
     accountEntropyPool = accountEntropyPool,
+    aci = aci?.let { ACI.parseOrNull(it) },
     temporaryMasterKey = temporaryMasterKey,
     preExistingRegistrationData = preExistingRegistrationData,
     doNotAttemptRecoveryPassword = doNotAttemptRecoveryPassword,

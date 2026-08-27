@@ -112,6 +112,7 @@ import org.signal.registration.screens.restoreselection.RegisteredState
 import org.signal.registration.screens.signallogin.SignalLoginScreen
 import org.signal.registration.screens.signallogin.SignalLoginScreenActions
 import org.signal.registration.screens.signallogin.SignalLoginViewModel
+import org.signal.registration.screens.signallogindetails.SignalLoginViewDetailsViewModel
 import org.signal.registration.screens.signallogininfo.SignalLoginInfoScreen
 import org.signal.registration.screens.signallogininfo.SignalLoginInfoViewModel
 import org.signal.registration.screens.signalloginpayment.SignalLoginPaymentScreen
@@ -127,6 +128,7 @@ import org.signal.registration.screens.welcome.WelcomeScreenViewModel
 import org.signal.registration.util.AccountEntropyPoolParceler
 import org.signal.registration.util.SessionMetadataParceler
 import org.signal.registration.util.SvrCredentialsParceler
+import org.signal.signallogin.viewdetails.SignalLoginViewDetailsScreen
 
 /**
  * Navigation routes for the registration flow.
@@ -166,6 +168,10 @@ sealed interface RegistrationRoute : NavKey, Parcelable {
   /** Presents a freshly-purchased Signal Login and asks the user to save it. */
   @Serializable
   data object SignalLoginInfo : RegistrationRoute
+
+  /** Shows the full keys that make up the user's Signal Login and offers ways to save them. */
+  @Serializable
+  data object SignalLoginViewDetails : RegistrationRoute
 
   /** Log in with the account key of a Signal Login the user already owns. */
   @Serializable
@@ -658,6 +664,7 @@ private fun EntryProviderScope<NavKey>.navigationEntries(
     val viewModel: SignalLoginInfoViewModel = viewModel(
       factory = SignalLoginInfoViewModel.Factory(
         repository = registrationRepository,
+        parentState = registrationViewModel.state,
         parentEventEmitter = registrationViewModel::onEvent,
         isPasswordManagerAvailable = SignalCredentialManager.isSupported(context)
       )
@@ -665,6 +672,22 @@ private fun EntryProviderScope<NavKey>.navigationEntries(
     val state by viewModel.state.collectAsStateWithLifecycle()
 
     SignalLoginInfoScreen(
+      state = state,
+      onEvent = { viewModel.onEvent(it) }
+    )
+  }
+
+  // -- Signal Login View Details Screen
+  entry<RegistrationRoute.SignalLoginViewDetails> {
+    val viewModel: SignalLoginViewDetailsViewModel = viewModel(
+      factory = SignalLoginViewDetailsViewModel.Factory(
+        parentState = registrationViewModel.state,
+        parentEventEmitter = registrationViewModel::onEvent
+      )
+    )
+    val state by viewModel.state.collectAsStateWithLifecycle()
+
+    SignalLoginViewDetailsScreen(
       state = state,
       onEvent = { viewModel.onEvent(it) }
     )

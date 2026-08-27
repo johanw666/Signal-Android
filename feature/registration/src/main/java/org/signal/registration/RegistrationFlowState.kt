@@ -11,16 +11,19 @@ import kotlinx.parcelize.TypeParceler
 import kotlinx.serialization.Serializable
 import org.signal.core.models.AccountEntropyPool
 import org.signal.core.models.MasterKey
+import org.signal.core.models.ServiceId.ACI
 import org.signal.core.util.censor
 import org.signal.network.api.RegistrationApiV2.SessionMetadata
 import org.signal.registration.util.AccountEntropyPoolParceler
 import org.signal.registration.util.MasterKeyParceler
+import org.signal.registration.util.NullableACIParceler
 import org.signal.registration.util.NullableSessionMetadataParceler
 
 @Parcelize
 @TypeParceler<MasterKey?, MasterKeyParceler>
 @TypeParceler<AccountEntropyPool?, AccountEntropyPoolParceler>
 @TypeParceler<SessionMetadata?, NullableSessionMetadataParceler>
+@TypeParceler<ACI?, NullableACIParceler>
 data class RegistrationFlowState(
   /** The navigation stack. Controls what screen we're on and what the backstack looks like. */
   val backStack: List<RegistrationRoute> = listOf(RegistrationRoute.Welcome),
@@ -36,6 +39,9 @@ data class RegistrationFlowState(
 
   /** The AEP we generated as part of this registration. */
   val accountEntropyPool: AccountEntropyPool? = null,
+
+  /** The account identifier the server assigned (or re-confirmed) when this registration successfully created its account. */
+  val aci: ACI? = null,
 
   /** Whether the server reported that this account already has SVR/PIN data, captured from the registration response. */
   val storageCapable: Boolean = false,
@@ -71,7 +77,7 @@ data class RegistrationFlowState(
   val isRestoringNavigationState: Boolean = true
 ) : Parcelable {
   override fun toString(): String {
-    return "RegistrationFlowState(backStack=${backStack.joinToString()}, sessionMetadata=$sessionMetadata, sessionE164=$sessionE164, submittedVerificationCode=${submittedVerificationCode?.censor()}, accountEntropyPool=${accountEntropyPool?.displayValue?.censor()}, storageCapable=$storageCapable, temporaryMasterKey=${temporaryMasterKey?.toString()?.censor()}, preExistingRegistrationData=$preExistingRegistrationData, doNotAttemptRecoveryPassword=$doNotAttemptRecoveryPassword, pendingRestoreOption=$pendingRestoreOption, unverifiedRestoredAep=${unverifiedRestoredAep?.displayValue?.censor()}, restoreMethodToken=${restoreMethodToken?.censor()}, lastSmsVerificationCodeRequest=$lastSmsVerificationCodeRequest, lastCallVerificationCodeRequest=$lastCallVerificationCodeRequest, isRestoringNavigation=$isRestoringNavigationState)"
+    return "RegistrationFlowState(backStack=${backStack.joinToString()}, sessionMetadata=$sessionMetadata, sessionE164=$sessionE164, submittedVerificationCode=${submittedVerificationCode?.censor()}, accountEntropyPool=${accountEntropyPool?.displayValue?.censor()}, aci=${aci?.logString()}, storageCapable=$storageCapable, temporaryMasterKey=${temporaryMasterKey?.toString()?.censor()}, preExistingRegistrationData=$preExistingRegistrationData, doNotAttemptRecoveryPassword=$doNotAttemptRecoveryPassword, pendingRestoreOption=$pendingRestoreOption, unverifiedRestoredAep=${unverifiedRestoredAep?.displayValue?.censor()}, restoreMethodToken=${restoreMethodToken?.censor()}, lastSmsVerificationCodeRequest=$lastSmsVerificationCodeRequest, lastCallVerificationCodeRequest=$lastCallVerificationCodeRequest, isRestoringNavigation=$isRestoringNavigationState)"
   }
 }
 

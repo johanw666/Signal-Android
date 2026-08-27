@@ -7,6 +7,7 @@ package org.signal.registration
 
 import org.signal.core.models.AccountEntropyPool
 import org.signal.core.models.MasterKey
+import org.signal.core.models.ServiceId.ACI
 import org.signal.core.util.censor
 import org.signal.network.api.RegistrationApiV2.SessionMetadata
 import org.signal.network.api.RegistrationApiV2.VerificationCodeTransport
@@ -71,11 +72,12 @@ sealed interface RegistrationFlowEvent {
   /**
    * The user has successfully registered.
    *
+   * @param aci The account identifier the server assigned (or re-confirmed) in the registration response.
    * @param storageCapable Whether the server reports that this account already has SVR/PIN data, as returned in the
    * registration response. Used later (e.g. when skipping a restore) to decide between PIN entry and PIN creation.
    */
-  data class Registered(val accountEntropyPool: AccountEntropyPool, val storageCapable: Boolean) : RegistrationFlowEvent {
-    override fun toString(): String = "Registered(accountEntropyPool=${accountEntropyPool.displayValue.censor()}, storageCapable=$storageCapable)"
+  data class Registered(val aci: ACI, val accountEntropyPool: AccountEntropyPool, val storageCapable: Boolean) : RegistrationFlowEvent {
+    override fun toString(): String = "Registered(aci=${aci.logString()}, accountEntropyPool=${accountEntropyPool.displayValue.censor()}, storageCapable=$storageCapable)"
   }
 
   /** The master key has been restored from SVR. */

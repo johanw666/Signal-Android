@@ -1,0 +1,84 @@
+/*
+ * Copyright 2026 Signal Messenger, LLC
+ * SPDX-License-Identifier: AGPL-3.0-only
+ */
+
+package org.signal.registration.screens.signallogindetails
+
+import androidx.annotation.VisibleForTesting
+import androidx.lifecycle.ViewModel
+import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.viewModelScope
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.launchIn
+import kotlinx.coroutines.flow.onEach
+import org.signal.core.ui.compose.EventDrivenViewModel
+import org.signal.core.util.logging.Log
+import org.signal.registration.RegistrationFlowEvent
+import org.signal.registration.RegistrationFlowState
+import org.signal.registration.screens.util.navigateBack
+import org.signal.signallogin.viewdetails.SignalLoginViewDetailsScreen
+import org.signal.signallogin.viewdetails.SignalLoginViewDetailsScreenEvents
+import org.signal.signallogin.viewdetails.SignalLoginViewDetailsState
+
+/**
+ * View model backing [SignalLoginViewDetailsScreen] within the registration flow.
+ */
+class SignalLoginViewDetailsViewModel(
+  parentState: StateFlow<RegistrationFlowState>,
+  private val parentEventEmitter: (RegistrationFlowEvent) -> Unit
+) : EventDrivenViewModel<SignalLoginViewDetailsScreenEvents>(TAG) {
+
+  companion object {
+    private val TAG = Log.tag(SignalLoginViewDetailsViewModel::class)
+  }
+
+  private val _state = MutableStateFlow(
+    SignalLoginViewDetailsState(
+      accountKey = parentState.value.aci?.toString()?.uppercase().orEmpty(),
+      recoveryKey = parentState.value.accountEntropyPool?.displayValue.orEmpty()
+    )
+  )
+  val state: StateFlow<SignalLoginViewDetailsState> = _state.asStateFlow()
+
+  init {
+    _state
+      .onEach { Log.d(TAG, "[State] $it") }
+      .launchIn(viewModelScope)
+  }
+
+  override suspend fun processEvent(event: SignalLoginViewDetailsScreenEvents) {
+    applyEvent(event, parentEventEmitter)
+  }
+
+  @VisibleForTesting
+  fun applyEvent(event: SignalLoginViewDetailsScreenEvents, parentEventEmitter: (RegistrationFlowEvent) -> Unit) {
+    when (event) {
+      is SignalLoginViewDetailsScreenEvents.BackClicked -> {
+        parentEventEmitter.navigateBack()
+      }
+
+      is SignalLoginViewDetailsScreenEvents.SaveToPasswordManagerClicked -> {
+        // TODO [phonenumberless] Store the credentials via the credential manager.
+        Log.i(TAG, "Save to password manager clicked, but the flow isn't implemented yet.")
+      }
+
+      is SignalLoginViewDetailsScreenEvents.SaveAsPdfClicked -> {
+        // TODO [phonenumberless] Render the credentials to a PDF and hand it to the user.
+        Log.i(TAG, "Save as PDF clicked, but the flow isn't implemented yet.")
+      }
+    }
+  }
+
+  class Factory(
+    private val parentState: StateFlow<RegistrationFlowState>,
+    private val parentEventEmitter: (RegistrationFlowEvent) -> Unit
+  ) : ViewModelProvider.Factory {
+    @Suppress("UNCHECKED_CAST")
+    override fun <T : ViewModel> create(modelClass: Class<T>): T {
+      return SignalLoginViewDetailsViewModel(parentState, parentEventEmitter) as T
+    }
+  }
+}

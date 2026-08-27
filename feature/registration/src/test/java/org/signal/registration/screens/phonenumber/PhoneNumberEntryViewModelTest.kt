@@ -32,6 +32,7 @@ import org.junit.After
 import org.junit.Before
 import org.junit.Test
 import org.signal.core.models.AccountEntropyPool
+import org.signal.core.models.ServiceId.ACI
 import org.signal.libsignal.net.RequestResult
 import org.signal.network.api.RegistrationApiV2.CheckSvrCredentialsError
 import org.signal.network.api.RegistrationApiV2.CheckSvrCredentialsResponse
@@ -46,6 +47,7 @@ import org.signal.network.api.RegistrationApiV2.ThirdPartyServiceErrorResponse
 import org.signal.network.api.RegistrationApiV2.UpdateSessionError
 import org.signal.registration.KeyMaterial
 import org.signal.registration.PreExistingRegistrationData
+import org.signal.registration.RegisteredAccountData
 import org.signal.registration.RegistrationFlowEvent
 import org.signal.registration.RegistrationFlowState
 import org.signal.registration.RegistrationRepository
@@ -53,10 +55,13 @@ import org.signal.registration.RegistrationRoute
 import org.signal.registration.VerificationCodeRequest
 import org.signal.registration.screens.localbackuprestore.LocalBackupRestoreResult
 import java.io.IOException
+import java.util.UUID
 import kotlin.time.Duration.Companion.seconds
 
 @OptIn(ExperimentalCoroutinesApi::class)
 class PhoneNumberEntryViewModelTest {
+
+  private val testAci = ACI.from(UUID.fromString("aaaaaaaa-bbbb-cccc-dddd-eeeeeeeeeeee"))
 
   private lateinit var viewModel: PhoneNumberEntryViewModel
   private lateinit var mockRepository: RegistrationRepository
@@ -1569,7 +1574,7 @@ class PhoneNumberEntryViewModelTest {
     val registerResponse = createRegisterAccountResponse(storageCapable = true)
 
     coEvery { mockRepository.registerAccountWithRecoveryPassword(any(), any(), any(), any(), any()) } returns
-      RequestResult.Success(registerResponse to keyMaterial)
+      RequestResult.Success(RegisteredAccountData(registerResponse, keyMaterial, testAci))
 
     val initialState = PhoneNumberEntryState(
       countryCode = "1",
@@ -1596,7 +1601,7 @@ class PhoneNumberEntryViewModelTest {
     val registerResponse = createRegisterAccountResponse(storageCapable = false)
 
     coEvery { mockRepository.registerAccountWithRecoveryPassword(any(), any(), any(), any(), any()) } returns
-      RequestResult.Success(registerResponse to keyMaterial)
+      RequestResult.Success(RegisteredAccountData(registerResponse, keyMaterial, testAci))
 
     val initialState = PhoneNumberEntryState(
       countryCode = "1",
@@ -1702,7 +1707,7 @@ class PhoneNumberEntryViewModelTest {
     )
 
     coEvery { mockRepository.registerAccountWithRecoveryPassword(any(), any(), registrationLock = any<String>(), any(), any(), any()) } returns
-      RequestResult.Success(response to keyMaterial)
+      RequestResult.Success(RegisteredAccountData(response, keyMaterial, testAci))
     coEvery { mockRepository.registerAccountWithRecoveryPassword(any(), any(), registrationLock = null, any(), any(), any()) } returns
       RequestResult.NonSuccess(
         RegisterAccountError.RegistrationLock(registrationLockData)

@@ -310,9 +310,9 @@ class PhoneNumberEntryViewModel(
       when (val registerResult = repository.registerAccountWithRecoveryPassword(e164, recoveryPassword, registrationLock, skipDeviceTransfer = true, state.preExistingRegistrationData)) {
         is RequestResult.Success -> {
           Log.i(TAG, "[Register] Successfully re-registered using RRP from pre-existing data.")
-          val (response, keyMaterial) = registerResult.result
+          val (response, keyMaterial, aci) = registerResult.result
 
-          parentEventEmitter(RegistrationFlowEvent.Registered(keyMaterial.accountEntropyPool, response.storageCapable))
+          parentEventEmitter(RegistrationFlowEvent.Registered(aci, keyMaterial.accountEntropyPool, response.storageCapable))
 
           if (response.storageCapable) {
             parentEventEmitter.navigateTo(RegistrationRoute.PinEntryForSvrRestore)
@@ -354,6 +354,7 @@ class PhoneNumberEntryViewModel(
               parentEventEmitter(RegistrationFlowEvent.RecoveryPasswordInvalid)
               state = state.copy(preExistingRegistrationData = null)
             }
+            is RegisterAccountError.InvalidReceiptCredentialPresentation,
             RegisterAccountError.TotpMissingOrIncorrect,
             RegisterAccountError.PostQuantumRatchetRequired -> {
               Log.w(TAG, "[Register] Unexpected registration error: $error")
@@ -414,9 +415,9 @@ class PhoneNumberEntryViewModel(
     return when (val result = repository.registerAccountWithRecoveryPassword(e164, recoveryPassword, registrationLock, existingAccountEntropyPool = aep)) {
       is RequestResult.Success -> {
         Log.i(TAG, "[LocalRestore] Successfully registered using RRP from restored AEP.")
-        val (response, keyMaterial) = result.result
+        val (response, keyMaterial, aci) = result.result
 
-        parentEventEmitter(RegistrationFlowEvent.Registered(keyMaterial.accountEntropyPool, response.storageCapable))
+        parentEventEmitter(RegistrationFlowEvent.Registered(aci, keyMaterial.accountEntropyPool, response.storageCapable))
 
         if (response.storageCapable) {
           parentEventEmitter.navigateTo(RegistrationRoute.PinEntryForSvrRestore)
@@ -464,6 +465,7 @@ class PhoneNumberEntryViewModel(
             Log.w(TAG, "[LocalRestore] Device transfer possible. Falling back to session-based registration.")
             applySessionBasedRegistration(state, e164, parentEventEmitter)
           }
+          is RegisterAccountError.InvalidReceiptCredentialPresentation,
           RegisterAccountError.TotpMissingOrIncorrect,
           RegisterAccountError.PostQuantumRatchetRequired -> {
             Log.w(TAG, "[LocalRestore] Unexpected registration error: $error")

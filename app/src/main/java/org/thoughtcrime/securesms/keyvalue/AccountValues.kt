@@ -250,6 +250,13 @@ class AccountValues internal constructor(store: KeyValueStore, context: Context)
     putString(KEY_E164, e164)
   }
 
+  /**
+   * True if the local user is registered as the primary device of an account that has no phone number. Such accounts
+   * have no PNI at all, which is what distinguishes them.
+   */
+  val isPhoneNumberless: Boolean
+    get() = isRegistered && isPrimaryDevice && pni == null
+
   /** Wipes all local knowledge of the user's E164 and PNI, including the PNI identity and pre-key metadata. */
   fun clearE164AndPni() {
     store

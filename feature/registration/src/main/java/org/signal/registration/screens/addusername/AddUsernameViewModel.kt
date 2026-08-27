@@ -29,8 +29,6 @@ import org.signal.network.service.UsernameService.ConfirmUsernameError
 import org.signal.network.service.UsernameService.ReserveUsernameError
 import org.signal.registration.RegistrationFlowEvent
 import org.signal.registration.RegistrationRepository
-import org.signal.registration.RegistrationRoute
-import org.signal.registration.screens.util.navigateTo
 import org.whispersystems.signalservice.api.util.discriminator
 import kotlin.time.Duration.Companion.milliseconds
 
@@ -228,7 +226,7 @@ class AddUsernameViewModel(
 
   private fun applySkipClicked(parentEventEmitter: (RegistrationFlowEvent) -> Unit) {
     Log.i(TAG, "Skipping username creation.")
-    parentEventEmitter.navigateTo(RegistrationRoute.Profile, popCurrent = true)
+    parentEventEmitter(RegistrationFlowEvent.RegistrationComplete)
   }
 
   private suspend fun applyNextClicked(
@@ -246,7 +244,7 @@ class AddUsernameViewModel(
     when (val result = repository.confirmUsername(reservation)) {
       is RequestResult.Success -> {
         Log.i(TAG, "Username confirmed.")
-        parentEventEmitter.navigateTo(RegistrationRoute.Profile, popCurrent = true)
+        parentEventEmitter(RegistrationFlowEvent.RegistrationComplete)
       }
 
       is RequestResult.NonSuccess -> when (result.error) {

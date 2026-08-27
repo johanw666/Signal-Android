@@ -13,6 +13,7 @@ import org.signal.core.models.ServiceId.ACI
 import org.signal.libsignal.net.RequestResult
 import org.signal.libsignal.protocol.IdentityKeyPair
 import org.signal.libsignal.usernames.Username
+import org.signal.libsignal.zkgroup.receipts.ReceiptCredential
 import org.signal.libsignal.zkgroup.receipts.ReceiptCredentialPresentation
 import org.signal.libsignal.zkgroup.receipts.ReceiptCredentialRequest
 import org.signal.network.api.RegistrationApiV2.AccountAttributes
@@ -28,7 +29,6 @@ import org.signal.network.api.RegistrationApiV2.LoginPurchasePaymentProvider
 import org.signal.network.api.RegistrationApiV2.PreKeyCollection
 import org.signal.network.api.RegistrationApiV2.RegisterAccountError
 import org.signal.network.api.RegistrationApiV2.RegisterAccountResponse
-import org.signal.network.api.RegistrationApiV2.RegisterAccountWithoutPhoneNumberError
 import org.signal.network.api.RegistrationApiV2.RegisterAsLinkedDeviceError
 import org.signal.network.api.RegistrationApiV2.RequestVerificationCodeError
 import org.signal.network.api.RegistrationApiV2.RestoreMethod
@@ -87,7 +87,7 @@ class FakeNetworkController(
   }
 
   data class UpdateSessionRequest(val sessionId: String?, val pushChallengeToken: String?, val captchaToken: String?)
-  data class RegisterAccountRequest(val e164: String, val sessionId: String?, val recoveryPassword: String?, val registrationLock: String?)
+  data class RegisterAccountRequest(val e164: String?, val sessionId: String?, val recoveryPassword: String?, val registrationLock: String?)
   data class SetPinRequest(val pin: String, val masterKey: MasterKey)
   data class RestoreMasterKeyRequest(val svrCredentials: SvrCredentials, val pin: String)
   data class SetRestoreMethodRequest(val token: String, val method: RestoreMethod)
@@ -269,7 +269,7 @@ class FakeNetworkController(
   }
 
   fun registerAccountResponse(
-    e164: String,
+    e164: String?,
     storageCapable: Boolean = false,
     reregistration: Boolean = false
   ): RegisterAccountResponse {
@@ -318,13 +318,14 @@ class FakeNetworkController(
   }
 
   override suspend fun registerAccount(
-    e164: String,
+    e164: String?,
     password: String,
     sessionId: String?,
     recoveryPassword: String?,
+    receiptCredentialPresentation: ReceiptCredentialPresentation?,
     attributes: AccountAttributes,
     aciPreKeys: PreKeyCollection,
-    pniPreKeys: PreKeyCollection,
+    pniPreKeys: PreKeyCollection?,
     fcmToken: String?,
     skipDeviceTransfer: Boolean
   ): RequestResult<RegisterAccountResponse, RegisterAccountError> {
@@ -339,14 +340,7 @@ class FakeNetworkController(
     paymentProvider: LoginPurchasePaymentProvider
   ): RequestResult<CreateLoginReceiptCredentialResult, CreateLoginReceiptCredentialError> = notExpected()
 
-  override suspend fun registerAccountWithoutPhoneNumber(
-    password: String,
-    receiptCredentialPresentation: ReceiptCredentialPresentation,
-    attributes: AccountAttributes,
-    aciPreKeys: PreKeyCollection,
-    fcmToken: String?,
-    skipDeviceTransfer: Boolean
-  ): RequestResult<RegisterAccountResponse, RegisterAccountWithoutPhoneNumberError> = notExpected()
+  override fun createReceiptCredentialPresentation(receiptCredential: ReceiptCredential): ReceiptCredentialPresentation = notExpected()
 
   override suspend fun getFcmToken(): String? = fcmToken
 

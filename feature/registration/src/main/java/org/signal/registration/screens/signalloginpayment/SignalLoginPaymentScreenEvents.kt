@@ -18,6 +18,9 @@ sealed class SignalLoginPaymentScreenEvents {
   /** The user selected one of the two options. */
   data class OptionSelected(val option: SignalLoginPaymentState.Option) : SignalLoginPaymentScreenEvents()
 
+  /** The user edited the manually-pasted receipt credential that skips the purchase flow. */
+  data class ManualReceiptCredentialChanged(val value: ManualReceiptCredential) : SignalLoginPaymentScreenEvents()
+
   /** The user tapped the primary action button, committing to the currently selected option. */
   data object ContinueClicked : SignalLoginPaymentScreenEvents()
 
@@ -29,4 +32,7 @@ sealed class SignalLoginPaymentScreenEvents {
 
   /** The user dismissed the failed-purchase dialog. */
   data object PurchaseFailedDialogDismissed : SignalLoginPaymentScreenEvents()
+
+  /** The user dismissed the invalid-receipt-credential dialog. */
+  data object InvalidReceiptCredentialDialogDismissed : SignalLoginPaymentScreenEvents()
 }

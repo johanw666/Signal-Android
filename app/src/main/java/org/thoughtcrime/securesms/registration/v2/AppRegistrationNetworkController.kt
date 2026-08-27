@@ -25,6 +25,7 @@ import org.signal.libsignal.protocol.IdentityKey
 import org.signal.libsignal.protocol.IdentityKeyPair
 import org.signal.libsignal.protocol.ecc.ECPrivateKey
 import org.signal.libsignal.usernames.Username
+import org.signal.libsignal.zkgroup.receipts.ReceiptCredential
 import org.signal.libsignal.zkgroup.receipts.ReceiptCredentialPresentation
 import org.signal.libsignal.zkgroup.receipts.ReceiptCredentialRequest
 import org.signal.network.NetworkResult
@@ -43,7 +44,6 @@ import org.signal.network.api.RegistrationApiV2.LoginPurchasePaymentProvider
 import org.signal.network.api.RegistrationApiV2.PreKeyCollection
 import org.signal.network.api.RegistrationApiV2.RegisterAccountError
 import org.signal.network.api.RegistrationApiV2.RegisterAccountResponse
-import org.signal.network.api.RegistrationApiV2.RegisterAccountWithoutPhoneNumberError
 import org.signal.network.api.RegistrationApiV2.RegisterAsLinkedDeviceError
 import org.signal.network.api.RegistrationApiV2.RequestVerificationCodeError
 import org.signal.network.api.RegistrationApiV2.RestoreMethod
@@ -173,13 +173,14 @@ class AppRegistrationNetworkController(
   }
 
   override suspend fun registerAccount(
-    e164: String,
+    e164: String?,
     password: String,
     sessionId: String?,
     recoveryPassword: String?,
+    receiptCredentialPresentation: ReceiptCredentialPresentation?,
     attributes: AccountAttributes,
     aciPreKeys: PreKeyCollection,
-    pniPreKeys: PreKeyCollection,
+    pniPreKeys: PreKeyCollection?,
     fcmToken: String?,
     skipDeviceTransfer: Boolean
   ): RequestResult<RegisterAccountResponse, RegisterAccountError> {
@@ -188,6 +189,7 @@ class AppRegistrationNetworkController(
       password = password,
       sessionId = sessionId,
       recoveryPassword = recoveryPassword,
+      receiptCredentialPresentation = receiptCredentialPresentation,
       attributes = attributes,
       aciPreKeys = aciPreKeys,
       pniPreKeys = pniPreKeys,
@@ -201,18 +203,15 @@ class AppRegistrationNetworkController(
     receiptCredentialRequest: ReceiptCredentialRequest,
     paymentProvider: LoginPurchasePaymentProvider
   ): RequestResult<CreateLoginReceiptCredentialResult, CreateLoginReceiptCredentialError> {
-    throw NotImplementedError()
+    return registrationApi.createLoginPurchaseReceiptCredential(
+      purchaseIdentifier = purchaseIdentifier,
+      receiptCredentialRequest = receiptCredentialRequest,
+      paymentProvider = paymentProvider
+    )
   }
 
-  override suspend fun registerAccountWithoutPhoneNumber(
-    password: String,
-    receiptCredentialPresentation: ReceiptCredentialPresentation,
-    attributes: AccountAttributes,
-    aciPreKeys: PreKeyCollection,
-    fcmToken: String?,
-    skipDeviceTransfer: Boolean
-  ): RequestResult<RegisterAccountResponse, RegisterAccountWithoutPhoneNumberError> {
-    throw NotImplementedError()
+  override fun createReceiptCredentialPresentation(receiptCredential: ReceiptCredential): ReceiptCredentialPresentation {
+    return AppDependencies.clientZkReceiptOperations.createReceiptCredentialPresentation(receiptCredential)
   }
 
   override suspend fun getFcmToken(): String? {

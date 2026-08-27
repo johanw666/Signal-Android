@@ -217,6 +217,7 @@ class PinEntryForSmsBypassViewModel(
             parentEventEmitter(RegistrationFlowEvent.ResetState)
             state
           }
+          is RegisterAccountError.InvalidReceiptCredentialPresentation,
           RegisterAccountError.TotpMissingOrIncorrect,
           RegisterAccountError.PostQuantumRatchetRequired -> {
             Log.w(TAG, "[Register] Unexpected error when registering: $error")

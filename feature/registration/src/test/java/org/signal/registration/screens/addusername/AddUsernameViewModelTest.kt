@@ -31,7 +31,6 @@ import org.signal.network.service.UsernameService.ConfirmUsernameError
 import org.signal.network.service.UsernameService.ReserveUsernameError
 import org.signal.registration.RegistrationFlowEvent
 import org.signal.registration.RegistrationRepository
-import org.signal.registration.RegistrationRoute
 import java.io.IOException
 
 @OptIn(ExperimentalCoroutinesApi::class)
@@ -256,7 +255,7 @@ class AddUsernameViewModelTest {
   }
 
   @Test
-  fun `NextClicked confirms the reservation and advances to the profile screen`() = runTest(testDispatcher) {
+  fun `NextClicked confirms the reservation and completes registration`() = runTest(testDispatcher) {
     val reservation = Username("maya.45")
     coEvery { mockRepository.reserveUsername("maya") } returns RequestResult.Success(reservation)
     coEvery { mockRepository.confirmUsername(reservation) } returns RequestResult.Success(Unit)
@@ -266,7 +265,7 @@ class AddUsernameViewModelTest {
     viewModel.onEvent(AddUsernameScreenEvents.NextClicked)
     advanceUntilIdle()
 
-    assertThat(parentEvents).contains(RegistrationFlowEvent.NavigateToScreen(RegistrationRoute.Profile, popCurrent = true))
+    assertThat(parentEvents).contains(RegistrationFlowEvent.RegistrationComplete)
   }
 
   @Test
@@ -355,10 +354,10 @@ class AddUsernameViewModelTest {
   }
 
   @Test
-  fun `SkipClicked advances to the profile screen`() = runTest(testDispatcher) {
+  fun `SkipClicked completes registration`() = runTest(testDispatcher) {
     viewModel.onEvent(AddUsernameScreenEvents.SkipClicked)
     advanceUntilIdle()
 
-    assertThat(parentEvents).containsExactly(RegistrationFlowEvent.NavigateToScreen(RegistrationRoute.Profile, popCurrent = true))
+    assertThat(parentEvents).containsExactly(RegistrationFlowEvent.RegistrationComplete)
   }
 }

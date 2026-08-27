@@ -17,25 +17,15 @@ import org.signal.core.util.censor
  */
 data class SignalLoginInfoState(
   val aci: ServiceId.ACI? = null,
-  val recoveryKey: AccountEntropyPool? = null,
+  val aep: AccountEntropyPool? = null,
   val isPasswordManagerAvailable: Boolean = false,
   val showSpinner: Boolean = false,
   val dialogs: Dialogs = Dialogs()
 ) {
-  /** Full account identifier, as it should be displayed to the user. */
-  val accountDisplay: String
-    get() = aci?.toString()?.uppercase().orEmpty()
-
-  /** Full recovery key, as it should be displayed to the user. */
-  val recoveryDisplay: String
-    get() = recoveryKey?.displayValue.orEmpty()
-
-  override fun toString(): String = "SignalLoginInfoState(aci=${aci?.logString()}, recoveryKey=${recoveryKey?.value?.censor()}, " +
+  override fun toString(): String = "SignalLoginInfoState(aci=${aci?.logString()}, aep=${aep?.value?.censor()}, " +
     "isPasswordManagerAvailable=$isPasswordManagerAvailable, showSpinner=$showSpinner, dialogs=$dialogs)"
 
   data class Dialogs(
-    /** Shows the full, unmasked credentials. */
-    val credentialDetails: Boolean = false,
     val saveFailed: Boolean = false,
     val unknownError: Boolean = false
   )

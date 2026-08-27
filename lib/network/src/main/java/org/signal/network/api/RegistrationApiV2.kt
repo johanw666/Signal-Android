@@ -278,11 +278,17 @@ class RegistrationApiV2(
 
   /**
    * Submit the cryptographic assets required for an account to use the service.
-   * Must provide one of ([sessionId], [recoveryPassword]), but not both.
+   * Must provide exactly one of [sessionId], [recoveryPassword], or [receiptCredentialPresentation].
+   *
+   * Providing a [receiptCredentialPresentation] (issued by [createLoginPurchaseReceiptCredential]) registers an
+   * account that has no phone number. For that mode, [e164] and [pniPreKeys] must be null, [attributes] must have a
+   * null `pniRegistrationId` and a null `discoverableByPhoneNumber`, and the basic auth username is a placeholder the
+   * service ignores (it must not parse as an e164 or a UUID -- the service reads a UUID username as a request to
+   * recover the account with that ACI; re-registering an existing numberless account isn't supported yet).
    *
    * `POST /v1/registration`
    * - 200: Success, body is the account response
-   * - 400: Session id is invalid
+   * - 400: Session id (or receipt credential presentation) is invalid
    * - 401: Session not found or not verified
    * - 403: Registration recovery password is incorrect
    * - 409: Device transfer is possible
@@ -292,37 +298,49 @@ class RegistrationApiV2(
    * - 441: A TOTP is required, but none was provided or the provided one was incorrect
    * - 499: The client must support the post-quantum ratchet
    *
-   * @param e164 The phone number in E.164 format (used as username for basic auth)
+   * @param e164 The phone number in E.164 format (used as username for basic auth). Null when registering without a phone number.
    * @param password The password for basic auth
    * @param totp A TOTP one-time password, required when recovering an account that has TOTP keys.
    */
   suspend fun registerAccount(
-    e164: String,
+    e164: String?,
     password: String,
     sessionId: String?,
     recoveryPassword: String?,
+    receiptCredentialPresentation: ReceiptCredentialPresentation?,
     attributes: AccountAttributes,
     aciPreKeys: PreKeyCollection,
-    pniPreKeys: PreKeyCollection,
+    pniPreKeys: PreKeyCollection?,
     fcmToken: String?,
     skipDeviceTransfer: Boolean,
     totp: Int? = null
   ): RequestResult<RegisterAccountResponse, RegisterAccountError> {
-    require((sessionId != null) xor (recoveryPassword != null)) { "You must supply one and only one of either: Session ID, or Recovery Password." }
-    require(attributes.pniRegistrationId != null) { "Must send PNI key material when registering with a phone number." }
-    require(attributes.discoverableByPhoneNumber != null) { "Must set phone number discoverability when registering with a phone number." }
+    val phoneNumberless = receiptCredentialPresentation != null
+
+    require(listOfNotNull(sessionId, recoveryPassword, receiptCredentialPresentation).size == 1) { "You must supply exactly one of: Session ID, Recovery Password, or Receipt Credential Presentation." }
+    if (phoneNumberless) {
+      check(phonenumberlessRegistrationAllowed) { "Phone-number-less registration is not allowed in this build!" }
+      require(e164 == null && pniPreKeys == null) { "Must not send an e164 or PNI key material when registering without a phone number." }
+      require(attributes.pniRegistrationId == null) { "Must not send PNI key material when registering without a phone number." }
+      require(attributes.discoverableByPhoneNumber == null) { "Must not set phone number discoverability when registering without a phone number." }
+    } else {
+      require(e164 != null && pniPreKeys != null) { "Must send an e164 and PNI key material when registering with a phone number." }
+      require(attributes.pniRegistrationId != null) { "Must send PNI key material when registering with a phone number." }
+      require(attributes.discoverableByPhoneNumber != null) { "Must set phone number discoverability when registering with a phone number." }
+    }
 
     val body = RegisterAccountRequestBody(
       sessionId = sessionId,
       recoveryPassword = recoveryPassword,
+      receiptCredentialPresentation = receiptCredentialPresentation?.let { Base64.encodeWithPadding(it.serialize()) },
       totp = totp,
       accountAttributes = attributes,
       aciIdentityKey = Base64.encodeWithoutPadding(aciPreKeys.identityKey.serialize()),
-      pniIdentityKey = Base64.encodeWithoutPadding(pniPreKeys.identityKey.serialize()),
+      pniIdentityKey = pniPreKeys?.let { Base64.encodeWithoutPadding(it.identityKey.serialize()) },
       aciSignedPreKey = aciPreKeys.signedPreKey.toSignedPreKeyEntity(),
-      pniSignedPreKey = pniPreKeys.signedPreKey.toSignedPreKeyEntity(),
+      pniSignedPreKey = pniPreKeys?.signedPreKey?.toSignedPreKeyEntity(),
       aciPqLastResortPreKey = aciPreKeys.lastResortKyberPreKey.toKyberPreKeyEntity(),
-      pniPqLastResortPreKey = pniPreKeys.lastResortKyberPreKey.toKyberPreKeyEntity(),
+      pniPqLastResortPreKey = pniPreKeys?.lastResortKyberPreKey?.toKyberPreKeyEntity(),
       gcmToken = if (attributes.fetchesMessages) null else fcmToken?.let { GcmRegistrationId(it, true) },
       skipDeviceTransfer = skipDeviceTransfer
     )
@@ -332,8 +350,8 @@ class RegistrationApiV2(
         method = RequestSpec.Method.POST,
         host = RequestSpec.Host.Service,
         path = "/v1/registration",
-        body = body.toJsonRequestBody(),
-        auth = RequestSpec.Auth.Header("Authorization", basicAuth(e164, password))
+        body = if (phoneNumberless) body.toJsonRequestBodyOmittingNulls() else body.toJsonRequestBody(),
+        auth = RequestSpec.Auth.Header("Authorization", basicAuth(e164 ?: NO_NUMBER_AUTH_USERNAME, password))
       )
     )
 
@@ -341,7 +359,8 @@ class RegistrationApiV2(
       parseSuccess = { SignalJson.json.decodeFromString<RegisterAccountResponse>(it.bodyString()) },
       mapError = { error ->
         when (error.statusCode) {
-          400, 422 -> RegisterAccountError.InvalidRequest(error.bodyString())
+          400 -> if (phoneNumberless) RegisterAccountError.InvalidReceiptCredentialPresentation(error.bodyString()) else RegisterAccountError.InvalidRequest(error.bodyString())
+          422 -> RegisterAccountError.InvalidRequest(error.bodyString())
           401 -> RegisterAccountError.SessionNotFoundOrNotVerified(error.bodyString())
           403 -> RegisterAccountError.RegistrationRecoveryPasswordIncorrect(error.bodyString())
           409 -> RegisterAccountError.DeviceTransferPossible
@@ -357,7 +376,7 @@ class RegistrationApiV2(
 
   /**
    * Verifies a completed one-time Signal Login purchase with the payment provider and issues a receipt credential that
-   * can be redeemed via [registerAccountWithoutPhoneNumber] to create an account that has no phone number.
+   * can be redeemed via [registerAccount] to create an account that has no phone number.
    *
    * Must be called on an unauthenticated connection. Retries for the same [purchaseIdentifier] must reuse the same
    * [receiptCredentialRequest].
@@ -412,78 +431,6 @@ class RegistrationApiV2(
           404 -> CreateLoginReceiptCredentialError.PurchaseNotFound
           409 -> CreateLoginReceiptCredentialError.AlreadyRedeemed
           429 -> CreateLoginReceiptCredentialError.RateLimited(error.retryAfter())
-          else -> null
-        }
-      }
-    )
-  }
-
-  /**
-   * Registers an account that has no phone number, redeeming the [receiptCredentialPresentation] issued by
-   * [createLoginPurchaseReceiptCredential].
-   *
-   * The basic auth username is ignored by the service for a fresh numberless registration, but it must be present and
-   * must not parse as either an e164 or a UUID -- the service reads a UUID username as a request to recover the account
-   * with that ACI. (Re-registering an existing numberless account authenticates by ACI instead, and requires a TOTP if
-   * the account has TOTP keys; we don't support that flow yet.)
-   *
-   * PNI key material must not be sent for an account with no phone number, so [attributes] must have a null
-   * `pniRegistrationId` and a null `discoverableByPhoneNumber`.
-   *
-   * `POST /v1/registration`
-   * - 200: Success, body is the account response
-   * - 400: Receipt credential presentation is invalid
-   * - 409: Device transfer is possible
-   * - 422: Request is invalid
-   * - 429: Rate limited
-   * - 499: The client must support the post-quantum ratchet
-   *
-   * @param password The password for basic auth
-   */
-  suspend fun registerAccountWithoutPhoneNumber(
-    password: String,
-    receiptCredentialPresentation: ReceiptCredentialPresentation,
-    attributes: AccountAttributes,
-    aciPreKeys: PreKeyCollection,
-    fcmToken: String?,
-    skipDeviceTransfer: Boolean
-  ): RequestResult<RegisterAccountResponse, RegisterAccountWithoutPhoneNumberError> {
-    check(phonenumberlessRegistrationAllowed) { "Phone-number-less registration is not allowed in this build!" }
-    require(attributes.pniRegistrationId == null) { "Must not send PNI key material when registering without a phone number." }
-    require(attributes.discoverableByPhoneNumber == null) { "Must not set phone number discoverability when registering without a phone number." }
-
-    val body = RegisterAccountRequestBody(
-      receiptCredentialPresentation = Base64.encodeWithPadding(receiptCredentialPresentation.serialize()),
-      accountAttributes = attributes,
-      aciIdentityKey = Base64.encodeWithoutPadding(aciPreKeys.identityKey.serialize()),
-      pniIdentityKey = null,
-      aciSignedPreKey = aciPreKeys.signedPreKey.toSignedPreKeyEntity(),
-      pniSignedPreKey = null,
-      aciPqLastResortPreKey = aciPreKeys.lastResortKyberPreKey.toKyberPreKeyEntity(),
-      pniPqLastResortPreKey = null,
-      gcmToken = if (attributes.fetchesMessages) null else fcmToken?.let { GcmRegistrationId(it, true) },
-      skipDeviceTransfer = skipDeviceTransfer
-    )
-
-    val result = restClient.request(
-      RequestSpec(
-        method = RequestSpec.Method.POST,
-        host = RequestSpec.Host.Service,
-        path = "/v1/registration",
-        body = body.toJsonRequestBodyOmittingNulls(),
-        auth = RequestSpec.Auth.Header("Authorization", basicAuth(NO_NUMBER_AUTH_USERNAME, password))
-      )
-    )
-
-    return result.toTypedResult(
-      parseSuccess = { SignalJson.json.decodeFromString<RegisterAccountResponse>(it.bodyString()) },
-      mapError = { error ->
-        when (error.statusCode) {
-          400 -> RegisterAccountWithoutPhoneNumberError.InvalidReceiptCredentialPresentation(error.bodyString())
-          409 -> RegisterAccountWithoutPhoneNumberError.DeviceTransferPossible
-          422 -> RegisterAccountWithoutPhoneNumberError.InvalidRequest(error.bodyString())
-          429 -> RegisterAccountWithoutPhoneNumberError.RateLimited(error.retryAfter())
-          499 -> RegisterAccountWithoutPhoneNumberError.PostQuantumRatchetRequired
           else -> null
         }
       }
@@ -1003,16 +950,9 @@ class RegistrationApiV2(
 
     /** The service requires that the registering client support the post-quantum ratchet. */
     data object PostQuantumRatchetRequired : RegisterAccountError()
-  }
 
-  sealed class RegisterAccountWithoutPhoneNumberError : BadRequestError {
-    data class InvalidReceiptCredentialPresentation(val message: String) : RegisterAccountWithoutPhoneNumberError()
-    data object DeviceTransferPossible : RegisterAccountWithoutPhoneNumberError()
-    data class InvalidRequest(val message: String) : RegisterAccountWithoutPhoneNumberError()
-    data class RateLimited(val retryAfter: Duration) : RegisterAccountWithoutPhoneNumberError()
-
-    /** The service requires that the registering client support the post-quantum ratchet. */
-    data object PostQuantumRatchetRequired : RegisterAccountWithoutPhoneNumberError()
+    /** The receipt credential presentation redeemed for a registration with no phone number was invalid. */
+    data class InvalidReceiptCredentialPresentation(val message: String) : RegisterAccountError()
   }
 
   sealed class CreateLoginReceiptCredentialError : BadRequestError {

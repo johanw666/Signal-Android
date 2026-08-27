@@ -5,18 +5,14 @@
 
 package org.signal.registration.screens.signallogininfo
 
-sealed class SignalLoginInfoScreenEvents {
-  /** Emitted once when the screen is created to load the purchased credentials into the state. */
-  data object Initialize : SignalLoginInfoScreenEvents()
+import org.signal.registration.RegistrationFlowState
 
-  /** The user tapped the back arrow. */
-  data object BackClicked : SignalLoginInfoScreenEvents()
+sealed class SignalLoginInfoScreenEvents {
+  /** The parent registration flow state changed. */
+  data class ParentStateChanged(val parentState: RegistrationFlowState) : SignalLoginInfoScreenEvents()
 
   /** The user tapped "view details" on the credential card to reveal the full values. */
   data object ViewDetailsClicked : SignalLoginInfoScreenEvents()
-
-  /** The user dismissed the full-credential details. */
-  data object CredentialDetailsDismissed : SignalLoginInfoScreenEvents()
 
   /** The user chose to store the credentials with the system password manager. */
   data object SaveToPasswordManagerClicked : SignalLoginInfoScreenEvents()

@@ -12,8 +12,10 @@ import kotlinx.serialization.json.Json
 import org.junit.Test
 import org.signal.core.models.AccountEntropyPool
 import org.signal.core.models.MasterKey
+import org.signal.core.models.ServiceId.ACI
 import org.signal.network.api.RegistrationApiV2.SessionMetadata
 import org.signal.network.api.RegistrationApiV2.SvrCredentials
+import java.util.UUID
 
 class PersistedFlowStateTest {
 
@@ -179,6 +181,7 @@ class PersistedFlowStateTest {
       sessionE164 = "+15551234567",
       submittedVerificationCode = "123456",
       accountEntropyPool = AccountEntropyPool.generate(),
+      aci = ACI.from(UUID.fromString("3f8b6a90-8f9c-4a3e-9c7d-1f2e3a4b5c6d")),
       storageCapable = true,
       temporaryMasterKey = MasterKey(ByteArray(32)),
       doNotAttemptRecoveryPassword = true,
@@ -192,6 +195,7 @@ class PersistedFlowStateTest {
     assertThat(persisted.sessionMetadata).isEqualTo(session)
     assertThat(persisted.sessionE164).isEqualTo("+15551234567")
     assertThat(persisted.submittedVerificationCode).isEqualTo("123456")
+    assertThat(persisted.aci).isEqualTo("3f8b6a90-8f9c-4a3e-9c7d-1f2e3a4b5c6d")
     assertThat(persisted.doNotAttemptRecoveryPassword).isEqualTo(true)
     assertThat(persisted.storageCapable).isEqualTo(true)
     assertThat(persisted.smsVerificationCodeRequest).isEqualTo(VerificationCodeRequest("+15551234567", 12_345L))
@@ -215,6 +219,7 @@ class PersistedFlowStateTest {
       sessionMetadata = session,
       sessionE164 = "+15551234567",
       submittedVerificationCode = "123456",
+      aci = "3f8b6a90-8f9c-4a3e-9c7d-1f2e3a4b5c6d",
       doNotAttemptRecoveryPassword = true,
       storageCapable = true,
       smsVerificationCodeRequest = VerificationCodeRequest("+15551234567", 12_345L),
@@ -235,6 +240,7 @@ class PersistedFlowStateTest {
     assertThat(flowState.sessionE164).isEqualTo("+15551234567")
     assertThat(flowState.submittedVerificationCode).isEqualTo("123456")
     assertThat(flowState.accountEntropyPool).isEqualTo(aep)
+    assertThat(flowState.aci).isEqualTo(ACI.from(UUID.fromString("3f8b6a90-8f9c-4a3e-9c7d-1f2e3a4b5c6d")))
     assertThat(flowState.temporaryMasterKey).isEqualTo(masterKey)
     assertThat(flowState.preExistingRegistrationData).isNull()
     assertThat(flowState.doNotAttemptRecoveryPassword).isEqualTo(true)

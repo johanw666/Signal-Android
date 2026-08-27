@@ -173,8 +173,8 @@ class PinEntryForRegistrationLockViewModel(
     return when (registerResult) {
       is RequestResult.Success -> {
         Log.i(TAG, "[PinEntered] Successfully registered!")
-        val (response, keyMaterial) = registerResult.result
-        parentEventEmitter(RegistrationFlowEvent.Registered(keyMaterial.accountEntropyPool, response.storageCapable))
+        val (response, keyMaterial, aci) = registerResult.result
+        parentEventEmitter(RegistrationFlowEvent.Registered(aci, keyMaterial.accountEntropyPool, response.storageCapable))
         repository.enqueueSvrResetGuessCountJob()
         repository.restoreAccountRecord()
         val pendingRestore = pendingRestoreNavigation()
@@ -218,6 +218,7 @@ class PinEntryForRegistrationLockViewModel(
             parentEventEmitter.navigateBack()
             state
           }
+          is RegisterAccountError.InvalidReceiptCredentialPresentation,
           RegisterAccountError.TotpMissingOrIncorrect,
           RegisterAccountError.PostQuantumRatchetRequired -> {
             Log.w(TAG, "[PinEntered] Unexpected error when registering: $error")

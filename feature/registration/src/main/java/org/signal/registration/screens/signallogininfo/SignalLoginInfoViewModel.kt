@@ -17,18 +17,17 @@ import kotlinx.coroutines.flow.onEach
 import org.signal.core.ui.compose.EventDrivenViewModel
 import org.signal.core.util.logging.Log
 import org.signal.registration.RegistrationFlowEvent
+import org.signal.registration.RegistrationFlowState
 import org.signal.registration.RegistrationRepository
-import org.signal.registration.screens.util.navigateBack
+import org.signal.registration.RegistrationRoute
+import org.signal.registration.screens.util.navigateTo
 
 /**
  * View model for [SignalLoginInfoScreen].
- *
- * The credentials this screen displays come from a purchase endpoint that doesn't exist yet, so nothing is loaded and
- * neither save action does anything. Every event the screen can produce is routed here and handled explicitly so that
- * filling in the business logic is a matter of replacing the TODO branches.
  */
 class SignalLoginInfoViewModel(
   private val repository: RegistrationRepository,
+  parentState: StateFlow<RegistrationFlowState>,
   private val parentEventEmitter: (RegistrationFlowEvent) -> Unit,
   isPasswordManagerAvailable: Boolean
 ) : EventDrivenViewModel<SignalLoginInfoScreenEvents>(TAG) {
@@ -45,7 +44,9 @@ class SignalLoginInfoViewModel(
       .onEach { Log.d(TAG, "[State] $it") }
       .launchIn(viewModelScope)
 
-    onEvent(SignalLoginInfoScreenEvents.Initialize)
+    parentState
+      .onEach { onEvent(SignalLoginInfoScreenEvents.ParentStateChanged(it)) }
+      .launchIn(viewModelScope)
   }
 
   override suspend fun processEvent(event: SignalLoginInfoScreenEvents) {
@@ -60,30 +61,22 @@ class SignalLoginInfoViewModel(
     stateEmitter: (SignalLoginInfoState) -> Unit
   ) {
     when (event) {
-      is SignalLoginInfoScreenEvents.Initialize -> {
-        // TODO [phonenumberless] Load the purchased account identifier and recovery key.
-      }
-
-      is SignalLoginInfoScreenEvents.BackClicked -> {
-        parentEventEmitter.navigateBack()
+      is SignalLoginInfoScreenEvents.ParentStateChanged -> {
+        stateEmitter(state.copy(aci = event.parentState.aci, aep = event.parentState.accountEntropyPool))
       }
 
       is SignalLoginInfoScreenEvents.ViewDetailsClicked -> {
-        stateEmitter(state.copy(dialogs = state.dialogs.copy(credentialDetails = true)))
-      }
-
-      is SignalLoginInfoScreenEvents.CredentialDetailsDismissed -> {
-        stateEmitter(state.copy(dialogs = state.dialogs.copy(credentialDetails = false)))
+        parentEventEmitter.navigateTo(RegistrationRoute.SignalLoginViewDetails)
       }
 
       is SignalLoginInfoScreenEvents.SaveToPasswordManagerClicked -> {
-        // TODO [phonenumberless] Store the credentials via the credential manager, then advance the flow.
-        Log.i(TAG, "Save to password manager clicked, but the flow isn't implemented yet.")
+        // TODO [phonenumberless] Store the credentials via the credential manager before advancing.
+        parentEventEmitter.navigateTo(RegistrationRoute.AddUsername)
       }
 
       is SignalLoginInfoScreenEvents.SaveManuallyClicked -> {
-        // TODO [phonenumberless] Advance to the confirm-you-saved-it step.
-        Log.i(TAG, "Save manually clicked, but the flow isn't implemented yet.")
+        // TODO [phonenumberless] Advance to the confirm-you-saved-it step instead of skipping straight ahead.
+        parentEventEmitter.navigateTo(RegistrationRoute.AddUsername)
       }
 
       is SignalLoginInfoScreenEvents.SaveFailedDialogDismissed -> {
@@ -98,12 +91,13 @@ class SignalLoginInfoViewModel(
 
   class Factory(
     private val repository: RegistrationRepository,
+    private val parentState: StateFlow<RegistrationFlowState>,
     private val parentEventEmitter: (RegistrationFlowEvent) -> Unit,
     private val isPasswordManagerAvailable: Boolean
   ) : ViewModelProvider.Factory {
     @Suppress("UNCHECKED_CAST")
     override fun <T : ViewModel> create(modelClass: Class<T>): T {
-      return SignalLoginInfoViewModel(repository, parentEventEmitter, isPasswordManagerAvailable) as T
+      return SignalLoginInfoViewModel(repository, parentState, parentEventEmitter, isPasswordManagerAvailable) as T
     }
   }
 }

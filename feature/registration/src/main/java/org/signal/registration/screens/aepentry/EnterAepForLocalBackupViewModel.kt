@@ -128,10 +128,10 @@ class EnterAepForLocalBackupViewModel(
     when (val result = repository.registerAccountWithRecoveryPassword(e164, recoveryPassword, registrationLock, existingAccountEntropyPool = aep)) {
       is RequestResult.Success -> {
         Log.i(TAG, "[Submit] Successfully registered using RRP from user-supplied AEP. Proceeding with the restore.")
-        val (response, keyMaterial) = result.result
+        val (response, keyMaterial, aci) = result.result
 
         stateEmitter(inputState.copy(isRegistering = false))
-        parentEventEmitter(RegistrationFlowEvent.Registered(keyMaterial.accountEntropyPool, response.storageCapable))
+        parentEventEmitter(RegistrationFlowEvent.Registered(aci, keyMaterial.accountEntropyPool, response.storageCapable))
         resultBus.sendResult(resultKey, EnterAepForLocalBackupResult.RestoreReady(inputState.backupKey))
         parentEventEmitter.navigateBack()
       }
@@ -175,6 +175,7 @@ class EnterAepForLocalBackupViewModel(
           is RegisterAccountError.DeviceTransferPossible -> {
             error("[Submit] Device transfer possible. This should not happen with RRP-based registration.")
           }
+          is RegisterAccountError.InvalidReceiptCredentialPresentation,
           RegisterAccountError.TotpMissingOrIncorrect,
           RegisterAccountError.PostQuantumRatchetRequired -> {
             Log.w(TAG, "[Submit] Unexpected registration error: $error")

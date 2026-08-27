@@ -231,7 +231,8 @@ public abstract class PassphraseRequiredActivity extends BaseActivity implements
            !SignalStore.svr().hasPin() &&
            !SignalStore.svr().lastPinCreateFailed() &&
            !SignalStore.svr().hasOptedOut() &&
-           SignalStore.account().isPrimaryDevice();
+           SignalStore.account().isPrimaryDevice() &&
+           !SignalStore.account().isPhoneNumberless();
   }
 
   private boolean userMustSetProfileName() {
