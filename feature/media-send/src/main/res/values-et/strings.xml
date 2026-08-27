@@ -86,7 +86,7 @@
   <string name="MediaSelectScreen__signal_needs_access_to_show_your_photos_and_videos">Signal vajab su fotode ja videote näitamiseks ligipääsu.</string>
 
   <!-- Label for the button that switches the capture screen to taking a photo. -->
-  <string name="MediaCaptureScreen__photo">Photo</string>
+  <string name="MediaCaptureScreen__photo">Foto</string>
   <!-- Label for the button that switches the capture screen to recording a video. -->
   <string name="MediaCaptureScreen__video">Video</string>
   <!-- Label for the button that switches the capture screen to the text story editor. -->

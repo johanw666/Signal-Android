@@ -86,9 +86,9 @@
   <string name="MediaSelectScreen__signal_needs_access_to_show_your_photos_and_videos">Signal کو آپ کی تصاویر اور ویڈیوز دکھانے کے لیے رسائی کی ضرورت ہوتی ہے۔</string>
 
   <!-- Label for the button that switches the capture screen to taking a photo. -->
-  <string name="MediaCaptureScreen__photo">Photo</string>
+  <string name="MediaCaptureScreen__photo">تصویر</string>
   <!-- Label for the button that switches the capture screen to recording a video. -->
-  <string name="MediaCaptureScreen__video">Video</string>
+  <string name="MediaCaptureScreen__video">وڈیو</string>
   <!-- Label for the button that switches the capture screen to the text story editor. -->
   <string name="MediaCaptureScreen__text">متن</string>
 
@@ -184,7 +184,7 @@
   <!-- Accessibility label for the send button in media selection -->
   <string name="CameraXFragment_send">بھیجیں</string>
   <!-- Label shown below the elapsed time while a video recording is paused -->
-  <string name="CameraXFragment_paused">Paused</string>
+  <string name="CameraXFragment_paused">رک گیا</string>
   <!-- Displayed in a permissions dialog when the user has denied access to hardware for image and video capture. -->
   <string name="CameraXFragment_signal_needs_the_recording_permissions_to_capture_video">Signal کو ویڈیو ریکارڈ کرنے کے لیے مائکروفون کی اجازت کی ضرورت ہے، لیکن وہ تسلیم نہیں ہوں گے۔ برائے مہربانی ایپ کی ترتیبات میں جائیں، \"اجازت نامہ\" منتخب کریں، \"مائکروفون\" اور \"کیمرہ\" کو فعال کریں۔</string>
 

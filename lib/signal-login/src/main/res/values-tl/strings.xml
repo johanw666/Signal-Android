@@ -6,7 +6,7 @@
     <!-- Label for the recovery portion of the Signal Login on the credential card. -->
     <string name="SignalLoginCard__recovery">Recovery</string>
     <!-- Button on the credential card that reveals the full Signal Login. -->
-    <string name="SignalLoginCard__view_details">View details</string>
+    <string name="SignalLoginCard__view_details">Tingnan ang details</string>
 
     <!-- Signal Login view details screen -->
     <!-- Title of the screen that shows the user the full keys that make up their Signal Login. -->
@@ -18,7 +18,7 @@
     <!-- Section header above the recovery key. -->
     <string name="SignalLoginViewDetailsScreen__recovery_key">Recovery key</string>
     <!-- Action button that stores the Signal Login in the device password manager. -->
-    <string name="SignalLoginViewDetailsScreen__save_to_password_manager">Save to password manager</string>
+    <string name="SignalLoginViewDetailsScreen__save_to_password_manager">I-save sa password manager</string>
     <!-- Action button that saves the Signal Login as a PDF. -->
     <string name="SignalLoginViewDetailsScreen__save_as_pdf">Save as PDF</string>
 </resources>

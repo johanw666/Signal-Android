@@ -86,9 +86,9 @@
   <string name="MediaSelectScreen__signal_needs_access_to_show_your_photos_and_videos">మీ ఫోటోలు, వీడియోలను చూపడానికి Signal కు యాక్సెస్ అవసరం.</string>
 
   <!-- Label for the button that switches the capture screen to taking a photo. -->
-  <string name="MediaCaptureScreen__photo">Photo</string>
+  <string name="MediaCaptureScreen__photo">ఛాయాచిత్రం</string>
   <!-- Label for the button that switches the capture screen to recording a video. -->
-  <string name="MediaCaptureScreen__video">Video</string>
+  <string name="MediaCaptureScreen__video">వీడియో</string>
   <!-- Label for the button that switches the capture screen to the text story editor. -->
   <string name="MediaCaptureScreen__text">వచనం</string>
 

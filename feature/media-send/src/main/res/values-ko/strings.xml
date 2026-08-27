@@ -86,9 +86,9 @@
   <string name="MediaSelectScreen__signal_needs_access_to_show_your_photos_and_videos">사진과 동영상을 표시하려면 Signal에 액세스 권한이 필요합니다.</string>
 
   <!-- Label for the button that switches the capture screen to taking a photo. -->
-  <string name="MediaCaptureScreen__photo">Photo</string>
+  <string name="MediaCaptureScreen__photo">사진</string>
   <!-- Label for the button that switches the capture screen to recording a video. -->
-  <string name="MediaCaptureScreen__video">Video</string>
+  <string name="MediaCaptureScreen__video">동영상</string>
   <!-- Label for the button that switches the capture screen to the text story editor. -->
   <string name="MediaCaptureScreen__text">텍스트</string>
 
@@ -184,7 +184,7 @@
   <!-- Accessibility label for the send button in media selection -->
   <string name="CameraXFragment_send">전송</string>
   <!-- Label shown below the elapsed time while a video recording is paused -->
-  <string name="CameraXFragment_paused">Paused</string>
+  <string name="CameraXFragment_paused">일시 중지됨</string>
   <!-- Displayed in a permissions dialog when the user has denied access to hardware for image and video capture. -->
   <string name="CameraXFragment_signal_needs_the_recording_permissions_to_capture_video">Signal에서 동영상을 촬영하려면 마이크 권한이 필요하지만, 현재 권한이 차단되어 있습니다. 앱 설정 메뉴에서 \'권한\'을 선택한 후 \'마이크\'와 \'카메라\'를 허용해 주세요.</string>
 

@@ -86,9 +86,9 @@
   <string name="MediaSelectScreen__signal_needs_access_to_show_your_photos_and_videos">ਤੁਹਾਡੀਆਂ ਫ਼ੋਟੋਆਂ ਅਤੇ ਵੀਡੀਓ ਦਿਖਾਉਣ ਲਈ Signal ਨੂੰ ਪਹੁੰਚ ਚਾਹੀਦੀ ਹੈ।</string>
 
   <!-- Label for the button that switches the capture screen to taking a photo. -->
-  <string name="MediaCaptureScreen__photo">Photo</string>
+  <string name="MediaCaptureScreen__photo">ਫ਼ੋਟੋ</string>
   <!-- Label for the button that switches the capture screen to recording a video. -->
-  <string name="MediaCaptureScreen__video">Video</string>
+  <string name="MediaCaptureScreen__video">ਵੀਡੀਓ</string>
   <!-- Label for the button that switches the capture screen to the text story editor. -->
   <string name="MediaCaptureScreen__text">ਟੈਕਸਟ</string>
 

@@ -86,9 +86,9 @@
   <string name="MediaSelectScreen__signal_needs_access_to_show_your_photos_and_videos">Фотосуреттеріңіз бен бейнелеріңізді көрсету үшін Signal қолданбасына рұқсат керек.</string>
 
   <!-- Label for the button that switches the capture screen to taking a photo. -->
-  <string name="MediaCaptureScreen__photo">Photo</string>
+  <string name="MediaCaptureScreen__photo">Фотосурет</string>
   <!-- Label for the button that switches the capture screen to recording a video. -->
-  <string name="MediaCaptureScreen__video">Video</string>
+  <string name="MediaCaptureScreen__video">Бейнефайл</string>
   <!-- Label for the button that switches the capture screen to the text story editor. -->
   <string name="MediaCaptureScreen__text">Мәтін</string>
 

@@ -118,7 +118,7 @@
     <!-- Description of passkeys shown at the top of the screen -->
     <string name="PasskeysScreen__with_passkeys_you_can_easily_add">With passkeys you can easily add a secure second form of authentication to your account. Passkeys can use your device\'s biometrics or a compatible FIDO2 security key.</string>
     <!-- Clickable text that takes the user to a support article -->
-    <string name="PasskeysScreen__learn_more">Learn more</string>
+    <string name="PasskeysScreen__learn_more">Läs mer</string>
     <!-- Bullet point explaining that a passkey can be given a name -->
     <string name="PasskeysScreen__give_your_passkey_a_friendly_name">Give your passkey a friendly name to identify it</string>
     <!-- Bullet point explaining how a passkey is stored -->
@@ -132,13 +132,13 @@
     <!-- Button that starts creating a passkey once some already exist -->
     <string name="PasskeysScreen__add_a_new_passkey">Add a new passkey</string>
     <!-- Label under a passkey\'s name saying when it was added. The placeholder is a relative time like "today, 11:00 AM" -->
-    <string name="PasskeysScreen__added_s">Added %1$s</string>
+    <string name="PasskeysScreen__added_s">Lade till \"%1$s\"</string>
     <!-- Accessibility description of the button that opens a passkey\'s menu -->
     <string name="PasskeysScreen__open_passkey_options">Open passkey options</string>
     <!-- Menu option that renames a passkey -->
-    <string name="PasskeysScreen__rename">Rename</string>
+    <string name="PasskeysScreen__rename">Ändra namn</string>
     <!-- Menu option that removes a passkey -->
-    <string name="PasskeysScreen__remove">Remove</string>
+    <string name="PasskeysScreen__remove">Ta bort</string>
 
     <!-- AuthenticatorCodeEntryScreen -->
     <!-- Title of the screen where the user enters the code from their authenticator app -->
@@ -151,11 +151,11 @@
     <string name="AuthenticatorCodeEntryScreen__done">Klar</string>
     <!-- AuthenticatorAppsScreen -->
     <!-- Title of the screen listing the authenticator apps on the account -->
-    <string name="AuthenticatorAppsScreen__authenticator_app">Authenticator app</string>
+    <string name="AuthenticatorAppsScreen__authenticator_app">Autentiseringsapp</string>
     <!-- Description of what an authenticator app is for, shown at the top of the screen -->
     <string name="AuthenticatorAppsScreen__set_up_an_authenticator_app">Set up an authenticator app to generate one-time verification codes</string>
     <!-- Clickable text that takes the user to a support article -->
-    <string name="AuthenticatorAppsScreen__learn_more">Learn more</string>
+    <string name="AuthenticatorAppsScreen__learn_more">Läs mer</string>
     <!-- Button that starts setting up another authenticator app -->
     <string name="AuthenticatorAppsScreen__add_authenticator_app">Add authenticator app</string>
     <!-- Section header above the list of configured authenticator apps -->
@@ -163,13 +163,13 @@
     <!-- Shown in place of the list when no authenticator apps are configured -->
     <string name="AuthenticatorAppsScreen__no_authenticator_apps">No authenticator apps</string>
     <!-- Subtitle of an authenticator app row saying when it was configured. Placeholder is a date or time. -->
-    <string name="AuthenticatorAppsScreen__added_s">Added %1$s</string>
+    <string name="AuthenticatorAppsScreen__added_s">Lade till \"%1$s\"</string>
     <!-- Content description of the button that opens an authenticator app\'s options -->
     <string name="AuthenticatorAppsScreen__open_authenticator_app_options">Open authenticator app options</string>
     <!-- Menu option that renames an authenticator app -->
-    <string name="AuthenticatorAppsScreen__rename">Rename</string>
+    <string name="AuthenticatorAppsScreen__rename">Ändra namn</string>
     <!-- Menu option that removes an authenticator app -->
-    <string name="AuthenticatorAppsScreen__remove">Remove</string>
+    <string name="AuthenticatorAppsScreen__remove">Ta bort</string>
     <!-- Title of the dialog confirming removal of an authenticator app -->
     <string name="AuthenticatorAppsScreen__remove_authenticator_app">Remove authenticator app?</string>
     <!-- Body of the dialog confirming removal of an authenticator app -->
@@ -183,15 +183,15 @@
 
     <!-- AuthenticatorNameScreen -->
     <!-- Title of the screen where the user names an authenticator app -->
-    <string name="AuthenticatorNameScreen__choose_a_name">Choose a name</string>
+    <string name="AuthenticatorNameScreen__choose_a_name">Välj ett namn</string>
     <!-- Instructions shown above the name field when renaming an authenticator app -->
     <string name="AuthenticatorNameScreen__choose_a_unique_name">Choose a unique name for this authenticator app.</string>
     <!-- Instructions shown above the name field when naming a newly configured authenticator app -->
     <string name="AuthenticatorNameScreen__choose_a_unique_name_to_help_you_identify_it">Choose a unique name for this authenticator app to help you identify it later.</string>
     <!-- Label of the name field -->
-    <string name="AuthenticatorNameScreen__name">Name</string>
+    <string name="AuthenticatorNameScreen__name">Namn</string>
     <!-- Button that submits the entered name -->
-    <string name="AuthenticatorNameScreen__next">Next</string>
+    <string name="AuthenticatorNameScreen__next">Nästa</string>
     <!-- Toast shown after an authenticator app has been successfully set up -->
     <string name="AuthenticatorNameScreen__authenticator_app_set_up">Authenticator app set up</string>
     <!-- Toast shown after an authenticator app has been renamed -->
