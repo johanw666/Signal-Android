@@ -318,7 +318,7 @@ private suspend fun showItemContextMenu(
 
   val actions = buildList {
     val messageItem = ActionItem(
-      iconRes = R.drawable.ic_chat_message_24,
+      iconRes = CoreUiR.drawable.ic_chat_message_24,
       title = context.getString(R.string.NewConversationActivity__message),
       tintRes = CoreUiR.color.signal_colorOnSurface,
       action = { callbacks.onMessage(recipient.id) }

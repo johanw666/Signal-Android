@@ -118,6 +118,24 @@ object DropdownMenus {
     @StringRes stringResId: Int,
     onClick: () -> Unit
   ) {
+    ItemWithIcon(
+      menuController = menuController,
+      imageVector = ImageVector.vectorResource(id = drawableResId),
+      stringResId = stringResId,
+      onClick = onClick
+    )
+  }
+
+  /**
+   * Properly styled menu item with a leading icon
+   */
+  @Composable
+  fun ItemWithIcon(
+    menuController: MenuController,
+    imageVector: ImageVector,
+    @StringRes stringResId: Int,
+    onClick: () -> Unit
+  ) {
     Row(
       verticalAlignment = Alignment.CenterVertically,
       modifier = Modifier
@@ -129,7 +147,7 @@ object DropdownMenus {
         .padding(horizontal = 16.dp, vertical = 12.dp)
     ) {
       Icon(
-        imageVector = ImageVector.vectorResource(id = drawableResId),
+        imageVector = imageVector,
         contentDescription = stringResource(stringResId)
       )
       Text(
