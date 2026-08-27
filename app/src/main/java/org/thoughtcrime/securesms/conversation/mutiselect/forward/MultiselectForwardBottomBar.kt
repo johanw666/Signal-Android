@@ -151,7 +151,7 @@ private fun AddMessage(
     placeholder = {
       Text(text = stringResource(R.string.MultiselectForwardFragment__add_a_message))
     },
-    shape = RoundedCornerShape(50),
+    shape = RoundedCornerShape(30.dp),
     colors = TextFieldDefaults.colors(
       focusedIndicatorColor = Color.Transparent,
       unfocusedIndicatorColor = Color.Transparent,
