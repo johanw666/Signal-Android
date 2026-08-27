@@ -3,6 +3,7 @@ package org.thoughtcrime.securesms.components.settings.app.subscription.receipts
 import android.os.Bundle
 import android.view.View
 import androidx.constraintlayout.widget.Group
+import androidx.core.view.WindowInsetsCompat
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
@@ -13,6 +14,7 @@ import org.thoughtcrime.securesms.components.settings.DSLSettingsText
 import org.thoughtcrime.securesms.components.settings.TextPreference
 import org.thoughtcrime.securesms.database.model.InAppPaymentReceiptRecord
 import org.thoughtcrime.securesms.util.StickyHeaderDecoration
+import org.thoughtcrime.securesms.util.SystemWindowInsetsSetter
 import org.thoughtcrime.securesms.util.livedata.LiveDataUtil
 import org.thoughtcrime.securesms.util.navigation.safeNavigate
 import org.thoughtcrime.securesms.util.visible
@@ -44,6 +46,8 @@ class DonationReceiptListPageFragment : Fragment(R.layout.donation_receipt_list_
     view.findViewById<RecyclerView>(R.id.recycler).apply {
       this.adapter = adapter
       addItemDecoration(StickyHeaderDecoration(adapter, false, true, 0))
+      clipToPadding = false
+      SystemWindowInsetsSetter.attach(this, viewLifecycleOwner, WindowInsetsCompat.Type.navigationBars())
     }
 
     emptyStateGroup = view.findViewById(R.id.empty_state)

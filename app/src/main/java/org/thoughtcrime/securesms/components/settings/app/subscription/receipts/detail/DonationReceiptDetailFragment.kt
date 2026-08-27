@@ -1,6 +1,7 @@
 package org.thoughtcrime.securesms.components.settings.app.subscription.receipts.detail
 
 import android.content.Intent
+import androidx.core.view.WindowInsetsCompat
 import androidx.fragment.app.viewModels
 import com.google.android.material.button.MaterialButton
 import org.thoughtcrime.securesms.R
@@ -15,6 +16,7 @@ import org.thoughtcrime.securesms.components.settings.models.SplashImage
 import org.thoughtcrime.securesms.database.model.InAppPaymentReceiptRecord
 import org.thoughtcrime.securesms.payments.FiatMoneyUtil
 import org.thoughtcrime.securesms.util.DateUtils
+import org.thoughtcrime.securesms.util.SystemWindowInsetsSetter
 import org.thoughtcrime.securesms.util.adapter.mapping.MappingAdapter
 import java.util.Locale
 import org.signal.core.ui.R as CoreUiR
@@ -22,6 +24,8 @@ import org.signal.core.ui.R as CoreUiR
 class DonationReceiptDetailFragment : DSLSettingsFragment(layoutId = R.layout.donation_receipt_detail_fragment) {
 
   private lateinit var progressDialog: SignalProgressDialog
+
+  override val listClearsNavigationBar: Boolean = false
 
   private val viewModel: DonationReceiptDetailViewModel by viewModels(
     factoryProducer = {
@@ -37,6 +41,8 @@ class DonationReceiptDetailFragment : DSLSettingsFragment(layoutId = R.layout.do
 
     val sharePngButton: MaterialButton = requireView().findViewById(R.id.share_png)
     sharePngButton.isEnabled = false
+
+    SystemWindowInsetsSetter.attach(sharePngButton, viewLifecycleOwner, WindowInsetsCompat.Type.navigationBars(), SystemWindowInsetsSetter.ApplyMode.MARGIN)
 
     viewModel.state.observe(viewLifecycleOwner) { state ->
       if (state.inAppPaymentReceiptRecord != null) {
