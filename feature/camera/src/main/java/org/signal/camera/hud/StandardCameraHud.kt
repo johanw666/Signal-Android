@@ -25,6 +25,7 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.CircleShape
@@ -91,6 +92,12 @@ private val ZOOM_BAR_SIDE_MARGIN = 16.dp
 
 /** How long the time and the paused label take to trade the recording red between them. */
 private const val PAUSED_TRANSITION_MS = 200
+
+/** The close and flash buttons along the top of the window, which the recording pill lines its middle up with. */
+private val TOP_CONTROL_SIZE = 48.dp
+
+/** How far the top controls sit in from the edges of the window. */
+private val TOP_CONTROL_MARGIN = 16.dp
 
 data class StringResources(
   @param:StringRes val photoCaptureFailed: Int = 0,
@@ -282,8 +289,8 @@ private fun BoxScope.StandardCameraHudContent(
     onClick = { emitter(StandardCameraHudEvents.CloseClick) },
     enabled = !isRecordingHeld,
     modifier = modifier
-      .padding(16.dp)
-      .size(48.dp)
+      .padding(TOP_CONTROL_MARGIN)
+      .size(TOP_CONTROL_SIZE)
       .fadedIn(!isRecordingHeld)
       .background(colorResource(R.color.CameraHud_control_background), shape = CircleShape)
       .testTag(TestTags.CAMERA_HUD_CLOSE_BUTTON)
@@ -306,7 +313,7 @@ private fun BoxScope.StandardCameraHudContent(
       enabled = !isRecordingHeld,
       modifier = Modifier
         .align(Alignment.TopEnd)
-        .padding(16.dp)
+        .padding(TOP_CONTROL_MARGIN)
         .fadedIn(!isRecordingHeld)
         .rotate(iconRotation)
     )
@@ -319,7 +326,7 @@ private fun BoxScope.StandardCameraHudContent(
       pausedLabel = if (stringResources.recordingPaused != 0) stringResource(stringResources.recordingPaused) else null,
       modifier = Modifier
         .align(Alignment.TopCenter)
-        .padding(top = 16.dp)
+        .padding(top = TOP_CONTROL_MARGIN)
     )
   }
 
@@ -622,20 +629,45 @@ private fun HorizontalControlBar(
         .fillMaxWidth()
         .padding(bottom = 40.dp, start = 40.dp, end = 40.dp)
     ) {
-      Box(modifier = Modifier.align(Alignment.CenterEnd).rotate(iconRotation)) {
-        CameraSwitchButton(
-          onClick = { emitter(StandardCameraHudEvents.SwitchCamera) },
-          stringResources = stringResources,
-          enabled = captureButtonState != CaptureButtonState.RECORDING_HELD,
-          modifier = Modifier.fadedIn(captureButtonState != CaptureButtonState.RECORDING_HELD)
-        )
-      }
+      CameraSwitchCorner(
+        isRecording = captureButtonState.isRecording,
+        iconRotation = iconRotation,
+        stringResources = stringResources,
+        emitter = emitter
+      )
       Box(modifier = Modifier.align(Alignment.Center).rotate(iconRotation)) {
         captureSlot(captureButtonState)
       }
       Box(modifier = Modifier.align(Alignment.CenterStart).rotate(iconRotation)) {
         gallerySlot(captureButtonState)
       }
+    }
+  }
+}
+
+/**
+ * The camera switch in its own corner of the bottom bar. The camera cannot be swapped out from under a running
+ * recording, so the button goes for as long as one runs; it is aligned into the corner rather than laid out beside
+ * anything, so nothing moves when it does.
+ */
+@Composable
+private fun BoxScope.CameraSwitchCorner(
+  isRecording: Boolean,
+  iconRotation: Float,
+  stringResources: StringResources,
+  emitter: (StandardCameraHudEvents) -> Unit
+) {
+  AnimatedVisibility(
+    visible = !isRecording,
+    enter = fadeIn(),
+    exit = fadeOut(),
+    modifier = Modifier.align(Alignment.CenterEnd)
+  ) {
+    Box(modifier = Modifier.rotate(iconRotation)) {
+      CameraSwitchButton(
+        onClick = { emitter(StandardCameraHudEvents.SwitchCamera) },
+        stringResources = stringResources
+      )
     }
   }
 }
@@ -667,6 +699,7 @@ private fun VerticalControlBar(
         flashMode = flashMode,
         emitter = emitter,
         stringResources = stringResources,
+        isRecording = captureButtonState.isRecording,
         enabled = captureButtonState != CaptureButtonState.RECORDING_HELD,
         modifier = Modifier.fadedIn(captureButtonState != CaptureButtonState.RECORDING_HELD)
       )
@@ -690,6 +723,7 @@ private fun FlashAndCameraTogglePill(
   flashMode: FlashMode,
   stringResources: StringResources,
   emitter: (StandardCameraHudEvents) -> Unit,
+  isRecording: Boolean,
   enabled: Boolean = true,
   modifier: Modifier = Modifier
 ) {
@@ -710,16 +744,20 @@ private fun FlashAndCameraTogglePill(
       )
     }
 
-    IconButton(
-      onClick = { emitter(StandardCameraHudEvents.SwitchCamera) },
-      enabled = enabled,
-      modifier = Modifier.testTag(TestTags.CAMERA_HUD_SWITCH_BUTTON)
-    ) {
-      Icon(
-        imageVector = SignalIcons.CameraSwitch.imageVector,
-        contentDescription = if (stringResources.switchCamera != 0) stringResource(stringResources.switchCamera) else null,
-        tint = Color.White
-      )
+    // The camera cannot be swapped out from under a running recording, so the pill gives the button up and closes
+    // around the flash for as long as one runs.
+    AnimatedVisibility(visible = !isRecording) {
+      IconButton(
+        onClick = { emitter(StandardCameraHudEvents.SwitchCamera) },
+        enabled = enabled,
+        modifier = Modifier.testTag(TestTags.CAMERA_HUD_SWITCH_BUTTON)
+      ) {
+        Icon(
+          imageVector = SignalIcons.CameraSwitch.imageVector,
+          contentDescription = if (stringResources.switchCamera != 0) stringResource(stringResources.switchCamera) else null,
+          tint = Color.White
+        )
+      }
     }
   }
 }
@@ -753,18 +791,25 @@ private fun RecordingDurationDisplay(
     horizontalAlignment = Alignment.CenterHorizontally,
     modifier = modifier
   ) {
+    // The pill is shorter than the close and flash buttons it sits between, so it is centered in a row of their height
+    // to put the three of them on one line.
     Box(
-      modifier = Modifier
-        .background(lerp(recordingRed, pausedGray, pausedProgress), shape = CircleShape)
-        .padding(horizontal = 16.dp, vertical = 4.dp)
-        .testTag(TestTags.CAMERA_HUD_RECORDING_DURATION)
+      contentAlignment = Alignment.Center,
+      modifier = Modifier.heightIn(min = TOP_CONTROL_SIZE)
     ) {
-      Text(
-        text = timeText,
-        color = Color.White,
-        fontSize = 18.sp,
-        fontWeight = FontWeight.Medium
-      )
+      Box(
+        modifier = Modifier
+          .background(lerp(recordingRed, pausedGray, pausedProgress), shape = CircleShape)
+          .padding(horizontal = 16.dp, vertical = 4.dp)
+          .testTag(TestTags.CAMERA_HUD_RECORDING_DURATION)
+      ) {
+        Text(
+          text = timeText,
+          color = Color.White,
+          fontSize = 18.sp,
+          fontWeight = FontWeight.Medium
+        )
+      }
     }
 
     if (pausedLabel != null && pausedProgress > 0f) {
@@ -791,7 +836,6 @@ private fun RecordingDurationDisplay(
 private fun CameraSwitchButton(
   onClick: () -> Unit,
   stringResources: StringResources,
-  enabled: Boolean = true,
   modifier: Modifier = Modifier
 ) {
   val contentDescription = if (stringResources.switchCamera != 0) {
@@ -802,7 +846,6 @@ private fun CameraSwitchButton(
 
   IconButton(
     onClick = onClick,
-    enabled = enabled,
     modifier = modifier
       .size(52.dp)
       .background(colorResource(R.color.CameraHud_control_background), shape = CircleShape)
@@ -829,7 +872,7 @@ private fun FlashToggleButton(
     onClick = onToggle,
     enabled = enabled,
     modifier = modifier
-      .size(48.dp)
+      .size(TOP_CONTROL_SIZE)
       .background(colorResource(R.color.CameraHud_control_background), shape = CircleShape)
       .testTag(TestTags.CAMERA_HUD_FLASH_BUTTON)
   ) {

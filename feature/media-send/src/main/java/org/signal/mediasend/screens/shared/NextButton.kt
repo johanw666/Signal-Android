@@ -98,12 +98,12 @@ internal fun NextButton(
         .align(Alignment.TopCenter)
         .heightIn(min = NEXT_COUNT_HEIGHT)
         .widthIn(min = NEXT_COUNT_HEIGHT)
-        .background(color = recipientChatColor ?: MaterialTheme.colorScheme.primaryContainer, shape = CircleShape)
+        .background(color = recipientChatColor ?: MaterialTheme.colorScheme.primary, shape = CircleShape)
         .padding(horizontal = NEXT_COUNT_HORIZONTAL_PADDING)
     ) {
       Text(
         text = selectedMediaCount.toString(),
-        color = if (recipientChatColor != null) SignalTheme.colors.colorOnCustom else MaterialTheme.colorScheme.onPrimaryContainer,
+        color = if (recipientChatColor != null) SignalTheme.colors.colorOnCustom else MaterialTheme.colorScheme.onPrimary,
         style = MaterialTheme.typography.labelSmall,
         maxLines = 1,
         modifier = Modifier.testTag(TestTags.MEDIA_SEND_MEDIA_COUNT)

@@ -91,17 +91,30 @@ class StandardCameraHudTest {
 
     composeTestRule.onNodeWithTag(TestTags.CAMERA_HUD_CLOSE_BUTTON).assertIsNotEnabled()
     composeTestRule.onNodeWithTag(TestTags.CAMERA_HUD_FLASH_BUTTON).assertIsNotEnabled()
-    composeTestRule.onNodeWithTag(TestTags.CAMERA_HUD_SWITCH_BUTTON).assertIsNotEnabled()
   }
 
-  /** A locked recording leaves the hand free, so nothing has to be taken away. */
+  /** A locked recording leaves the hand free, so nothing but the camera switch has to be taken away. */
   @Test
   fun `Given a recording that is locked, when displayed, then the chrome around it can still be used`() {
     setContent(state = lockedRecording())
 
     composeTestRule.onNodeWithTag(TestTags.CAMERA_HUD_CLOSE_BUTTON).assertIsEnabled()
     composeTestRule.onNodeWithTag(TestTags.CAMERA_HUD_FLASH_BUTTON).assertIsEnabled()
-    composeTestRule.onNodeWithTag(TestTags.CAMERA_HUD_SWITCH_BUTTON).assertIsEnabled()
+  }
+
+  /** The camera cannot be swapped out from under a running recording, however that recording was started. */
+  @Test
+  fun `Given a recording, when displayed, then the camera switch is gone`() {
+    setContent(state = lockedRecording())
+
+    composeTestRule.onNodeWithTag(TestTags.CAMERA_HUD_SWITCH_BUTTON).assertDoesNotExist()
+  }
+
+  @Test
+  fun `Given a recording that is being held, when displayed, then the camera switch is gone`() {
+    setContent(state = heldRecording())
+
+    composeTestRule.onNodeWithTag(TestTags.CAMERA_HUD_SWITCH_BUTTON).assertDoesNotExist()
   }
 
   @Test
@@ -246,7 +259,7 @@ class StandardCameraHudTest {
     setContent(state = heldRecording())
 
     composeTestRule.onNodeWithTag(TestTags.CAMERA_HUD_CLOSE_BUTTON).performClick()
-    composeTestRule.onNodeWithTag(TestTags.CAMERA_HUD_SWITCH_BUTTON).performClick()
+    composeTestRule.onNodeWithTag(TestTags.CAMERA_HUD_FLASH_BUTTON).performClick()
 
     assertThat(events).isEmpty()
   }
@@ -332,7 +345,15 @@ class StandardCameraHudTest {
     setContent(state = heldRecording())
 
     composeTestRule.onNodeWithTag(TestTags.CAMERA_HUD_FLASH_BUTTON).assertIsNotEnabled()
-    composeTestRule.onNodeWithTag(TestTags.CAMERA_HUD_SWITCH_BUTTON).assertIsNotEnabled()
+  }
+
+  /** The pill gives the switch up and closes around the flash, the same as the bottom bar drops it. */
+  @Test
+  @Config(qualifiers = "w840dp-h1000dp")
+  fun `Given a window too large for the bottom bar, when a recording runs, then the pill has no camera switch`() {
+    setContent(state = lockedRecording())
+
+    composeTestRule.onNodeWithTag(TestTags.CAMERA_HUD_SWITCH_BUTTON).assertDoesNotExist()
   }
 
   //endregion

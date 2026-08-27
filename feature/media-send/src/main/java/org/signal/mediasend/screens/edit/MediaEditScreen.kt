@@ -558,15 +558,20 @@ private fun MediaToolbar(
   }
 
   MediaEditControl(faded = faded, modifier = modifier) {
+    val isSmall = rememberWindowBreakpoint() is WindowBreakpoint.Small
+
+    // Beyond a phone the toolbar runs down the window's end edge rather than along the bottom, so it has to be held off
+    // of that edge whichever kind of media it is built for.
+    val sideRailPadding = if (isSmall) Modifier else Modifier.padding(end = 24.dp)
+
     when (focusedEditorState) {
       is EditorState.Image -> {
-        val breakpoint = rememberWindowBreakpoint()
-        val modifier = if (breakpoint is WindowBreakpoint.Small) {
+        val toolbarModifier = if (isSmall) {
           Modifier
             .navigationBarsPadding()
             .padding(horizontal = 16.dp)
         } else {
-          Modifier.padding(end = 24.dp)
+          sideRailPadding
         }
 
         imageController?.let {
@@ -575,14 +580,14 @@ private fun MediaToolbar(
             state = state,
             editorState = focusedEditorState,
             onEvent = onEvent,
-            modifier = modifier
+            modifier = toolbarModifier
               .then(if (isTextEditing) Modifier.imePadding() else Modifier),
             enabled = !faded
           )
         }
       }
 
-      else -> MediaEditorToolbar {
+      else -> MediaEditorToolbar(modifier = sideRailPadding) {
         MediaEditorToolbarSharedButtons(
           state = state,
           editorState = focusedEditorState,
