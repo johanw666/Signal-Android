@@ -46,6 +46,7 @@ import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.Constraints
+import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.LayoutDirection
 import androidx.compose.ui.unit.dp
 import kotlinx.coroutines.launch
@@ -79,12 +80,16 @@ private val MODE_SETTLE_SPEC = spring<Float>(dampingRatio = Spring.DampingRatioN
  * The highlight is fixed to the center of the screen and the bar slides so the selected mode is the one under it. A mode
  * can be picked by tapping it or by swiping the bar until it is under the highlight; a swipe only selects once it is
  * released, so the user can slide back and forth before committing.
+ *
+ * @param endReservation Width at the end of the row the bar stops short of claiming, so taps there reach whatever floats
+ *   over it. Layout still uses the full row, so this moves nothing.
  */
 @Composable
 internal fun MediaCaptureModeBar(
   availableCaptureModes: List<MediaCaptureMode>,
   selectedCaptureMode: MediaCaptureMode,
   onEvent: (MediaCaptureScreenEvents) -> Unit,
+  endReservation: Dp = 0.dp,
   modifier: Modifier = Modifier
 ) {
   val coroutineScope = rememberCoroutineScope()
@@ -169,18 +174,19 @@ internal fun MediaCaptureModeBar(
     val modes = measurables.drop(2).map { it.measure(Constraints(maxWidth = modeWidthLimit, minHeight = modeHeight, maxHeight = modeHeight)) }
     val measuredModeWidth = modes.maxOf { it.width }
     val barWidth = measuredModeWidth * modes.size + barPadding * 2
-    val containerWidth = if (constraints.hasBoundedWidth) constraints.maxWidth else barWidth
+    val rowWidth = if (constraints.hasBoundedWidth) constraints.maxWidth else barWidth
+    val containerWidth = (rowWidth - endReservation.roundToPx()).coerceAtLeast(0)
 
     val bar = measurables[0].measure(Constraints.fixed(barWidth, barHeight))
     val highlight = measurables[1].measure(Constraints.fixed(measuredModeWidth, modeHeight))
 
     layout(width = containerWidth, height = barHeight) {
-      // The bar slides by however far the centered mode is from the middle of the container, which is where the
-      // highlight always sits.
-      val slide = containerWidth / 2f - barPadding - (centeredMode.value + 0.5f) * measuredModeWidth
+      // The bar slides by however far the centered mode is from the middle of the row, which is where the highlight
+      // always sits.
+      val slide = rowWidth / 2f - barPadding - (centeredMode.value + 0.5f) * measuredModeWidth
 
       bar.placeRelative(x = slide.roundToInt(), y = 0)
-      highlight.placeRelative(x = (containerWidth - measuredModeWidth) / 2, y = barPadding)
+      highlight.placeRelative(x = (rowWidth - measuredModeWidth) / 2, y = barPadding)
 
       modes.forEachIndexed { index, mode ->
         mode.placeRelative(

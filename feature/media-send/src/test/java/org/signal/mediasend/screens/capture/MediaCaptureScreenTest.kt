@@ -6,8 +6,13 @@
 package org.signal.mediasend.screens.capture
 
 import android.app.Application
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
+import androidx.compose.runtime.Composable
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.platform.testTag
@@ -21,12 +26,14 @@ import androidx.compose.ui.test.performTouchInput
 import androidx.compose.ui.test.swipeLeft
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.DpRect
+import androidx.compose.ui.unit.dp
 import androidx.core.net.toUri
 import androidx.test.core.app.ApplicationProvider
 import assertk.assertThat
 import assertk.assertions.containsExactly
 import assertk.assertions.isCloseTo
 import assertk.assertions.isEmpty
+import assertk.assertions.isEqualTo
 import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
@@ -74,10 +81,10 @@ class MediaCaptureScreenTest {
   fun `Given a flow that offers every mode, when displayed, then the selected one is centered under the highlight`() {
     setContent(cameraFirstState())
 
-    val bar = composeTestRule.onNodeWithTag(TestTags.MEDIA_CAPTURE_MODE_BAR).getUnclippedBoundsInRoot()
+    val screen = composeTestRule.onNodeWithTag(TestTags.MEDIA_CAPTURE_SCREEN).getUnclippedBoundsInRoot()
     val selected = composeTestRule.onNodeWithTag(TestTags.MEDIA_CAPTURE_TEXT_STORY_TOGGLE).getUnclippedBoundsInRoot()
 
-    assertThat(selected.centerX.value).isCloseTo(bar.centerX.value, 1f)
+    assertThat(selected.centerX.value).isCloseTo(screen.centerX.value, 1f)
   }
 
   @Test
@@ -192,6 +199,28 @@ class MediaCaptureScreenTest {
     composeTestRule.onNodeWithTag(TestTags.MEDIA_CAPTURE_PHOTO_TOGGLE).assertIsDisplayed()
   }
 
+  @Test
+  fun `Given the text story route, when the editor's send button is tapped, then the tap reaches the editor`() {
+    var sendClicks = 0
+
+    setContent(cameraFirstState()) {
+      Box(modifier = Modifier.fillMaxSize()) {
+        Box(
+          modifier = Modifier
+            .align(Alignment.BottomEnd)
+            .padding(end = TEXT_STORY_SEND_END_MARGIN, bottom = TEXT_STORY_SEND_BOTTOM_MARGIN)
+            .size(TEXT_STORY_SEND_SIZE)
+            .clickable { sendClicks++ }
+            .testTag(TEXT_STORY_SEND)
+        )
+      }
+    }
+
+    composeTestRule.onNodeWithTag(TEXT_STORY_SEND).performClick()
+
+    assertThat(sendClicks).isEqualTo(1)
+  }
+
   //region The next button over the bar's end
 
   @Test
@@ -251,19 +280,22 @@ class MediaCaptureScreenTest {
     mode = MediaSendFlowActivityContract.Mode.ChooseAfterMediaSelection
   )
 
-  private fun setContent(state: MediaCaptureState) {
+  private fun setContent(
+    state: MediaCaptureState,
+    textStoryEditorSlot: @Composable () -> Unit = {
+      Box(
+        modifier = Modifier
+          .fillMaxSize()
+          .testTag(TEXT_STORY_SLOT)
+      )
+    }
+  ) {
     composeTestRule.setContent {
       SignalTheme {
         MediaCaptureScreen(
           state = state,
           onEvent = { events += it },
-          textStoryEditorSlot = {
-            Box(
-              modifier = Modifier
-                .fillMaxSize()
-                .testTag(TEXT_STORY_SLOT)
-            )
-          }
+          textStoryEditorSlot = textStoryEditorSlot
         )
       }
     }
@@ -273,6 +305,11 @@ class MediaCaptureScreenTest {
 
   private companion object {
     private const val TEXT_STORY_SLOT = "text_story_slot"
+    private const val TEXT_STORY_SEND = "text_story_send"
+
+    private val TEXT_STORY_SEND_SIZE = 48.dp
+    private val TEXT_STORY_SEND_END_MARGIN = 12.dp
+    private val TEXT_STORY_SEND_BOTTOM_MARGIN = 16.dp
 
     private val MEDIA = Media(
       uri = "content://capture".toUri(),

@@ -103,6 +103,9 @@ internal fun MediaCaptureScreen(
  * centered, and the button floats over its end.
  *
  * The row keeps a fixed height so neither one moving in or out shifts the other.
+ *
+ * The text story editor floats its own send button over that same end from underneath, so the bar is held off that
+ * corner while the editor is up.
  */
 @Composable
 private fun MediaCaptureBottomControls(
@@ -134,13 +137,14 @@ private fun MediaCaptureBottomControls(
       enter = fadeIn(animationSpec = tween(durationMillis = CONTROL_FADE_DURATION_MS)),
       exit = fadeOut(animationSpec = tween(durationMillis = CONTROL_FADE_DURATION_MS)),
       modifier = Modifier
-        .align(Alignment.BottomCenter)
+        .align(Alignment.BottomStart)
         .padding(bottom = MODE_BAR_BOTTOM_INSET)
     ) {
       MediaCaptureModeBar(
         availableCaptureModes = state.availableCaptureModes,
         selectedCaptureMode = state.selectedCaptureMode,
         onEvent = onEvent,
+        endReservation = if (state.selectedCaptureScreen is MediaSendRoute.Capture.TextStory) endMargin + NEXT_BUTTON_TOUCH_TARGET else 0.dp,
         modifier = Modifier.endFadingEdge(
           fadeWidth = MODE_BAR_FADE_WIDTH * fadeFraction,
           inset = (endMargin + NEXT_BUTTON_CIRCLE_SIZE) * fadeFraction
