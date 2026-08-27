@@ -100,7 +100,6 @@ import org.thoughtcrime.securesms.service.DirectoryRefreshListener
 import org.thoughtcrime.securesms.service.LocalBackupListener
 import org.thoughtcrime.securesms.service.RotateSignedPreKeyListener
 import org.thoughtcrime.securesms.util.BackupUtil
-import org.thoughtcrime.securesms.util.Environment
 import org.thoughtcrime.securesms.util.TextSecurePreferences
 import org.whispersystems.signalservice.api.link.TransferArchiveResponse
 import org.whispersystems.signalservice.api.push.UsernameLinkComponents
@@ -290,24 +289,6 @@ class AppRegistrationStorageController(private val context: Context) : StorageCo
     if (SignalStore.misc.needsUsernameRestore) {
       Log.i(TAG, "[onRegistrationFlowFinished] Username reclaim is still pending. Enqueuing a job to handle it.")
       AppDependencies.jobManager.add(ReclaimUsernameAndLinkJob())
-    }
-
-    if (Environment.MOCK_PHONE_NUMBERLESS_REGISTRATION) {
-      Log.w(TAG, "[onRegistrationFlowFinished] Mocking a phone-number-less account. Wiping all local knowledge of the E164 and PNI.")
-
-      val pni = SignalStore.account.pni
-
-      SignalStore.account.clearE164AndPni()
-      SignalDatabase.recipients.clearSelfE164AndPni(Recipient.self().id)
-      AppDependencies.recipientCache.clearSelf()
-
-      if (pni != null) {
-        SignalDatabase.oneTimePreKeys.deleteAll(pni)
-        SignalDatabase.signedPreKeys.deleteAll(pni)
-        SignalDatabase.kyberPreKeys.deleteAll(pni)
-      }
-
-      AppDependencies.resetProtocolStores()
     }
   }
 

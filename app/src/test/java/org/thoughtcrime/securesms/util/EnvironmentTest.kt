@@ -22,9 +22,4 @@ class EnvironmentTest {
   fun `phone-numberless registration is disabled`() {
     assertThat(Environment.PHONENUMBERLESS_REGISTRATION).isFalse()
   }
-
-  @Test
-  fun `MOCK_PHONE_NUMBERLESS_REGISTRATION is disabled`() {
-    assertThat(Environment.MOCK_PHONE_NUMBERLESS_REGISTRATION).isFalse()
-  }
 }
