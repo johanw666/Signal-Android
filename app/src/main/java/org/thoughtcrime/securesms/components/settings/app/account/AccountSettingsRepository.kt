@@ -14,7 +14,6 @@ import org.thoughtcrime.securesms.dependencies.AppDependencies
 import org.thoughtcrime.securesms.keyvalue.SignalStore
 import org.thoughtcrime.securesms.lock.v2.PinKeyboardType
 import org.thoughtcrime.securesms.pin.SvrRepository
-import org.thoughtcrime.securesms.util.Environment
 import org.thoughtcrime.securesms.util.TextSecurePreferences
 import org.whispersystems.signalservice.api.kbs.PinHashUtil
 import java.io.IOException
@@ -47,7 +46,7 @@ class AccountSettingsRepository {
 
   fun getPinKeyboardType(): PinKeyboardType = SignalStore.pin.keyboardType
 
-  fun isPhoneNumberlessRegistrationEnabled(): Boolean = Environment.PHONENUMBERLESS_REGISTRATION
+  fun isPhoneNumberless(): Boolean = SignalStore.account.isPhoneNumberless
 
   fun getAuthenticatorAppCount(): Int = authenticatorRepository.getAuthenticatorApps().size
 

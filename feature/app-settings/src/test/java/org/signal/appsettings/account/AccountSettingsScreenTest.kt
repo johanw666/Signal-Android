@@ -319,6 +319,23 @@ class AccountSettingsScreenTest {
     assertThat(events).contains(AccountSettingsEvent.PasskeysClicked)
   }
 
+  @Test
+  fun givenAPhoneNumberlessAccount_whenScreenDisplayed_thenPinSectionIsAbsent() {
+    setContent(createState(isPhoneNumberless = true))
+
+    composeTestRule.onNodeWithTag(AccountSettingsTestTags.ROW_MODIFY_PIN).assertDoesNotExist()
+    composeTestRule.onNodeWithTag(AccountSettingsTestTags.ROW_PIN_REMINDER).assertDoesNotExist()
+    composeTestRule.onNodeWithTag(AccountSettingsTestTags.ROW_REGISTRATION_LOCK).assertDoesNotExist()
+    composeTestRule.onNodeWithTag(AccountSettingsTestTags.ROW_ADVANCED_PIN_SETTINGS).assertDoesNotExist()
+  }
+
+  @Test
+  fun givenAPhoneNumberlessAccount_whenScreenDisplayed_thenChangePhoneNumberIsAbsent() {
+    setContent(createState(isPhoneNumberless = true))
+
+    composeTestRule.onNodeWithTag(AccountSettingsTestTags.ROW_CHANGE_PHONE_NUMBER).assertDoesNotExist()
+  }
+
   private fun setContent(state: AccountSettingsState) {
     composeTestRule.setContent {
       AccountSettingsScreen(
@@ -341,6 +358,7 @@ class AccountSettingsScreenTest {
     userUnregistered: Boolean = false,
     clientDeprecated: Boolean = false,
     canTransferWhileUnregistered: Boolean = true,
+    isPhoneNumberless: Boolean = false,
     signalLogin: AccountSettingsState.SignalLogin? = null,
     dialog: Dialog = Dialog.None
   ): AccountSettingsState {
@@ -352,6 +370,7 @@ class AccountSettingsScreenTest {
       userUnregistered = userUnregistered,
       clientDeprecated = clientDeprecated,
       canTransferWhileUnregistered = canTransferWhileUnregistered,
+      isPhoneNumberless = isPhoneNumberless,
       signalLogin = signalLogin,
       dialog = dialog
     )

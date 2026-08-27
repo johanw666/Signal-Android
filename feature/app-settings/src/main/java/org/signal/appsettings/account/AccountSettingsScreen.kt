@@ -159,60 +159,62 @@ fun AccountSettingsScreen(
         }
       }
 
-      item {
-        Texts.SectionHeader(
-          text = stringResource(R.string.preferences_app_protection__signal_pin)
-        )
-      }
-
-      item {
-        @StringRes val textId = if (state.hasPin || state.hasRestoredAep) {
-          R.string.preferences_app_protection__change_your_pin
-        } else {
-          R.string.preferences_app_protection__create_a_pin
+      if (!state.isPhoneNumberless) {
+        item {
+          Texts.SectionHeader(
+            text = stringResource(R.string.preferences_app_protection__signal_pin)
+          )
         }
 
-        Rows.TextRow(
-          text = stringResource(textId),
-          enabled = state.isNotDeprecatedOrUnregistered,
-          onClick = { onEvent(AccountSettingsEvent.ModifyPinClicked) },
-          modifier = Modifier.testTag(AccountSettingsTestTags.ROW_MODIFY_PIN)
-        )
-      }
+        item {
+          @StringRes val textId = if (state.hasPin || state.hasRestoredAep) {
+            R.string.preferences_app_protection__change_your_pin
+          } else {
+            R.string.preferences_app_protection__create_a_pin
+          }
 
-      item {
-        Rows.ToggleRow(
-          text = stringResource(R.string.preferences_app_protection__pin_reminders),
-          label = stringResource(R.string.AccountSettingsFragment__youll_be_asked_less_frequently),
-          checked = state.hasPin && state.pinRemindersEnabled,
-          enabled = state.hasPin && state.isNotDeprecatedOrUnregistered,
-          onCheckChanged = { onEvent(AccountSettingsEvent.PinRemindersToggled(it)) },
-          modifier = Modifier.testTag(AccountSettingsTestTags.ROW_PIN_REMINDER)
-        )
-      }
+          Rows.TextRow(
+            text = stringResource(textId),
+            enabled = state.isNotDeprecatedOrUnregistered,
+            onClick = { onEvent(AccountSettingsEvent.ModifyPinClicked) },
+            modifier = Modifier.testTag(AccountSettingsTestTags.ROW_MODIFY_PIN)
+          )
+        }
 
-      item {
-        Rows.ToggleRow(
-          text = stringResource(R.string.preferences_app_protection__registration_lock),
-          label = stringResource(R.string.AccountSettingsFragment__require_your_signal_pin),
-          checked = state.registrationLockEnabled,
-          enabled = state.hasPin && state.isNotDeprecatedOrUnregistered,
-          onCheckChanged = { onEvent(AccountSettingsEvent.RegistrationLockToggled(it)) },
-          modifier = Modifier.testTag(AccountSettingsTestTags.ROW_REGISTRATION_LOCK)
-        )
-      }
+        item {
+          Rows.ToggleRow(
+            text = stringResource(R.string.preferences_app_protection__pin_reminders),
+            label = stringResource(R.string.AccountSettingsFragment__youll_be_asked_less_frequently),
+            checked = state.hasPin && state.pinRemindersEnabled,
+            enabled = state.hasPin && state.isNotDeprecatedOrUnregistered,
+            onCheckChanged = { onEvent(AccountSettingsEvent.PinRemindersToggled(it)) },
+            modifier = Modifier.testTag(AccountSettingsTestTags.ROW_PIN_REMINDER)
+          )
+        }
 
-      item {
-        Rows.TextRow(
-          text = stringResource(R.string.preferences__advanced_pin_settings),
-          enabled = state.isNotDeprecatedOrUnregistered,
-          onClick = { onEvent(AccountSettingsEvent.AdvancedPinSettingsClicked) },
-          modifier = Modifier.testTag(AccountSettingsTestTags.ROW_ADVANCED_PIN_SETTINGS)
-        )
-      }
+        item {
+          Rows.ToggleRow(
+            text = stringResource(R.string.preferences_app_protection__registration_lock),
+            label = stringResource(R.string.AccountSettingsFragment__require_your_signal_pin),
+            checked = state.registrationLockEnabled,
+            enabled = state.hasPin && state.isNotDeprecatedOrUnregistered,
+            onCheckChanged = { onEvent(AccountSettingsEvent.RegistrationLockToggled(it)) },
+            modifier = Modifier.testTag(AccountSettingsTestTags.ROW_REGISTRATION_LOCK)
+          )
+        }
 
-      item {
-        Dividers.Default()
+        item {
+          Rows.TextRow(
+            text = stringResource(R.string.preferences__advanced_pin_settings),
+            enabled = state.isNotDeprecatedOrUnregistered,
+            onClick = { onEvent(AccountSettingsEvent.AdvancedPinSettingsClicked) },
+            modifier = Modifier.testTag(AccountSettingsTestTags.ROW_ADVANCED_PIN_SETTINGS)
+          )
+        }
+
+        item {
+          Dividers.Default()
+        }
       }
 
       item {
@@ -221,7 +223,7 @@ fun AccountSettingsScreen(
         )
       }
 
-      if (!state.userUnregistered) {
+      if (!state.userUnregistered && !state.isPhoneNumberless) {
         item {
           Rows.TextRow(
             text = stringResource(R.string.AccountSettingsFragment__change_phone_number),
@@ -567,8 +569,7 @@ private fun AccountSettingsScreenSignalLoginPreview() {
   Previews.Preview {
     AccountSettingsScreen(
       state = AccountSettingsState(
-        hasPin = true,
-        pinRemindersEnabled = true,
+        isPhoneNumberless = true,
         signalLogin = AccountSettingsState.SignalLogin(keyCount = 2, authenticatorAppCount = 2, passkeyCount = 8)
       ),
       onEvent = {}

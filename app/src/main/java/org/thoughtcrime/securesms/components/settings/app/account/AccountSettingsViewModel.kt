@@ -148,6 +148,8 @@ class AccountSettingsViewModel(
   }
 
   private fun refresh() {
+    val isPhoneNumberless = repository.isPhoneNumberless()
+
     _state.update {
       it.copy(
         hasPin = repository.hasPin(),
@@ -156,7 +158,8 @@ class AccountSettingsViewModel(
         registrationLockEnabled = repository.isRegistrationLockEnabled(),
         userUnregistered = repository.isUserUnregistered(),
         clientDeprecated = repository.isClientDeprecated(),
-        signalLogin = if (repository.isPhoneNumberlessRegistrationEnabled()) {
+        isPhoneNumberless = isPhoneNumberless,
+        signalLogin = if (isPhoneNumberless) {
           AccountSettingsState.SignalLogin(
             keyCount = MOCK_SIGNAL_LOGIN_KEY_COUNT,
             authenticatorAppCount = repository.getAuthenticatorAppCount(),

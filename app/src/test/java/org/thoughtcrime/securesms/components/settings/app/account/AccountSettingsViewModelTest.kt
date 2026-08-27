@@ -62,7 +62,7 @@ class AccountSettingsViewModelTest {
     every { repository.isUserUnregistered() } returns false
     every { repository.isClientDeprecated() } returns false
     every { repository.getPinKeyboardType() } returns PinKeyboardType.NUMERIC
-    every { repository.isPhoneNumberlessRegistrationEnabled() } returns false
+    every { repository.isPhoneNumberless() } returns false
     every { repository.getAuthenticatorAppCount() } returns 0
     every { repository.getPasskeyCount() } returns 0
     every { repository.verifyLocalPin(any()) } answers { firstArg<String>() == CORRECT_PIN }
@@ -293,27 +293,29 @@ class AccountSettingsViewModelTest {
   }
 
   @Test
-  fun `the Signal Login section is left out when phone-numberless registration is off`() = runTest(testDispatcher) {
+  fun `the Signal Login section is left out when the account has a phone number`() = runTest(testDispatcher) {
     val viewModel = createViewModel()
 
+    assertThat(viewModel.state.value.isPhoneNumberless).isFalse()
     assertThat(viewModel.state.value.signalLogin).isNull()
   }
 
   @Test
-  fun `the Signal Login section is filled in when phone-numberless registration is on`() = runTest(testDispatcher) {
-    every { repository.isPhoneNumberlessRegistrationEnabled() } returns true
+  fun `the Signal Login section is filled in when the account is phone-numberless`() = runTest(testDispatcher) {
+    every { repository.isPhoneNumberless() } returns true
     every { repository.getAuthenticatorAppCount() } returns 2
     every { repository.getPasskeyCount() } returns 8
 
     val viewModel = createViewModel()
 
+    assertThat(viewModel.state.value.isPhoneNumberless).isTrue()
     assertThat(viewModel.state.value.signalLogin?.authenticatorAppCount).isEqualTo(2)
     assertThat(viewModel.state.value.signalLogin?.passkeyCount).isEqualTo(8)
   }
 
   @Test
   fun `AuthenticatorAppClicked opens the authenticator apps screen`() = runTest(testDispatcher) {
-    every { repository.isPhoneNumberlessRegistrationEnabled() } returns true
+    every { repository.isPhoneNumberless() } returns true
 
     val viewModel = createViewModel()
     val actions = collectActions(viewModel.actions)
@@ -325,7 +327,7 @@ class AccountSettingsViewModelTest {
 
   @Test
   fun `PasskeysClicked opens the passkeys screen`() = runTest(testDispatcher) {
-    every { repository.isPhoneNumberlessRegistrationEnabled() } returns true
+    every { repository.isPhoneNumberless() } returns true
 
     val viewModel = createViewModel()
     val actions = collectActions(viewModel.actions)

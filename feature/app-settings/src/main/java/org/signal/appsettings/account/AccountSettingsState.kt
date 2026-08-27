@@ -13,6 +13,7 @@ data class AccountSettingsState(
   val userUnregistered: Boolean = false,
   val clientDeprecated: Boolean = false,
   val canTransferWhileUnregistered: Boolean = true,
+  val isPhoneNumberless: Boolean = false,
   val signalLogin: SignalLogin? = null,
   val dialog: Dialog = Dialog.None
 ) {
@@ -21,8 +22,8 @@ data class AccountSettingsState(
     get() = !(userUnregistered || clientDeprecated)
 
   /**
-   * The Signal Login and two-factor authentication sections, which only exist when phone-numberless registration is
-   * enabled. Null means the sections aren't shown at all.
+   * The Signal Login and two-factor authentication sections, which only exist for phone-numberless accounts. Null means
+   * the sections aren't shown at all.
    */
   data class SignalLogin(
     val keyCount: Int,
