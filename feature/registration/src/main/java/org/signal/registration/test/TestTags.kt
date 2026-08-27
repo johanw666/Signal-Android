@@ -71,6 +71,7 @@ object TestTags {
   // Add Username Screen
   const val ADD_USERNAME_SCREEN = "add_username_screen"
   const val ADD_USERNAME_FIELD = "add_username_field"
+  const val ADD_USERNAME_DISCRIMINATOR_FIELD = "add_username_discriminator_field"
   const val ADD_USERNAME_LEARN_MORE_LINK = "add_username_learn_more_link"
   const val ADD_USERNAME_SKIP_BUTTON = "add_username_skip_button"
   const val ADD_USERNAME_NEXT_BUTTON = "add_username_next_button"

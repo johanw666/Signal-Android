@@ -12,8 +12,6 @@ import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.FlowPreview
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.channels.BufferOverflow
-import kotlinx.coroutines.channels.Channel
-import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -22,7 +20,6 @@ import kotlinx.coroutines.flow.debounce
 import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
-import kotlinx.coroutines.flow.receiveAsFlow
 import kotlinx.coroutines.launch
 import org.signal.core.ui.compose.EventDrivenViewModel
 import org.signal.core.util.UsernameUtil
@@ -34,15 +31,16 @@ import org.signal.registration.RegistrationFlowEvent
 import org.signal.registration.RegistrationRepository
 import org.signal.registration.RegistrationRoute
 import org.signal.registration.screens.util.navigateTo
+import org.whispersystems.signalservice.api.util.discriminator
 import kotlin.time.Duration.Companion.milliseconds
 
 /**
  * View model for [AddUsernameScreen].
  *
- * As the user types a nickname, we debounce their input and then validate it locally. If it's valid, we reserve a
- * username for it on the service (the nickname plus a server-assigned numeric discriminator), which is what lets us
- * show the discriminator while they type and detect taken nicknames early. Tapping "next" confirms the reservation,
- * making it the account's actual username.
+ * As the user types, we debounce their input and then validate it locally. If it's valid, we reserve a username on the
+ * service, which is what lets us show the discriminator while they type and detect taken nicknames early. The
+ * discriminator is normally assigned by the service, but the user can type their own, in which case we reserve that
+ * exact pairing instead. Tapping "next" confirms the reservation, making it the account's actual username.
  */
 @OptIn(FlowPreview::class)
 class AddUsernameViewModel(
@@ -53,16 +51,13 @@ class AddUsernameViewModel(
   companion object {
     private val TAG = Log.tag(AddUsernameViewModel::class)
 
-    private val NICKNAME_DEBOUNCE = 500.milliseconds
+    private val ENTRY_DEBOUNCE = 500.milliseconds
   }
 
   private val _state = MutableStateFlow(AddUsernameState())
   val state: StateFlow<AddUsernameState> = _state.asStateFlow()
 
-  private val _actions = Channel<AddUsernameScreenActions>(Channel.BUFFERED)
-  val actions: Flow<AddUsernameScreenActions> = _actions.receiveAsFlow()
-
-  private val nicknameChanges = MutableSharedFlow<String>(extraBufferCapacity = 1, onBufferOverflow = BufferOverflow.DROP_OLDEST)
+  private val entryChanges = MutableSharedFlow<AddUsernameScreenEvents.EntrySettled>(extraBufferCapacity = 1, onBufferOverflow = BufferOverflow.DROP_OLDEST)
 
   /** The in-flight reservation request. Only one may be live at a time -- starting a new one cancels the old one. */
   private var reserveJob: Job? = null
@@ -72,10 +67,10 @@ class AddUsernameViewModel(
       .onEach { Log.d(TAG, "[State] $it") }
       .launchIn(viewModelScope)
 
-    nicknameChanges
+    entryChanges
       .distinctUntilChanged()
-      .debounce(NICKNAME_DEBOUNCE)
-      .onEach { onEvent(AddUsernameScreenEvents.NicknameSettled(it)) }
+      .debounce(ENTRY_DEBOUNCE)
+      .onEach { onEvent(it) }
       .launchIn(viewModelScope)
   }
 
@@ -92,9 +87,11 @@ class AddUsernameViewModel(
   ) {
     when (event) {
       is AddUsernameScreenEvents.UsernameChanged -> applyUsernameChanged(state, event.value, stateEmitter)
-      is AddUsernameScreenEvents.NicknameSettled -> applyNicknameSettled(state, event.value, stateEmitter)
+      is AddUsernameScreenEvents.DiscriminatorChanged -> applyDiscriminatorChanged(state, event.value, stateEmitter)
+      is AddUsernameScreenEvents.EntrySettled -> applyEntrySettled(state, event, stateEmitter)
       is AddUsernameScreenEvents.ReservationCompleted -> applyReservationCompleted(state, event, stateEmitter)
-      is AddUsernameScreenEvents.LearnMoreClicked -> _actions.trySend(AddUsernameScreenActions.OpenLearnMoreArticle)
+      is AddUsernameScreenEvents.LearnMoreClicked -> stateEmitter(state.copy(dialogs = state.dialogs.copy(learnMore = true)))
+      is AddUsernameScreenEvents.LearnMoreDialogDismissed -> stateEmitter(state.copy(dialogs = state.dialogs.copy(learnMore = false)))
       is AddUsernameScreenEvents.SkipClicked -> applySkipClicked(parentEventEmitter)
       is AddUsernameScreenEvents.NextClicked -> applyNextClicked(state, parentEventEmitter, stateEmitter)
       is AddUsernameScreenEvents.NetworkErrorDialogDismissed -> applyDialogDismissed(state, stateEmitter) { it.copy(networkError = false) }
@@ -112,28 +109,60 @@ class AddUsernameViewModel(
 
     reserveJob?.cancel()
 
-    stateEmitter(
-      state.copy(
-        username = username,
-        validationError = null,
-        reservation = null,
-        isReserving = false
-      )
+    val updated = state.copy(
+      username = username,
+      validationError = null,
+      reservation = null,
+      isReserving = false
     )
 
-    if (username.isNotBlank()) {
-      nicknameChanges.tryEmit(username)
-    }
+    stateEmitter(updated)
+    scheduleReservation(updated)
   }
 
-  private fun applyNicknameSettled(state: AddUsernameState, nickname: String, stateEmitter: (AddUsernameState) -> Unit) {
-    if (nickname != state.username || nickname.isBlank()) {
+  /**
+   * A blank discriminator hands control back to the service, matching the behavior of clearing the field in the app's
+   * username editor.
+   */
+  private fun applyDiscriminatorChanged(state: AddUsernameState, discriminator: String, stateEmitter: (AddUsernameState) -> Unit) {
+    if (discriminator == state.discriminator) {
       return
     }
 
-    val validationError = checkNickname(nickname)
-    if (validationError != null) {
-      stateEmitter(state.copy(validationError = validationError))
+    reserveJob?.cancel()
+
+    val updated = state.copy(
+      discriminator = discriminator,
+      isDiscriminatorUserSet = discriminator.isNotBlank(),
+      validationError = null,
+      reservation = null,
+      isReserving = false
+    )
+
+    stateEmitter(updated)
+    scheduleReservation(updated)
+  }
+
+  private fun scheduleReservation(state: AddUsernameState) {
+    if (state.username.isNotBlank()) {
+      entryChanges.tryEmit(AddUsernameScreenEvents.EntrySettled(state.username, state.requestedDiscriminator))
+    }
+  }
+
+  private fun applyEntrySettled(state: AddUsernameState, event: AddUsernameScreenEvents.EntrySettled, stateEmitter: (AddUsernameState) -> Unit) {
+    if (event.nickname != state.username || event.discriminator != state.requestedDiscriminator || event.nickname.isBlank()) {
+      return
+    }
+
+    val nicknameError = checkNickname(event.nickname)
+    if (nicknameError != null) {
+      stateEmitter(state.copy(validationError = nicknameError))
+      return
+    }
+
+    val discriminatorError = event.discriminator?.let { checkDiscriminator(it) }
+    if (discriminatorError != null) {
+      stateEmitter(state.copy(validationError = discriminatorError))
       return
     }
 
@@ -141,8 +170,8 @@ class AddUsernameViewModel(
 
     reserveJob?.cancel()
     reserveJob = viewModelScope.launch {
-      val result = repository.reserveUsername(nickname)
-      onEvent(AddUsernameScreenEvents.ReservationCompleted(nickname, result))
+      val result = repository.reserveUsername(event.nickname, event.discriminator)
+      onEvent(AddUsernameScreenEvents.ReservationCompleted(event.nickname, event.discriminator, result))
     }
   }
 
@@ -151,20 +180,32 @@ class AddUsernameViewModel(
     event: AddUsernameScreenEvents.ReservationCompleted,
     stateEmitter: (AddUsernameState) -> Unit
   ) {
-    if (event.nickname != state.username) {
+    if (event.nickname != state.username || event.discriminator != state.requestedDiscriminator) {
       return
     }
 
     when (val result = event.result) {
       is RequestResult.Success -> {
         Log.i(TAG, "Successfully reserved a username.")
-        stateEmitter(state.copy(isReserving = false, reservation = result.result))
+        stateEmitter(
+          state.copy(
+            isReserving = false,
+            reservation = result.result,
+            discriminator = result.result.discriminator,
+            showDiscriminator = true
+          )
+        )
       }
 
       is RequestResult.NonSuccess -> when (result.error) {
         is ReserveUsernameError.NicknameInvalid, is ReserveUsernameError.NotAvailable -> {
           Log.w(TAG, "Could not reserve a username: ${result.error}")
-          stateEmitter(state.copy(isReserving = false, validationError = AddUsernameState.ValidationError.NOT_AVAILABLE))
+          val error = if (event.discriminator != null) {
+            AddUsernameState.ValidationError.DISCRIMINATOR_NOT_AVAILABLE
+          } else {
+            AddUsernameState.ValidationError.NOT_AVAILABLE
+          }
+          stateEmitter(state.copy(isReserving = false, validationError = error))
         }
 
         is ReserveUsernameError.RateLimited -> {
@@ -254,7 +295,7 @@ class AddUsernameViewModel(
     stateEmitter(state.copy(dialogs = clearDialog(state.dialogs)))
 
     if (state.username.isNotBlank() && state.validationError == null && state.reservation == null && !state.isReserving) {
-      onEvent(AddUsernameScreenEvents.NicknameSettled(state.username))
+      onEvent(AddUsernameScreenEvents.EntrySettled(state.username, state.requestedDiscriminator))
     }
   }
 
@@ -265,6 +306,17 @@ class AddUsernameViewModel(
       UsernameUtil.InvalidReason.TOO_LONG -> AddUsernameState.ValidationError.TOO_LONG
       UsernameUtil.InvalidReason.STARTS_WITH_NUMBER -> AddUsernameState.ValidationError.CANNOT_START_WITH_DIGIT
       else -> AddUsernameState.ValidationError.INVALID_CHARACTERS
+    }
+  }
+
+  private fun checkDiscriminator(discriminator: String): AddUsernameState.ValidationError? {
+    return when (UsernameUtil.checkDiscriminator(discriminator)) {
+      null -> null
+      UsernameUtil.InvalidReason.TOO_SHORT -> AddUsernameState.ValidationError.DISCRIMINATOR_TOO_SHORT
+      UsernameUtil.InvalidReason.TOO_LONG -> AddUsernameState.ValidationError.DISCRIMINATOR_TOO_LONG
+      UsernameUtil.InvalidReason.INVALID_NUMBER_00 -> AddUsernameState.ValidationError.DISCRIMINATOR_CANNOT_BE_00
+      UsernameUtil.InvalidReason.INVALID_NUMBER_PREFIX_0 -> AddUsernameState.ValidationError.DISCRIMINATOR_CANNOT_START_WITH_ZERO
+      else -> AddUsernameState.ValidationError.DISCRIMINATOR_INVALID_CHARACTERS
     }
   }
 

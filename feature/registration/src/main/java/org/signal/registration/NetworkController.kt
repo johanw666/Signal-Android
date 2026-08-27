@@ -416,13 +416,14 @@ interface NetworkController {
   suspend fun restoreAccountRecord(timeout: Duration): RequestResult<Unit, RestoreAccountRecordError>
 
   /**
-   * Reserves a username composed of [nickname] plus a server-assigned numeric discriminator. The service holds the
-   * reservation for a short time (~5 minutes), during which it can be finalized via [confirmUsername].
-   * Reserving again replaces any previous reservation.
+   * Reserves a username composed of [nickname] plus a numeric discriminator. If [discriminator] is provided, only that
+   * exact username is attempted, otherwise the service assigns one. The service holds the reservation for a short time
+   * (~5 minutes), during which it can be finalized via [confirmUsername]. Reserving again replaces any previous
+   * reservation.
    *
    * `PUT /v1/accounts/username_hash/reserve`
    */
-  suspend fun reserveUsername(nickname: String): RequestResult<Username, ReserveUsernameError>
+  suspend fun reserveUsername(nickname: String, discriminator: String? = null): RequestResult<Username, ReserveUsernameError>
 
   /**
    * Confirms a reservation previously made via [reserveUsername], assigning the username to the account and creating

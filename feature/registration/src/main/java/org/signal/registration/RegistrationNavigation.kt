@@ -51,7 +51,6 @@ import org.signal.registration.screens.accountlocked.AccountLockedScreen
 import org.signal.registration.screens.accountlocked.AccountLockedScreenEvents
 import org.signal.registration.screens.accountlocked.AccountLockedState
 import org.signal.registration.screens.addusername.AddUsernameScreen
-import org.signal.registration.screens.addusername.AddUsernameScreenActions
 import org.signal.registration.screens.addusername.AddUsernameViewModel
 import org.signal.registration.screens.aepentry.EnterAepForLocalBackupResult
 import org.signal.registration.screens.aepentry.EnterAepForLocalBackupViewModel
@@ -328,7 +327,6 @@ private const val AEP_FOR_LOCAL_BACKUP_RESULT = "aep_for_local_backup_result"
 private const val LOCAL_BACKUP_RESTORE_RESULT = "local_backup_restore_result"
 private const val PHONE_NUMBER_DISCOVERABILITY_RESULT = "phone_number_discoverability_result"
 private const val PIN_LEARN_MORE_URL = "https://support.signal.org/hc/articles/360007059792"
-private const val USERNAME_LEARN_MORE_URL = "https://support.signal.org/hc/articles/5389476324250"
 
 // TODO [phonenumberless] Point at the real support article once it exists.
 private const val SIGNAL_LOGIN_LEARN_MORE_URL = "https://support.signal.org/"
@@ -703,12 +701,6 @@ private fun EntryProviderScope<NavKey>.navigationEntries(
       )
     )
     val state by viewModel.state.collectAsStateWithLifecycle()
-    val context = LocalContext.current
-    CollectActions(viewModel.actions) { action ->
-      when (action) {
-        AddUsernameScreenActions.OpenLearnMoreArticle -> openUrl(context, USERNAME_LEARN_MORE_URL)
-      }
-    }
 
     AddUsernameScreen(
       state = state,

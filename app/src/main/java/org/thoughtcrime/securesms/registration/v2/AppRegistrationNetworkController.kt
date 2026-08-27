@@ -456,8 +456,8 @@ class AppRegistrationNetworkController(
     RequestResult.Success(Unit)
   }
 
-  override suspend fun reserveUsername(nickname: String): RequestResult<Username, ReserveUsernameError> {
-    return AppDependencies.usernameService.reserveUsername(nickname)
+  override suspend fun reserveUsername(nickname: String, discriminator: String?): RequestResult<Username, ReserveUsernameError> {
+    return AppDependencies.usernameService.reserveUsername(nickname, discriminator)
   }
 
   override suspend fun confirmUsername(username: Username): RequestResult<ConfirmedUsername, ConfirmUsernameError> {

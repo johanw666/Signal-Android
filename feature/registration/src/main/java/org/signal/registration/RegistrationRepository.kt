@@ -769,11 +769,11 @@ class RegistrationRepository(
   }
 
   /**
-   * Reserves a username made from [nickname] plus a server-assigned discriminator.
+   * Reserves a username made from [nickname] plus [discriminator], or a server-assigned discriminator if none is given.
    * See [NetworkController.reserveUsername].
    */
-  suspend fun reserveUsername(nickname: String): RequestResult<Username, ReserveUsernameError> = withContext(Dispatchers.IO) {
-    networkController.reserveUsername(nickname)
+  suspend fun reserveUsername(nickname: String, discriminator: String? = null): RequestResult<Username, ReserveUsernameError> = withContext(Dispatchers.IO) {
+    networkController.reserveUsername(nickname, discriminator)
   }
 
   /**

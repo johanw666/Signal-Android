@@ -92,6 +92,7 @@ import org.whispersystems.signalservice.api.storage.StorageServiceApi
 import org.whispersystems.signalservice.api.svr.SecureValueRecovery.BackupResponse
 import org.whispersystems.signalservice.api.svr.SecureValueRecovery.RestoreResponse
 import org.whispersystems.signalservice.api.svr.SecureValueRecoveryV2
+import org.whispersystems.signalservice.api.util.Usernames
 import org.whispersystems.signalservice.api.websocket.HealthMonitor
 import org.whispersystems.signalservice.api.websocket.SignalWebSocket
 import org.whispersystems.signalservice.api.websocket.WebSocketFactory
@@ -957,7 +958,7 @@ class DemoNetworkController(
     RequestResult.Success(Unit)
   }
 
-  override suspend fun reserveUsername(nickname: String): RequestResult<Username, ReserveUsernameError> = withContext(Dispatchers.IO) {
+  override suspend fun reserveUsername(nickname: String, discriminator: String?): RequestResult<Username, ReserveUsernameError> = withContext(Dispatchers.IO) {
     val aci = RegistrationPreferences.aci
     val password = RegistrationPreferences.servicePassword
 
@@ -967,7 +968,11 @@ class DemoNetworkController(
     }
 
     val candidates: List<Username> = try {
-      Username.candidatesFrom(nickname, UsernameUtil.MIN_NICKNAME_LENGTH, UsernameUtil.MAX_NICKNAME_LENGTH)
+      if (discriminator == null) {
+        Username.candidatesFrom(nickname, UsernameUtil.MIN_NICKNAME_LENGTH, UsernameUtil.MAX_NICKNAME_LENGTH)
+      } else {
+        listOf(Username("$nickname${Usernames.DELIMITER}$discriminator"))
+      }
     } catch (e: BaseUsernameException) {
       Log.w(TAG, "[reserveUsername] Failed to generate candidates.", e)
       return@withContext RequestResult.NonSuccess(ReserveUsernameError.NicknameInvalid)

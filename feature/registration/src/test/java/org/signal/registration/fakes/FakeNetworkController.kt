@@ -114,6 +114,8 @@ class FakeNetworkController(
     private set
   var lastReservedNickname: String? = null
     private set
+  var lastReservedDiscriminator: String? = null
+    private set
   var lastConfirmedUsername: Username? = null
     private set
 
@@ -211,8 +213,8 @@ class FakeNetworkController(
     RequestResult.Success(Unit)
   }
 
-  var onReserveUsername: suspend (nickname: String) -> RequestResult<Username, ReserveUsernameError> = { nickname ->
-    RequestResult.Success(Username("$nickname.42"))
+  var onReserveUsername: suspend (nickname: String, discriminator: String?) -> RequestResult<Username, ReserveUsernameError> = { nickname, discriminator ->
+    RequestResult.Success(Username("$nickname.${discriminator ?: "42"}"))
   }
 
   var onConfirmUsername: suspend (Username) -> RequestResult<ConfirmedUsername, ConfirmUsernameError> = { username ->
@@ -439,9 +441,10 @@ class FakeNetworkController(
     return RequestResult.Success(Unit)
   }
 
-  override suspend fun reserveUsername(nickname: String): RequestResult<Username, ReserveUsernameError> {
+  override suspend fun reserveUsername(nickname: String, discriminator: String?): RequestResult<Username, ReserveUsernameError> {
     lastReservedNickname = nickname
-    return onReserveUsername(nickname)
+    lastReservedDiscriminator = discriminator
+    return onReserveUsername(nickname, discriminator)
   }
 
   override suspend fun confirmUsername(username: Username): RequestResult<ConfirmedUsername, ConfirmUsernameError> {

@@ -260,12 +260,12 @@ class DebugNetworkController(
     return delegate.setProfile(givenName, familyName, avatar, discoverableByPhoneNumber)
   }
 
-  override suspend fun reserveUsername(nickname: String): RequestResult<Username, ReserveUsernameError> {
+  override suspend fun reserveUsername(nickname: String, discriminator: String?): RequestResult<Username, ReserveUsernameError> {
     NetworkDebugState.getOverride<RequestResult<Username, ReserveUsernameError>>("reserveUsername")?.let {
       Log.d(TAG, "[reserveUsername] Returning debug override")
       return it
     }
-    return delegate.reserveUsername(nickname)
+    return delegate.reserveUsername(nickname, discriminator)
   }
 
   override suspend fun confirmUsername(username: Username): RequestResult<ConfirmedUsername, ConfirmUsernameError> {

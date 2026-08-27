@@ -681,8 +681,12 @@
     <string name="AddUsernameScreen__username">Username</string>
     <!-- Helper text below the username field. Followed by a "learn more" link. -->
     <string name="AddUsernameScreen__usernames_are_always_paired_with_a_set_of_numbers">Usernames are always paired with a set of numbers.</string>
-    <!-- Link in the helper text that opens a support article about usernames. -->
+    <!-- Link in the helper text that opens an explanation of the digits paired with a username. -->
     <string name="AddUsernameScreen__learn_more">Learn more</string>
+    <!-- Title of the dialog explaining the digits paired with a username. -->
+    <string name="AddUsernameScreen__what_is_this_number">What is this number?</string>
+    <!-- Body of the dialog explaining the digits paired with a username. -->
+    <string name="AddUsernameScreen__these_digits_help_keep">These digits help keep your username private so you can avoid unwanted messages. Share your username with only the people and groups you\'d like to chat with. If you change usernames you\'ll get a new set of digits.</string>
     <!-- Button that skips choosing a username. -->
     <string name="AddUsernameScreen__skip">Skip</string>
     <!-- Button that submits the chosen username. -->
@@ -699,6 +703,18 @@
     <string name="AddUsernameScreen__this_username_is_not_available">This username is not available. Please try another.</string>
     <!-- Error shown when the user\'s temporary hold on a username expired before they submitted it. -->
     <string name="AddUsernameScreen__your_username_reservation_expired">Your username reservation expired. Please try again.</string>
+    <!-- Error shown when the username formed by the entered name and the user's chosen number is already taken. -->
+    <string name="AddUsernameScreen__this_username_is_not_available_try_another_number">This username is not available, try another number.</string>
+    <!-- Validation error shown when the number the user entered after their username has too few digits. -->
+    <string name="AddUsernameScreen__enter_a_minimum_of_d_digits">Invalid username, enter a minimum of %1$d digits.</string>
+    <!-- Validation error shown when the number the user entered after their username has too many digits. -->
+    <string name="AddUsernameScreen__enter_a_maximum_of_d_digits">Invalid username, enter a maximum of %1$d digits.</string>
+    <!-- Validation error shown when the number the user entered after their username contains something other than digits. -->
+    <string name="AddUsernameScreen__numbers_can_only_contain_digits">Invalid username, numbers can only contain digits.</string>
+    <!-- Validation error shown when the number the user entered after their username is 00. -->
+    <string name="AddUsernameScreen__this_number_cant_be_00">This number can\'t be 00. Enter a digit between 1–9</string>
+    <!-- Validation error shown when the number the user entered after their username has a leading zero. -->
+    <string name="AddUsernameScreen__this_number_cant_start_with_0">Numbers with more than 2 digits can\'t start with 0</string>
 
     <!-- ContactSupportDialog -->
     <!-- Title of the dialog asking the user whether they want to attach a debug log to their support request -->

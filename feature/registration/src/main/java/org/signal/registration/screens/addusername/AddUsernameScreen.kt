@@ -5,7 +5,6 @@
 
 package org.signal.registration.screens.addusername
 
-import androidx.annotation.StringRes
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -21,11 +20,13 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.text.BasicTextField
 import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.Icon
+import androidx.compose.material3.LocalTextStyle
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
@@ -40,6 +41,8 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.focus.FocusRequester
 import androidx.compose.ui.focus.focusRequester
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.SolidColor
+import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
@@ -50,6 +53,8 @@ import androidx.compose.ui.text.buildAnnotatedString
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardCapitalization
+import androidx.compose.ui.text.input.KeyboardType
+import androidx.compose.ui.text.rememberTextMeasurer
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.withLink
 import androidx.compose.ui.unit.dp
@@ -59,6 +64,7 @@ import org.signal.core.ui.compose.Dialogs
 import org.signal.core.ui.compose.Dividers
 import org.signal.core.ui.compose.Previews
 import org.signal.core.ui.compose.SignalIcons
+import org.signal.core.util.UsernameUtil
 import org.signal.libsignal.usernames.Username
 import org.signal.registration.R
 import org.signal.registration.screens.OnePaneRegistrationScaffold
@@ -66,13 +72,18 @@ import org.signal.registration.screens.RegistrationScaffold
 import org.signal.registration.screens.TwoPaneRegistrationScaffold
 import org.signal.registration.screens.attachDebugLogHelper
 import org.signal.registration.test.TestTags
-import org.whispersystems.signalservice.api.util.discriminator
 
 /** Size of the avatar artwork, whose sphere occupies the inner 72dp of its 80dp box. */
 private val AVATAR_SIZE = 80.dp
 
 /** Size of the glyph centered on the avatar, per the design's 36dp icon box. */
 private val AVATAR_GLYPH_SIZE = 36.dp
+
+/** The discriminator field is sized to its content, but never narrower than this many digits. */
+private const val DISCRIMINATOR_MIN_WIDTH_TEMPLATE = "00"
+
+/** Extra room on the discriminator field so the caret isn't clipped at the end of the text. */
+private val DISCRIMINATOR_CARET_ALLOWANCE = 2.dp
 
 /**
  * Offers the user an optional username so people can reach them without a phone number.
@@ -97,6 +108,15 @@ fun AddUsernameScreen(
       message = message,
       dismiss = stringResource(android.R.string.ok),
       onDismiss = { onEvent(dismissedEvent) }
+    )
+  }
+
+  if (state.dialogs.learnMore) {
+    Dialogs.SimpleMessageDialog(
+      title = stringResource(R.string.AddUsernameScreen__what_is_this_number),
+      message = stringResource(R.string.AddUsernameScreen__these_digits_help_keep),
+      dismiss = stringResource(android.R.string.ok),
+      onDismiss = { onEvent(AddUsernameScreenEvents.LearnMoreDialogDismissed) }
     )
   }
 
@@ -201,6 +221,7 @@ private fun ColumnScope.UsernameEntry(
   onEvent: (AddUsernameScreenEvents) -> Unit
 ) {
   val focusRequester = remember { FocusRequester() }
+  val validationMessage: String? = state.validationError?.message()
 
   LaunchedEffect(Unit) {
     focusRequester.requestFocus()
@@ -227,10 +248,8 @@ private fun ColumnScope.UsernameEntry(
     singleLine = true,
     enabled = !state.showSpinner,
     isError = state.validationError != null,
-    supportingText = state.validationError?.let { error ->
-      { Text(stringResource(error.messageId)) }
-    },
-    suffix = discriminatorSuffix(state),
+    supportingText = validationMessage?.let { message -> { Text(message) } },
+    suffix = discriminatorSuffix(state, onEvent),
     keyboardOptions = KeyboardOptions(
       capitalization = KeyboardCapitalization.None,
       autoCorrectEnabled = false,
@@ -278,41 +297,77 @@ private fun ColumnScope.UsernameEntry(
 }
 
 /**
- * The trailing content of the username field: a spinner while a username is being reserved, and once one is
- * reserved, its discriminator behind a divider (per the design, the discriminator is server-assigned and not
- * directly editable).
+ * The trailing content of the username field: a spinner while a username is being reserved, and, behind a divider, the
+ * discriminator. The discriminator is assigned by the service, but the user can overwrite it to claim a specific one.
  */
-private fun discriminatorSuffix(state: AddUsernameState): (@Composable () -> Unit)? {
-  val discriminator = state.reservation?.discriminator
+private fun discriminatorSuffix(state: AddUsernameState, onEvent: (AddUsernameScreenEvents) -> Unit): (@Composable () -> Unit)? {
+  if (!state.isReserving && !state.showDiscriminator) {
+    return null
+  }
 
-  return when {
-    state.isReserving -> {
-      {
+  return {
+    Row(verticalAlignment = Alignment.CenterVertically) {
+      if (state.isReserving) {
         CircularProgressIndicator(
           strokeWidth = 2.dp,
           modifier = Modifier.size(16.dp)
         )
+
+        Spacer(modifier = Modifier.width(16.dp))
+      }
+
+      if (state.showDiscriminator) {
+        Dividers.Vertical(
+          thickness = 1.dp,
+          color = MaterialTheme.colorScheme.outline,
+          modifier = Modifier.height(20.dp)
+        )
+
+        Spacer(modifier = Modifier.width(16.dp))
+
+        DiscriminatorField(state = state, onEvent = onEvent)
       }
     }
+  }
+}
 
-    discriminator != null -> {
-      {
-        Row(verticalAlignment = Alignment.CenterVertically) {
-          Dividers.Vertical(
-            thickness = 1.dp,
-            color = MaterialTheme.colorScheme.outline,
-            modifier = Modifier.height(20.dp)
-          )
+/** The editable discriminator, sized to its content so it hugs the right edge of the username field. */
+@Composable
+private fun DiscriminatorField(
+  state: AddUsernameState,
+  onEvent: (AddUsernameScreenEvents) -> Unit
+) {
+  val textStyle = LocalTextStyle.current.copy(color = MaterialTheme.colorScheme.onSurface)
+  val textMeasurer = rememberTextMeasurer()
 
-          Spacer(modifier = Modifier.width(16.dp))
+  val width = with(LocalDensity.current) {
+    val content = textMeasurer.measure(state.discriminator, textStyle).size.width
+    val minimum = textMeasurer.measure(DISCRIMINATOR_MIN_WIDTH_TEMPLATE, textStyle).size.width
+    maxOf(content, minimum).toDp() + DISCRIMINATOR_CARET_ALLOWANCE
+  }
 
-          Text(text = discriminator)
+  BasicTextField(
+    value = state.discriminator,
+    onValueChange = { onEvent(AddUsernameScreenEvents.DiscriminatorChanged(it)) },
+    textStyle = textStyle,
+    singleLine = true,
+    enabled = !state.showSpinner,
+    cursorBrush = SolidColor(if (state.validationError != null) MaterialTheme.colorScheme.error else MaterialTheme.colorScheme.primary),
+    keyboardOptions = KeyboardOptions(
+      keyboardType = KeyboardType.Number,
+      imeAction = ImeAction.Done
+    ),
+    keyboardActions = KeyboardActions(
+      onDone = {
+        if (state.isSubmittable) {
+          onEvent(AddUsernameScreenEvents.NextClicked)
         }
       }
-    }
-
-    else -> null
-  }
+    ),
+    modifier = Modifier
+      .width(width)
+      .testTag(TestTags.ADD_USERNAME_DISCRIMINATOR_FIELD)
+  )
 }
 
 /**
@@ -382,15 +437,20 @@ private fun Footer(
   }
 }
 
-@get:StringRes
-private val AddUsernameState.ValidationError.messageId: Int
-  get() = when (this) {
-    AddUsernameState.ValidationError.TOO_SHORT -> R.string.AddUsernameScreen__usernames_must_be_at_least_3_characters
-    AddUsernameState.ValidationError.TOO_LONG -> R.string.AddUsernameScreen__usernames_must_be_at_most_32_characters
-    AddUsernameState.ValidationError.INVALID_CHARACTERS -> R.string.AddUsernameScreen__usernames_can_only_contain
-    AddUsernameState.ValidationError.CANNOT_START_WITH_DIGIT -> R.string.AddUsernameScreen__usernames_cannot_begin_with_a_number
-    AddUsernameState.ValidationError.NOT_AVAILABLE -> R.string.AddUsernameScreen__this_username_is_not_available
-  }
+@Composable
+private fun AddUsernameState.ValidationError.message(): String = when (this) {
+  AddUsernameState.ValidationError.TOO_SHORT -> stringResource(R.string.AddUsernameScreen__usernames_must_be_at_least_3_characters)
+  AddUsernameState.ValidationError.TOO_LONG -> stringResource(R.string.AddUsernameScreen__usernames_must_be_at_most_32_characters)
+  AddUsernameState.ValidationError.INVALID_CHARACTERS -> stringResource(R.string.AddUsernameScreen__usernames_can_only_contain)
+  AddUsernameState.ValidationError.CANNOT_START_WITH_DIGIT -> stringResource(R.string.AddUsernameScreen__usernames_cannot_begin_with_a_number)
+  AddUsernameState.ValidationError.NOT_AVAILABLE -> stringResource(R.string.AddUsernameScreen__this_username_is_not_available)
+  AddUsernameState.ValidationError.DISCRIMINATOR_TOO_SHORT -> stringResource(R.string.AddUsernameScreen__enter_a_minimum_of_d_digits, UsernameUtil.MIN_DISCRIMINATOR_LENGTH)
+  AddUsernameState.ValidationError.DISCRIMINATOR_TOO_LONG -> stringResource(R.string.AddUsernameScreen__enter_a_maximum_of_d_digits, UsernameUtil.MAX_DISCRIMINATOR_LENGTH)
+  AddUsernameState.ValidationError.DISCRIMINATOR_INVALID_CHARACTERS -> stringResource(R.string.AddUsernameScreen__numbers_can_only_contain_digits)
+  AddUsernameState.ValidationError.DISCRIMINATOR_CANNOT_BE_00 -> stringResource(R.string.AddUsernameScreen__this_number_cant_be_00)
+  AddUsernameState.ValidationError.DISCRIMINATOR_CANNOT_START_WITH_ZERO -> stringResource(R.string.AddUsernameScreen__this_number_cant_start_with_0)
+  AddUsernameState.ValidationError.DISCRIMINATOR_NOT_AVAILABLE -> stringResource(R.string.AddUsernameScreen__this_username_is_not_available_try_another_number)
+}
 
 @AllDevicePreviews
 @Composable
@@ -419,7 +479,12 @@ private fun AddUsernameScreenFilledPreview() {
 private fun AddUsernameScreenReservedPreview() {
   Previews.Preview {
     AddUsernameScreen(
-      state = AddUsernameState(username = "alice", reservation = Username("alice.45")),
+      state = AddUsernameState(
+        username = "alice",
+        discriminator = "45",
+        showDiscriminator = true,
+        reservation = Username("alice.45")
+      ),
       onEvent = {}
     )
   }

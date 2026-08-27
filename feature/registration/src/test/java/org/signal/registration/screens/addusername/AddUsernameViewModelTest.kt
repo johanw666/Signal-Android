@@ -17,8 +17,6 @@ import io.mockk.coEvery
 import io.mockk.mockk
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
-import kotlinx.coroutines.launch
-import kotlinx.coroutines.test.TestScope
 import kotlinx.coroutines.test.UnconfinedTestDispatcher
 import kotlinx.coroutines.test.advanceUntilIdle
 import kotlinx.coroutines.test.resetMain
@@ -63,19 +61,17 @@ class AddUsernameViewModelTest {
     Dispatchers.resetMain()
   }
 
-  private fun TestScope.collectActions(): List<AddUsernameScreenActions> {
-    val actions = mutableListOf<AddUsernameScreenActions>()
-    backgroundScope.launch(testDispatcher) { viewModel.actions.collect { actions.add(it) } }
-    return actions
-  }
-
   @Test
-  fun `LearnMoreClicked emits an action to open the learn more article`() = runTest(testDispatcher) {
-    val actions = collectActions()
+  fun `LearnMoreClicked shows the dialog explaining the discriminator`() = runTest(testDispatcher) {
+    viewModel.onEvent(AddUsernameScreenEvents.LearnMoreClicked)
+    advanceUntilIdle()
 
-    viewModel.applyEvent(AddUsernameState(), AddUsernameScreenEvents.LearnMoreClicked, parentEventEmitter) {}
+    assertThat(viewModel.state.value.dialogs.learnMore).isTrue()
 
-    assertThat(actions).containsExactly(AddUsernameScreenActions.OpenLearnMoreArticle)
+    viewModel.onEvent(AddUsernameScreenEvents.LearnMoreDialogDismissed)
+    advanceUntilIdle()
+
+    assertThat(viewModel.state.value.dialogs.learnMore).isFalse()
   }
 
   @Test
@@ -88,6 +84,117 @@ class AddUsernameViewModelTest {
     assertThat(viewModel.state.value.reservation).isEqualTo(Username("maya.45"))
     assertThat(viewModel.state.value.isReserving).isFalse()
     assertThat(viewModel.state.value.isSubmittable).isTrue()
+  }
+
+  @Test
+  fun `a successful reservation surfaces the service-assigned discriminator`() = runTest(testDispatcher) {
+    coEvery { mockRepository.reserveUsername("maya") } returns RequestResult.Success(Username("maya.45"))
+
+    viewModel.onEvent(AddUsernameScreenEvents.UsernameChanged("maya"))
+    advanceUntilIdle()
+
+    assertThat(viewModel.state.value.discriminator).isEqualTo("45")
+    assertThat(viewModel.state.value.showDiscriminator).isTrue()
+    assertThat(viewModel.state.value.isDiscriminatorUserSet).isFalse()
+  }
+
+  @Test
+  fun `typing a discriminator reserves that exact username`() = runTest(testDispatcher) {
+    coEvery { mockRepository.reserveUsername("maya") } returns RequestResult.Success(Username("maya.45"))
+    coEvery { mockRepository.reserveUsername("maya", "77") } returns RequestResult.Success(Username("maya.77"))
+
+    viewModel.onEvent(AddUsernameScreenEvents.UsernameChanged("maya"))
+    advanceUntilIdle()
+    viewModel.onEvent(AddUsernameScreenEvents.DiscriminatorChanged("77"))
+    advanceUntilIdle()
+
+    assertThat(viewModel.state.value.reservation).isEqualTo(Username("maya.77"))
+    assertThat(viewModel.state.value.isDiscriminatorUserSet).isTrue()
+    assertThat(viewModel.state.value.isSubmittable).isTrue()
+  }
+
+  @Test
+  fun `editing the nickname keeps a user-chosen discriminator`() = runTest(testDispatcher) {
+    coEvery { mockRepository.reserveUsername("maya") } returns RequestResult.Success(Username("maya.45"))
+    coEvery { mockRepository.reserveUsername("maya", "77") } returns RequestResult.Success(Username("maya.77"))
+    coEvery { mockRepository.reserveUsername("mayab", "77") } returns RequestResult.Success(Username("mayab.77"))
+
+    viewModel.onEvent(AddUsernameScreenEvents.UsernameChanged("maya"))
+    advanceUntilIdle()
+    viewModel.onEvent(AddUsernameScreenEvents.DiscriminatorChanged("77"))
+    advanceUntilIdle()
+    viewModel.onEvent(AddUsernameScreenEvents.UsernameChanged("mayab"))
+    advanceUntilIdle()
+
+    assertThat(viewModel.state.value.reservation).isEqualTo(Username("mayab.77"))
+  }
+
+  @Test
+  fun `clearing the discriminator hands it back to the service`() = runTest(testDispatcher) {
+    coEvery { mockRepository.reserveUsername("maya") } returns RequestResult.Success(Username("maya.45"))
+    coEvery { mockRepository.reserveUsername("maya", "77") } returns RequestResult.Success(Username("maya.77"))
+
+    viewModel.onEvent(AddUsernameScreenEvents.UsernameChanged("maya"))
+    advanceUntilIdle()
+    viewModel.onEvent(AddUsernameScreenEvents.DiscriminatorChanged("77"))
+    advanceUntilIdle()
+    viewModel.onEvent(AddUsernameScreenEvents.DiscriminatorChanged(""))
+    advanceUntilIdle()
+
+    assertThat(viewModel.state.value.isDiscriminatorUserSet).isFalse()
+    assertThat(viewModel.state.value.discriminator).isEqualTo("45")
+    assertThat(viewModel.state.value.reservation).isEqualTo(Username("maya.45"))
+  }
+
+  @Test
+  fun `a too-short discriminator produces a validation error`() = runTest(testDispatcher) {
+    coEvery { mockRepository.reserveUsername("maya") } returns RequestResult.Success(Username("maya.45"))
+
+    viewModel.onEvent(AddUsernameScreenEvents.UsernameChanged("maya"))
+    advanceUntilIdle()
+    viewModel.onEvent(AddUsernameScreenEvents.DiscriminatorChanged("7"))
+    advanceUntilIdle()
+
+    assertThat(viewModel.state.value.validationError).isEqualTo(AddUsernameState.ValidationError.DISCRIMINATOR_TOO_SHORT)
+    assertThat(viewModel.state.value.isSubmittable).isFalse()
+  }
+
+  @Test
+  fun `a discriminator of 00 produces a validation error`() = runTest(testDispatcher) {
+    coEvery { mockRepository.reserveUsername("maya") } returns RequestResult.Success(Username("maya.45"))
+
+    viewModel.onEvent(AddUsernameScreenEvents.UsernameChanged("maya"))
+    advanceUntilIdle()
+    viewModel.onEvent(AddUsernameScreenEvents.DiscriminatorChanged("00"))
+    advanceUntilIdle()
+
+    assertThat(viewModel.state.value.validationError).isEqualTo(AddUsernameState.ValidationError.DISCRIMINATOR_CANNOT_BE_00)
+  }
+
+  @Test
+  fun `a discriminator with a leading zero produces a validation error`() = runTest(testDispatcher) {
+    coEvery { mockRepository.reserveUsername("maya") } returns RequestResult.Success(Username("maya.45"))
+
+    viewModel.onEvent(AddUsernameScreenEvents.UsernameChanged("maya"))
+    advanceUntilIdle()
+    viewModel.onEvent(AddUsernameScreenEvents.DiscriminatorChanged("012"))
+    advanceUntilIdle()
+
+    assertThat(viewModel.state.value.validationError).isEqualTo(AddUsernameState.ValidationError.DISCRIMINATOR_CANNOT_START_WITH_ZERO)
+  }
+
+  @Test
+  fun `an unavailable user-chosen discriminator points the error at the number`() = runTest(testDispatcher) {
+    coEvery { mockRepository.reserveUsername("maya") } returns RequestResult.Success(Username("maya.45"))
+    coEvery { mockRepository.reserveUsername("maya", "77") } returns RequestResult.NonSuccess(ReserveUsernameError.NotAvailable)
+
+    viewModel.onEvent(AddUsernameScreenEvents.UsernameChanged("maya"))
+    advanceUntilIdle()
+    viewModel.onEvent(AddUsernameScreenEvents.DiscriminatorChanged("77"))
+    advanceUntilIdle()
+
+    assertThat(viewModel.state.value.validationError).isEqualTo(AddUsernameState.ValidationError.DISCRIMINATOR_NOT_AVAILABLE)
+    assertThat(viewModel.state.value.isSubmittable).isFalse()
   }
 
   @Test

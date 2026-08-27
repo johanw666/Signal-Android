@@ -16,18 +16,29 @@ sealed class AddUsernameScreenEvents {
     override fun toString(): String = "UsernameChanged(value=${value.censor()})"
   }
 
-  /** Internal: the user paused typing long enough for the entered nickname to be validated and reserved. */
-  data class NicknameSettled(val value: String) : AddUsernameScreenEvents() {
-    override fun toString(): String = "NicknameSettled(value=${value.censor()})"
+  /** The user edited the discriminator field. */
+  data class DiscriminatorChanged(val value: String) : AddUsernameScreenEvents() {
+    override fun toString(): String = "DiscriminatorChanged(value=${value.censor()})"
   }
 
-  /** Internal: a reservation attempt for [nickname] finished with [result]. */
-  data class ReservationCompleted(val nickname: String, val result: RequestResult<Username, ReserveUsernameError>) : AddUsernameScreenEvents() {
-    override fun toString(): String = "ReservationCompleted(nickname=${nickname.censor()}, result=${result.javaClass.simpleName})"
+  /**
+   * Internal: the user paused typing long enough for the entered username to be validated and reserved. A null
+   * [discriminator] means the service should assign one.
+   */
+  data class EntrySettled(val nickname: String, val discriminator: String?) : AddUsernameScreenEvents() {
+    override fun toString(): String = "EntrySettled(nickname=${nickname.censor()}, discriminator=${discriminator?.censor()})"
+  }
+
+  /** Internal: a reservation attempt for [nickname] and [discriminator] finished with [result]. */
+  data class ReservationCompleted(val nickname: String, val discriminator: String?, val result: RequestResult<Username, ReserveUsernameError>) : AddUsernameScreenEvents() {
+    override fun toString(): String = "ReservationCompleted(nickname=${nickname.censor()}, discriminator=${discriminator?.censor()}, result=${result.javaClass.simpleName})"
   }
 
   /** The user tapped the "learn more" link under the username field. */
   data object LearnMoreClicked : AddUsernameScreenEvents()
+
+  /** The user dismissed the dialog explaining the digits after the username. */
+  data object LearnMoreDialogDismissed : AddUsernameScreenEvents()
 
   /** The user opted out of choosing a username. */
   data object SkipClicked : AddUsernameScreenEvents()
