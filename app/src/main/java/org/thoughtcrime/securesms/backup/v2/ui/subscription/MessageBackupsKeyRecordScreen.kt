@@ -76,6 +76,9 @@ import org.signal.core.ui.compose.Snackbars
 import org.signal.core.ui.compose.horizontalGutters
 import org.signal.core.ui.compose.theme.SignalTheme
 import org.signal.core.util.Util
+import org.signal.passwordmanager.CredentialManagerError
+import org.signal.passwordmanager.CredentialManagerResult
+import org.signal.passwordmanager.SignalCredentialManager
 import org.thoughtcrime.securesms.R
 import org.thoughtcrime.securesms.backup.v2.ui.warning.ClipStage
 import org.thoughtcrime.securesms.backup.v2.ui.warning.RecoveryKeyWarningSheetContent
@@ -86,9 +89,6 @@ import org.thoughtcrime.securesms.components.settings.app.backups.remote.BackupK
 import org.thoughtcrime.securesms.fonts.MonoTypeface
 import org.thoughtcrime.securesms.keyvalue.SignalStore
 import org.thoughtcrime.securesms.util.CommunicationActions
-import org.thoughtcrime.securesms.util.storage.AndroidCredentialRepository
-import org.thoughtcrime.securesms.util.storage.CredentialManagerError
-import org.thoughtcrime.securesms.util.storage.CredentialManagerResult
 import org.signal.core.ui.R as CoreUiR
 
 private const val CLIPBOARD_TIMEOUT_SECONDS = 60
@@ -123,7 +123,7 @@ fun MessageBackupsKeyRecordScreen(
 ) {
   val context = LocalContext.current
   val passwordManagerSettingsIntent = remember {
-    AndroidCredentialRepository.getCredentialManagerSettingsIntent(context)
+    SignalCredentialManager.getSettingsIntent(context)
   }
 
   val onBackPressedDispatcher = LocalOnBackPressedDispatcherOwner.current?.onBackPressedDispatcher
@@ -414,7 +414,7 @@ fun MessageBackupsKeyRecordScreen(
             }
           }
 
-          if (!showAsPasskey && AndroidCredentialRepository.isCredentialManagerSupported(context)) {
+          if (!showAsPasskey && SignalCredentialManager.isSupported(context)) {
             item {
               Buttons.Small(
                 onClick = { onRequestSaveToPasswordManager() }
@@ -764,7 +764,7 @@ private suspend fun saveKeyToCredentialManager(
   @UiContext activityContext: Context,
   backupKey: String
 ): CredentialManagerResult {
-  return AndroidCredentialRepository.saveCredential(
+  return SignalCredentialManager.saveCredential(
     activityContext = activityContext,
     username = activityContext.getString(R.string.MessageBackupsKeyRecordScreen__backup_key_password_manager_id),
     password = backupKey
@@ -775,7 +775,7 @@ private suspend fun getKeyFromCredentialManager(
   @UiContext activityContext: Context,
   id: String
 ): String? {
-  return AndroidCredentialRepository.getCredential(activityContext, id)
+  return SignalCredentialManager.getCredential(activityContext, id)
 }
 
 @DayNightPreviews

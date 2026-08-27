@@ -1,9 +1,9 @@
 /*
- * Copyright 2025 Signal Messenger, LLC
+ * Copyright 2026 Signal Messenger, LLC
  * SPDX-License-Identifier: AGPL-3.0-only
  */
 
-package org.thoughtcrime.securesms.registration.ui.restore
+package org.signal.passwordmanager.compose
 
 import android.annotation.SuppressLint
 import android.content.Context
@@ -29,14 +29,14 @@ import android.graphics.Rect as ViewRect
 import androidx.compose.ui.geometry.Rect as ComposeRect
 
 /**
- * Provide a compose friendly way to autofill the backup key from a password manager.
+ * Provide a compose friendly way to autofill a password (e.g. a backup key) from a password manager.
  */
 @OptIn(ExperimentalComposeUiApi::class)
 @SuppressLint("NewApi")
 @Composable
-fun backupKeyAutoFillHelper(
+fun passwordAutoFillHelper(
   onFill: (String) -> Unit
-): BackupKeyAutoFillHelper {
+): PasswordAutoFillHelper {
   val view = LocalView.current
   val context = LocalContext.current
   val autofill: Autofill? = LocalAutofill.current
@@ -45,7 +45,7 @@ fun backupKeyAutoFillHelper(
   LocalAutofillTree.current += node
 
   return remember {
-    object : BackupKeyAutoFillHelper(context) {
+    object : PasswordAutoFillHelper(context) {
       override fun request() {
         if (node.boundingBox != null) {
           autofill?.requestAutofillForNode(node)
@@ -75,10 +75,10 @@ fun backupKeyAutoFillHelper(
 }
 
 /**
- * Attach a [BackupKeyAutoFillHelper] return from [backupKeyAutoFillHelper] to setup the default
+ * Attach a [PasswordAutoFillHelper] returned from [passwordAutoFillHelper] to setup the default
  * callbacks needed to make requests on the view's behalf.
  */
-fun Modifier.attachBackupKeyAutoFillHelper(helper: BackupKeyAutoFillHelper): Modifier {
+fun Modifier.attachPasswordAutoFillHelper(helper: PasswordAutoFillHelper): Modifier {
   return this.then(
     Modifier
       .onFocusChanged {
@@ -95,10 +95,10 @@ fun Modifier.attachBackupKeyAutoFillHelper(helper: BackupKeyAutoFillHelper): Mod
 }
 
 /**
- * Weird compose-interop abstract class to let us return something to the caller of [backupKeyAutoFillHelper]
+ * Weird compose-interop abstract class to let us return something to the caller of [passwordAutoFillHelper]
  * and capture inner compose data to implement the methods that need various compose provided things.
  */
-abstract class BackupKeyAutoFillHelper(context: Context) {
+abstract class PasswordAutoFillHelper(context: Context) {
   protected val autoFillManager: AutofillManager? = if (Build.VERSION.SDK_INT >= 26) {
     ContextCompat.getSystemService(context, AutofillManager::class.java)
   } else {

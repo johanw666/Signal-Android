@@ -62,6 +62,7 @@ dependencies {
   implementation(project(":core:models-jvm"))
   implementation(project(":core:serialization"))
   implementation(project(":lib:device-transfer"))
+  implementation(project(":lib:password-manager"))
   implementation(project(":lib:signal-login"))
   implementation(libs.libsignal.android)
 
@@ -97,10 +98,6 @@ dependencies {
   // Phone number hint + SMS verification code retriever
   implementation(libs.google.play.services.auth)
   implementation(libs.kotlinx.coroutines.play.services)
-
-  // Credential Manager (password manager retrieval)
-  implementation(libs.androidx.credentials)
-  implementation(libs.androidx.credentials.compat)
 
   // Testing
   testImplementation(testFixtures(project(":core:ui")))

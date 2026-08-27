@@ -702,6 +702,7 @@ dependencies {
   implementation(project(":lib:libsignal-service"))
   implementation(project(":lib:network"))
   implementation(project(":lib:paging"))
+  implementation(project(":lib:password-manager"))
   implementation(project(":lib:photoview"))
   implementation(project(":lib:qr"))
   implementation(project(":lib:sticky-header-grid"))
@@ -808,8 +809,6 @@ dependencies {
   implementation(libs.rxjava3.rxandroid)
   implementation(libs.rxjava3.rxkotlin)
   implementation(libs.rxdogtag)
-  implementation(libs.androidx.credentials)
-  implementation(libs.androidx.credentials.compat)
   implementation(libs.kotlinx.serialization.json)
 
   implementation(project(":lib:billing"))

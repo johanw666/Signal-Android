@@ -47,6 +47,7 @@ import org.signal.core.util.LinkActions.OpenUrlError
 import org.signal.core.util.serialization.AccountEntropyPoolSerializer
 import org.signal.network.api.RegistrationApiV2.SessionMetadata
 import org.signal.network.api.RegistrationApiV2.SvrCredentials
+import org.signal.passwordmanager.SignalCredentialManager
 import org.signal.registration.screens.accountlocked.AccountLockedScreen
 import org.signal.registration.screens.accountlocked.AccountLockedScreenEvents
 import org.signal.registration.screens.accountlocked.AccountLockedState
@@ -124,7 +125,6 @@ import org.signal.registration.screens.welcome.WelcomeScreen
 import org.signal.registration.screens.welcome.WelcomeScreenActions
 import org.signal.registration.screens.welcome.WelcomeScreenViewModel
 import org.signal.registration.util.AccountEntropyPoolParceler
-import org.signal.registration.util.RegistrationCredentialManager
 import org.signal.registration.util.SessionMetadataParceler
 import org.signal.registration.util.SvrCredentialsParceler
 
@@ -659,7 +659,7 @@ private fun EntryProviderScope<NavKey>.navigationEntries(
       factory = SignalLoginInfoViewModel.Factory(
         repository = registrationRepository,
         parentEventEmitter = registrationViewModel::onEvent,
-        isPasswordManagerAvailable = RegistrationCredentialManager.isSupported(context)
+        isPasswordManagerAvailable = SignalCredentialManager.isSupported(context)
       )
     )
     val state by viewModel.state.collectAsStateWithLifecycle()
@@ -904,7 +904,7 @@ private fun EntryProviderScope<NavKey>.navigationEntries(
         parentEventEmitter = registrationViewModel::onEvent,
         resultBus = registrationViewModel.resultBus,
         resultKey = AEP_FOR_LOCAL_BACKUP_RESULT,
-        isPasswordManagerAvailable = RegistrationCredentialManager.isSupported(context)
+        isPasswordManagerAvailable = SignalCredentialManager.isSupported(context)
       )
     )
     val state by viewModel.state.collectAsStateWithLifecycle()
@@ -922,7 +922,7 @@ private fun EntryProviderScope<NavKey>.navigationEntries(
         e164 = key.e164,
         repository = registrationRepository,
         parentEventEmitter = registrationViewModel::onEvent,
-        isPasswordManagerAvailable = RegistrationCredentialManager.isSupported(context)
+        isPasswordManagerAvailable = SignalCredentialManager.isSupported(context)
       )
     )
     val state by viewModel.state.collectAsStateWithLifecycle()
@@ -939,7 +939,7 @@ private fun EntryProviderScope<NavKey>.navigationEntries(
       factory = EnterAepForRemoteBackupPostRegistrationViewModel.Factory(
         repository = registrationRepository,
         parentEventEmitter = registrationViewModel::onEvent,
-        isPasswordManagerAvailable = RegistrationCredentialManager.isSupported(context)
+        isPasswordManagerAvailable = SignalCredentialManager.isSupported(context)
       )
     )
     val state by viewModel.state.collectAsStateWithLifecycle()

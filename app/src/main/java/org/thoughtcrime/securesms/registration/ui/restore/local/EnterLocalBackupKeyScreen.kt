@@ -35,6 +35,8 @@ import org.signal.core.ui.compose.Buttons
 import org.signal.core.ui.compose.CircularProgressWrapper
 import org.signal.core.ui.compose.DayNightPreviews
 import org.signal.core.ui.compose.Previews
+import org.signal.passwordmanager.compose.attachPasswordAutoFillHelper
+import org.signal.passwordmanager.compose.passwordAutoFillHelper
 import org.thoughtcrime.securesms.R
 import org.thoughtcrime.securesms.components.TemporaryScreenshotSecurity
 import org.thoughtcrime.securesms.fonts.MonoTypeface
@@ -42,8 +44,6 @@ import org.thoughtcrime.securesms.registration.data.network.RegisterAccountResul
 import org.thoughtcrime.securesms.registration.ui.restore.AccountEntropyPoolVerification
 import org.thoughtcrime.securesms.registration.ui.restore.BackupKeyVisualTransformation
 import org.thoughtcrime.securesms.registration.ui.restore.RegistrationErrorDialogs
-import org.thoughtcrime.securesms.registration.ui.restore.attachBackupKeyAutoFillHelper
-import org.thoughtcrime.securesms.registration.ui.restore.backupKeyAutoFillHelper
 import org.thoughtcrime.securesms.registration.ui.shared.RegistrationScreen
 
 @Composable
@@ -67,7 +67,7 @@ fun EnterLocalBackupKeyScreen(
   val focusRequester = remember { FocusRequester() }
   var requestFocus by remember { mutableStateOf(true) }
 
-  val autoFillHelper = backupKeyAutoFillHelper { onBackupKeyChanged(it) }
+  val autoFillHelper = passwordAutoFillHelper { onBackupKeyChanged(it) }
 
   RegistrationScreen(
     title = stringResource(R.string.EnterLocalBackupKeyScreen__enter_your_recovery_key),
@@ -128,7 +128,7 @@ fun EnterLocalBackupKeyScreen(
       modifier = Modifier
         .fillMaxWidth()
         .focusRequester(focusRequester)
-        .attachBackupKeyAutoFillHelper(autoFillHelper)
+        .attachPasswordAutoFillHelper(autoFillHelper)
         .onGloballyPositioned {
           if (requestFocus) {
             focusRequester.requestFocus()

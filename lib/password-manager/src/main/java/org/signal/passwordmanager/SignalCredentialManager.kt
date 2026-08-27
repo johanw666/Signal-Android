@@ -1,9 +1,9 @@
 /*
- * Copyright 2025 Signal Messenger, LLC
+ * Copyright 2026 Signal Messenger, LLC
  * SPDX-License-Identifier: AGPL-3.0-only
  */
 
-package org.thoughtcrime.securesms.util.storage
+package org.signal.passwordmanager
 
 import android.content.Context
 import android.content.Intent
@@ -11,6 +11,7 @@ import android.net.Uri
 import android.os.Build
 import android.provider.Settings
 import android.view.autofill.AutofillManager
+import androidx.annotation.UiContext
 import androidx.core.content.getSystemService
 import androidx.credentials.CreatePasswordRequest
 import androidx.credentials.CredentialManager
@@ -23,28 +24,40 @@ import androidx.credentials.exceptions.CreateCredentialNoCreateOptionException
 import androidx.credentials.exceptions.CreateCredentialProviderConfigurationException
 import androidx.credentials.exceptions.CreateCredentialUnknownException
 import androidx.credentials.exceptions.GetCredentialException
+import org.signal.core.util.PlayServicesUtil
 import org.signal.core.util.logging.Log
 
 /**
- * Responsible for storing and retrieving credentials using Android's Credential Manager.
+ * Stores and retrieves password credentials (e.g. backup/recovery keys) using Android's
+ * Credential Manager, which delegates to the user's password manager.
  */
-object AndroidCredentialRepository {
-  private val TAG = Log.tag(AndroidCredentialRepository::class)
+object SignalCredentialManager {
+
+  private val TAG = Log.tag(SignalCredentialManager::class)
 
   private const val ERROR_CODE_GOOGLE_AUTOFILL_SUCCESS = "[28431]"
   private const val ERROR_CODE_MISSING_CREDENTIAL_MANAGER = "[28434]"
   private const val ERROR_CODE_SAVE_PROMPT_DISABLED = "[28435]"
 
-  fun isCredentialManagerSupported(context: Context): Boolean {
+  /**
+   * Whether a password manager / credential provider is available. On API 26+ this tracks whether
+   * the user has an autofill service enabled; older devices fall back to the Credential Manager
+   * Play Services backend, so they are supported only when Play Services is.
+   */
+  fun isSupported(context: Context): Boolean {
     return if (Build.VERSION.SDK_INT >= 26) {
       context.getSystemService<AutofillManager>()?.isEnabled == true
     } else {
-      true
+      PlayServicesUtil.getPlayServicesStatus(context) == PlayServicesUtil.PlayServicesStatus.SUCCESS
     }
   }
 
+  /**
+   * Prompts the user to save a password credential to their password manager. Must be called with
+   * an Activity context so the Credential Manager UI can be shown.
+   */
   suspend fun saveCredential(
-    activityContext: Context,
+    @UiContext activityContext: Context,
     username: String,
     password: String
   ): CredentialManagerResult = try {
@@ -92,30 +105,29 @@ object AndroidCredentialRepository {
   }
 
   /**
-   * Retrieves a previously saved password credential by username. Returns null if the credential
-   * cannot be found or if retrieval fails.
+   * Prompts the device password manager to let the user pick a saved password credential and
+   * returns its value, or null if none was chosen or retrieval failed. If [id] is provided, only a
+   * credential with that id will be returned. Must be called with an Activity context so the
+   * Credential Manager UI can be shown.
    */
-  suspend fun getCredential(
-    activityContext: Context,
-    id: String
-  ): String? = try {
+  suspend fun getCredential(@UiContext activityContext: Context, id: String? = null): String? = try {
     val result = CredentialManager.create(activityContext).getCredential(activityContext, GetCredentialRequest(listOf(GetPasswordOption())))
     val credential = result.credential
-    if (credential is PasswordCredential && credential.id == id) {
+    if (credential is PasswordCredential && (id == null || credential.id == id)) {
       credential.password
     } else {
-      Log.w(TAG, "Failed to find credential from password manager")
+      Log.w(TAG, "Failed to find a matching credential from the password manager.")
       null
     }
   } catch (e: GetCredentialException) {
-    Log.w(TAG, "Failed to find credential from password manager.", e)
+    Log.w(TAG, "Failed to retrieve credential from password manager.", e)
     null
   }
 
   /**
    * Returns an [Intent] that can be used to launch the device's password manager settings.
    */
-  fun getCredentialManagerSettingsIntent(context: Context): Intent? {
+  fun getSettingsIntent(context: Context): Intent? {
     if (Build.VERSION.SDK_INT >= 34) {
       val intent = Intent(
         Settings.ACTION_CREDENTIAL_PROVIDER,
@@ -142,11 +154,12 @@ object AndroidCredentialRepository {
   }
 }
 
+/** Represents the result of a [SignalCredentialManager] save operation. */
 sealed interface CredentialManagerResult {
   data object Success : CredentialManagerResult
   data object UserCanceled : CredentialManagerResult
 
-  /** The backup key save operation was interrupted and should be retried. */
+  /** The save operation was interrupted and should be retried. */
   data class Interrupted(val exception: Exception) : CredentialManagerResult
 }
 

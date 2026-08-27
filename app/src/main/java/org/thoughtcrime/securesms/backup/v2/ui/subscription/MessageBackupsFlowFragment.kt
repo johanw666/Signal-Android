@@ -34,6 +34,7 @@ import org.signal.core.ui.compose.Dialogs
 import org.signal.core.util.Util
 import org.signal.core.util.concurrent.SignalDispatchers
 import org.signal.core.util.getSerializableCompat
+import org.signal.passwordmanager.SignalCredentialManager
 import org.thoughtcrime.securesms.R
 import org.thoughtcrime.securesms.backup.DeletionState
 import org.thoughtcrime.securesms.backup.v2.MessageBackupTier
@@ -44,7 +45,6 @@ import org.thoughtcrime.securesms.dependencies.AppDependencies
 import org.thoughtcrime.securesms.keyvalue.SignalStore
 import org.thoughtcrime.securesms.util.CommunicationActions
 import org.thoughtcrime.securesms.util.PlayStoreUtil
-import org.thoughtcrime.securesms.util.storage.AndroidCredentialRepository
 import org.thoughtcrime.securesms.util.viewModel
 
 /**
@@ -69,7 +69,7 @@ class MessageBackupsFlowFragment : ComposeFragment(), InAppPaymentCheckoutDelega
     MessageBackupsFlowViewModel(
       initialTierSelection = requireArguments().getSerializableCompat(TIER, MessageBackupTier::class.java),
       googlePlayApiAvailability = GoogleApiAvailability.getInstance().isGooglePlayServicesAvailable(requireContext()),
-      isCredentialManagerSupported = AndroidCredentialRepository.isCredentialManagerSupported(requireContext())
+      isCredentialManagerSupported = SignalCredentialManager.isSupported(requireContext())
     )
   }
 
@@ -154,7 +154,7 @@ class MessageBackupsFlowFragment : ComposeFragment(), InAppPaymentCheckoutDelega
 
       composable(route = MessageBackupsStage.Route.BACKUP_KEY_RECORD.name) {
         val context = LocalContext.current
-        val passwordManagerSettingsIntent = AndroidCredentialRepository.getCredentialManagerSettingsIntent(requireContext())
+        val passwordManagerSettingsIntent = SignalCredentialManager.getSettingsIntent(requireContext())
 
         MessageBackupsKeyRecordScreen(
           backupKey = state.accountEntropyPool.displayValue,
@@ -180,7 +180,7 @@ class MessageBackupsFlowFragment : ComposeFragment(), InAppPaymentCheckoutDelega
 
       composable(route = MessageBackupsStage.Route.BACKUP_KEY_RECORD_MANUALLY.name) {
         val context = LocalContext.current
-        val passwordManagerSettingsIntent = AndroidCredentialRepository.getCredentialManagerSettingsIntent(requireContext())
+        val passwordManagerSettingsIntent = SignalCredentialManager.getSettingsIntent(requireContext())
 
         MessageBackupsKeyRecordScreen(
           backupKey = state.accountEntropyPool.displayValue,

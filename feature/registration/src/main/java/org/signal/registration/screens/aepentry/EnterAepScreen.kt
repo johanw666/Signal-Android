@@ -56,16 +56,16 @@ import org.signal.core.ui.compose.AllDevicePreviews
 import org.signal.core.ui.compose.Buttons
 import org.signal.core.ui.compose.Dialogs
 import org.signal.core.ui.compose.Previews
+import org.signal.passwordmanager.SignalCredentialManager
+import org.signal.passwordmanager.compose.attachPasswordAutoFillHelper
+import org.signal.passwordmanager.compose.passwordAutoFillHelper
 import org.signal.registration.R
 import org.signal.registration.fonts.MonoTypeface
 import org.signal.registration.screens.OnePaneRegistrationScaffold
 import org.signal.registration.screens.RegistrationScaffold
 import org.signal.registration.screens.TwoPaneRegistrationScaffold
 import org.signal.registration.screens.attachDebugLogHelper
-import org.signal.registration.screens.localbackuprestore.attachBackupKeyAutoFillHelper
-import org.signal.registration.screens.localbackuprestore.backupKeyAutoFillHelper
 import org.signal.registration.test.TestTags
-import org.signal.registration.util.RegistrationCredentialManager
 
 @Composable
 fun EnterAepScreen(
@@ -264,7 +264,7 @@ private fun RecoveryKeyTextField(state: EnterAepState, onEvent: (EnterAepEvents)
   val focusRequester = remember { FocusRequester() }
   var requestFocus by remember { mutableStateOf(true) }
   val keyboardController = LocalSoftwareKeyboardController.current
-  val autoFillHelper = backupKeyAutoFillHelper { onEvent(EnterAepEvents.BackupKeyChanged(it)) }
+  val autoFillHelper = passwordAutoFillHelper { onEvent(EnterAepEvents.BackupKeyChanged(it)) }
 
   TextField(
     value = state.enteredText,
@@ -311,7 +311,7 @@ private fun RecoveryKeyTextField(state: EnterAepState, onEvent: (EnterAepEvents)
       .fillMaxWidth()
       .testTag(TestTags.ENTER_AEP_INPUT)
       .focusRequester(focusRequester)
-      .attachBackupKeyAutoFillHelper(autoFillHelper)
+      .attachPasswordAutoFillHelper(autoFillHelper)
       .onGloballyPositioned {
         if (requestFocus) {
           focusRequester.requestFocus()
@@ -330,7 +330,7 @@ private fun FillFromPasswordManagerButton(onEvent: (EnterAepEvents) -> Unit, mod
     modifier = modifier,
     onClick = {
       coroutineScope.launch {
-        val password = RegistrationCredentialManager.getPasswordCredential(context)
+        val password = SignalCredentialManager.getCredential(context)
         if (password != null) {
           onEvent(EnterAepEvents.BackupKeyChanged(password))
         }

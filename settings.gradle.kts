@@ -126,6 +126,7 @@ include(":lib:emoji")
 include(":lib:archive")
 include(":lib:ui-components")
 include(":lib:signal-login")
+include(":lib:password-manager")
 
 // Feature modules
 include(":feature:app-settings")

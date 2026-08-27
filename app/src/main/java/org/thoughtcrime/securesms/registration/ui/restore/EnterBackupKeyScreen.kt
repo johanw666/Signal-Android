@@ -55,6 +55,8 @@ import org.signal.core.ui.compose.Buttons
 import org.signal.core.ui.compose.DayNightPreviews
 import org.signal.core.ui.compose.Previews
 import org.signal.core.ui.compose.horizontalGutters
+import org.signal.passwordmanager.compose.attachPasswordAutoFillHelper
+import org.signal.passwordmanager.compose.passwordAutoFillHelper
 import org.thoughtcrime.securesms.R
 import org.thoughtcrime.securesms.backup.v2.ui.BackupsIconColors
 import org.thoughtcrime.securesms.components.TemporaryScreenshotSecurity
@@ -137,7 +139,7 @@ fun EnterBackupKeyScreen(
     val visualTransform = remember(chunkLength) { BackupKeyVisualTransformation(chunkSize = chunkLength) }
     val keyboardController = LocalSoftwareKeyboardController.current
 
-    val autoFillHelper = backupKeyAutoFillHelper { onBackupKeyChanged(it) }
+    val autoFillHelper = passwordAutoFillHelper { onBackupKeyChanged(it) }
 
     TextField(
       value = enteredText,
@@ -173,7 +175,7 @@ fun EnterBackupKeyScreen(
       modifier = Modifier
         .fillMaxWidth()
         .focusRequester(focusRequester)
-        .attachBackupKeyAutoFillHelper(autoFillHelper)
+        .attachPasswordAutoFillHelper(autoFillHelper)
         .onGloballyPositioned {
           if (requestFocus) {
             focusRequester.requestFocus()
