@@ -42,6 +42,7 @@ import org.thoughtcrime.securesms.calls.quality.CallQualityBottomSheetFragment
 import org.thoughtcrime.securesms.components.settings.DSLConfiguration
 import org.thoughtcrime.securesms.components.settings.DSLSettingsFragment
 import org.thoughtcrime.securesms.components.settings.DSLSettingsText
+import org.thoughtcrime.securesms.components.settings.app.notifications.ReminderType
 import org.thoughtcrime.securesms.components.settings.app.privacy.advanced.AdvancedPrivacySettingsRepository
 import org.thoughtcrime.securesms.components.settings.app.subscription.InAppPaymentsRepository
 import org.thoughtcrime.securesms.components.settings.configure
@@ -454,9 +455,10 @@ class InternalSettingsFragment : DSLSettingsFragment(R.string.preferences__inter
 
       clickPref(
         title = DSLSettingsText.from("Run unread reminder job"),
-        summary = DSLSettingsText.from("Generates an unread reminder notification based on unreads and muted preferences."),
+        summary = DSLSettingsText.from("Generates an unread reminder notification based on unreads and muted preferences. Skips the three day cooldown."),
         onClick = {
-          UnreadReminderJob.enqueue()
+          val threadIds = (SignalDatabase.threads.getMutedThreadIds(ReminderType.MESSAGES, 0) + SignalDatabase.threads.getMutedThreadIds(ReminderType.CALLS, 0)).distinct()
+          threadIds.forEach { threadId -> UnreadReminderJob.enqueue(threadId, 0) }
         }
       )
 

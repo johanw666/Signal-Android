@@ -69,6 +69,7 @@ import org.thoughtcrime.securesms.service.PendingRetryReceiptManager
 import org.thoughtcrime.securesms.service.PinnedMessageManager
 import org.thoughtcrime.securesms.service.ScheduledMessageManager
 import org.thoughtcrime.securesms.service.TrimThreadsByDateManager
+import org.thoughtcrime.securesms.service.UnreadReminderManager
 import org.thoughtcrime.securesms.service.webrtc.SignalCallManager
 import org.thoughtcrime.securesms.shakereport.ShakeToReport
 import org.thoughtcrime.securesms.util.EarlyMessageCache
@@ -263,6 +264,11 @@ object AppDependencies {
   @JvmStatic
   val androidCallAudioManager: AudioManagerCompat by lazy {
     provider.provideAndroidCallAudioManager()
+  }
+
+  @JvmStatic
+  val unreadReminderManager: UnreadReminderManager by lazy {
+    provider.provideUnreadReminderManager()
   }
 
   @JvmStatic
@@ -540,6 +546,7 @@ object AppDependencies {
     fun provideOkHttpClient(): OkHttpClient
     fun provideScheduledMessageManager(): ScheduledMessageManager
     fun providePinnedMessageManager(): PinnedMessageManager
+    fun provideUnreadReminderManager(): UnreadReminderManager
     fun provideLibsignalNetwork(config: SignalServiceConfiguration): Network
     fun provideBillingApi(): BillingApi
     fun provideArchiveApi(pushServiceSocket: PushServiceSocket): ArchiveApi

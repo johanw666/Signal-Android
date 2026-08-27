@@ -5,44 +5,59 @@ import android.app.PendingIntent
 import android.content.Context
 import androidx.annotation.VisibleForTesting
 import androidx.core.app.NotificationCompat
+import androidx.core.app.Person
 import androidx.core.content.ContextCompat
+import androidx.core.content.LocusIdCompat
 import org.signal.core.util.PendingIntentFlags
 import org.signal.core.util.ServiceUtil
 import org.signal.core.util.Stopwatch
 import org.signal.core.util.logging.Log
-import org.thoughtcrime.securesms.MainActivity
 import org.thoughtcrime.securesms.R
+import org.thoughtcrime.securesms.avatar.fallback.FallbackAvatar
+import org.thoughtcrime.securesms.avatar.fallback.FallbackAvatarDrawable
 import org.thoughtcrime.securesms.components.settings.app.notifications.ReminderType
+import org.thoughtcrime.securesms.conversation.ConversationIntents
+import org.thoughtcrime.securesms.conversation.colors.AvatarColor
+import org.thoughtcrime.securesms.database.RecipientTable
 import org.thoughtcrime.securesms.database.SignalDatabase
 import org.thoughtcrime.securesms.dependencies.AppDependencies
 import org.thoughtcrime.securesms.jobmanager.Job
+import org.thoughtcrime.securesms.jobs.protos.UnreadReminderJobData
 import org.thoughtcrime.securesms.keyvalue.SignalStore
 import org.thoughtcrime.securesms.notifications.NotificationChannels
 import org.thoughtcrime.securesms.notifications.NotificationIds
+import org.thoughtcrime.securesms.notifications.v2.getContactDrawable
+import org.thoughtcrime.securesms.notifications.v2.makeUniqueToPreventMerging
+import org.thoughtcrime.securesms.notifications.v2.toLargeBitmap
 import org.thoughtcrime.securesms.recipients.Recipient
 import org.thoughtcrime.securesms.recipients.RecipientId
+import org.thoughtcrime.securesms.util.AvatarUtil
+import org.thoughtcrime.securesms.util.ConversationUtil
 import org.thoughtcrime.securesms.util.RemoteConfig
 
 /**
- * Job that periodically runs and sends an unread reminder for muted chats.
+ * Job that sends an unread reminder notification for a single muted thread.
  */
-class UnreadReminderJob(parameters: Parameters) : Job(parameters) {
+class UnreadReminderJob(private val threadId: Long, private val lastReminderTime: Long, parameters: Parameters) : Job(parameters) {
 
   companion object {
     private val TAG = Log.tag(UnreadReminderJob::class.java)
     const val KEY = "UnreadReminderJob"
 
     @JvmStatic
-    fun enqueue() {
+    fun enqueue(threadId: Long, lastReminderTime: Long) {
       if (!RemoteConfig.internalUser || !NotificationChannels.getInstance().areNotificationsEnabled()) {
         return
       }
 
       AppDependencies.jobManager.add(
         UnreadReminderJob(
+          threadId = threadId,
+          lastReminderTime = lastReminderTime,
           parameters = Parameters.Builder()
             .setGlobalPriority(Parameters.PRIORITY_LOWER)
-            .setMaxInstancesForFactory(1)
+            .setQueue("UnreadReminderJob_$threadId")
+            .setMaxInstancesForQueue(1)
             .build()
         )
       )
@@ -51,7 +66,9 @@ class UnreadReminderJob(parameters: Parameters) : Job(parameters) {
     @VisibleForTesting
     fun create(): UnreadReminderJob {
       return UnreadReminderJob(
-        Parameters.Builder()
+        threadId = 1,
+        lastReminderTime = 0,
+        parameters = Parameters.Builder()
           .setGlobalPriority(Parameters.PRIORITY_LOWER)
           .setMaxInstancesForFactory(1)
           .build()
@@ -59,7 +76,7 @@ class UnreadReminderJob(parameters: Parameters) : Job(parameters) {
     }
   }
 
-  override fun serialize(): ByteArray? = null
+  override fun serialize(): ByteArray = UnreadReminderJobData(threadId = threadId, lastReminderTime = lastReminderTime).encode()
 
   override fun getFactoryKey(): String = KEY
 
@@ -70,23 +87,34 @@ class UnreadReminderJob(parameters: Parameters) : Job(parameters) {
       return Result.success()
     }
 
+    val recipient = SignalDatabase.threads.getRecipientForThreadId(threadId)
+    if (recipient == null) {
+      Log.w(TAG, "Missing recipient for thread $threadId.")
+      return Result.success()
+    }
+
+    if (recipient.unreadReminderSetting == RecipientTable.NotificationSetting.DO_NOT_NOTIFY || !recipient.isMuted) {
+      Log.w(TAG, "Recipient ${recipient.id} no longer qualifies for unread reminders")
+      return Result.success()
+    }
+
+    val hasNewMessages = SignalDatabase.messages.hasUnreadMessagesSince(threadId, lastReminderTime)
+    val hasNewCalls = SignalDatabase.calls.hasUnreadCallsSince(threadId, lastReminderTime)
+    if (!hasNewMessages && !hasNewCalls) {
+      Log.i(TAG, "No new unread messages or calls for thread $threadId since last reminder. Skipping.")
+      return Result.success()
+    }
+
     val hideAuthors = SignalStore.settings.messageNotificationsPrivacy.isDisplayNothing
 
-    // Get all muted threads that have opted for reminders. If notification privacy is on, ignore mentions and replies.
-    val messageThreadIds = SignalDatabase.threads.getMutedThreadIds(ReminderType.MESSAGES)
-    val callThreadIds = SignalDatabase.threads.getMutedThreadIds(ReminderType.CALLS)
-    val mentionThreadIds = if (hideAuthors) emptyList() else SignalDatabase.threads.getMutedThreadIds(ReminderType.MENTIONS)
-    val replyThreadIds = if (hideAuthors) emptyList() else SignalDatabase.threads.getMutedThreadIds(ReminderType.REPLIES)
-    stopwatch.split("fetch-threads")
-
     // Get the unread counts/authors
-    val (messages, unreadAuthorIds) = getUnreadForReminder(messageThreadIds, ReminderType.MESSAGES)
+    val (messages, unreadAuthorIds) = getUnreadForReminder(ReminderType.MESSAGES, isEligible = true)
     stopwatch.split("fetch-messages")
-    val (calls, callsAuthorIds) = getUnreadForReminder(callThreadIds, ReminderType.CALLS)
+    val (calls, callsAuthorIds) = getUnreadForReminder(ReminderType.CALLS, isEligible = recipient.callNotificationSetting == RecipientTable.NotificationSetting.ALWAYS_NOTIFY)
     stopwatch.split("fetch-calls")
-    val (mentions, mentionsAuthorIds) = getUnreadForReminder(mentionThreadIds, ReminderType.MENTIONS)
+    val (mentions, mentionsAuthorIds) = getUnreadForReminder(ReminderType.MENTIONS, isEligible = !hideAuthors && recipient.isPushV2Group && recipient.mentionSetting == RecipientTable.NotificationSetting.ALWAYS_NOTIFY)
     stopwatch.split("fetch-mentions")
-    val (replies, repliesAuthorIds) = getUnreadForReminder(replyThreadIds, ReminderType.REPLIES)
+    val (replies, repliesAuthorIds) = getUnreadForReminder(ReminderType.REPLIES, isEligible = !hideAuthors && recipient.isPushV2Group && recipient.replyNotificationSetting == RecipientTable.NotificationSetting.ALWAYS_NOTIFY)
     stopwatch.split("fetch-replies")
 
     val summary = buildSummary(
@@ -101,19 +129,36 @@ class UnreadReminderJob(parameters: Parameters) : Job(parameters) {
       hideAuthors = hideAuthors
     )
 
+    val notificationId = NotificationIds.getNotificationIdForUnreadReminder(threadId)
+
     if (summary.isEmpty()) {
-      ServiceUtil.getNotificationManager(context).cancel(NotificationIds.UNREAD_REMINDER)
+      ServiceUtil.getNotificationManager(context).cancel(notificationId)
     } else if (NotificationChannels.getInstance().areNotificationsEnabled()) {
-      val builder = NotificationCompat.Builder(context, NotificationChannels.getInstance().ADDITIONAL_MESSAGE_NOTIFICATIONS)
+      val contentIntent = ConversationIntents.createBuilderSync(context, recipient.id, threadId).build().makeUniqueToPreventMerging()
+      val avatar = if (!hideAuthors) recipient.getContactDrawable(context) else FallbackAvatarDrawable(context, FallbackAvatar.forTextOrDefault("Unknown", AvatarColor.UNKNOWN)).circleCrop()
+
+      val person = Person.Builder()
+        .setName(recipient.getDisplayName(context))
+        .setIcon(AvatarUtil.getIconCompat(context, recipient))
+        .build()
+      val messagingStyle: NotificationCompat.MessagingStyle = NotificationCompat.MessagingStyle(Person.Builder().setName(context.getString(R.string.SingleRecipientNotificationBuilder_you)).build())
+      messagingStyle.addMessage(NotificationCompat.MessagingStyle.Message(summary, System.currentTimeMillis(), person))
+
+      val builder = NotificationCompat.Builder(context, NotificationChannels.getInstance().UNREAD_REMINDERS)
         .setSmallIcon(R.drawable.ic_notification)
+        .setLargeIcon(avatar.toLargeBitmap(context))
         .setContentText(summary)
-        .setStyle(NotificationCompat.BigTextStyle().bigText(summary))
-        .setContentIntent(PendingIntent.getActivity(context, 0, MainActivity.clearTop(context), PendingIntentFlags.mutable()))
+        .setStyle(messagingStyle.takeIf { !hideAuthors })
+        .setCategory(NotificationCompat.CATEGORY_MESSAGE)
+        .setShortcutId(ConversationUtil.getShortcutId(recipient))
+        .setLocusId(LocusIdCompat(ConversationUtil.getShortcutId(recipient)))
+        .setContentIntent(PendingIntent.getActivity(context, 0, contentIntent, PendingIntentFlags.updateCurrent()))
         .setAutoCancel(true)
 
-      ContextCompat.getSystemService(context, NotificationManager::class.java)!!.notify(NotificationIds.UNREAD_REMINDER, builder.build())
+      ContextCompat.getSystemService(context, NotificationManager::class.java)!!.notify(notificationId, builder.build())
     }
 
+    SignalDatabase.threads.setUnreadReminderTime(threadId, System.currentTimeMillis())
     stopwatch.stop(TAG)
     return Result.success()
   }
@@ -203,23 +248,24 @@ class UnreadReminderJob(parameters: Parameters) : Job(parameters) {
     }
   }
 
-  private fun getUnreadForReminder(threadIds: List<Long>, reminderType: ReminderType): Pair<Int, List<RecipientId>> {
-    return if (threadIds.isEmpty()) {
+  private fun getUnreadForReminder(reminderType: ReminderType, isEligible: Boolean): Pair<Int, List<RecipientId>> {
+    return if (!isEligible) {
       0 to emptyList()
     } else if (reminderType == ReminderType.CALLS) {
-      SignalDatabase.calls.getUnreadCallsForReminderNotification(threadIds)
+      SignalDatabase.calls.getUnreadCallsForReminderNotification(threadId)
     } else {
-      SignalDatabase.messages.getUnreadContentForReminderNotification(threadIds, reminderType)
+      SignalDatabase.messages.getUnreadContentForReminderNotification(threadId, reminderType)
     }
   }
 
   override fun onFailure() {
-    Log.w(TAG, "Failed to create unread reminder notification")
+    Log.w(TAG, "Failed to create unread reminder notification for thread $threadId")
   }
 
   class Factory : Job.Factory<UnreadReminderJob> {
     override fun create(parameters: Parameters, serializedData: ByteArray?): UnreadReminderJob {
-      return UnreadReminderJob(parameters)
+      val data = UnreadReminderJobData.ADAPTER.decode(serializedData!!)
+      return UnreadReminderJob(threadId = data.threadId, lastReminderTime = data.lastReminderTime, parameters = parameters)
     }
   }
 }

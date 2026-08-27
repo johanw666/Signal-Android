@@ -3391,6 +3391,8 @@
     <string name="NotificationChannel_additional_message_notifications">Additional message notifications</string>
     <!-- Notification channel name for notifications sent when a device has been linked -->
     <string name="NotificationChannel_new_linked_device">New linked device</string>
+    <!-- Notification channel name for unread reminder notifications -->
+    <string name="NotificationChannel_unread_reminders">Unread reminders</string>
 
     <!-- QuickResponseService -->
     <string name="QuickResponseService_quick_response_unavailable_when_Signal_is_locked">Quick response unavailable when Signal is locked!</string>

@@ -257,6 +257,7 @@ public class ApplicationContext extends Application implements AppForegroundObse
               .addPostRender(() -> ActiveCallManager.clearNotifications(this))
               .addPostRender(RestoreOptimizedMediaJob::enqueueIfNecessary)
               .addPostRender(() -> AppDependencies.getPinnedMessageManager().scheduleIfNecessary())
+              .addPostRender(() -> AppDependencies.getUnreadReminderManager().scheduleIfNecessary())
               .execute();
 
     Log.d(TAG, "onCreate() took " + (System.currentTimeMillis() - startTime) + " ms");

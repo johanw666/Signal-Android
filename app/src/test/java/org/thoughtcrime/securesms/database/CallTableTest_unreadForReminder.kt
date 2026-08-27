@@ -32,7 +32,7 @@ class CallTableTest_unreadForReminder {
     insertMissedCall(caller, time = 1000)
     insertMissedCall(caller, time = 1001)
 
-    val (count, authors) = calls.getUnreadCallsForReminderNotification(listOf(threadId))
+    val (count, authors) = calls.getUnreadCallsForReminderNotification(threadId, 1001)
 
     assertThat(count).isEqualTo(2)
     assertThat(authors).isEqualTo(listOf(caller))
@@ -45,7 +45,7 @@ class CallTableTest_unreadForReminder {
 
     insertCall(caller, time = 1000, event = CallTable.Event.MISSED_NOTIFICATION_PROFILE)
 
-    val (count, authors) = calls.getUnreadCallsForReminderNotification(listOf(threadId))
+    val (count, authors) = calls.getUnreadCallsForReminderNotification(threadId, 1001)
 
     assertThat(count).isEqualTo(1)
     assertThat(authors).isEqualTo(listOf(caller))
@@ -59,7 +59,7 @@ class CallTableTest_unreadForReminder {
     insertCall(caller, time = 1000, event = CallTable.Event.ACCEPTED)
     insertMissedCall(caller, time = 1001)
 
-    val (count, authors) = calls.getUnreadCallsForReminderNotification(listOf(threadId))
+    val (count, authors) = calls.getUnreadCallsForReminderNotification(threadId, 1002)
 
     assertThat(count).isEqualTo(1)
     assertThat(authors).isEqualTo(listOf(caller))
@@ -74,7 +74,7 @@ class CallTableTest_unreadForReminder {
     calls.markAllCallEventsRead(timestamp = 1000)
     insertMissedCall(caller, time = 1001)
 
-    val (count, authors) = calls.getUnreadCallsForReminderNotification(listOf(threadId))
+    val (count, authors) = calls.getUnreadCallsForReminderNotification(threadId, 1002)
 
     assertThat(count).isEqualTo(1)
     assertThat(authors).isEqualTo(listOf(caller))
@@ -90,7 +90,7 @@ class CallTableTest_unreadForReminder {
     insertMissedCall(included, time = 1000)
     insertMissedCall(excluded, time = 1000)
 
-    val (count, authors) = calls.getUnreadCallsForReminderNotification(listOf(includedThreadId))
+    val (count, authors) = calls.getUnreadCallsForReminderNotification(includedThreadId, 1001)
 
     assertThat(count).isEqualTo(1)
     assertThat(authors).isEqualTo(listOf(included))

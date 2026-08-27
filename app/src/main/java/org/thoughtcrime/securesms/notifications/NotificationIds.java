@@ -38,7 +38,8 @@ public final class NotificationIds {
   public static final int OUT_OF_REMOTE_STORAGE             = 1205000;
   public static final int INITIAL_BACKUP_FAILED             = 1205010;
   public static final int MANUAL_BACKUP_NOT_CREATED         = 1205020;
-  public static final int UNREAD_REMINDER                   = 1205030;
+  public static final int UNREAD_REMINDER                   = 1206000;
+  public static final int MAX_UNREAD_REMINDER               = UNREAD_REMINDER + 100_000;
 
   private NotificationIds() { }
 
@@ -60,5 +61,9 @@ public final class NotificationIds {
 
   public static boolean isMessageNotificationId(int id) {
     return (id >= THREAD && id < (MAX_THREAD)) || (id >= STORY_THREAD && id < MAX_STORY_THREAD);
+  }
+
+  public static int getNotificationIdForUnreadReminder(long threadId) {
+    return UNREAD_REMINDER + (int) threadId;
   }
 }

@@ -51,6 +51,7 @@ import org.thoughtcrime.securesms.service.PendingRetryReceiptManager
 import org.thoughtcrime.securesms.service.PinnedMessageManager
 import org.thoughtcrime.securesms.service.ScheduledMessageManager
 import org.thoughtcrime.securesms.service.TrimThreadsByDateManager
+import org.thoughtcrime.securesms.service.UnreadReminderManager
 import org.thoughtcrime.securesms.service.webrtc.SignalCallManager
 import org.thoughtcrime.securesms.shakereport.ShakeToReport
 import org.thoughtcrime.securesms.util.EarlyMessageCache
@@ -268,6 +269,10 @@ class MockApplicationDependencyProvider : AppDependencies.Provider {
   }
 
   override fun providePinnedMessageManager(): PinnedMessageManager {
+    return mockk(relaxed = true)
+  }
+
+  override fun provideUnreadReminderManager(): UnreadReminderManager {
     return mockk(relaxed = true)
   }
 

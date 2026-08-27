@@ -109,6 +109,7 @@ import org.thoughtcrime.securesms.service.PendingRetryReceiptManager;
 import org.thoughtcrime.securesms.service.PinnedMessageManager;
 import org.thoughtcrime.securesms.service.ScheduledMessageManager;
 import org.thoughtcrime.securesms.service.TrimThreadsByDateManager;
+import org.thoughtcrime.securesms.service.UnreadReminderManager;
 import org.thoughtcrime.securesms.service.webrtc.SignalCallManager;
 import org.thoughtcrime.securesms.shakereport.ShakeToReport;
 import org.thoughtcrime.securesms.stories.Stories;
@@ -336,6 +337,11 @@ public class ApplicationDependencyProvider implements AppDependencies.Provider {
   @Override
   public @NonNull PinnedMessageManager providePinnedMessageManager() {
     return new PinnedMessageManager(context);
+  }
+
+  @Override
+  public @NonNull UnreadReminderManager provideUnreadReminderManager() {
+    return new UnreadReminderManager(context);
   }
 
   @Override

@@ -142,6 +142,7 @@ import org.thoughtcrime.securesms.polls.PollRecord
 import org.thoughtcrime.securesms.recipients.Recipient
 import org.thoughtcrime.securesms.recipients.RecipientId
 import org.thoughtcrime.securesms.revealable.ViewOnceExpirationInfo
+import org.thoughtcrime.securesms.service.UnreadReminderManager
 import org.thoughtcrime.securesms.sms.GroupV2UpdateMessageUtil
 import org.thoughtcrime.securesms.stories.Stories.isFeatureEnabled
 import org.thoughtcrime.securesms.util.DateUtils
@@ -5400,10 +5401,10 @@ open class MessageTable(context: Context?, databaseHelper: SignalDatabase) : Dat
   }
 
   /**
-   * Returns the number of unread messages (based on the [ReminderType]) and up to three distinct authors from eligible [threadIds].
+   * Returns the number of unread messages (based on the [ReminderType]) and up to three distinct authors from [threadId]
    * For missed calls, see [getUnreadContentForReminderNotification] in the calls table.
    */
-  fun getUnreadContentForReminderNotification(threadIds: List<Long>, type: ReminderType): Pair<Int, List<RecipientId>> {
+  fun getUnreadContentForReminderNotification(threadId: Long, type: ReminderType, now: Long = System.currentTimeMillis()): Pair<Int, List<RecipientId>> {
     val categoryClause = when (type) {
       ReminderType.MENTIONS -> "AND $MENTIONS_SELF = 1"
       ReminderType.REPLIES -> "AND $QUOTE_AUTHOR = ${Recipient.self().id.serialize()}"
@@ -5415,13 +5416,14 @@ open class MessageTable(context: Context?, databaseHelper: SignalDatabase) : Dat
       .from("$TABLE_NAME INDEXED BY $INDEX_THREAD_UNREAD_COUNT")
       .where(
         """
-          $THREAD_ID IN (${threadIds.joinToString(",")}) AND
-          $READ = 0 AND 
+          $THREAD_ID = $threadId AND
           $STORY_TYPE = 0 AND 
           $PARENT_STORY_ID <= 0 AND 
-          $ORIGINAL_MESSAGE_ID IS NULL AND 
           $SCHEDULED_DATE = -1 AND 
-          ($TYPE & ${MessageTypes.SPECIAL_TYPES_MASK}) != ${MessageTypes.SPECIAL_TYPE_PINNED_MESSAGE} 
+          $ORIGINAL_MESSAGE_ID IS NULL AND 
+          $READ = 0 AND 
+          ($TYPE & ${MessageTypes.SPECIAL_TYPES_MASK}) != ${MessageTypes.SPECIAL_TYPE_PINNED_MESSAGE} AND
+          $DATE_RECEIVED > ${now - UnreadReminderManager.MAX_UNREAD_MESSAGE_AGE.inWholeMilliseconds}
           $categoryClause
         """
       )
@@ -5430,6 +5432,60 @@ open class MessageTable(context: Context?, databaseHelper: SignalDatabase) : Dat
       .readToList { cursor -> RecipientId.from(cursor.requireLong(FROM_RECIPIENT_ID)) }
 
     return authorIds.size to authorIds.distinct().take(3)
+  }
+
+  /**
+   * Returns true if [threadId] has an unread message that arrived after [since].
+   */
+  fun hasUnreadMessagesSince(threadId: Long, since: Long): Boolean {
+    return readableDatabase
+      .exists(TABLE_NAME)
+      .where(
+        """
+          $THREAD_ID = $threadId AND
+          $STORY_TYPE = 0 AND
+          $PARENT_STORY_ID <= 0 AND
+          $SCHEDULED_DATE = -1 AND
+          $ORIGINAL_MESSAGE_ID IS NULL AND
+          $READ = 0 AND
+          ($TYPE & ${MessageTypes.SPECIAL_TYPES_MASK}) != ${MessageTypes.SPECIAL_TYPE_PINNED_MESSAGE} AND
+          $DATE_RECEIVED > $since
+        """
+      )
+      .run()
+  }
+
+  /**
+   * Returns the thread id and timestamp of the oldest unread message across [threadIds].
+   * If there is none, it returns -1 for thread id and Long.MAX_VALUE for timestamp.
+   */
+  fun getOldestUnreadMessage(threadIds: List<Long>): Pair<Long, Long> {
+    if (threadIds.isEmpty()) {
+      return Pair(-1, Long.MAX_VALUE)
+    }
+
+    val query = SqlUtil.buildFastCollectionQuery(THREAD_ID, threadIds)
+
+    return readableDatabase
+      .select(THREAD_ID, DATE_RECEIVED)
+      .from("$TABLE_NAME INDEXED BY $INDEX_THREAD_UNREAD_COUNT")
+      .where(
+        """
+          ${query.where} AND
+          $STORY_TYPE = 0 AND
+          $PARENT_STORY_ID <= 0 AND
+          $SCHEDULED_DATE = -1 AND
+          $ORIGINAL_MESSAGE_ID IS NULL AND
+          $READ = 0 AND
+          ($TYPE & ${MessageTypes.SPECIAL_TYPES_MASK}) != ${MessageTypes.SPECIAL_TYPE_PINNED_MESSAGE} AND
+          $DATE_RECEIVED > ${System.currentTimeMillis() - UnreadReminderManager.MAX_UNREAD_MESSAGE_AGE.inWholeMilliseconds}
+        """,
+        query.whereArgs
+      )
+      .orderBy("$DATE_RECEIVED ASC")
+      .limit(1)
+      .run()
+      .readToSingleObject { cursor -> cursor.requireLong(THREAD_ID) to cursor.requireLong(DATE_RECEIVED) } ?: Pair(-1, Long.MAX_VALUE)
   }
 
   fun messageExists(messageRecord: MessageRecord): Boolean {

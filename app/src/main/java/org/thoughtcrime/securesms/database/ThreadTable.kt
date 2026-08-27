@@ -127,6 +127,7 @@ class ThreadTable(context: Context, databaseHelper: SignalDatabase) : DatabaseTa
     const val PINNED_ORDER = "pinned_order"
     const val UNREAD_SELF_MENTION_COUNT = "unread_self_mention_count"
     const val ACTIVE = "active"
+    const val LAST_UNREAD_REMINDER = "last_unread_reminder"
 
     const val MAX_CACHE_SIZE = 1000
 
@@ -158,7 +159,8 @@ class ThreadTable(context: Context, databaseHelper: SignalDatabase) : DatabaseTa
         $UNREAD_SELF_MENTION_COUNT INTEGER DEFAULT 0,
         $ACTIVE INTEGER DEFAULT 0,
         $SNIPPET_MESSAGE_EXTRAS BLOB DEFAULT NULL,
-        $SNIPPET_MESSAGE_ID INTEGER DEFAULT 0
+        $SNIPPET_MESSAGE_ID INTEGER DEFAULT 0,
+        $LAST_UNREAD_REMINDER INTEGER DEFAULT 0
       )
     """
 
@@ -681,23 +683,46 @@ class ThreadTable(context: Context, databaseHelper: SignalDatabase) : DatabaseTa
    * e.g. when getting missed calls, we get the muted threads that have opted into unread reminders
    * and also have notify for calls while muted on.
    */
-  fun getMutedThreadIds(reminderType: ReminderType): List<Long> {
-    val isGV2Clause = "${RecipientTable.TABLE_NAME}.${RecipientTable.TYPE} = ${RecipientTable.RecipientType.GV2.id}"
+  fun getMutedThreadIds(reminderType: ReminderType, reminderThreshold: Long, now: Long = System.currentTimeMillis()): List<Long> {
     val unreadReminderClause = getNotificationClause(RecipientTable.UNREAD_REMINDER, SignalStore.settings.unreadReminderEnabled)
 
     val reminderClause = when (reminderType) {
-      ReminderType.MESSAGES -> unreadReminderClause
-      ReminderType.CALLS -> "$unreadReminderClause AND (${getNotificationClause(RecipientTable.CALL_NOTIFICATION_SETTING, SignalStore.settings.allowCallsWhileMuted)})"
-      ReminderType.MENTIONS -> "$unreadReminderClause AND $isGV2Clause AND (${getNotificationClause(RecipientTable.MENTION_SETTING, SignalStore.settings.allowMentionsWhileMuted)})"
-      ReminderType.REPLIES -> "$unreadReminderClause AND $isGV2Clause AND (${getNotificationClause(RecipientTable.REPLY_NOTIFICATION_SETTING, SignalStore.settings.allowRepliesWhileMuted)})"
+      ReminderType.MESSAGES -> "AND $unreadReminderClause AND $UNREAD_COUNT > 0"
+      ReminderType.CALLS -> "AND $unreadReminderClause AND (${getNotificationClause(RecipientTable.CALL_NOTIFICATION_SETTING, SignalStore.settings.allowCallsWhileMuted)})"
+      else -> ""
     }
 
     return readableDatabase
       .select("$TABLE_NAME.$ID")
       .from("$TABLE_NAME INNER JOIN ${RecipientTable.TABLE_NAME} ON $TABLE_NAME.$RECIPIENT_ID = ${RecipientTable.TABLE_NAME}.${RecipientTable.ID}")
-      .where("$ARCHIVED = 0 AND ${RecipientTable.MUTE_UNTIL} >= ${System.currentTimeMillis()} AND $reminderClause")
+      .where(
+        """
+          $ACTIVE = 1 AND
+          $ARCHIVED = 0 AND
+          $LAST_UNREAD_REMINDER < ${now - reminderThreshold} AND
+          ${RecipientTable.MUTE_UNTIL} >= $now
+          $reminderClause
+        """.trimIndent()
+      )
       .run()
       .readToList { it.requireLong(ID) }
+  }
+
+  fun getUnreadReminderTime(threadId: Long): Long {
+    return readableDatabase
+      .select(LAST_UNREAD_REMINDER)
+      .from(TABLE_NAME)
+      .where("$ID = ?", threadId)
+      .run()
+      .readToSingleLong(0)
+  }
+
+  fun setUnreadReminderTime(threadId: Long, timestamp: Long) {
+    writableDatabase
+      .update(TABLE_NAME)
+      .values(LAST_UNREAD_REMINDER to timestamp)
+      .where("$ID = ?", threadId)
+      .run()
   }
 
   private fun getNotificationClause(column: String, allowByDefault: Boolean): String {
