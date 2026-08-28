@@ -298,7 +298,7 @@ private fun BoxScope.StandardCameraHudContent(
     Icon(
       imageVector = SignalIcons.X.imageVector,
       contentDescription = null,
-      tint = Color.White,
+      tint = colorResource(R.color.CameraHud_control_foreground),
       modifier = Modifier
         .size(24.dp)
         .rotate(iconRotation)
@@ -755,7 +755,7 @@ private fun FlashAndCameraTogglePill(
         Icon(
           imageVector = SignalIcons.CameraSwitch.imageVector,
           contentDescription = if (stringResources.switchCamera != 0) stringResource(stringResources.switchCamera) else null,
-          tint = Color.White
+          tint = colorResource(R.color.CameraHud_control_foreground)
         )
       }
     }
@@ -805,7 +805,7 @@ private fun RecordingDurationDisplay(
       ) {
         Text(
           text = timeText,
-          color = Color.White,
+          color = colorResource(R.color.CameraHud_control_foreground),
           fontSize = 18.sp,
           fontWeight = FontWeight.Medium
         )
@@ -823,7 +823,7 @@ private fun RecordingDurationDisplay(
       ) {
         Text(
           text = pausedLabel,
-          color = Color.White,
+          color = colorResource(R.color.CameraHud_control_foreground),
           fontSize = 16.sp,
           fontWeight = FontWeight.Medium
         )
@@ -854,7 +854,7 @@ private fun CameraSwitchButton(
     Icon(
       imageVector = SignalIcons.CameraSwitch.imageVector,
       contentDescription = contentDescription,
-      tint = Color.White,
+      tint = colorResource(R.color.CameraHud_control_foreground),
       modifier = Modifier.size(24.dp)
     )
   }
@@ -909,7 +909,7 @@ private fun FlashToggleButtonIcon(
   Icon(
     painter = icon.painter,
     contentDescription = contentDescription,
-    tint = Color.White,
+    tint = colorResource(R.color.CameraHud_control_foreground),
     modifier = Modifier.size(24.dp)
   )
 }

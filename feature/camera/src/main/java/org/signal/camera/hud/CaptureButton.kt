@@ -44,17 +44,24 @@ import androidx.compose.ui.input.pointer.PointerEventTimeoutCancellationExceptio
 import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.platform.LocalHapticFeedback
 import androidx.compose.ui.platform.testTag
+import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.lerp
+import org.signal.camera.R
 import org.signal.camera.test.TestTags
 
 private object CaptureButtonColors {
-  val Background = Color(0xCC333333)
-  val CaptureFill = Color.White
-  val Record = Color(0xFFD92F20)
+  val Background: Color
+    @Composable get() = colorResource(R.color.CameraHud_control_background)
+
+  val CaptureFill: Color
+    @Composable get() = colorResource(R.color.CameraHud_control_foreground)
+
+  val Record: Color
+    @Composable get() = colorResource(R.color.CameraHud_control_red_background)
 }
 
 /** Every measurement the button is drawn from, so there is one place to change any of them. */
@@ -132,7 +139,7 @@ private val LockDragSpec = spring<Dp>(dampingRatio = Spring.DampingRatioMediumBo
 private data class CaptureButtonInnerShape(val size: Dp, val cornerRadius: Dp, val color: Color)
 
 private val CaptureButtonState.innerShape: CaptureButtonInnerShape
-  get() = when (this) {
+  @Composable get() = when (this) {
     CaptureButtonState.PHOTO -> CaptureButtonInnerShape(
       size = CaptureButtonDimensions.IdleSize,
       cornerRadius = CaptureButtonDimensions.IdleSize / 2,

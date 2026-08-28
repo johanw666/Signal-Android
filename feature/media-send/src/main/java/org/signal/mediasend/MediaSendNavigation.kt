@@ -35,6 +35,7 @@ import org.signal.core.ui.compose.DialogController
 import org.signal.core.ui.compose.Dialogs
 import org.signal.core.ui.compose.Snackbars
 import org.signal.core.ui.compose.showSnackbar
+import org.signal.core.ui.compose.theme.SignalTheme
 import org.signal.core.ui.navigation.TransitionSpecs
 import org.signal.mediasend.screens.capture.MediaCaptureScreen
 import org.signal.mediasend.screens.capture.MediaCaptureScreenEvents
@@ -90,11 +91,14 @@ internal fun MediaSendNavigation(
             captureViewModel.onEvent(MediaCaptureScreenEvents.SelectedCaptureScreenChanged(key))
           }
 
-          MediaCaptureScreen(
-            state = state,
-            onEvent = captureViewModel::onEvent,
-            textStoryEditorSlot = textStoryEditorSlot
-          )
+          // Capture sits on a viewfinder or a story gradient, so it keeps the dark palette even in a light theme.
+          SignalTheme(isDarkMode = true) {
+            MediaCaptureScreen(
+              state = state,
+              onEvent = captureViewModel::onEvent,
+              textStoryEditorSlot = textStoryEditorSlot
+            )
+          }
         }
 
         MediaSendRoute.Select.Folders -> NavEntry(key) {

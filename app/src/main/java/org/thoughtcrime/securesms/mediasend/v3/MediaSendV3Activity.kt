@@ -5,7 +5,6 @@
 
 package org.thoughtcrime.securesms.mediasend.v3
 
-import android.content.Context
 import android.content.Intent
 import android.content.pm.ActivityInfo
 import android.os.Bundle
@@ -16,7 +15,6 @@ import android.view.KeyEvent
 import android.view.WindowManager
 import androidx.activity.compose.setContent
 import androidx.activity.viewModels
-import androidx.appcompat.app.AppCompatDelegate
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.LaunchedEffect
@@ -67,6 +65,8 @@ import org.thoughtcrime.securesms.safety.SafetyNumberBottomSheet
 import org.thoughtcrime.securesms.scribbles.StickerSelectActivityContract
 import org.thoughtcrime.securesms.util.CommunicationActions
 import org.thoughtcrime.securesms.util.DateUtils
+import org.thoughtcrime.securesms.util.DynamicNoActionBarTheme
+import org.thoughtcrime.securesms.util.WindowUtil
 import org.signal.core.ui.R as CoreUiR
 
 /**
@@ -81,6 +81,8 @@ class MediaSendV3Activity :
   EmojiSearchFragment.Callback,
   ScheduleMessageTimePickerBottomSheet.ScheduleCallback,
   ScheduleMessageDialogCallback {
+
+  private val theme = DynamicNoActionBarTheme()
 
   private val contractArgs: MediaSendFlowActivityContract.Args by lazy { MediaSendFlowActivityContract.Args.fromIntent(intent) }
 
@@ -101,12 +103,9 @@ class MediaSendV3Activity :
   override val textStoryDraftText: CharSequence?
     get() = if (contractArgs.asTextStory) contractArgs.initialMessage else null
 
-  override fun attachBaseContext(newBase: Context) {
-    delegate.localNightMode = AppCompatDelegate.MODE_NIGHT_YES
-    super.attachBaseContext(newBase)
-  }
-
   override fun onCreate(savedInstanceState: Bundle?, ready: Boolean) {
+    theme.onCreate(this)
+
     if (resources.getWindowBreakpoint() !is WindowBreakpoint.Small) {
       requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_UNSPECIFIED
     }
@@ -246,6 +245,11 @@ class MediaSendV3Activity :
     }
   }
 
+  override fun onResume() {
+    super.onResume()
+    theme.onResume(this)
+  }
+
   override fun onSentWithoutResult() {
     setResult(RESULT_OK, Intent())
     finish()
@@ -270,6 +274,14 @@ class MediaSendV3Activity :
       } else {
         WindowManager.LayoutParams.ROTATION_ANIMATION_ROTATE
       }
+    }
+
+    if (isOnCaptureScreen) {
+      WindowUtil.clearLightStatusBar(window)
+      WindowUtil.clearLightNavigationBar(window)
+    } else {
+      WindowUtil.setLightStatusBarFromTheme(this)
+      WindowUtil.setLightNavigationBarFromTheme(this)
     }
   }
 

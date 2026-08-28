@@ -473,7 +473,7 @@
             android:exported="false"
             android:launchMode="singleTop"
             android:enableOnBackInvokedCallback="true"
-            android:theme="@style/TextSecure.DarkNoActionBar"
+            android:theme="@style/Theme.Signal.DayNight.NoActionBar"
             android:windowSoftInputMode="stateAlwaysHidden|adjustNothing" />
 
         <activity
