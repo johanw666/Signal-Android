@@ -28,6 +28,7 @@ import org.thoughtcrime.securesms.jobs.RetrieveProfileAvatarJob
 import org.thoughtcrime.securesms.jobs.StorageSyncJob
 import org.thoughtcrime.securesms.keyvalue.AccountValues
 import org.thoughtcrime.securesms.keyvalue.PhoneNumberPrivacyValues.PhoneNumberDiscoverabilityMode
+import org.thoughtcrime.securesms.keyvalue.SettingsValues
 import org.thoughtcrime.securesms.keyvalue.SignalStore
 import org.thoughtcrime.securesms.notifications.profiles.NotificationProfileId
 import org.thoughtcrime.securesms.payments.Entropy
@@ -223,6 +224,14 @@ object StorageSyncHelper {
         releaseNotesChatMarkedUnread = releaseChannelRecord.syncExtras.isForcedUnread == true
         releaseNotesChatBlockedAt = releaseChannelRecord.blockedAt.takeIf { it != 0L }
       }
+      unreadBadgeType = SignalStore.settings.unreadBadgeType.toRemoteBadgeType()
+      includeMutedChatsInBadge = SignalStore.settings.includeMutedInBadgeCount.toOptionalBool()
+      notifyForCallsIfMuted = SignalStore.settings.allowCallsWhileMuted.toOptionalBool()
+      notifyForMentionsIfMuted = SignalStore.settings.allowMentionsWhileMuted.toOptionalBool()
+      notifyForRepliesIfMuted = SignalStore.settings.allowRepliesWhileMuted.toOptionalBool()
+      reactionNotifications = SignalStore.settings.reactionNotifications.toOptionalBool()
+      showUnreadReminders = SignalStore.settings.unreadReminderEnabled.toOptionalBool()
+      notifyWhenContactJoins = SignalStore.settings.isNotifyWhenContactJoinsSignal.toOptionalBool()
     }
 
     return accountRecord.toSignalAccountRecord(StorageId.forAccount(storageId)).toSignalStorageRecord()
@@ -277,6 +286,14 @@ object StorageSyncHelper {
     SignalStore.story.isFeatureDisabled = update.new.proto.storiesDisabled
     SignalStore.story.userHasSeenGroupStoryEducationSheet = update.new.proto.hasSeenGroupStoryEducationSheet
     SignalStore.uiHints.setHasCompletedUsernameOnboarding(update.new.proto.hasCompletedUsernameOnboarding)
+    SignalStore.settings.setUnreadBadgeType(update.new.proto.unreadBadgeType.value)
+    update.new.proto.includeMutedChatsInBadge.toBool()?.let { SignalStore.settings.setIncludeMutedInBadgeCount(it) }
+    update.new.proto.notifyForCallsIfMuted.toBool()?.let { SignalStore.settings.allowCallsWhileMuted = it }
+    update.new.proto.notifyForMentionsIfMuted.toBool()?.let { SignalStore.settings.allowMentionsWhileMuted = it }
+    update.new.proto.notifyForRepliesIfMuted.toBool()?.let { SignalStore.settings.allowRepliesWhileMuted = it }
+    update.new.proto.reactionNotifications.toBool()?.let { SignalStore.settings.reactionNotifications = it }
+    update.new.proto.showUnreadReminders.toBool()?.let { SignalStore.settings.unreadReminderEnabled = it }
+    update.new.proto.notifyWhenContactJoins.toBool()?.let { SignalStore.settings.isNotifyWhenContactJoinsSignal = it }
 
     if (update.new.proto.unlistedPhoneNumber != update.old.proto.unlistedPhoneNumber && SignalStore.account.isPrimaryDevice) {
       Log.i(TAG, "Phone number discoverability changed via storage service. Refreshing attributes to push the change to the server.")
@@ -420,6 +437,38 @@ object StorageSyncHelper {
       null -> false
       MessageBackupTier.FREE -> to == null
       MessageBackupTier.PAID -> to == null || to == MessageBackupTier.FREE
+    }
+  }
+
+  private fun SettingsValues.UnreadBadgeType.toRemoteBadgeType(): AccountRecord.UnreadBadgeType {
+    return when (this) {
+      SettingsValues.UnreadBadgeType.UNKNOWN_BADGE_TYPE -> AccountRecord.UnreadBadgeType.UNKNOWN_BADGE_TYPE
+      SettingsValues.UnreadBadgeType.UNREAD_MESSAGES -> AccountRecord.UnreadBadgeType.UNREAD_MESSAGES
+      SettingsValues.UnreadBadgeType.UNREAD_CHATS -> AccountRecord.UnreadBadgeType.UNREAD_CHATS
+    }
+  }
+
+  fun getOptionalBool(remote: OptionalBool, local: OptionalBool): OptionalBool {
+    return if (remote == OptionalBool.UNSET) {
+      local
+    } else {
+      remote
+    }
+  }
+
+  fun Boolean?.toOptionalBool(): OptionalBool {
+    return when (this) {
+      null -> OptionalBool.UNSET
+      true -> OptionalBool.ENABLED
+      false -> OptionalBool.DISABLED
+    }
+  }
+
+  fun OptionalBool.toBool(): Boolean? {
+    return when (this) {
+      OptionalBool.UNSET -> null
+      OptionalBool.ENABLED -> true
+      OptionalBool.DISABLED -> false
     }
   }
 

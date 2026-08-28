@@ -66,6 +66,8 @@ public final class SettingsValues extends SignalStoreValues {
   public static final  String MESSAGE_NOTIFICATION_MUTED_REPLIES      = "settings.message.notifications.muted.replies";
   public static final  String UNREAD_REMINDER_ENABLED                 = "settings.message.notifications.unread.reminder";
   public static final  String UNREAD_REMINDER_NEXT_NOTIFY_TIME        = "settings.message.notifications.unread.reminder.next.notify.time";
+  public static final  String UNREAD_BADGE_TYPE                       = "settings.notifications.badge.type";
+  public static final  String INCLUDE_MUTED_IN_BADGE_COUNT            = "settings.notifications.include.muted.badge.count";
   public static final  String CALL_NOTIFICATIONS_ENABLED              = "settings.call.notifications.enabled";
   public static final  String CALL_RINGTONE                           = "settings.call.ringtone";
   public static final  String CALL_VIBRATE_ENABLED                    = "settings.call.vibrate.enabled";
@@ -497,6 +499,27 @@ public final class SettingsValues extends SignalStoreValues {
     putLong(UNREAD_REMINDER_NEXT_NOTIFY_TIME, time);
   }
 
+  // Only used to round trip ios/desktop settings
+  public void setUnreadBadgeType(int type) {
+    putInteger(UNREAD_BADGE_TYPE, type);
+  }
+
+  public UnreadBadgeType getUnreadBadgeType() {
+    return UnreadBadgeType.deserialize(getInteger(UNREAD_BADGE_TYPE, UnreadBadgeType.UNREAD_MESSAGES.serialize()));
+  }
+
+  // Only used to round trip ios/desktop settings
+  public void setIncludeMutedInBadgeCount(boolean include) {
+    putBoolean(INCLUDE_MUTED_IN_BADGE_COUNT, include);
+  }
+
+  public @Nullable Boolean getIncludeMutedInBadgeCount() {
+    if (!getStore().containsKey(INCLUDE_MUTED_IN_BADGE_COUNT)) {
+      return null;
+    }
+    return getBoolean(INCLUDE_MUTED_IN_BADGE_COUNT, false);
+  }
+
   public boolean isCallNotificationsEnabled() {
     return getBoolean(CALL_NOTIFICATIONS_ENABLED, TextSecurePreferences.isCallNotificationsEnabled(AppDependencies.getApplication()));
   }
@@ -728,6 +751,29 @@ public final class SettingsValues extends SignalStoreValues {
         default:
           throw new IllegalArgumentException("Unrecognized value " + value);
       }
+    }
+  }
+
+  public enum UnreadBadgeType {
+    UNKNOWN_BADGE_TYPE(0), UNREAD_MESSAGES(1), UNREAD_CHATS(2);
+
+    private final int value;
+
+    UnreadBadgeType(int value) {
+      this.value = value;
+    }
+
+    public static UnreadBadgeType deserialize(int value) {
+      return switch (value) {
+        case 0 -> UNKNOWN_BADGE_TYPE;
+        case 1 -> UNREAD_MESSAGES;
+        case 2 -> UNREAD_CHATS;
+        default -> throw new IllegalArgumentException("Bad value: " + value);
+      };
+    }
+
+    public int serialize() {
+      return value;
     }
   }
 }

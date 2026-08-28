@@ -20,7 +20,9 @@ import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
@@ -40,6 +42,7 @@ import kotlinx.coroutines.launch
 import org.signal.core.ui.BottomSheetUtil
 import org.signal.core.ui.compose.ComposeFragment
 import org.signal.core.ui.compose.DayNightPreviews
+import org.signal.core.ui.compose.Dialogs
 import org.signal.core.ui.compose.Dividers
 import org.signal.core.ui.compose.Previews
 import org.signal.core.ui.compose.Rows
@@ -281,6 +284,10 @@ open class DefaultNotificationsSettingsCallbacks(
   override fun setUnreadReminderEnabled(enabled: Boolean) {
     viewModel.setUnreadReminderEnabled(enabled)
   }
+
+  override fun onReset() {
+    viewModel.resetSettings()
+  }
 }
 
 interface NotificationsSettingsCallbacks {
@@ -307,6 +314,7 @@ interface NotificationsSettingsCallbacks {
   fun onMutedClicked() = Unit
   fun setReactionNotificationEnabled(enabled: Boolean) = Unit
   fun setUnreadReminderEnabled(enabled: Boolean) = Unit
+  fun onReset() = Unit
 
   object Empty : NotificationsSettingsCallbacks
 }
@@ -317,6 +325,19 @@ fun NotificationsSettingsScreen(
   callbacks: NotificationsSettingsCallbacks,
   deviceState: DeviceState = remember { DeviceState() }
 ) {
+  var showDialog by remember { mutableStateOf(false) }
+
+  if (showDialog) {
+    Dialogs.SimpleAlertDialog(
+      title = "",
+      body = stringResource(R.string.NotificationsSettingsFragment__reset_body),
+      dismiss = stringResource(android.R.string.cancel),
+      onDismiss = { showDialog = false },
+      confirm = stringResource(R.string.NotificationsSettingsFragment__reset_confirm),
+      onConfirm = callbacks::onReset
+    )
+  }
+
   Scaffolds.Settings(
     title = stringResource(R.string.preferences__notifications),
     onNavigationClick = callbacks::onNavigationClick,
@@ -572,6 +593,20 @@ fun NotificationsSettingsScreen(
           label = stringResource(R.string.NotificationsSettingsFragment__create_a_profile_to_receive_notifications_only_from_people_and_groups_you_choose),
           onClick = callbacks::onNavigationProfilesClick
         )
+      }
+
+      if (RemoteConfig.internalUser) {
+        item {
+          Dividers.Default()
+        }
+
+        item {
+          Rows.TextRow(
+            text = stringResource(R.string.NotificationsSettingsFragment__reset),
+            label = stringResource(R.string.NotificationsSettingsFragment__reset_notifications),
+            onClick = { showDialog = true }
+          )
+        }
       }
     }
   }

@@ -224,6 +224,8 @@ object StorageSyncModels {
       nickname = recipient.nickname.takeUnless { it.isEmpty }?.let { ContactRecord.Name(given = it.givenName, family = it.familyName) }
       note = recipient.note ?: ""
       avatarColor = localToRemoteAvatarColor(recipient.avatarColor)
+      notifyForCallsIfMuted = RecipientTable.NotificationSetting.toOptionalBool(recipient.callNotificationSetting)
+      showUnreadReminders = RecipientTable.NotificationSetting.toOptionalBool(recipient.unreadReminder)
     }.build().toSignalContactRecord(StorageId.forContact(rawStorageId))
   }
 
@@ -245,6 +247,10 @@ object StorageSyncModels {
       markedUnread = recipient.syncExtras.isForcedUnread
       mutedUntilTimestamp = recipient.muteUntil
       dontNotifyForMentionsIfMuted = recipient.mentionSetting == RecipientTable.NotificationSetting.DO_NOT_NOTIFY
+      notifyForMentionsIfMuted = RecipientTable.NotificationSetting.toOptionalBool(recipient.mentionSetting)
+      notifyForCallsIfMuted = RecipientTable.NotificationSetting.toOptionalBool(recipient.callNotificationSetting)
+      notifyForRepliesIfMuted = RecipientTable.NotificationSetting.toOptionalBool(recipient.replyNotificationSetting)
+      showUnreadReminders = RecipientTable.NotificationSetting.toOptionalBool(recipient.unreadReminder)
       hideStory = recipient.extras != null && recipient.extras.hideStory()
       avatarColor = localToRemoteAvatarColor(recipient.avatarColor)
       storySendMode = when (groups.getShowAsStoryState(groupId)) {

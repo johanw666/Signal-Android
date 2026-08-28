@@ -144,7 +144,9 @@ message ContactRecord {
   bytes         aciBinary               = 25; // 16-byte UUID
   bytes         pniBinary               = 26; // 16-byte UUID
   uint64        blockedAtTimestamp      = 27; // 0 means the blocked time is unknown
-  // Next ID: 28
+  OptionalBool  notifyForCallsIfMuted   = 28; // If unset, use the default settings
+  OptionalBool  showUnreadReminders     = 29; // If unset, use the default settings
+  // Next ID: 30
 }
 
 message GroupV1Record {
@@ -169,13 +171,17 @@ message GroupV2Record {
   bool          archived                     = 4;
   bool          markedUnread                 = 5;
   uint64        mutedUntilTimestamp          = 6;
-  bool          dontNotifyForMentionsIfMuted = 7;
+  bool          dontNotifyForMentionsIfMuted = 7; // will be deprecated in favor of [notifyForMentionsIfMuted]
   bool          hideStory                    = 8;
   reserved   /* storySendEnabled */            9;
   StorySendMode storySendMode                = 10;
   optional AvatarColor avatarColor           = 11;
   bytes         verifiedNameHash             = 12; // SHA-256 of UTF-8 encoded decrypted group title that was last verified
   uint64        blockedAtTimestamp           = 13; // 0 means the blocked time is unknown
+  OptionalBool  notifyForCallsIfMuted        = 14; // If unset, use the default settings
+  OptionalBool  notifyForMentionsIfMuted     = 15; // If unset, use the default settings. If [dontNotifyForMentionsIfMuted] is true, this should be initialized to false.
+  OptionalBool  notifyForRepliesIfMuted      = 16; // If unset, use the default settings
+  OptionalBool  showUnreadReminders          = 17; // If unset, use the default settings
 }
 
 message Payments {
@@ -184,6 +190,12 @@ message Payments {
 }
 
 message AccountRecord {
+
+  enum UnreadBadgeType {
+    UNKNOWN_BADGE_TYPE = 0; // Interpret as "Unread messages"
+    UNREAD_MESSAGES = 1;
+    UNREAD_CHATS = 2;
+  }
 
   enum PhoneNumberSharingMode {
     UNKNOWN   = 0;
@@ -303,6 +315,14 @@ message AccountRecord {
   optional bool                              releaseNotesChatBlocked                    = 50;
   optional bool                              releaseNotesChatMarkedUnread               = 51;
   optional uint64                            releaseNotesChatBlockedAt                  = 52; // only set if known (>0)
+           UnreadBadgeType                   unreadBadgeType                            = 53; // Only used in desktop/ios
+           OptionalBool                      includeMutedChatsInBadge                   = 54; // Only used in desktop/ios. If unset, consider this off. Only used in desktop/ios
+           OptionalBool                      reactionNotifications                      = 55; // If unset, consider this on
+           OptionalBool                      notifyForCallsIfMuted                      = 56; // If unset, consider this off
+           OptionalBool                      notifyForMentionsIfMuted                   = 57; // If unset, consider this on
+           OptionalBool                      notifyForRepliesIfMuted                    = 58; // If unset, consider this on
+           OptionalBool                      showUnreadReminders                        = 59; // If unset, consider this on
+           OptionalBool                      notifyWhenContactJoins                     = 60; // If unset, consider this off
 }
 
 message StoryDistributionListRecord {

@@ -69,7 +69,11 @@ class ChatArchiveExporter(private val cursor: Cursor, private val db: SignalData
         chatColorId = customChatColorsId,
         chatWallpaper = chatWallpaper,
         backupMode = exportState.backupMode
-      )
+      ),
+      notifyForCallsIfMuted = RecipientTable.NotificationSetting.toBoolean(RecipientTable.NotificationSetting.fromId(cursor.requireInt(RecipientTable.CALL_NOTIFICATION_SETTING))),
+      notifyForMentionsIfMuted = RecipientTable.NotificationSetting.toBoolean(RecipientTable.NotificationSetting.fromId(cursor.requireInt(RecipientTable.MENTION_SETTING))),
+      notifyForRepliesIfMuted = RecipientTable.NotificationSetting.toBoolean(RecipientTable.NotificationSetting.fromId(cursor.requireInt(RecipientTable.REPLY_NOTIFICATION_SETTING))),
+      showUnreadReminders = RecipientTable.NotificationSetting.toBoolean(RecipientTable.NotificationSetting.fromId(cursor.requireInt(RecipientTable.UNREAD_REMINDER)))
     )
   }
 

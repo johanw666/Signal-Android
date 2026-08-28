@@ -11,15 +11,24 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
+import org.signal.core.util.concurrent.SignalDispatchers
+import org.signal.core.util.logging.Log
+import org.thoughtcrime.securesms.database.SignalDatabase
 import org.thoughtcrime.securesms.dependencies.AppDependencies
 import org.thoughtcrime.securesms.keyvalue.SignalStore
 import org.thoughtcrime.securesms.notifications.DeviceSpecificNotificationConfig
 import org.thoughtcrime.securesms.notifications.NotificationChannels
 import org.thoughtcrime.securesms.notifications.SlowNotificationHeuristics
 import org.thoughtcrime.securesms.preferences.widgets.NotificationPrivacyPreference
+import org.thoughtcrime.securesms.recipients.Recipient
+import org.thoughtcrime.securesms.storage.StorageSyncHelper
 import org.thoughtcrime.securesms.util.TextSecurePreferences
 
 class NotificationsSettingsViewModel(private val sharedPreferences: SharedPreferences) : ViewModel() {
+
+  companion object {
+    private val TAG = Log.tag(NotificationsSettingsViewModel::class)
+  }
 
   private val store = MutableStateFlow(getState())
 
@@ -108,17 +117,50 @@ class NotificationsSettingsViewModel(private val sharedPreferences: SharedPrefer
 
   fun setNotifyWhenContactJoinsSignal(enabled: Boolean) {
     SignalStore.settings.isNotifyWhenContactJoinsSignal = enabled
+    markSelfNeedsSync()
     refresh()
   }
 
   fun setReactionNotificationEnabled(enabled: Boolean) {
     SignalStore.settings.reactionNotifications = enabled
+    markSelfNeedsSync()
     refresh()
   }
 
   fun setUnreadReminderEnabled(enabled: Boolean) {
     SignalStore.settings.unreadReminderEnabled = enabled
+    markSelfNeedsSync()
     refresh()
+  }
+
+  fun resetSettings() {
+    Log.i(TAG, "Resetting all notifications.")
+    // Global
+    setMessageNotificationsSound(TextSecurePreferences.getNotificationRingtone(AppDependencies.application))
+    SignalStore.settings.isMessageNotificationsInChatSoundsEnabled = true
+    SignalStore.settings.messageNotificationsPrivacy = NotificationPrivacyPreference("all")
+    SignalStore.settings.allowCallsWhileMuted = false
+    SignalStore.settings.allowMentionsWhileMuted = true
+    SignalStore.settings.allowRepliesWhileMuted = true
+    SignalStore.settings.reactionNotifications = true
+    SignalStore.settings.unreadReminderEnabled = true
+    SignalStore.settings.isNotifyWhenContactJoinsSignal = false
+    SignalStore.settings.messageNotificationsRepeatAlerts = 0
+
+    // Per-chat
+    viewModelScope.launch(SignalDispatchers.Default) {
+      SignalDatabase.recipients.resetAllChatNotificationSettings()
+    }
+
+    markSelfNeedsSync()
+    refresh()
+  }
+
+  private fun markSelfNeedsSync() {
+    viewModelScope.launch(SignalDispatchers.Default) {
+      SignalDatabase.recipients.markNeedsSync(Recipient.self().id)
+      StorageSyncHelper.scheduleSyncForDataChange()
+    }
   }
 
   /**

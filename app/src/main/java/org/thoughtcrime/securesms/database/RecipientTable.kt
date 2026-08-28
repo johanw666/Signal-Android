@@ -89,6 +89,7 @@ import org.thoughtcrime.securesms.groups.v2.processing.GroupsV2StateProcessor
 import org.thoughtcrime.securesms.jobs.RequestGroupV2InfoJob
 import org.thoughtcrime.securesms.jobs.RetrieveProfileJob
 import org.thoughtcrime.securesms.keyvalue.SignalStore
+import org.thoughtcrime.securesms.notifications.NotificationChannels
 import org.thoughtcrime.securesms.profiles.ProfileName
 import org.thoughtcrime.securesms.recipients.Recipient
 import org.thoughtcrime.securesms.recipients.RecipientId
@@ -96,6 +97,8 @@ import org.thoughtcrime.securesms.recipients.RecipientUtil
 import org.thoughtcrime.securesms.service.webrtc.links.CallLinkRoomId
 import org.thoughtcrime.securesms.storage.StorageRecordUpdate
 import org.thoughtcrime.securesms.storage.StorageSyncHelper
+import org.thoughtcrime.securesms.storage.StorageSyncHelper.toBool
+import org.thoughtcrime.securesms.storage.StorageSyncHelper.toOptionalBool
 import org.thoughtcrime.securesms.storage.StorageSyncModels
 import org.thoughtcrime.securesms.util.IdentityUtil
 import org.thoughtcrime.securesms.util.ProfileUtil
@@ -112,6 +115,7 @@ import org.whispersystems.signalservice.api.storage.StorageId
 import org.whispersystems.signalservice.api.storage.signalAci
 import org.whispersystems.signalservice.api.storage.signalPni
 import org.whispersystems.signalservice.internal.storage.protos.GroupV2Record
+import org.whispersystems.signalservice.internal.storage.protos.OptionalBool
 import java.io.Closeable
 import java.io.IOException
 import java.util.Collections
@@ -1700,8 +1704,7 @@ open class RecipientTable(context: Context, databaseHelper: SignalDatabase) : Da
       put(CALL_NOTIFICATION_SETTING, setting.id)
     }
     if (update(id, values)) {
-      // TODO rotate storageId once this is actually synced in storage service
-//      rotateStorageId(id)
+      rotateStorageId(id)
       AppDependencies.databaseObserver.notifyRecipientChanged(id)
       StorageSyncHelper.scheduleSyncForDataChange()
     }
@@ -1712,8 +1715,7 @@ open class RecipientTable(context: Context, databaseHelper: SignalDatabase) : Da
       put(REPLY_NOTIFICATION_SETTING, setting.id)
     }
     if (update(id, values)) {
-      // TODO rotate storageId once this is actually synced in storage service
-//      rotateStorageId(id)
+      rotateStorageId(id)
       AppDependencies.databaseObserver.notifyRecipientChanged(id)
       StorageSyncHelper.scheduleSyncForDataChange()
     }
@@ -1724,11 +1726,73 @@ open class RecipientTable(context: Context, databaseHelper: SignalDatabase) : Da
       put(UNREAD_REMINDER, setting.id)
     }
     if (update(id, values)) {
-      // TODO rotate storageId once this is actually synced in storage service
-//      rotateStorageId(id)
+      rotateStorageId(id)
       AppDependencies.databaseObserver.notifyRecipientChanged(id)
       StorageSyncHelper.scheduleSyncForDataChange()
     }
+  }
+
+  /**
+   * Resets sound and while muted settings for all chats.
+   */
+  fun resetAllChatNotificationSettings() {
+    val (idsWithStorageServiceChange, notificationChangeData) = writableDatabase.withinTransaction { db ->
+      val idsWithStorageServiceChange = db
+        .select(ID)
+        .from(TABLE_NAME)
+        .where(
+          "$MENTION_SETTING != ? OR $CALL_NOTIFICATION_SETTING != ? OR $REPLY_NOTIFICATION_SETTING != ? OR $UNREAD_REMINDER != ?",
+          NotificationSetting.SYSTEM_DEFAULT.id,
+          NotificationSetting.SYSTEM_DEFAULT.id,
+          NotificationSetting.SYSTEM_DEFAULT.id,
+          NotificationSetting.SYSTEM_DEFAULT.id
+        )
+        .run()
+        .readToList { RecipientId.from(it.requireLong(ID)) }
+
+      // The channel id has to be read before it's wiped below, otherwise there's nothing left to tell us which system channel to delete.
+      val notificationChangeData = db
+        .select(ID, NOTIFICATION_CHANNEL)
+        .from(TABLE_NAME)
+        .where(
+          "$NOTIFICATION_CHANNEL IS NOT NULL OR $MESSAGE_RINGTONE IS NOT NULL OR $MESSAGE_VIBRATE != ? OR $CALL_RINGTONE IS NOT NULL OR $CALL_VIBRATE != ?",
+          VibrateState.DEFAULT.id,
+          VibrateState.DEFAULT.id
+        )
+        .run()
+        .readToList { RecipientId.from(it.requireLong(ID)) to it.requireString(NOTIFICATION_CHANNEL) }
+
+      db
+        .updateAll(TABLE_NAME)
+        .values(
+          NOTIFICATION_CHANNEL to null,
+          MESSAGE_RINGTONE to null,
+          MESSAGE_VIBRATE to VibrateState.DEFAULT.id,
+          CALL_RINGTONE to null,
+          CALL_VIBRATE to VibrateState.DEFAULT.id,
+          MENTION_SETTING to NotificationSetting.SYSTEM_DEFAULT.id,
+          CALL_NOTIFICATION_SETTING to NotificationSetting.SYSTEM_DEFAULT.id,
+          REPLY_NOTIFICATION_SETTING to NotificationSetting.SYSTEM_DEFAULT.id,
+          UNREAD_REMINDER to NotificationSetting.SYSTEM_DEFAULT.id
+        )
+        .run()
+
+      idsWithStorageServiceChange to notificationChangeData
+    }
+
+    idsWithStorageServiceChange.forEach { id ->
+      rotateStorageId(id)
+    }
+
+    notificationChangeData.forEach { (_, channel) ->
+      NotificationChannels.getInstance().deleteChannel(channel)
+    }
+
+    (idsWithStorageServiceChange + notificationChangeData.map { it.first }).distinct().forEach { id ->
+      AppDependencies.databaseObserver.notifyRecipientChanged(id)
+    }
+
+    Log.i(TAG, "Resetting. ${idsWithStorageServiceChange.size} recipients updated their storage service. ${notificationChangeData.size} notification channels cleared.")
   }
 
   /**
@@ -4486,6 +4550,8 @@ open class RecipientTable(context: Context, databaseHelper: SignalDatabase) : Da
       put(NICKNAME_FAMILY_NAME, nickname.familyName.nullIfBlank())
       put(NICKNAME_JOINED_NAME, nickname.toString().nullIfBlank())
       put(NOTE, contact.proto.note.nullIfBlank())
+      put(CALL_NOTIFICATION_SETTING, NotificationSetting.fromOptionalBool(contact.proto.notifyForCallsIfMuted).id)
+      put(UNREAD_REMINDER, NotificationSetting.fromOptionalBool(contact.proto.showUnreadReminders).id)
 
       if (contact.proto.hasUnknownFields()) {
         put(STORAGE_SERVICE_PROTO, Base64.encodeWithPadding(contact.serializedUnknowns!!))
@@ -4522,7 +4588,10 @@ open class RecipientTable(context: Context, databaseHelper: SignalDatabase) : Da
       put(BLOCKED_AT, groupV2.proto.blockedAtTimestamp)
       put(MUTE_UNTIL, groupV2.proto.mutedUntilTimestamp)
       put(STORAGE_SERVICE_ID, Base64.encodeWithPadding(groupV2.id.raw))
-      put(MENTION_SETTING, if (groupV2.proto.dontNotifyForMentionsIfMuted) NotificationSetting.DO_NOT_NOTIFY.id else NotificationSetting.ALWAYS_NOTIFY.id)
+      put(MENTION_SETTING, if (groupV2.proto.dontNotifyForMentionsIfMuted) NotificationSetting.DO_NOT_NOTIFY.id else NotificationSetting.fromOptionalBool(groupV2.proto.notifyForMentionsIfMuted).id)
+      put(CALL_NOTIFICATION_SETTING, NotificationSetting.fromOptionalBool(groupV2.proto.notifyForCallsIfMuted).id)
+      put(REPLY_NOTIFICATION_SETTING, NotificationSetting.fromOptionalBool(groupV2.proto.notifyForRepliesIfMuted).id)
+      put(UNREAD_REMINDER, NotificationSetting.fromOptionalBool(groupV2.proto.showUnreadReminders).id)
 
       if (groupV2.proto.hasUnknownFields()) {
         put(STORAGE_SERVICE_PROTO, Base64.encodeWithPadding(groupV2.serializedUnknowns!!))
@@ -5220,6 +5289,30 @@ open class RecipientTable(context: Context, databaseHelper: SignalDatabase) : Da
         } else {
           setting
         }
+      }
+
+      fun toBoolean(setting: NotificationSetting): Boolean? {
+        return when (setting) {
+          SYSTEM_DEFAULT -> null
+          DO_NOT_NOTIFY -> false
+          ALWAYS_NOTIFY -> true
+        }
+      }
+
+      fun fromBoolean(value: Boolean?): NotificationSetting {
+        return when (value) {
+          null -> SYSTEM_DEFAULT
+          false -> DO_NOT_NOTIFY
+          true -> ALWAYS_NOTIFY
+        }
+      }
+
+      fun toOptionalBool(setting: NotificationSetting): OptionalBool {
+        return toBoolean(setting).toOptionalBool()
+      }
+
+      fun fromOptionalBool(optionalBool: OptionalBool): NotificationSetting {
+        return fromBoolean(optionalBool.toBool())
       }
     }
   }

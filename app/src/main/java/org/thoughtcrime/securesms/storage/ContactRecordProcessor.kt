@@ -269,6 +269,8 @@ class ContactRecordProcessor(
       pniSignatureVerified = (remote.proto.pniSignatureVerified || local.proto.pniSignatureVerified) && mergedPni?.isValid == true
       note = remote.proto.note.nullIfBlank() ?: ""
       avatarColor = if (SignalStore.account.isPrimaryDevice) local.proto.avatarColor else remote.proto.avatarColor
+      notifyForCallsIfMuted = StorageSyncHelper.getOptionalBool(remote.proto.notifyForCallsIfMuted, local.proto.notifyForCallsIfMuted)
+      showUnreadReminders = StorageSyncHelper.getOptionalBool(remote.proto.showUnreadReminders, local.proto.showUnreadReminders)
     }.build().toSignalContactRecord(StorageId.forContact(keyGenerator.generate()))
 
     val matchesRemote = doParamsMatch(remote, merged)

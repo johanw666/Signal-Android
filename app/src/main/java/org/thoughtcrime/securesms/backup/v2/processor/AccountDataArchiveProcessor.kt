@@ -146,7 +146,15 @@ object AccountDataArchiveProcessor {
               backupMode = exportState.backupMode
             ),
             allowAutomaticKeyVerification = signalStore.settingsValues.automaticVerificationEnabled,
-            hasSeenAdminDeleteEducationDialog = signalStore.uiHintValues.hasSeenAdminDeleteEducationDialog()
+            hasSeenAdminDeleteEducationDialog = signalStore.uiHintValues.hasSeenAdminDeleteEducationDialog(),
+            unreadBadgeType = signalStore.settingsValues.unreadBadgeType.toRemoteBadgeType(),
+            includeMutedChatsInBadge = signalStore.settingsValues.includeMutedInBadgeCount,
+            notifyForCallsIfMuted = signalStore.settingsValues.allowCallsWhileMuted,
+            notifyForMentionsIfMuted = signalStore.settingsValues.allowMentionsWhileMuted,
+            notifyForRepliesIfMuted = signalStore.settingsValues.allowRepliesWhileMuted,
+            reactionNotifications = signalStore.settingsValues.reactionNotifications,
+            showUnreadReminders = signalStore.settingsValues.unreadReminderEnabled,
+            notifyWhenContactJoins = signalStore.settingsValues.isNotifyWhenContactJoinsSignal
           ),
           donationSubscriberData = donationSubscriber?.toSubscriberData(signalStore.inAppPaymentValues.isDonationSubscriptionManuallyCancelled()),
           backupsSubscriberData = backupSubscriberRecord?.toIAPSubscriberData(),
@@ -281,6 +289,14 @@ object AccountDataArchiveProcessor {
     SignalStore.settings.setTheme(settings.appTheme.toLocalTheme())
     SignalStore.settings.setCallDataMode(settings.callsUseLessDataSetting.toLocalCallDataMode())
     SignalStore.settings.automaticVerificationEnabled = settings.allowAutomaticKeyVerification
+    SignalStore.settings.setUnreadBadgeType(settings.unreadBadgeType.value)
+    SignalStore.settings.setIncludeMutedInBadgeCount(settings.includeMutedChatsInBadge ?: false)
+    SignalStore.settings.allowCallsWhileMuted = settings.notifyForCallsIfMuted ?: false
+    SignalStore.settings.allowMentionsWhileMuted = settings.notifyForMentionsIfMuted ?: true
+    SignalStore.settings.allowRepliesWhileMuted = settings.notifyForRepliesIfMuted ?: true
+    SignalStore.settings.reactionNotifications = settings.reactionNotifications ?: true
+    SignalStore.settings.unreadReminderEnabled = settings.showUnreadReminders ?: true
+    SignalStore.settings.isNotifyWhenContactJoinsSignal = settings.notifyWhenContactJoins ?: false
 
     val autoDownloadSettings = settings.autoDownloadSettings
     if (autoDownloadSettings != null) {
@@ -543,6 +559,14 @@ object AccountDataArchiveProcessor {
       AccountData.CallsUseLessDataSetting.MOBILE_DATA_ONLY -> CallDataMode.HIGH_ON_WIFI
       AccountData.CallsUseLessDataSetting.NEVER -> CallDataMode.HIGH_ALWAYS
       AccountData.CallsUseLessDataSetting.UNKNOWN_CALL_DATA_SETTING -> CallDataMode.HIGH_ALWAYS
+    }
+  }
+
+  private fun SettingsValues.UnreadBadgeType.toRemoteBadgeType(): AccountData.AccountSettings.UnreadBadgeType {
+    return when (this) {
+      SettingsValues.UnreadBadgeType.UNREAD_MESSAGES -> AccountData.AccountSettings.UnreadBadgeType.UNREAD_MESSAGES
+      SettingsValues.UnreadBadgeType.UNREAD_CHATS -> AccountData.AccountSettings.UnreadBadgeType.UNREAD_CHATS
+      SettingsValues.UnreadBadgeType.UNKNOWN_BADGE_TYPE -> AccountData.AccountSettings.UnreadBadgeType.UNREAD_MESSAGES
     }
   }
 }

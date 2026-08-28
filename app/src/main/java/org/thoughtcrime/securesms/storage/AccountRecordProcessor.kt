@@ -15,7 +15,6 @@ import org.whispersystems.signalservice.api.storage.safeSetBackupsSubscriber
 import org.whispersystems.signalservice.api.storage.safeSetPayments
 import org.whispersystems.signalservice.api.storage.safeSetSubscriber
 import org.whispersystems.signalservice.api.storage.toSignalAccountRecord
-import org.whispersystems.signalservice.internal.storage.protos.OptionalBool
 import java.util.Optional
 
 /**
@@ -100,11 +99,7 @@ class AccountRecordProcessor(
       backupsPurchaseToken = IAPSubscriptionId.from(local.proto.backupSubscriberData)
     }
 
-    val storyViewReceiptsState = if (remote.proto.storyViewReceiptsEnabled == OptionalBool.UNSET) {
-      local.proto.storyViewReceiptsEnabled
-    } else {
-      remote.proto.storyViewReceiptsEnabled
-    }
+    val storyViewReceiptsState = StorageSyncHelper.getOptionalBool(remote.proto.storyViewReceiptsEnabled, local.proto.storyViewReceiptsEnabled)
 
     val unknownFields = remote.serializedUnknowns
 
@@ -150,6 +145,14 @@ class AccountRecordProcessor(
       releaseNotesChatBlocked = remote.proto.releaseNotesChatBlocked ?: local.proto.releaseNotesChatBlocked
       releaseNotesChatMarkedUnread = remote.proto.releaseNotesChatMarkedUnread ?: local.proto.releaseNotesChatMarkedUnread
       releaseNotesChatBlockedAt = remote.proto.releaseNotesChatBlockedAt ?: local.proto.releaseNotesChatBlockedAt
+      unreadBadgeType = remote.proto.unreadBadgeType
+      includeMutedChatsInBadge = remote.proto.includeMutedChatsInBadge
+      notifyForCallsIfMuted = StorageSyncHelper.getOptionalBool(remote.proto.notifyForCallsIfMuted, local.proto.notifyForCallsIfMuted)
+      notifyForMentionsIfMuted = StorageSyncHelper.getOptionalBool(remote.proto.notifyForMentionsIfMuted, local.proto.notifyForMentionsIfMuted)
+      notifyForRepliesIfMuted = StorageSyncHelper.getOptionalBool(remote.proto.notifyForRepliesIfMuted, local.proto.notifyForRepliesIfMuted)
+      reactionNotifications = StorageSyncHelper.getOptionalBool(remote.proto.reactionNotifications, local.proto.reactionNotifications)
+      showUnreadReminders = StorageSyncHelper.getOptionalBool(remote.proto.showUnreadReminders, local.proto.showUnreadReminders)
+      notifyWhenContactJoins = StorageSyncHelper.getOptionalBool(remote.proto.notifyWhenContactJoins, local.proto.notifyWhenContactJoins)
 
       safeSetPayments(payments?.enabled == true, payments?.entropy?.toByteArray())
       safeSetSubscriber(donationSubscriberId, donationSubscriberCurrencyCode)

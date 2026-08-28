@@ -19,6 +19,7 @@ import org.thoughtcrime.securesms.database.SignalDatabase
 import org.thoughtcrime.securesms.keyvalue.SignalStore
 import org.thoughtcrime.securesms.recipients.Recipient
 import org.thoughtcrime.securesms.recipients.RecipientId
+import org.thoughtcrime.securesms.storage.StorageSyncHelper
 
 class MutedNotificationsViewModel(private val recipientId: RecipientId? = null) : EventDrivenViewModel<MutedNotificationsEvent>(TAG) {
 
@@ -62,6 +63,7 @@ class MutedNotificationsViewModel(private val recipientId: RecipientId? = null) 
           }
         } else {
           SignalStore.settings.allowCallsWhileMuted = event.allowCalls
+          markSelfNeedsSync()
         }
         stateEmitter(state.copy(allowCalls = event.allowCalls))
       }
@@ -72,6 +74,7 @@ class MutedNotificationsViewModel(private val recipientId: RecipientId? = null) 
           }
         } else {
           SignalStore.settings.allowMentionsWhileMuted = event.allowMentions
+          markSelfNeedsSync()
         }
         stateEmitter(state.copy(allowMentions = event.allowMentions))
       }
@@ -82,9 +85,17 @@ class MutedNotificationsViewModel(private val recipientId: RecipientId? = null) 
           }
         } else {
           SignalStore.settings.allowRepliesWhileMuted = event.allowReplies
+          markSelfNeedsSync()
         }
         stateEmitter(state.copy(allowReplies = event.allowReplies))
       }
+    }
+  }
+
+  private suspend fun markSelfNeedsSync() {
+    withContext(SignalDispatchers.Default) {
+      SignalDatabase.recipients.markNeedsSync(Recipient.self().id)
+      StorageSyncHelper.scheduleSyncForDataChange()
     }
   }
 

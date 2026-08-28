@@ -28,6 +28,7 @@ import org.thoughtcrime.securesms.testutil.EmptyLogger
 import org.whispersystems.signalservice.api.storage.SignalContactRecord
 import org.whispersystems.signalservice.api.storage.StorageId
 import org.whispersystems.signalservice.internal.storage.protos.ContactRecord
+import org.whispersystems.signalservice.internal.storage.protos.OptionalBool
 import java.util.UUID
 
 class ContactRecordProcessorTest {
@@ -655,6 +656,126 @@ class ContactRecordProcessorTest {
 
     // THEN
     assertTrue(result.proto.pniSignatureVerified)
+  }
+
+  @Test
+  fun `merge, notifyForCallsIfMuted set remotely and locally, useRemote`() {
+    // GIVEN
+    val subject = ContactRecordProcessor(ACI_A, PNI_A, E164_A, recipientTable)
+
+    val local = buildRecord(
+      STORAGE_ID_A,
+      record = ContactRecord(
+        aciBinary = ACI_A.toByteString(),
+        e164 = E164_A,
+        notifyForCallsIfMuted = OptionalBool.DISABLED
+      )
+    )
+
+    val remote = buildRecord(
+      STORAGE_ID_B,
+      record = ContactRecord(
+        aciBinary = ACI_A.toByteString(),
+        e164 = E164_A,
+        notifyForCallsIfMuted = OptionalBool.ENABLED
+      )
+    )
+
+    // WHEN
+    val result = subject.merge(remote, local, TestKeyGenerator(STORAGE_ID_C))
+
+    // THEN
+    assertEquals(OptionalBool.ENABLED, result.proto.notifyForCallsIfMuted)
+  }
+
+  @Test
+  fun `merge, notifyForCallsIfMuted unset remotely, keepLocal`() {
+    // GIVEN
+    val subject = ContactRecordProcessor(ACI_A, PNI_A, E164_A, recipientTable)
+
+    val local = buildRecord(
+      STORAGE_ID_A,
+      record = ContactRecord(
+        aciBinary = ACI_A.toByteString(),
+        e164 = E164_A,
+        notifyForCallsIfMuted = OptionalBool.ENABLED
+      )
+    )
+
+    val remote = buildRecord(
+      STORAGE_ID_B,
+      record = ContactRecord(
+        aciBinary = ACI_A.toByteString(),
+        e164 = E164_A,
+        notifyForCallsIfMuted = OptionalBool.UNSET
+      )
+    )
+
+    // WHEN
+    val result = subject.merge(remote, local, TestKeyGenerator(STORAGE_ID_C))
+
+    // THEN
+    assertEquals(OptionalBool.ENABLED, result.proto.notifyForCallsIfMuted)
+  }
+
+  @Test
+  fun `merge, showUnreadReminders set remotely and locally, useRemote`() {
+    // GIVEN
+    val subject = ContactRecordProcessor(ACI_A, PNI_A, E164_A, recipientTable)
+
+    val local = buildRecord(
+      STORAGE_ID_A,
+      record = ContactRecord(
+        aciBinary = ACI_A.toByteString(),
+        e164 = E164_A,
+        showUnreadReminders = OptionalBool.ENABLED
+      )
+    )
+
+    val remote = buildRecord(
+      STORAGE_ID_B,
+      record = ContactRecord(
+        aciBinary = ACI_A.toByteString(),
+        e164 = E164_A,
+        showUnreadReminders = OptionalBool.DISABLED
+      )
+    )
+
+    // WHEN
+    val result = subject.merge(remote, local, TestKeyGenerator(STORAGE_ID_C))
+
+    // THEN
+    assertEquals(OptionalBool.DISABLED, result.proto.showUnreadReminders)
+  }
+
+  @Test
+  fun `merge, showUnreadReminders unset remotely, keepLocal`() {
+    // GIVEN
+    val subject = ContactRecordProcessor(ACI_A, PNI_A, E164_A, recipientTable)
+
+    val local = buildRecord(
+      STORAGE_ID_A,
+      record = ContactRecord(
+        aciBinary = ACI_A.toByteString(),
+        e164 = E164_A,
+        showUnreadReminders = OptionalBool.DISABLED
+      )
+    )
+
+    val remote = buildRecord(
+      STORAGE_ID_B,
+      record = ContactRecord(
+        aciBinary = ACI_A.toByteString(),
+        e164 = E164_A,
+        showUnreadReminders = OptionalBool.UNSET
+      )
+    )
+
+    // WHEN
+    val result = subject.merge(remote, local, TestKeyGenerator(STORAGE_ID_C))
+
+    // THEN
+    assertEquals(OptionalBool.DISABLED, result.proto.showUnreadReminders)
   }
 
   private fun buildRecord(id: StorageId = STORAGE_ID_A, record: ContactRecord): SignalContactRecord {

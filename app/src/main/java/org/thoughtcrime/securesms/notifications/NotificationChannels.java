@@ -272,17 +272,20 @@ public class NotificationChannels {
    * a channel made for that recipient.
    */
   public synchronized void deleteChannelFor(@NonNull Recipient recipient) {
-    if (!supported()) {
+    deleteChannel(recipient.getNotificationChannel());
+  }
+
+  /**
+   * Deletes the channel with the provided id. Safe to call with a null id or an id that has no
+   * matching channel.
+   */
+  public synchronized void deleteChannel(@Nullable String channelId) {
+    if (!supported() || channelId == null) {
       return;
     }
 
-    NotificationManager notificationManager = ServiceUtil.getNotificationManager(context);
-    String              channel             = recipient.getNotificationChannel();
-
-    if (channel != null) {
-      Log.i(TAG, "Deleting channel");
-      notificationManager.deleteNotificationChannel(channel);
-    }
+    Log.i(TAG, "Deleting channel");
+    ServiceUtil.getNotificationManager(context).deleteNotificationChannel(channelId);
   }
 
   /**
