@@ -8,6 +8,7 @@ package org.thoughtcrime.securesms.jobs
 import androidx.annotation.VisibleForTesting
 import org.signal.core.util.billing.BillingProduct
 import org.signal.core.util.billing.BillingPurchaseResult
+import org.signal.core.util.billing.BillingPurchaseState
 import org.signal.core.util.logging.Log
 import org.signal.core.util.money.FiatMoney
 import org.signal.donations.InAppPaymentType
@@ -125,6 +126,14 @@ class BackupSubscriptionCheckJob private constructor(parameters: Parameters) : C
     }
 
     val hasActivePurchase = purchase is BillingPurchaseResult.Success && purchase.isAcknowledged
+
+    // Grabs the purchase token which may need to be linked if we need to rotate the subscription.
+    val linkablePurchaseToken = if (purchase is BillingPurchaseResult.Success && purchase.purchaseState == BillingPurchaseState.PURCHASED) {
+      purchase.purchaseToken
+    } else {
+      null
+    }
+
     val product: BillingProduct? = AppDependencies.billingApi.queryProduct()
 
     if (product == null) {
@@ -176,16 +185,17 @@ class BackupSubscriptionCheckJob private constructor(parameters: Parameters) : C
         null
       }
 
-      val hasTokenMismatch = purchaseToken?.let { hasLocalDevicePurchaseTokenMismatch(purchaseToken) } == true
-      if (hasActiveSignalSubscription && hasTokenMismatch) {
-        Log.i(TAG, "Encountered token mismatch with an active Signal subscription. Attempting to redeem against latest token.", true)
-        rotateAndRedeem(purchaseToken, product.price)
-        SignalStore.backup.subscriptionStateMismatchDetected = false
+      if (linkablePurchaseToken != null && hasActiveSignalSubscription && hasLocalDevicePurchaseTokenMismatch(linkablePurchaseToken)) {
+        Log.i(TAG, "Encountered token mismatch with an active Signal subscription. Attempting to redeem against latest token. (isAcknowledged: $hasActivePurchase)", true)
+        val rotated = rotateAndRedeem(linkablePurchaseToken, product.price)
+        Log.i(TAG, "Token mismatch redemption enqueued: $rotated. Setting mismatch value to ${!rotated} and exiting.", true)
+        SignalStore.backup.subscriptionStateMismatchDetected = !rotated
         return Result.success()
       } else if (purchaseToken != null && hasActiveSignalSubscription && !hasActivePaidBackupTier && !SignalDatabase.inAppPayments.hasPendingBackupRedemption()) {
         Log.i(TAG, "We have an active signal subscription and active purchase, but no entitlement and no pending redemption. Enqueuing a redemption now.")
-        rotateAndRedeem(purchaseToken, product.price)
-        SignalStore.backup.subscriptionStateMismatchDetected = false
+        val rotated = rotateAndRedeem(purchaseToken, product.price)
+        Log.i(TAG, "Missing-entitlement redemption enqueued: $rotated. Setting mismatch value to ${!rotated} and exiting.", true)
+        SignalStore.backup.subscriptionStateMismatchDetected = !rotated
         return Result.success()
       } else {
         if (hasValidActiveState || hasValidInactiveState) {
@@ -270,35 +280,47 @@ class BackupSubscriptionCheckJob private constructor(parameters: Parameters) : C
     }
   }
 
-  private fun rotateAndRedeem(localDevicePurchaseToken: String, localProductPrice: FiatMoney) {
-    RecurringInAppPaymentRepository.ensureSubscriberIdSync(
-      subscriberType = InAppPaymentSubscriberRecord.Type.BACKUP,
-      isRotation = true,
-      iapSubscriptionId = IAPSubscriptionId.GooglePlayBillingPurchaseToken(localDevicePurchaseToken)
-    )
+  /**
+   * Rotates the backup subscriber id onto the given purchase token and enqueues a fresh redemption chain.
+   *
+   * @return whether the redemption chain was enqueued. Callers should treat false as a still-mismatched state.
+   */
+  private fun rotateAndRedeem(localDevicePurchaseToken: String, localProductPrice: FiatMoney): Boolean {
+    try {
+      RecurringInAppPaymentRepository.ensureSubscriberIdSync(
+        subscriberType = InAppPaymentSubscriberRecord.Type.BACKUP,
+        isRotation = true,
+        iapSubscriptionId = IAPSubscriptionId.GooglePlayBillingPurchaseToken(localDevicePurchaseToken)
+      )
 
-    SignalDatabase.inAppPayments.clearCreated()
+      SignalDatabase.inAppPayments.clearCreated()
 
-    val id = SignalDatabase.inAppPayments.insert(
-      type = InAppPaymentType.RECURRING_BACKUP,
-      state = InAppPaymentTable.State.PENDING,
-      subscriberId = InAppPaymentsRepository.requireSubscriber(InAppPaymentSubscriberRecord.Type.BACKUP).subscriberId,
-      endOfPeriod = null,
-      inAppPaymentData = InAppPaymentData(
-        badge = null,
-        amount = localProductPrice.toFiatValue(),
-        level = SubscriptionsConfiguration.BACKUPS_LEVEL.toLong(),
-        recipientId = Recipient.self().id.serialize(),
-        paymentMethodType = InAppPaymentData.PaymentMethodType.GOOGLE_PLAY_BILLING,
-        redemption = InAppPaymentData.RedemptionState(
-          stage = InAppPaymentData.RedemptionState.Stage.INIT
+      val id = SignalDatabase.inAppPayments.insert(
+        type = InAppPaymentType.RECURRING_BACKUP,
+        state = InAppPaymentTable.State.PENDING,
+        subscriberId = InAppPaymentsRepository.requireSubscriber(InAppPaymentSubscriberRecord.Type.BACKUP).subscriberId,
+        endOfPeriod = null,
+        inAppPaymentData = InAppPaymentData(
+          badge = null,
+          amount = localProductPrice.toFiatValue(),
+          level = SubscriptionsConfiguration.BACKUPS_LEVEL.toLong(),
+          recipientId = Recipient.self().id.serialize(),
+          paymentMethodType = InAppPaymentData.PaymentMethodType.GOOGLE_PLAY_BILLING,
+          redemption = InAppPaymentData.RedemptionState(
+            stage = InAppPaymentData.RedemptionState.Stage.INIT
+          )
         )
       )
-    )
 
-    InAppPaymentPurchaseTokenJob.createJobChain(
-      inAppPayment = SignalDatabase.inAppPayments.getById(id)!!
-    ).enqueue()
+      InAppPaymentPurchaseTokenJob.createJobChain(
+        inAppPayment = SignalDatabase.inAppPayments.getById(id)!!
+      ).enqueue()
+
+      return true
+    } catch (e: Exception) {
+      Log.w(TAG, "Failed to rotate the subscriber id and enqueue a redemption. Will try again later.", e, true)
+      return false
+    }
   }
 
   private fun hasLocalDevicePurchaseTokenMismatch(localDevicePurchaseToken: String): Boolean {

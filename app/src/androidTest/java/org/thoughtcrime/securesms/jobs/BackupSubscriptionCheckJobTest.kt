@@ -362,6 +362,80 @@ class BackupSubscriptionCheckJobTest {
   }
 
   @Test
+  fun givenUnacknowledgedPurchaseAndAppleSubscriber_whenIRun_thenIExpectTokenRedemption() {
+    mockUnacknowledgedPurchase()
+    insertAppleSubscriber()
+
+    every { RecurringInAppPaymentRepository.getActiveSubscriptionSync(InAppPaymentSubscriberRecord.Type.BACKUP) } returns NetworkResult.Success(
+      createActiveSubscription(isActive = true)
+    )
+
+    val job = BackupSubscriptionCheckJob.create()
+    val result = job.run()
+
+    assertThat(result.isSuccess).isTrue()
+    assertThat(SignalStore.backup.subscriptionStateMismatchDetected).isFalse()
+    verify {
+      RecurringInAppPaymentRepository.ensureSubscriberIdSync(
+        eq(InAppPaymentSubscriberRecord.Type.BACKUP),
+        eq(true),
+        eq(IAPSubscriptionId.GooglePlayBillingPurchaseToken(purchaseToken = IAP_TOKEN))
+      )
+    }
+  }
+
+  @Test
+  fun givenRotationThrows_whenIRun_thenIExpectSuccessAndStateMismatchDetected() {
+    mockUnacknowledgedPurchase()
+    insertAppleSubscriber()
+
+    every { RecurringInAppPaymentRepository.getActiveSubscriptionSync(InAppPaymentSubscriberRecord.Type.BACKUP) } returns NetworkResult.Success(
+      createActiveSubscription(isActive = true)
+    )
+    every { RecurringInAppPaymentRepository.ensureSubscriberIdSync(any(), any(), any()) } throws IllegalArgumentException("Rotation failed.")
+
+    val job = BackupSubscriptionCheckJob.create()
+    val result = job.run()
+
+    assertThat(result.isSuccess).isTrue()
+    assertThat(SignalStore.backup.subscriptionStateMismatchDetected).isTrue()
+  }
+
+  @Test
+  fun givenDeferredPurchaseAndAppleSubscriber_whenIRun_thenIExpectNoRedemption() {
+    mockDeferredPurchase()
+    insertAppleSubscriber()
+
+    every { RecurringInAppPaymentRepository.getActiveSubscriptionSync(InAppPaymentSubscriberRecord.Type.BACKUP) } returns NetworkResult.Success(
+      createActiveSubscription(isActive = true)
+    )
+
+    val job = BackupSubscriptionCheckJob.create()
+    val result = job.run()
+
+    assertThat(result.isSuccess).isTrue()
+    assertThat(SignalStore.backup.subscriptionStateMismatchDetected).isTrue()
+    verify(exactly = 0) { RecurringInAppPaymentRepository.ensureSubscriberIdSync(any(), any(), any()) }
+  }
+
+  @Test
+  fun givenUnacknowledgedPurchaseMatchingSubscriber_whenIRun_thenIExpectStateMismatchDetected() {
+    mockUnacknowledgedPurchase()
+    insertSubscriber()
+
+    every { RecurringInAppPaymentRepository.getActiveSubscriptionSync(InAppPaymentSubscriberRecord.Type.BACKUP) } returns NetworkResult.Success(
+      createActiveSubscription(isActive = true)
+    )
+
+    val job = BackupSubscriptionCheckJob.create()
+    val result = job.run()
+
+    assertThat(result.isSuccess).isTrue()
+    assertThat(SignalStore.backup.subscriptionStateMismatchDetected).isTrue()
+    verify(exactly = 0) { RecurringInAppPaymentRepository.ensureSubscriberIdSync(any(), any(), any()) }
+  }
+
+  @Test
   fun givenValidActiveState_whenIRun_thenIExpectSuccessAndNoMismatch() {
     mockActivePurchase()
 
@@ -608,6 +682,19 @@ class BackupSubscriptionCheckJobTest {
     )
   }
 
+  private fun insertAppleSubscriber() {
+    SignalDatabase.inAppPaymentSubscribers.insertOrReplace(
+      InAppPaymentSubscriberRecord(
+        type = InAppPaymentSubscriberRecord.Type.BACKUP,
+        iapSubscriptionId = IAPSubscriptionId.AppleIAPOriginalTransactionId(1000L),
+        requiresCancel = false,
+        paymentMethodType = InAppPaymentData.PaymentMethodType.GOOGLE_PLAY_BILLING,
+        currency = null,
+        subscriberId = SubscriberId.generate()
+      )
+    )
+  }
+
   private fun insertPrePendingInAppPayment() {
     SignalDatabase.inAppPayments.insert(
       type = InAppPaymentType.RECURRING_BACKUP,
@@ -641,6 +728,26 @@ class BackupSubscriptionCheckJobTest {
       purchaseState = BillingPurchaseState.PURCHASED,
       purchaseToken = IAP_TOKEN,
       isAcknowledged = true,
+      purchaseTime = System.currentTimeMillis(),
+      isAutoRenewing = true
+    )
+  }
+
+  private fun mockUnacknowledgedPurchase() {
+    coEvery { AppDependencies.billingApi.queryPurchases() } returns BillingPurchaseResult.Success(
+      purchaseState = BillingPurchaseState.PURCHASED,
+      purchaseToken = IAP_TOKEN,
+      isAcknowledged = false,
+      purchaseTime = System.currentTimeMillis(),
+      isAutoRenewing = true
+    )
+  }
+
+  private fun mockDeferredPurchase() {
+    coEvery { AppDependencies.billingApi.queryPurchases() } returns BillingPurchaseResult.Success(
+      purchaseState = BillingPurchaseState.PENDING,
+      purchaseToken = IAP_TOKEN,
+      isAcknowledged = false,
       purchaseTime = System.currentTimeMillis(),
       isAutoRenewing = true
     )

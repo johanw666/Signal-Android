@@ -21,6 +21,7 @@ import org.thoughtcrime.securesms.dependencies.AppDependencies
 import org.thoughtcrime.securesms.jobmanager.Job
 import org.thoughtcrime.securesms.jobmanager.JobManager.Chain
 import org.thoughtcrime.securesms.jobmanager.impl.NetworkConstraint
+import org.whispersystems.signalservice.api.storage.IAPSubscriptionId
 import kotlin.concurrent.withLock
 import kotlin.time.Duration.Companion.days
 
@@ -119,7 +120,7 @@ class InAppPaymentPurchaseTokenJob private constructor(
     )
 
     if (response.applicationError.isPresent) {
-      return handleApplicationError(response.applicationError.get(), response.status)
+      return handleApplicationError(response.applicationError.get(), response.status, purchase.purchaseToken)
     } else if (response.result.isPresent) {
       info("Successfully linked purchase token to subscriber id.")
       return Result.success()
@@ -164,7 +165,7 @@ class InAppPaymentPurchaseTokenJob private constructor(
     return inAppPayment
   }
 
-  private fun handleApplicationError(applicationError: Throwable, status: Int): Result {
+  private fun handleApplicationError(applicationError: Throwable, status: Int, purchaseToken: String): Result {
     return when (status) {
       402 -> {
         warning("The purchaseToken payment is incomplete or invalid.", applicationError)
@@ -186,7 +187,11 @@ class InAppPaymentPurchaseTokenJob private constructor(
 
         try {
           info("Generating a new subscriber id.")
-          RecurringInAppPaymentRepository.ensureSubscriberIdSync(InAppPaymentSubscriberRecord.Type.BACKUP, true)
+          RecurringInAppPaymentRepository.ensureSubscriberIdSync(
+            subscriberType = InAppPaymentSubscriberRecord.Type.BACKUP,
+            isRotation = true,
+            iapSubscriptionId = IAPSubscriptionId.GooglePlayBillingPurchaseToken(purchaseToken)
+          )
 
           info("Writing the new subscriber id to the InAppPayment.")
           val latest = SignalDatabase.inAppPayments.getById(inAppPaymentId)!!
