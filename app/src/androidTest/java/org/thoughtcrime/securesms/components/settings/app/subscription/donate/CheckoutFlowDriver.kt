@@ -210,13 +210,27 @@ class CheckoutFlowDriver(
     composeRule.onNodeWithTag(fieldTag).performTextInput(text)
   }
 
-  /** Retries clicking a Compose node until the click lands (e.g. once a submit button becomes enabled). */
-  private fun clickWhenReady(tag: String) {
+  /**
+   * Clicks the Compose node tagged [tag] once per flush until [settled] holds, which defaults to the node
+   * no longer being present (the transfer forms navigate away on submit).
+   *
+   * A dispatched click is not proof the click landed, so "did it throw" is not a usable stop condition:
+   * [performClick] succeeds on a disabled button, and these forms pin their submit button above an animating
+   * IME, so a click issued while the insets are still settling is delivered to the strip the button has
+   * already vacated and silently does nothing. Retrying until the flow has actually advanced makes the step
+   * independent of where the button was a frame ago.
+   */
+  private fun clickWhenReady(
+    tag: String,
+    settled: () -> Boolean = { composeRule.onAllNodesWithTag(tag).fetchSemanticsNodes().isEmpty() }
+  ) {
     scheduler.flushUntil {
-      runCatching {
-        composeRule.onNodeWithTag(tag).performClick()
+      if (settled()) {
         true
-      }.getOrDefault(false)
+      } else {
+        runCatching { composeRule.onNodeWithTag(tag).performClick() }
+        false
+      }
     }
     scheduler.triggerActions()
   }
