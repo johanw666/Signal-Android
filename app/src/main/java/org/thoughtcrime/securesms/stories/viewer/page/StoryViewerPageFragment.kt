@@ -77,6 +77,7 @@ import org.thoughtcrime.securesms.mediapreview.MediaPreviewPageFragment
 import org.thoughtcrime.securesms.mediapreview.VideoControlsDelegate
 import org.thoughtcrime.securesms.recipients.Recipient
 import org.thoughtcrime.securesms.recipients.RecipientId
+import org.thoughtcrime.securesms.recipients.ui.about.AboutSheet
 import org.thoughtcrime.securesms.recipients.ui.bottomsheet.RecipientBottomSheetDialogFragment
 import org.thoughtcrime.securesms.safety.SafetyNumberBottomSheet
 import org.thoughtcrime.securesms.stories.StorySlateView
@@ -118,7 +119,8 @@ class StoryViewerPageFragment :
   StorySlateView.Callback,
   StoryInfoBottomSheetDialogFragment.OnInfoSheetDismissedListener,
   SafetyNumberBottomSheet.Callbacks,
-  RecipientBottomSheetDialogFragment.Callback {
+  RecipientBottomSheetDialogFragment.Callback,
+  AboutSheet.Callback {
 
   private val storyVolumeViewModel: StoryVolumeViewModel by viewModels(ownerProducer = { requireActivity() })
 
@@ -1505,6 +1507,10 @@ class StoryViewerPageFragment :
   }
 
   override fun onRecipientBottomSheetDismissed() {
+    viewModel.setIsDisplayingRecipientBottomSheet(false)
+  }
+
+  override fun onAboutSheetDismissed() {
     viewModel.setIsDisplayingRecipientBottomSheet(false)
   }
 

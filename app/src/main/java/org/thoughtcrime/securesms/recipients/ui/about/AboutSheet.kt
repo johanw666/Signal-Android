@@ -5,6 +5,7 @@
 
 package org.thoughtcrime.securesms.recipients.ui.about
 
+import android.content.DialogInterface
 import android.content.res.Configuration
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -163,6 +164,15 @@ class AboutSheet : ComposeBottomSheetDialogFragment() {
       setFragmentResult(RESULT_EDIT_MEMBER_LABEL, bundleOf(RESULT_GROUP_ID to groupId))
       dismiss()
     }
+  }
+
+  override fun onDismiss(dialog: DialogInterface) {
+    super.onDismiss(dialog)
+    (parentFragment as? Callback)?.onAboutSheetDismissed()
+  }
+
+  interface Callback {
+    fun onAboutSheetDismissed()
   }
 }
 
