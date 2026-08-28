@@ -26,7 +26,6 @@ data class AccountSettingsState(
    * the sections aren't shown at all.
    */
   data class SignalLogin(
-    val keyCount: Int,
     val authenticatorAppCount: Int,
     val passkeyCount: Int
   )

@@ -107,7 +107,6 @@ fun AccountSettingsScreen(
 
         item {
           SignalLoginCard(
-            keyCount = state.signalLogin.keyCount,
             onClick = { onEvent(AccountSettingsEvent.AccountAndRecoveryClicked) }
           )
         }
@@ -333,7 +332,6 @@ fun AccountSettingsScreen(
  */
 @Composable
 private fun SignalLoginCard(
-  keyCount: Int,
   onClick: () -> Unit,
   modifier: Modifier = Modifier
 ) {
@@ -357,22 +355,13 @@ private fun SignalLoginCard(
         .clip(RoundedCornerShape(8.dp))
     )
 
-    Column(
+    Text(
+      text = stringResource(R.string.AccountSettingsFragment__account_and_recovery),
+      style = MaterialTheme.typography.bodyLarge,
       modifier = Modifier
         .weight(1f)
         .padding(horizontal = 20.dp)
-    ) {
-      Text(
-        text = stringResource(R.string.AccountSettingsFragment__account_and_recovery),
-        style = MaterialTheme.typography.bodyLarge
-      )
-
-      Text(
-        text = pluralStringResource(R.plurals.AccountSettingsFragment__d_keys, keyCount, keyCount),
-        style = MaterialTheme.typography.bodyMedium,
-        color = MaterialTheme.colorScheme.onSurfaceVariant
-      )
-    }
+    )
 
     Icon(
       imageVector = SignalIcons.ChevronRight.imageVector,
@@ -576,7 +565,7 @@ private fun AccountSettingsScreenSignalLoginPreview() {
     AccountSettingsScreen(
       state = AccountSettingsState(
         isPhoneNumberless = true,
-        signalLogin = AccountSettingsState.SignalLogin(keyCount = 2, authenticatorAppCount = 2, passkeyCount = 8)
+        signalLogin = AccountSettingsState.SignalLogin(authenticatorAppCount = 2, passkeyCount = 8)
       ),
       onEvent = {}
     )
