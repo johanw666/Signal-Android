@@ -228,20 +228,20 @@ class UnreadReminderJob(private val threadId: Long, private val lastReminderTime
     val (oneRes, twoRes, manyRes) = when (reminderType) {
       ReminderType.MESSAGES,
       ReminderType.CALLS -> Triple(R.string.UnreadReminderJob__authors_one, R.string.UnreadReminderJob__authors_two, R.string.UnreadReminderJob__authors_many)
-      ReminderType.MENTIONS -> Triple(R.string.UnreadReminderJob__mentions_one, R.string.UnreadReminderJob__mentions_two, R.string.UnreadReminderJob__mentions_many)
-      ReminderType.REPLIES -> Triple(R.string.UnreadReminderJob__replies_one, R.string.UnreadReminderJob__replies_two, R.string.UnreadReminderJob__replies_many)
+      ReminderType.MENTIONS -> Triple(R.string.UnreadReminderJob__mentions_one, R.plurals.UnreadReminderJob__mentions_two, R.plurals.UnreadReminderJob__mentions_many)
+      ReminderType.REPLIES -> Triple(R.string.UnreadReminderJob__replies_one, R.plurals.UnreadReminderJob__replies_two, R.plurals.UnreadReminderJob__replies_many)
     }
     val includesCount = reminderType == ReminderType.MENTIONS || reminderType == ReminderType.REPLIES
 
     return when (authors.size) {
       1 -> context.getString(oneRes, authors[0])
       2 -> if (includesCount) {
-        context.getString(twoRes, count, authors[0], authors[1])
+        context.resources.getQuantityString(twoRes, count, count, authors[0], authors[1])
       } else {
         context.getString(twoRes, authors[0], authors[1])
       }
       else -> if (includesCount) {
-        context.getString(manyRes, count, authors[0])
+        context.resources.getQuantityString(manyRes, count, count, authors[0])
       } else {
         context.getString(manyRes, authors[0])
       }
