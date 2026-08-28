@@ -1,9 +1,13 @@
 package org.thoughtcrime.securesms.components;
 
 import android.content.Context;
+import android.content.res.ColorStateList;
 import android.content.res.TypedArray;
 import android.graphics.Canvas;
 import android.graphics.Color;
+import android.graphics.PorterDuff;
+import android.graphics.drawable.Drawable;
+import android.text.TextUtils;
 import android.net.Uri;
 import android.util.AttributeSet;
 import android.view.View;
@@ -14,6 +18,8 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.annotation.RequiresApi;
+import androidx.appcompat.widget.AppCompatImageView;
+import androidx.core.widget.ImageViewCompat;
 
 import com.bumptech.glide.RequestManager;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
@@ -22,14 +28,17 @@ import org.signal.glide.decryptableuri.DecryptableUri;
 import org.thoughtcrime.securesms.R;
 import org.thoughtcrime.securesms.contactshare.Contact;
 import org.thoughtcrime.securesms.contactshare.ContactUtil;
+import org.thoughtcrime.securesms.avatar.fallback.FallbackAvatar;
+import org.thoughtcrime.securesms.avatar.fallback.FallbackAvatarDrawable;
+import org.thoughtcrime.securesms.conversation.colors.AvatarColor;
 import org.thoughtcrime.securesms.database.RecipientTable;
 import org.thoughtcrime.securesms.recipients.LiveRecipient;
 import org.thoughtcrime.securesms.recipients.Recipient;
 import org.thoughtcrime.securesms.recipients.RecipientForeverObserver;
 import org.thoughtcrime.securesms.recipients.RecipientId;
+import org.thoughtcrime.securesms.util.ViewUtil;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
@@ -39,7 +48,7 @@ public class SharedContactView extends LinearLayout implements RecipientForeverO
 
   private ImageView              avatarView;
   private TextView               nameView;
-  private TextView               numberView;
+  private AppCompatImageView     disclosureView;
   private TextView               actionButtonView;
   private ConversationItemFooter footer;
 
@@ -79,7 +88,7 @@ public class SharedContactView extends LinearLayout implements RecipientForeverO
 
     avatarView       = findViewById(R.id.contact_avatar);
     nameView         = findViewById(R.id.contact_name);
-    numberView       = findViewById(R.id.contact_number);
+    disclosureView   = findViewById(R.id.contact_disclosure);
     actionButtonView = findViewById(R.id.contact_action_button);
     footer           = findViewById(R.id.contact_footer);
 
@@ -88,18 +97,24 @@ public class SharedContactView extends LinearLayout implements RecipientForeverO
     smallCornerRadius = getResources().getDimensionPixelOffset(R.dimen.message_corner_collapse_radius);
 
     if (attrs != null) {
-      TypedArray typedArray   = getContext().getTheme().obtainStyledAttributes(attrs, R.styleable.SharedContactView, 0, 0);
-      int        titleColor   = typedArray.getInt(R.styleable.SharedContactView_contact_titleColor, Color.BLACK);
-      int        captionColor = typedArray.getInt(R.styleable.SharedContactView_contact_captionColor, Color.BLACK);
-      int        iconColor    = typedArray.getInt(R.styleable.SharedContactView_contact_footerIconColor, Color.BLACK);
-      float      footerAlpha  = typedArray.getFloat(R.styleable.SharedContactView_contact_footerAlpha, 1);
+      TypedArray typedArray      = getContext().getTheme().obtainStyledAttributes(attrs, R.styleable.SharedContactView, 0, 0);
+      int        titleColor      = typedArray.getInt(R.styleable.SharedContactView_contact_titleColor, Color.BLACK);
+      int        captionColor    = typedArray.getInt(R.styleable.SharedContactView_contact_captionColor, Color.BLACK);
+      int        chevronColor    = typedArray.getInt(R.styleable.SharedContactView_contact_chevronColor, Color.BLACK);
+      int        iconColor       = typedArray.getInt(R.styleable.SharedContactView_contact_footerIconColor, Color.BLACK);
+      float      footerAlpha     = typedArray.getFloat(R.styleable.SharedContactView_contact_footerAlpha, 1);
+      int        actionTextColor = typedArray.getInt(R.styleable.SharedContactView_contact_actionTextColor, Color.BLACK);
+      int        actionBgColor   = typedArray.getInt(R.styleable.SharedContactView_contact_actionBackgroundColor, Color.TRANSPARENT);
       typedArray.recycle();
 
       nameView.setTextColor(titleColor);
-      numberView.setTextColor(captionColor);
       footer.setTextColor(captionColor);
       footer.setIconColor(iconColor);
       footer.setAlpha(footerAlpha);
+
+      ImageViewCompat.setImageTintList(disclosureView, ColorStateList.valueOf(chevronColor));
+      actionButtonView.setTextColor(actionTextColor);
+      actionButtonView.getBackground().mutate().setColorFilter(actionBgColor, PorterDuff.Mode.SRC_IN);
     }
   }
 
@@ -117,9 +132,13 @@ public class SharedContactView extends LinearLayout implements RecipientForeverO
     activeRecipients.values().stream().forEach(recipient ->  recipient.removeForeverObserver(this));
     this.activeRecipients.clear();
 
+    for (RecipientId recipientId : ContactUtil.getExistingRecipients(contact)) {
+      activeRecipients.put(recipientId, Recipient.live(recipientId));
+    }
+
     presentContact(contact);
-    presentAvatar(contact.getAvatarAttachment() != null ? contact.getAvatarAttachment().getUri() : null);
-    presentActionButtons(ContactUtil.getRecipients(contact));
+    presentAvatar(contact, contact.getAvatarAttachment() != null ? contact.getAvatarAttachment().getUri() : null);
+    presentActionButtons(contact);
 
     for (LiveRecipient recipient : activeRecipients.values()) {
       recipient.observeForever(this);
@@ -145,6 +164,35 @@ public class SharedContactView extends LinearLayout implements RecipientForeverO
     this.eventListener = eventListener;
   }
 
+  /**
+   * The width this card wants in order to show its content without truncating. Measure directly to
+   * prevent measure loop with the bubble this sits in.
+   */
+  public int getNaturalContentWidth() {
+    int horizontalPadding = 2 * getResources().getDimensionPixelSize(R.dimen.message_bubble_horizontal_padding);
+
+    int nameRowWidth = avatarView.getLayoutParams().width +
+                       ViewUtil.getRightMargin(avatarView) +
+                       desiredTextWidth(nameView) +
+                       ViewUtil.getLeftMargin(disclosureView) +
+                       disclosureView.getLayoutParams().width;
+
+    return horizontalPadding + Math.max(nameRowWidth, desiredTextWidth(actionButtonView));
+  }
+
+  /**
+   * Width the text wants, measured off the paint rather than by calling measure().
+   */
+  private static int desiredTextWidth(@NonNull TextView view) {
+    CharSequence text = view.getText();
+
+    if (text == null) {
+      return 0;
+    }
+
+    return (int) Math.ceil(view.getPaint().measureText(text.toString())) + view.getPaddingLeft() + view.getPaddingRight();
+  }
+
   public @NonNull View getAvatarView() {
     return avatarView;
   }
@@ -155,69 +203,81 @@ public class SharedContactView extends LinearLayout implements RecipientForeverO
 
   @Override
   public void onRecipientChanged(@NonNull Recipient recipient) {
-    presentActionButtons(Collections.singletonList(recipient.getId()));
-  }
-
-  private void presentContact(@Nullable Contact contact) {
     if (contact != null) {
-      nameView.setText(ContactUtil.getDisplayName(contact));
-      numberView.setText(ContactUtil.getDisplayNumber(contact, locale));
-    } else {
-      nameView.setText("");
-      numberView.setText("");
+      presentActionButtons(contact);
     }
   }
 
-  private void presentAvatar(@Nullable Uri uri) {
+  private void presentContact(@Nullable Contact contact) {
+    nameView.setText(contact != null ? ContactUtil.getDisplayName(contact) : "");
+  }
+
+  private void presentAvatar(@NonNull Contact contact, @Nullable Uri uri) {
+    Drawable fallback = buildFallbackAvatar(contact);
+
     if (uri != null) {
       requestManager.load(new DecryptableUri(uri))
-                    .fallback(R.drawable.symbol_person_display_40)
+                    .fallback(fallback)
+                    .error(fallback)
                     .circleCrop()
                     .diskCacheStrategy(DiskCacheStrategy.ALL)
                     .dontAnimate()
                     .into(avatarView);
     } else {
-      requestManager.load(R.drawable.symbol_person_display_40)
-                    .circleCrop()
-                    .diskCacheStrategy(DiskCacheStrategy.ALL)
-                    .into(avatarView);
+      avatarView.setImageDrawable(fallback);
     }
   }
 
-  private void presentActionButtons(@NonNull List<RecipientId> recipients) {
-    for (RecipientId recipientId : recipients) {
-      activeRecipients.put(recipientId, Recipient.live(recipientId));
+  /**
+   * Initials when the card carries a personal name, matching how the app draws recipients without a
+   * photo. A company name has no initials worth showing, so those keep the person glyph.
+   */
+  private @NonNull Drawable buildFallbackAvatar(@NonNull Contact contact) {
+    // No recipient to derive a colour from, so every shared card uses the same one.
+    FallbackAvatar fallbackAvatar;
+
+    if (contact.getName().isEmpty() && !TextUtils.isEmpty(contact.getOrganization())) {
+      fallbackAvatar = new FallbackAvatar.Resource.Person(AvatarColor.A100);
+    } else {
+      fallbackAvatar = FallbackAvatar.forTextOrDefault(ContactUtil.getDisplayName(contact), AvatarColor.A100);
     }
 
-    List<Recipient> pushUsers   = new ArrayList<>(recipients.size());
-    List<Recipient> systemUsers = new ArrayList<>(recipients.size());
+    return new FallbackAvatarDrawable(getContext(), fallbackAvatar).circleCrop();
+  }
+
+  /**
+   * Shows message action for e164 contacts we found locally, invite for e164/email, and
+   * add for everything else.
+   */
+  private void presentActionButtons(@NonNull Contact contact) {
+    List<Recipient> registered = new ArrayList<>(activeRecipients.size());
 
     for (LiveRecipient recipient : activeRecipients.values()) {
       if (recipient.get().getRegistered() == RecipientTable.RegisteredState.REGISTERED) {
-        pushUsers.add(recipient.get());
-      } else if (recipient.get().isSystemContact()) {
-        systemUsers.add(recipient.get());
+        registered.add(recipient.get());
       }
     }
 
-    if (!pushUsers.isEmpty()) {
+    boolean hasInviteTarget = !contact.getPhoneNumbers().isEmpty() || !contact.getEmails().isEmpty();
+
+    if (!registered.isEmpty()) {
       actionButtonView.setText(R.string.SharedContactView_message);
       actionButtonView.setOnClickListener(v -> {
         if (eventListener != null) {
-          eventListener.onMessageClicked(pushUsers);
+          eventListener.onMessageClicked(registered);
         }
       });
-    } else if (!systemUsers.isEmpty()) {
+    } else if (hasInviteTarget) {
       actionButtonView.setText(R.string.SharedContactView_invite_to_signal);
       actionButtonView.setOnClickListener(v -> {
         if (eventListener != null) {
-          eventListener.onInviteClicked(systemUsers);
+          eventListener.onInviteClicked(contact);
         }
       });
     } else {
       actionButtonView.setText(R.string.SharedContactView_add_to_contacts);
       actionButtonView.setOnClickListener(v -> {
-        if (eventListener != null && contact != null) {
+        if (eventListener != null) {
           eventListener.onAddToContactsClicked(contact);
         }
       });
@@ -226,7 +286,7 @@ public class SharedContactView extends LinearLayout implements RecipientForeverO
 
   public interface EventListener {
     void onAddToContactsClicked(@NonNull Contact contact);
-    void onInviteClicked(@NonNull List<Recipient> choices);
+    void onInviteClicked(@NonNull Contact contact);
     void onMessageClicked(@NonNull List<Recipient> choices);
   }
 }

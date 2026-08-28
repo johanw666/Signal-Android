@@ -253,7 +253,7 @@ class V2ConversationItemShapeTest {
 
     override fun onMessageSharedContactClicked(choices: MutableList<Recipient>) = Unit
 
-    override fun onInviteSharedContactClicked(choices: MutableList<Recipient>) = Unit
+    override fun onInviteSharedContactClicked(contact: Contact) = Unit
 
     override fun onReactionClicked(multiselectPart: MultiselectPart, messageId: Long, isMms: Boolean) = Unit
 

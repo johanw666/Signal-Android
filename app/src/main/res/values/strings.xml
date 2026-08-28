@@ -10000,5 +10000,58 @@
     <!-- Notification placeholder that sums up unread replies from three or more people. First placeholder is the number of replies, second is the name of one person who sent them -->
     <string name="UnreadReminderJob__replies_many">%1$d replies from %2$s and others</string>
 
+    <!-- Title of the screen where the user chooses which parts of a contact to share -->
+    <string name="ShareContactScreen__share_contact">Share contact</string>
+
+    <!-- Label beneath the company name of the contact being shared -->
+    <string name="ShareContactScreen__company">Company</string>
+    <!-- Label beneath a shared nickname value -->
+    <string name="ShareContactScreen__nickname">Nickname</string>
+    <!-- Label beneath a shared note value -->
+    <string name="ShareContactScreen__notes">Notes</string>
+    <!-- Title of the sheet where the user picks which photo to share -->
+    <string name="ShareContactScreen__select_a_photo_to_share">Select a photo to share</string>
+    <!-- Button that confirms the chosen photo and closes the photo picker sheet -->
+    <string name="ShareContactScreen__done">Done</string>
+    <!-- Accessibility label for the button that sends the contact card -->
+    <string name="ShareContactScreen__send">Send</string>
+    <!-- Accessibility label for the button that opens the photo picker -->
+    <string name="ShareContactScreen__change_photo">Change photo</string>
+    <!-- Accessibility label for the button that opens the name editor -->
+    <string name="ShareContactScreen__edit_name">Edit name</string>
+    <!-- Title of the screen where the user edits the name on a shared contact card -->
+    <string name="EditContactNameScreen__edit_name">Edit name</string>
+    <!-- Button that saves the edited name and returns to the share contact screen -->
+    <string name="EditContactNameScreen__done">Done</string>
+
+    <!-- Button that opens a chat with a shared contact -->
+    <string name="SharedContactDetailsScreen__message">Message</string>
+    <!-- Button that starts a video call with a shared contact -->
+    <string name="SharedContactDetailsScreen__video">Video</string>
+    <!-- Button that starts an audio call with a shared contact -->
+    <string name="SharedContactDetailsScreen__audio">Audio</string>
+    <!-- Context menu entry that starts a video call -->
+    <string name="SharedContactDetailsScreen__video_call">Video call</string>
+    <!-- Context menu entry that starts an audio call -->
+    <string name="SharedContactDetailsScreen__audio_call">Audio call</string>
+    <!-- Context menu entry that opens a shared postal address in a map app -->
+    <string name="SharedContactDetailsScreen__open_in_maps">Open in Maps</string>
+    <!-- Context menu entry that copies a shared contact detail to the clipboard -->
+    <string name="SharedContactDetailsScreen__copy">Copy</string>
+    <!-- Row that invites a shared contact who is not yet on Signal -->
+    <string name="SharedContactDetailsScreen__invite_to_signal">Invite to Signal</string>
+    <!-- Row that saves a shared contact into the device address book -->
+    <string name="SharedContactDetailsScreen__add_to_phone_contacts">Add to phone contacts</string>
+    <!-- Row that adds a shared contact to a Signal group -->
+    <string name="SharedContactDetailsScreen__add_to_a_group">Add to a group</string>
+    <!-- Toast shown after copying a shared contact detail -->
+    <string name="SharedContactDetailsScreen__copied">Copied</string>
+    <!-- Toast shown when there is no contacts app to save a shared contact into -->
+    <string name="SharedContactDetailsScreen__couldnt_open_contacts">Couldn\'t open Contacts</string>
+    <!-- Toast shown when there is no map app to open a shared address in -->
+    <string name="SharedContactDetailsScreen__couldnt_open_maps">Couldn\'t open maps</string>
+    <!-- Subject line of an email invitation to Signal -->
+    <string name="SharedContactDetailsScreen__join_me_on_signal">Join me on Signal</string>
+
     <!-- EOF -->
 </resources>

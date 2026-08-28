@@ -370,7 +370,7 @@ private class StarredMessageClickListener(
   override fun onSharedContactDetailsClicked(contact: Contact, avatarTransitionView: View) = Unit
   override fun onAddToContactsClicked(contact: Contact) = Unit
   override fun onMessageSharedContactClicked(choices: MutableList<Recipient>) = Unit
-  override fun onInviteSharedContactClicked(choices: MutableList<Recipient>) = Unit
+  override fun onInviteSharedContactClicked(contact: Contact) = Unit
   override fun onReactionClicked(multiselectPart: MultiselectPart, messageId: Long, isMms: Boolean) = Unit
   override fun onGroupMemberClicked(recipientId: RecipientId, groupId: GroupId) = Unit
   override fun onMessageWithErrorClicked(messageRecord: MessageRecord) = Unit

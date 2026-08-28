@@ -608,7 +608,7 @@ public class Contact implements Parcelable {
       this.selected     = true;
     }
 
-    Avatar(@Nullable Uri attachmentUri, boolean isProfile) {
+    public Avatar(@Nullable Uri attachmentUri, boolean isProfile) {
       this(null, attachmentFromUri(attachmentUri), isProfile);
     }
 

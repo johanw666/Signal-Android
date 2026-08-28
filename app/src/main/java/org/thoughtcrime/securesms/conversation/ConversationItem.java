@@ -690,11 +690,15 @@ public final class ConversationItem extends RelativeLayout implements BindableCo
     }
 
     if (hasSharedContact(messageRecord)) {
-      int contactWidth   = sharedContactStub.get().getMeasuredWidth();
-      int availableWidth = getAvailableMessageBubbleWidth(sharedContactStub.get());
+      int contactWidth = sharedContactStub.get().getMeasuredWidth();
 
-      if (contactWidth != availableWidth) {
-        sharedContactStub.get().getLayoutParams().width = availableWidth;
+      int maxWidth = getMaxBubbleWidth() - ViewUtil.getLeftMargin(sharedContactStub.get()) - ViewUtil.getRightMargin(sharedContactStub.get());
+      int minWidth = Math.min(readDimen(R.dimen.shared_contact_bubble_min_width), maxWidth);
+
+      int targetWidth = Util.clamp(sharedContactStub.get().getNaturalContentWidth(), minWidth, maxWidth);
+
+      if (contactWidth != targetWidth) {
+        sharedContactStub.get().getLayoutParams().width = targetWidth;
         needsMeasure                                    = true;
       }
     }
@@ -2757,9 +2761,9 @@ public final class ConversationItem extends RelativeLayout implements BindableCo
     }
 
     @Override
-    public void onInviteClicked(@NonNull List<Recipient> choices) {
+    public void onInviteClicked(@NonNull Contact contact) {
       if (eventListener != null && batchSelected.isEmpty()) {
-        eventListener.onInviteSharedContactClicked(choices);
+        eventListener.onInviteSharedContactClicked(contact);
       } else {
         passthroughClickListener.onClick(sharedContactStub.get());
       }

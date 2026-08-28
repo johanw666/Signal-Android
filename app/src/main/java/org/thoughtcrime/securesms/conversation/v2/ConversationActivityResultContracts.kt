@@ -22,7 +22,7 @@ import org.signal.core.util.logging.Log
 import org.thoughtcrime.securesms.R
 import org.thoughtcrime.securesms.components.location.SignalPlace
 import org.thoughtcrime.securesms.contactshare.Contact
-import org.thoughtcrime.securesms.contactshare.ContactShareEditActivity
+import org.thoughtcrime.securesms.contactshare.ContactShareEditActivityV2
 import org.thoughtcrime.securesms.conversation.MessageSendType
 import org.thoughtcrime.securesms.conversation.colors.ChatColors
 import org.thoughtcrime.securesms.giph.ui.GiphyActivity
@@ -54,8 +54,8 @@ class ConversationActivityResultContracts(private val fragment: Fragment, privat
   private val selectFileLauncher = fragment.registerForActivityResult(SelectFile) { result -> callbacks.onFileSelected(result) }
   private val cameraLauncher = fragment.registerForActivityResult(MediaCapture) { result -> callbacks.onMediaSend(result) }
 
-  fun launchContactShareEditor(uri: Uri, chatColors: ChatColors) {
-    contactShareLauncher.launch(uri to chatColors)
+  fun launchContactShareEditor(uri: Uri, recipientId: RecipientId) {
+    contactShareLauncher.launch(uri to recipientId)
   }
 
   fun launchSelectContact() {
@@ -151,15 +151,15 @@ class ConversationActivityResultContracts(private val fragment: Fragment, privat
     }
   }
 
-  private object ContactShareEditor : ActivityResultContract<Pair<Uri, ChatColors>, List<Contact>>() {
-    override fun createIntent(context: Context, input: Pair<Uri, ChatColors>): Intent {
-      val (uri, chatColors) = input
-      return ContactShareEditActivity.getIntent(context, listOf(uri), chatColors.asSingleColor())
+  private object ContactShareEditor : ActivityResultContract<Pair<Uri, RecipientId>, List<Contact>>() {
+    override fun createIntent(context: Context, input: Pair<Uri, RecipientId>): Intent {
+      val (uri, recipientId) = input
+      return ContactShareEditActivityV2.getIntent(context, listOf(uri), recipientId)
     }
 
     override fun parseResult(resultCode: Int, intent: Intent?): List<Contact> {
       return if (resultCode == Activity.RESULT_OK) {
-        intent?.let { IntentCompat.getParcelableArrayListExtra(intent, ContactShareEditActivity.KEY_CONTACTS, Contact::class.java) } ?: emptyList()
+        intent?.let { IntentCompat.getParcelableArrayListExtra(intent, ContactShareEditActivityV2.KEY_CONTACTS, Contact::class.java) } ?: emptyList()
       } else {
         emptyList()
       }

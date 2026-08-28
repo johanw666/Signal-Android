@@ -211,7 +211,7 @@ class MessageDetailsFragment : Fragment(), MessageDetailsAdapter.Callbacks {
     Log.w(TAG, "Not yet implemented!", Exception())
   }
 
-  override fun onInviteSharedContactClicked(choices: MutableList<Recipient>) {
+  override fun onInviteSharedContactClicked(contact: Contact) {
     Log.w(TAG, "Not yet implemented!", Exception())
   }
 

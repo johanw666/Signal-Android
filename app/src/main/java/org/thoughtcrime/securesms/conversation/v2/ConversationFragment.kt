@@ -186,7 +186,7 @@ import org.thoughtcrime.securesms.compose.FragmentBackPressedInfoProvider
 import org.thoughtcrime.securesms.contacts.paged.ContactSearchKey.RecipientSearchKey
 import org.thoughtcrime.securesms.contactshare.Contact
 import org.thoughtcrime.securesms.contactshare.ContactUtil
-import org.thoughtcrime.securesms.contactshare.SharedContactDetailsActivity
+import org.thoughtcrime.securesms.contactshare.SharedContactDetailsActivityV2
 import org.thoughtcrime.securesms.conversation.AttachmentKeyboardButton
 import org.thoughtcrime.securesms.conversation.BadDecryptLearnMoreDialog
 import org.thoughtcrime.securesms.conversation.ConversationAdapter
@@ -1672,7 +1672,7 @@ class ConversationFragment :
     val recipientId: RecipientId = viewModel.recipientSnapshot?.id ?: return
 
     if (mediaType == SlideFactory.MediaType.VCARD) {
-      conversationActivityResultContracts.launchContactShareEditor(uri, viewModel.recipientSnapshot!!.chatColors)
+      conversationActivityResultContracts.launchContactShareEditor(uri, recipientId)
     } else {
       val mimeType = MediaUtil.getMimeType(requireContext(), uri) ?: mediaType.toFallbackMimeType()
       val media = Media(
@@ -3600,7 +3600,7 @@ class ConversationFragment :
       val activity = activity ?: return
       ViewCompat.setTransitionName(avatarTransitionView, "avatar")
       val bundle = ActivityOptionsCompat.makeSceneTransitionAnimation(activity, avatarTransitionView, "avatar").toBundle()
-      activity.startActivity(SharedContactDetailsActivity.getIntent(activity, contact), bundle)
+      activity.startActivity(SharedContactDetailsActivityV2.getIntent(activity, contact), bundle)
     }
 
     override fun onAddToContactsClicked(contact: Contact) {
@@ -3618,14 +3618,25 @@ class ConversationFragment :
       }
     }
 
-    override fun onInviteSharedContactClicked(choices: MutableList<Recipient>) {
+    /** A number gets an SMS, an email only card gets an email, since those are the only two ways to reach them. */
+    override fun onInviteSharedContactClicked(contact: Contact) {
       val context = context ?: return
-      ContactUtil.selectRecipientThroughDialog(context, choices, Locale.getDefault()) { recipient: Recipient ->
-        CommunicationActions.composeSmsThroughDefaultApp(
-          context,
-          recipient,
-          getString(R.string.InviteActivity_lets_switch_to_signal, getString(R.string.install_url))
-        )
+      val inviteText = getString(R.string.InviteActivity_lets_switch_to_signal, getString(R.string.install_url))
+      val numbers = contact.phoneNumbers.map { it.number }
+      val email = contact.emails.firstOrNull()?.email
+
+      if (numbers.isNotEmpty()) {
+        ContactUtil.selectNumberThroughDialog(context, numbers, Locale.getDefault()) { number ->
+          val intent = Intent(Intent.ACTION_SENDTO, "smsto:$number".toUri()).putExtra("sms_body", inviteText)
+
+          try {
+            context.startActivity(intent)
+          } catch (e: ActivityNotFoundException) {
+            Log.w(TAG, "No messaging app to send an invite with.", e)
+          }
+        }
+      } else if (email != null) {
+        CommunicationActions.openEmail(context, email, getString(R.string.SharedContactDetailsScreen__join_me_on_signal), inviteText)
       }
     }
 
@@ -4546,6 +4557,10 @@ class ConversationFragment :
 
   private inner class ActivityResultCallbacks : ConversationActivityResultContracts.Callbacks {
     override fun onSendContacts(contacts: List<Contact>) {
+      if (contacts.isEmpty()) {
+        return
+      }
+
       sendMessageWithoutComposeInput(
         contacts = contacts,
         clearCompose = false
@@ -4627,7 +4642,7 @@ class ConversationFragment :
     override fun onContactSelect(uri: Uri?) {
       val recipient = viewModel.recipientSnapshot
       if (uri != null && recipient != null) {
-        conversationActivityResultContracts.launchContactShareEditor(uri, recipient.chatColors)
+        conversationActivityResultContracts.launchContactShareEditor(uri, recipient.id)
       }
     }
 

@@ -58,15 +58,38 @@ object DropdownMenus {
     offsetY: Dp = 0.dp,
     content: @Composable ColumnScope.(MenuController) -> Unit
   ) {
+    Menu(
+      expanded = controller.isShown(),
+      onDismissRequest = controller::hide,
+      modifier = modifier,
+      offsetX = offsetX,
+      offsetY = offsetY,
+      content = { content(controller) }
+    )
+  }
+
+  /**
+   * Properly styled dropdown menu whose visibility is owned by the caller, for screens that already
+   * model whether the menu is open rather than delegating that to a [MenuController].
+   */
+  @Composable
+  fun Menu(
+    expanded: Boolean,
+    onDismissRequest: () -> Unit,
+    modifier: Modifier = Modifier,
+    offsetX: Dp = dimensionResource(id = R.dimen.gutter),
+    offsetY: Dp = 0.dp,
+    content: @Composable ColumnScope.() -> Unit
+  ) {
     MaterialTheme(shapes = MaterialTheme.shapes.copy(extraSmall = RoundedCornerShape(18.dp))) {
       DropdownMenu(
-        expanded = controller.isShown(),
-        onDismissRequest = controller::hide,
+        expanded = expanded,
+        onDismissRequest = onDismissRequest,
         offset = DpOffset(
           x = offsetX,
           y = offsetY
         ),
-        content = { content(controller) },
+        content = content,
         modifier = modifier
           .background(SignalTheme.colors.colorSurface2)
           .widthIn(min = 220.dp)

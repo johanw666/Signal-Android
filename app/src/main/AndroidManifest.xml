@@ -806,20 +806,18 @@
             android:exported="false"
             android:theme="@style/TextSecure.DialogActivity" />
 
-        <activity
-            android:name=".contactshare.ContactShareEditActivity"
-            android:configChanges="touchscreen|keyboard|keyboardHidden|orientation|screenLayout|screenSize"
-            android:exported="false"
-            android:theme="@style/TextSecure.LightTheme" />
 
         <activity
-            android:name=".contactshare.ContactNameEditActivity"
+            android:name=".contactshare.ContactShareEditActivityV2"
             android:configChanges="touchscreen|keyboard|keyboardHidden|orientation|screenLayout|screenSize"
             android:exported="false"
-            android:theme="@style/Theme.Signal.DayNight.NoActionBar" />
+            android:theme="@style/Theme.Signal.DayNight.NoActionBar"
+            android:windowSoftInputMode="adjustResize" />
+
+
 
         <activity
-            android:name=".contactshare.SharedContactDetailsActivity"
+            android:name=".contactshare.SharedContactDetailsActivityV2"
             android:configChanges="touchscreen|keyboard|keyboardHidden|orientation|screenLayout|screenSize"
             android:exported="false"
             android:theme="@style/Theme.Signal.DayNight.NoActionBar" />
