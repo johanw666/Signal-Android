@@ -65,7 +65,6 @@ import org.thoughtcrime.securesms.groups.ui.managegroup.dialogs.GroupInviteSentD
 import org.thoughtcrime.securesms.groups.ui.managegroup.dialogs.GroupsLearnMoreBottomSheetDialogFragment
 import org.thoughtcrime.securesms.jobs.AttachmentDownloadJob
 import org.thoughtcrime.securesms.main.MainNavigationChatDetailRouter
-import org.thoughtcrime.securesms.main.MainNavigationDetailLocation
 import org.thoughtcrime.securesms.mediaoverview.MediaOverviewActivity
 import org.thoughtcrime.securesms.mediapreview.MediaIntentFactory
 import org.thoughtcrime.securesms.mediapreview.MediaPreviewCache
@@ -562,7 +561,7 @@ class ConversationSettingsFragment : ComposeFragment() {
     if (chatRouter != null) {
       chatRouter?.exitDetailLocation()
     } else {
-      startActivity(MainActivity.clearTopAndOpenDetail(requireContext(), MainNavigationDetailLocation.Empty))
+      startActivity(MainActivity.clearTopAndExitDetail(requireContext()))
     }
   }
 

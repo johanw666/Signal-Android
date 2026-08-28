@@ -48,14 +48,13 @@ import org.thoughtcrime.securesms.window.rememberAppScaffoldNavigator
 @Composable
 fun RecipientPickerScaffold(
   title: String,
-  forceSplitPane: Boolean,
   onNavigateUpClick: () -> Unit,
   topAppBarActions: @Composable () -> Unit,
   snackbarHostState: SnackbarHostState,
   primaryContent: @Composable () -> Unit,
   floatingActionButton: (@Composable () -> Unit)? = null
 ) {
-  val isSplitPane = LocalResources.current.rememberIsSplitPane(forceSplitPane)
+  val isSplitPane = LocalResources.current.rememberIsSplitPane()
   val windowSizeClass = currentWindowAdaptiveInfo().windowSizeClass
 
   AppScaffold(
@@ -133,7 +132,6 @@ private fun RecipientPickerScaffoldPreview() {
   Previews.Preview {
     RecipientPickerScaffold(
       title = "Screen Title",
-      forceSplitPane = false,
       onNavigateUpClick = {},
       topAppBarActions = {},
       snackbarHostState = SnackbarHostState(),

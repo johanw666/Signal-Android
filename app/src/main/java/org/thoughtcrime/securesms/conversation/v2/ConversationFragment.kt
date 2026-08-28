@@ -296,9 +296,9 @@ import org.thoughtcrime.securesms.keyvalue.SignalStore
 import org.thoughtcrime.securesms.linkpreview.LinkPreview
 import org.thoughtcrime.securesms.linkpreview.LinkPreviewViewModelV2
 import org.thoughtcrime.securesms.longmessage.LongMessageFragment
+import org.thoughtcrime.securesms.main.MainDetailRoute
+import org.thoughtcrime.securesms.main.MainListRoute
 import org.thoughtcrime.securesms.main.MainNavigationChatDetailRouter
-import org.thoughtcrime.securesms.main.MainNavigationDetailLocation
-import org.thoughtcrime.securesms.main.MainNavigationListLocation
 import org.thoughtcrime.securesms.main.MainNavigationViewModel
 import org.thoughtcrime.securesms.main.MainSnackbarHostKey
 import org.thoughtcrime.securesms.mediaoverview.MediaOverviewActivity
@@ -3151,7 +3151,7 @@ class ConversationFragment :
 
   private fun handleDisplayDetails(conversationMessage: ConversationMessage) {
     val recipientSnapshot = viewModel.recipientSnapshot ?: return
-    chatRouter.goToChatDetail(MainNavigationDetailLocation.Chats.MessageDetails(recipientSnapshot.id, MessageId(conversationMessage.messageRecord.id)))
+    chatRouter.goToChatDetail(MainDetailRoute.Chats.MessageDetails(recipientSnapshot.id, MessageId(conversationMessage.messageRecord.id)))
   }
 
   private fun handleDeleteMessages(messageParts: Set<MultiselectPart>) {
@@ -3707,7 +3707,7 @@ class ConversationFragment :
       } else if (messageRecord.hasFailedWithNetworkFailures()) {
         ConversationDialogs.displayMessageCouldNotBeSentDialog(requireContext(), messageRecord)
       } else {
-        chatRouter.goToChatDetail(MainNavigationDetailLocation.Chats.MessageDetails(recipientId, MessageId(messageRecord.id)))
+        chatRouter.goToChatDetail(MainDetailRoute.Chats.MessageDetails(recipientId, MessageId(messageRecord.id)))
       }
     }
 
@@ -3877,7 +3877,7 @@ class ConversationFragment :
       when (action) {
         "gift_badge" -> checkoutLauncher.launch(InAppPaymentType.ONE_TIME_GIFT)
         "username_edit" -> startActivity(EditProfileActivity.getIntentForUsernameEdit(requireContext()))
-        "calls_tab" -> startActivity(MainActivity.clearTopAndOpenTab(requireContext(), MainNavigationListLocation.CALLS))
+        "calls_tab" -> startActivity(MainActivity.clearTopAndOpenTab(requireContext(), MainListRoute.Calls))
         "chat_folder" -> startActivity(AppSettingsActivity.chatFolders(requireContext()))
         "remote_backups" -> {
           if (SignalStore.backup.areBackupsEnabled) {
@@ -4388,7 +4388,7 @@ class ConversationFragment :
     override fun handleManageGroup() {
       viewModel.recipientSnapshot?.let { recipient ->
         container.hideKeyboard(composeText)
-        chatRouter.goToChatDetail(MainNavigationDetailLocation.Chats.ConversationSettings(recipient.id))
+        chatRouter.goToChatDetail(MainDetailRoute.Chats.ConversationSettings(recipient.id))
       }
     }
 
@@ -4426,7 +4426,7 @@ class ConversationFragment :
       viewModel.recipientSnapshot?.let { recipient ->
         if (!viewModel.hasMessageRequestState || recipient.isBlocked) {
           container.hideKeyboard(composeText)
-          chatRouter.goToChatDetail(MainNavigationDetailLocation.Chats.ConversationSettings(recipient.id))
+          chatRouter.goToChatDetail(MainDetailRoute.Chats.ConversationSettings(recipient.id))
         }
       }
     }

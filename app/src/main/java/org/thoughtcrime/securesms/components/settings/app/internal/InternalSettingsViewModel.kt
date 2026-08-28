@@ -274,8 +274,6 @@ class InternalSettingsViewModel(private val repository: InternalSettingsReposito
     pnpInitialized = SignalStore.misc.hasPniInitializedDevices,
     useConversationItemV2ForMedia = SignalStore.internal.useConversationItemV2Media,
     hasPendingOneTimeDonation = SignalStore.inAppPayments.getPendingOneTimeDonation() != null,
-    forceSplitPane = SignalStore.internal.forceSplitPane,
-    forceSinglePane = SignalStore.internal.forceSinglePane,
     disableInternalUser = RemoteConfig.internalUserDisabled
   )
 
@@ -289,16 +287,6 @@ class InternalSettingsViewModel(private val repository: InternalSettingsReposito
 
   fun setDisableInternalUser(disabled: Boolean) {
     RemoteConfig.internalUserDisabled = disabled
-    refresh()
-  }
-
-  fun setForceSplitPane(forceSplitPane: Boolean) {
-    SignalStore.internal.forceSplitPane = forceSplitPane
-    refresh()
-  }
-
-  fun setForceSinglePane(forceSinglePane: Boolean) {
-    SignalStore.internal.forceSinglePane = forceSinglePane
     refresh()
   }
 

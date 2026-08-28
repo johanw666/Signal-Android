@@ -324,23 +324,6 @@ class InternalSettingsFragment : DSLSettingsFragment(R.string.preferences__inter
 
       sectionHeaderPref(DSLSettingsText.from("App UI"))
 
-      switchPref(
-        title = DSLSettingsText.from("Force split pane UI on phones."),
-        isEnabled = !state.forceSinglePane,
-        isChecked = state.forceSplitPane,
-        onClick = {
-          viewModel.setForceSplitPane(!state.forceSplitPane)
-        }
-      )
-
-      switchPref(
-        title = DSLSettingsText.from("Force single-pane on newer devices."),
-        isChecked = state.forceSinglePane,
-        onClick = {
-          viewModel.setForceSinglePane(!state.forceSinglePane)
-        }
-      )
-
       clickPref(
         title = DSLSettingsText.from("Display enable permission sheet"),
         onClick = {

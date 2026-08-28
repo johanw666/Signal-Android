@@ -48,8 +48,6 @@ import androidx.compose.ui.draw.drawWithContent
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.layout.layout
-import androidx.compose.ui.platform.LocalConfiguration
-import androidx.compose.ui.platform.LocalInspectionMode
 import androidx.compose.ui.platform.LocalLayoutDirection
 import androidx.compose.ui.platform.LocalResources
 import androidx.compose.ui.text.style.TextAlign
@@ -57,37 +55,15 @@ import androidx.compose.ui.unit.LayoutDirection
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.zIndex
 import kotlinx.coroutines.launch
-import org.signal.core.ui.WindowBreakpoint
+import org.signal.core.ui.NavigationType
 import org.signal.core.ui.compose.BreakpointPreviews
 import org.signal.core.ui.compose.Previews
-import org.signal.core.ui.getWindowBreakpoint
 import org.signal.core.ui.rememberIsSplitPane
-import org.thoughtcrime.securesms.keyvalue.SignalStore
 import org.thoughtcrime.securesms.main.MainFloatingActionButtonsCallback
 import org.thoughtcrime.securesms.main.MainNavigationBar
+import org.thoughtcrime.securesms.main.MainNavigationBarState
 import org.thoughtcrime.securesms.main.MainNavigationRail
-import org.thoughtcrime.securesms.main.MainNavigationState
 import kotlin.math.max
-
-enum class NavigationType {
-  RAIL,
-  BAR;
-
-  companion object {
-    @Composable
-    fun rememberNavigationType(): NavigationType {
-      val resources = LocalResources.current
-      val config = LocalConfiguration.current
-      val windowBreakpoint = remember(config) { resources.getWindowBreakpoint() }
-
-      return when (windowBreakpoint) {
-        is WindowBreakpoint.Small -> BAR
-        is WindowBreakpoint.Medium -> if (windowBreakpoint.isWidthExpanded) RAIL else BAR
-        is WindowBreakpoint.Large -> RAIL
-      }
-    }
-  }
-}
 
 /**
  * A top-level scaffold that automatically adapts its layout based on the device's window size class. It is a generic container designed to handle the
@@ -127,13 +103,7 @@ fun AppScaffold(
   contentWindowInsets: WindowInsets = WindowInsets.systemBars,
   animatorFactory: AppScaffoldAnimationStateFactory = AppScaffoldAnimationStateFactory.Default
 ) {
-  val isForceSinglePane = if (LocalInspectionMode.current) {
-    false
-  } else {
-    SignalStore.internal.forceSinglePane
-  }
-
-  val useSimpleScaffold = isForceSinglePane || (navigator.scaffoldDirective.maxHorizontalPartitions == 1 && Build.VERSION.SDK_INT < 33)
+  val useSimpleScaffold = navigator.scaffoldDirective.maxHorizontalPartitions == 1 && Build.VERSION.SDK_INT < 33
   if (useSimpleScaffold && LocalLayoutDirection.current != LayoutDirection.Rtl) {
     SinglePaneAppScaffold(
       navigator = navigator,
@@ -404,7 +374,7 @@ private fun ListAndNavigation(
 private fun AppScaffoldPreview() {
   Previews.Preview {
     val windowSizeClass = currentWindowAdaptiveInfo().windowSizeClass
-    val isSplitPane = LocalResources.current.rememberIsSplitPane(false)
+    val isSplitPane = LocalResources.current.rememberIsSplitPane()
 
     AppScaffold(
       navigator = rememberAppScaffoldNavigator(
@@ -440,14 +410,14 @@ private fun AppScaffoldPreview() {
       },
       navRailContent = {
         MainNavigationRail(
-          state = MainNavigationState(),
+          state = MainNavigationBarState(),
           mainFloatingActionButtonsCallback = MainFloatingActionButtonsCallback.Empty,
           onDestinationSelected = {}
         )
       },
       bottomNavContent = {
         MainNavigationBar(
-          state = MainNavigationState(),
+          state = MainNavigationBarState(),
           onDestinationSelected = {}
         )
       },

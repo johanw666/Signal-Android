@@ -10,7 +10,7 @@ package org.thoughtcrime.securesms.main
  */
 interface MainNavigationChatDetailRouter {
   fun exitDetailLocation()
-  fun goToChatDetail(location: MainNavigationDetailLocation.Chats)
+  fun goToChatDetail(location: MainDetailRoute.Chats)
 }
 
 /**
@@ -18,17 +18,16 @@ interface MainNavigationChatDetailRouter {
  */
 interface MainNavigationCallDetailRouter {
   fun exitDetailLocation()
-  fun goToCallDetail(location: MainNavigationDetailLocation.Calls)
+  fun goToCallDetail(location: MainDetailRoute.Calls)
 }
 
 /**
- * Handles navigation to all [MainNavigationListLocation]s and [MainNavigationDetailLocation]s, including the top-level roots.
+ * Handles navigation to all [MainListRoute]s and [MainDetailRoute]s, including the top-level roots.
  */
 interface MainNavigationRouter : MainNavigationChatDetailRouter, MainNavigationCallDetailRouter {
-  fun goTo(location: MainNavigationListLocation)
-  fun goTo(location: MainNavigationDetailLocation)
+  fun goTo(location: MainListRoute)
+  fun goTo(location: MainDetailRoute)
 
-  override fun goToChatDetail(location: MainNavigationDetailLocation.Chats) = goTo(location)
-  override fun goToCallDetail(location: MainNavigationDetailLocation.Calls) = goTo(location)
-  override fun exitDetailLocation() = goTo(MainNavigationDetailLocation.Empty)
+  override fun goToChatDetail(location: MainDetailRoute.Chats) = goTo(location)
+  override fun goToCallDetail(location: MainDetailRoute.Calls) = goTo(location)
 }

@@ -30,6 +30,8 @@ dependencies {
   api(libs.androidx.compose.material3.adaptive.navigation)
   implementation(libs.androidx.navigation3.ui)
   implementation(libs.androidx.navigation3.runtime)
+  implementation(libs.androidx.lifecycle.viewmodel.navigation3)
+  implementation(libs.androidx.lifecycle.runtime.compose)
   api(libs.androidx.compose.ui.tooling.preview)
   api(libs.androidx.activity.compose)
   debugApi(libs.androidx.compose.ui.tooling.core)
@@ -39,6 +41,10 @@ dependencies {
   api(libs.material.material)
   api(libs.androidx.window.window)
   api(libs.accompanist.permissions)
+
+  testImplementation(testLibs.junit.junit)
+  testImplementation(testLibs.kotlinx.coroutines.test)
+  testImplementation(testLibs.robolectric.robolectric)
 
   // JUnit is used by test fixtures
   testFixturesImplementation(testLibs.junit.junit)

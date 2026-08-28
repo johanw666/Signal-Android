@@ -179,7 +179,6 @@ class NewConversationViewModel : ViewModel() {
 }
 
 data class NewConversationUiState(
-  val forceSplitPaneOnCompactLandscape: Boolean = SignalStore.internal.forceSplitPane,
   val searchQuery: String = "",
   val isLookingUpRecipient: Boolean = false,
   val isRefreshingContacts: Boolean = false,

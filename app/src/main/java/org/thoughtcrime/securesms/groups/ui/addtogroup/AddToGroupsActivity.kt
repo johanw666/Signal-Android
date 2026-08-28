@@ -129,7 +129,6 @@ private fun AddToGroupsScreenUi(
 
   RecipientPickerScaffold(
     title = title,
-    forceSplitPane = uiState.forceSplitPane,
     onNavigateUpClick = callbacks::onBackPressed,
     topAppBarActions = {},
     snackbarHostState = remember { SnackbarHostState() },
@@ -282,7 +281,6 @@ private fun AddToSingleGroupScreenPreview() {
   Previews.Preview {
     AddToGroupsScreenUi(
       uiState = AddToGroupsUiState(
-        forceSplitPane = false,
         selectionLimits = null
       ),
       callbacks = AddToGroupsUiCallbacks.Empty
@@ -296,7 +294,6 @@ private fun AddToMultipleGroupsScreenPreview() {
   Previews.Preview {
     AddToGroupsScreenUi(
       uiState = AddToGroupsUiState(
-        forceSplitPane = false,
         selectionLimits = SelectionLimits.NO_LIMITS
       ),
       callbacks = AddToGroupsUiCallbacks.Empty

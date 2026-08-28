@@ -27,8 +27,8 @@ import org.thoughtcrime.securesms.components.voice.VoiceNoteMediaController
 import org.thoughtcrime.securesms.components.voice.VoiceNoteMediaControllerOwner
 import org.thoughtcrime.securesms.conversation.ConversationIntents
 import org.thoughtcrime.securesms.jobs.ConversationShortcutUpdateJob
+import org.thoughtcrime.securesms.main.MainDetailRoute
 import org.thoughtcrime.securesms.main.MainNavigationChatDetailRouter
-import org.thoughtcrime.securesms.main.MainNavigationDetailLocation
 import org.thoughtcrime.securesms.messagedetails.MessageDetailsFragment
 import org.thoughtcrime.securesms.util.DynamicNoActionBarTheme
 import java.util.concurrent.TimeUnit
@@ -147,9 +147,9 @@ open class ConversationActivity : PassphraseRequiredActivity(), VoiceNoteMediaCo
     }
   }
 
-  override fun goToChatDetail(location: MainNavigationDetailLocation.Chats) {
+  override fun goToChatDetail(location: MainDetailRoute.Chats) {
     when (location) {
-      is MainNavigationDetailLocation.Chats.ConversationSettings -> {
+      is MainDetailRoute.Chats.ConversationSettings -> {
         lifecycleScope.launch {
           val args = ConversationSettingsNavHostFragment.createArgs(location.recipientId)
           supportFragmentManager
@@ -161,7 +161,7 @@ open class ConversationActivity : PassphraseRequiredActivity(), VoiceNoteMediaCo
         }
       }
 
-      is MainNavigationDetailLocation.Chats.MessageDetails -> {
+      is MainDetailRoute.Chats.MessageDetails -> {
         MessageDetailsFragment.create(location.messageId, location.recipientId)
           .show(supportFragmentManager, MESSAGE_DETAILS_FRAGMENT_TAG)
       }

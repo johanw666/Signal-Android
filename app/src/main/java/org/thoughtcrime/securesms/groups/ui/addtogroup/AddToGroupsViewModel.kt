@@ -20,7 +20,6 @@ import org.thoughtcrime.securesms.groups.ui.GroupChangeFailureReason
 import org.thoughtcrime.securesms.groups.ui.addtogroup.AddToGroupsUiState.UserMessage
 import org.thoughtcrime.securesms.groups.v2.GroupAddMembersResult
 import org.thoughtcrime.securesms.groups.v2.GroupManagementRepository
-import org.thoughtcrime.securesms.keyvalue.SignalStore
 import org.thoughtcrime.securesms.recipients.Recipient
 import org.thoughtcrime.securesms.recipients.RecipientId
 
@@ -127,7 +126,6 @@ class AddToGroupsViewModel(
 }
 
 data class AddToGroupsUiState(
-  val forceSplitPane: Boolean = SignalStore.internal.forceSplitPane,
   val searchQuery: String = "",
   val existingGroupMemberships: Set<RecipientId> = emptySet(),
   val selectionLimits: SelectionLimits? = null,

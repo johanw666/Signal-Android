@@ -4,7 +4,6 @@ import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
 import android.view.View
-import androidx.activity.OnBackPressedCallback
 import androidx.compose.ui.platform.ComposeView
 import androidx.core.app.ActivityOptionsCompat
 import androidx.core.view.ViewCompat
@@ -33,11 +32,10 @@ import org.thoughtcrime.securesms.conversation.mutiselect.forward.MultiselectFor
 import org.thoughtcrime.securesms.database.model.MmsMessageRecord
 import org.thoughtcrime.securesms.database.model.StoryViewState
 import org.thoughtcrime.securesms.dependencies.AppDependencies
-import org.thoughtcrime.securesms.main.MainNavigationDetailLocation
-import org.thoughtcrime.securesms.main.MainNavigationListLocation
+import org.thoughtcrime.securesms.main.MainDetailRoute
+import org.thoughtcrime.securesms.main.MainListRoute
 import org.thoughtcrime.securesms.main.MainNavigationViewModel
 import org.thoughtcrime.securesms.main.MainSnackbarHostKey
-import org.thoughtcrime.securesms.main.MainToolbarMode
 import org.thoughtcrime.securesms.main.MainToolbarViewModel
 import org.thoughtcrime.securesms.main.Material3OnScrollHelperBinder
 import org.thoughtcrime.securesms.safety.SafetyNumberBottomSheet
@@ -149,23 +147,8 @@ class StoriesLandingFragment : DSLSettingsFragment(layoutId = R.layout.stories_l
       }
     }
 
-    requireActivity().onBackPressedDispatcher.addCallback(
-      viewLifecycleOwner,
-      object : OnBackPressedCallback(true) {
-        override fun handleOnBackPressed() {
-          if (!closeSearchIfOpen()) {
-            if (mainNavigationViewModel.storiesBackStackEntries.last() != MainNavigationDetailLocation.Empty) {
-              mainNavigationViewModel.popStoriesDetailLocation()
-            } else {
-              mainNavigationViewModel.onChatsSelected()
-            }
-          }
-        }
-      }
-    )
-
     lifecycleDisposable += mainNavigationViewModel.tabClickEventsObservable
-      .filter { it == MainNavigationListLocation.STORIES }
+      .filter { it == MainListRoute.Stories }
       .subscribeBy(onNext = {
         val layoutManager = recyclerView?.layoutManager as? LinearLayoutManager ?: return@subscribeBy
         if (layoutManager.findFirstVisibleItemPosition() <= LIST_SMOOTH_SCROLL_TO_TOP_THRESHOLD) {
@@ -288,7 +271,7 @@ class StoriesLandingFragment : DSLSettingsFragment(layoutId = R.layout.stories_l
 
   private fun openStoryViewer(model: StoriesLandingItem.Model, preview: View, isFromInfoContextMenuAction: Boolean) {
     if (model.data.storyRecipient.isMyStory) {
-      mainNavigationViewModel.goTo(MainNavigationDetailLocation.Stories.MyStories)
+      mainNavigationViewModel.goTo(MainDetailRoute.Stories.MyStories)
     } else if (model.data.primaryStory.messageRecord.isOutgoing && model.data.primaryStory.messageRecord.isFailed) {
       if (model.data.primaryStory.messageRecord.isIdentityMismatchFailure) {
         SafetyNumberBottomSheet
@@ -359,21 +342,5 @@ class StoriesLandingFragment : DSLSettingsFragment(layoutId = R.layout.stories_l
 
     viewModel.isTransitioningToAnotherScreen = true
     startActivity(intent, options)
-  }
-
-  private fun isSearchOpen(): Boolean {
-    return isSearchVisible()
-  }
-
-  private fun isSearchVisible(): Boolean {
-    return mainToolbarViewModel.state.value.mode == MainToolbarMode.SEARCH
-  }
-
-  private fun closeSearchIfOpen(): Boolean {
-    if (isSearchOpen()) {
-      mainToolbarViewModel.setToolbarMode(MainToolbarMode.FULL)
-      return true
-    }
-    return false
   }
 }

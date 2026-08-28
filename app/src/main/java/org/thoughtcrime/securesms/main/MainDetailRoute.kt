@@ -6,11 +6,11 @@
 package org.thoughtcrime.securesms.main
 
 import android.os.Parcelable
-import androidx.navigation3.runtime.NavKey
 import kotlinx.parcelize.IgnoredOnParcel
 import kotlinx.parcelize.Parcelize
 import kotlinx.serialization.Serializable
 import kotlinx.serialization.Transient
+import org.signal.core.ui.compose.split.DetailNavKey
 import org.thoughtcrime.securesms.calls.log.CallLogRow
 import org.thoughtcrime.securesms.conversation.ConversationArgs
 import org.thoughtcrime.securesms.database.model.MessageId
@@ -22,25 +22,18 @@ import org.thoughtcrime.securesms.service.webrtc.links.CallLinkRoomId
  */
 @Serializable
 @Parcelize
-sealed interface MainNavigationDetailLocation : Parcelable, NavKey {
+sealed interface MainDetailRoute : Parcelable, DetailNavKey {
 
   /**
-   * Flag utilized internally to determine whether the given route is displayed at the root
-   * of a task stack (or on top of Empty)
+   * Whether this is the bottom-most piece of detail content rather than something stacked on top of it.
+   * Pushing one replaces the detail already displayed above the current list; see [push].
    */
   @IgnoredOnParcel
-  val isContentRoot: Boolean
+  override val isContentRoot: Boolean
     get() = false
 
   @Serializable
-  data object Empty : MainNavigationDetailLocation {
-    @Transient
-    @IgnoredOnParcel
-    override val isContentRoot: Boolean = true
-  }
-
-  @Serializable
-  data class Conversation(val conversationArgs: ConversationArgs) : MainNavigationDetailLocation {
+  data class Conversation(val conversationArgs: ConversationArgs) : MainDetailRoute {
     @Transient
     @IgnoredOnParcel
     override val isContentRoot: Boolean = true
@@ -51,7 +44,7 @@ sealed interface MainNavigationDetailLocation : Parcelable, NavKey {
   }
 
   @Serializable
-  data class CallLinkDetails(val callLinkRoomId: CallLinkRoomId) : MainNavigationDetailLocation {
+  data class CallLinkDetails(val callLinkRoomId: CallLinkRoomId) : MainDetailRoute {
     @Transient
     @IgnoredOnParcel
     override val isContentRoot: Boolean = true
@@ -65,7 +58,7 @@ sealed interface MainNavigationDetailLocation : Parcelable, NavKey {
    * Subscreens that can be displayed within the chats tab.
    */
   @Parcelize
-  sealed interface Chats : MainNavigationDetailLocation {
+  sealed interface Chats : MainDetailRoute {
 
     val controllerKey: RecipientId
 
@@ -94,7 +87,7 @@ sealed interface MainNavigationDetailLocation : Parcelable, NavKey {
    * Subscreens that can be displayed within the calls tab.
    */
   @Parcelize
-  sealed interface Calls : MainNavigationDetailLocation {
+  sealed interface Calls : MainDetailRoute {
     val controllerKey: CallLogRow.Id
 
     @Parcelize
@@ -115,7 +108,7 @@ sealed interface MainNavigationDetailLocation : Parcelable, NavKey {
    * Subscreens that can be displayed within the stories tab.
    */
   @Parcelize
-  sealed class Stories : MainNavigationDetailLocation {
+  sealed class Stories : MainDetailRoute {
     @Transient
     @IgnoredOnParcel
     override val isContentRoot: Boolean = true

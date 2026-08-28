@@ -195,7 +195,6 @@ private fun NewConversationScreenUi(
 
   RecipientPickerScaffold(
     title = stringResource(R.string.NewConversationActivity__new_message),
-    forceSplitPane = uiState.forceSplitPaneOnCompactLandscape,
     onNavigateUpClick = callbacks::onBackPressed,
     topAppBarActions = { TopAppBarActions(callbacks) },
     snackbarHostState = snackbarHostState,
@@ -405,9 +404,7 @@ private fun UserMessagesHost(
 private fun NewConversationScreenPreview() {
   Previews.Preview {
     NewConversationScreenUi(
-      uiState = NewConversationUiState(
-        forceSplitPaneOnCompactLandscape = false
-      ),
+      uiState = NewConversationUiState(),
       callbacks = NewConversationUiCallbacks.Empty
     )
   }

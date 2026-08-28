@@ -46,8 +46,8 @@ import org.thoughtcrime.securesms.calls.YouAreAlreadyInACallSnackbar.YouAreAlrea
 import org.thoughtcrime.securesms.calls.links.CallLinks
 import org.thoughtcrime.securesms.calls.links.SignalCallRow
 import org.thoughtcrime.securesms.database.CallLinkTable
+import org.thoughtcrime.securesms.main.MainDetailRoute
 import org.thoughtcrime.securesms.main.MainNavigationCallDetailRouter
-import org.thoughtcrime.securesms.main.MainNavigationDetailLocation
 import org.thoughtcrime.securesms.main.MainNavigationViewModel
 import org.thoughtcrime.securesms.recipients.RecipientId
 import org.thoughtcrime.securesms.service.webrtc.links.CallLinkCredentials
@@ -114,7 +114,7 @@ class DefaultCallLinkDetailsCallback(
 
   override fun onEditNameClicked() {
     router.goToCallDetail(
-      MainNavigationDetailLocation.Calls.CallLinks.EditCallLinkName(
+      MainDetailRoute.Calls.CallLinks.EditCallLinkName(
         callLinkRoomId = viewModel.recipientSnapshot!!.requireCallLinkRoomId(),
         currentName = viewModel.nameSnapshot
       )

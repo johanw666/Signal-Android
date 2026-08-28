@@ -99,7 +99,6 @@ class RegistrationApplication : Application() {
         override fun providePackageId(): String = BuildConfig.APPLICATION_ID
         override fun provideIsIncognitoKeyboardEnabled(): Boolean = false
         override fun provideIsScreenSecurityEnabled(): Boolean = false
-        override fun provideForceSplitPane(): Boolean = false
       }
     )
   }

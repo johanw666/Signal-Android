@@ -33,13 +33,9 @@ object CoreUiDependencies {
   val isScreenSecurityEnabled: Boolean
     get() = _provider.provideIsScreenSecurityEnabled()
 
-  val forceSplitPane: Boolean
-    get() = _provider.provideForceSplitPane()
-
   interface Provider {
     fun providePackageId(): String
     fun provideIsIncognitoKeyboardEnabled(): Boolean
     fun provideIsScreenSecurityEnabled(): Boolean
-    fun provideForceSplitPane(): Boolean
   }
 }

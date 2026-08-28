@@ -147,6 +147,7 @@ include(":demo:debuglogs-viewer")
 include(":demo:registration")
 include(":demo:camera")
 include(":demo:apng")
+include(":demo:list-detail")
 
 // Testing/Lint modules
 include(":lintchecks")
