@@ -76,4 +76,15 @@ class SignalLoginViewDetailsViewModelTest {
 
     assertThat(actions).containsExactly(SignalLoginViewDetailsAction.NavigateBack)
   }
+
+  @Test
+  fun `SaveAsPdfClicked launches the save as PDF flow`() = runTest(testDispatcher) {
+    val viewModel = SignalLoginViewDetailsViewModel(repository)
+    val actions = mutableListOf<SignalLoginViewDetailsAction>()
+    backgroundScope.launch { viewModel.actions.toList(actions) }
+
+    viewModel.onEvent(SignalLoginViewDetailsScreenEvents.SaveAsPdfClicked)
+
+    assertThat(actions).containsExactly(SignalLoginViewDetailsAction.LaunchSaveAsPdf)
+  }
 }

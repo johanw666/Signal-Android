@@ -15,4 +15,7 @@ sealed interface SignalLoginViewDetailsAction {
 
   /** Leave the screen. */
   data object NavigateBack : SignalLoginViewDetailsAction
+
+  /** Launch the system document picker so the user can choose where to save the login PDF. */
+  data object LaunchSaveAsPdf : SignalLoginViewDetailsAction
 }

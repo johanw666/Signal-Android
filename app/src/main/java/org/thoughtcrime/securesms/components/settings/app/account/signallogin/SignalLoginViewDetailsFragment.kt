@@ -5,12 +5,19 @@
 
 package org.thoughtcrime.securesms.components.settings.app.account.signallogin
 
+import android.net.Uri
+import android.widget.Toast
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import androidx.lifecycle.lifecycleScope
+import kotlinx.coroutines.launch
 import org.signal.core.ui.compose.CollectActions
 import org.signal.core.ui.compose.ComposeFragment
+import org.signal.core.util.Result
+import org.signal.signallogin.pdf.SignalLoginPdfRenderer
 import org.signal.signallogin.viewdetails.SignalLoginViewDetailsScreen
 
 /**
@@ -19,6 +26,18 @@ import org.signal.signallogin.viewdetails.SignalLoginViewDetailsScreen
 class SignalLoginViewDetailsFragment : ComposeFragment() {
 
   private val viewModel: SignalLoginViewDetailsViewModel by viewModels()
+
+  private val savePdfLauncher = registerForActivityResult(ActivityResultContracts.CreateDocument("application/pdf")) { uri: Uri? ->
+    if (uri != null) {
+      val context = requireContext().applicationContext
+      lifecycleScope.launch {
+        val result = SignalLoginPdfRenderer.renderTo(context, uri, viewModel.state.value)
+        if (result is Result.Failure) {
+          Toast.makeText(context, result.failure.userMessageRes, Toast.LENGTH_LONG).show()
+        }
+      }
+    }
+  }
 
   @Composable
   override fun FragmentContent() {
@@ -35,6 +54,7 @@ class SignalLoginViewDetailsFragment : ComposeFragment() {
   private fun handleAction(action: SignalLoginViewDetailsAction) {
     when (action) {
       SignalLoginViewDetailsAction.NavigateBack -> requireActivity().onBackPressedDispatcher.onBackPressed()
+      SignalLoginViewDetailsAction.LaunchSaveAsPdf -> savePdfLauncher.launch(SignalLoginPdfRenderer.suggestedFileName(requireContext()))
     }
   }
 }

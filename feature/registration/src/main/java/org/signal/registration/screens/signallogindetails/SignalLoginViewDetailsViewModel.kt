@@ -9,11 +9,14 @@ import androidx.annotation.VisibleForTesting
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewModelScope
+import kotlinx.coroutines.channels.Channel
+import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
+import kotlinx.coroutines.flow.receiveAsFlow
 import org.signal.core.ui.compose.EventDrivenViewModel
 import org.signal.core.util.logging.Log
 import org.signal.registration.RegistrationFlowEvent
@@ -43,6 +46,9 @@ class SignalLoginViewDetailsViewModel(
   )
   val state: StateFlow<SignalLoginViewDetailsState> = _state.asStateFlow()
 
+  private val _actions = Channel<SignalLoginViewDetailsScreenActions>(Channel.BUFFERED)
+  val actions: Flow<SignalLoginViewDetailsScreenActions> = _actions.receiveAsFlow()
+
   init {
     _state
       .onEach { Log.d(TAG, "[State] $it") }
@@ -66,8 +72,7 @@ class SignalLoginViewDetailsViewModel(
       }
 
       is SignalLoginViewDetailsScreenEvents.SaveAsPdfClicked -> {
-        // TODO [phonenumberless] Render the credentials to a PDF and hand it to the user.
-        Log.i(TAG, "Save as PDF clicked, but the flow isn't implemented yet.")
+        _actions.trySend(SignalLoginViewDetailsScreenActions.LaunchSaveAsPdf)
       }
     }
   }

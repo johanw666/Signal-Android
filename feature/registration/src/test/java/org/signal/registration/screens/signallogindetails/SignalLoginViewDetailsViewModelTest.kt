@@ -11,6 +11,8 @@ import assertk.assertions.isEqualTo
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.toList
+import kotlinx.coroutines.launch
 import kotlinx.coroutines.test.UnconfinedTestDispatcher
 import kotlinx.coroutines.test.resetMain
 import kotlinx.coroutines.test.runTest
@@ -67,5 +69,15 @@ class SignalLoginViewDetailsViewModelTest {
     viewModel.applyEvent(SignalLoginViewDetailsScreenEvents.BackClicked) { parentEvents.add(it) }
 
     assertThat(parentEvents).containsExactly(RegistrationFlowEvent.NavigateBack)
+  }
+
+  @Test
+  fun `SaveAsPdfClicked launches the save as PDF flow`() = runTest(testDispatcher) {
+    val actions = mutableListOf<SignalLoginViewDetailsScreenActions>()
+    backgroundScope.launch { viewModel.actions.toList(actions) }
+
+    viewModel.onEvent(SignalLoginViewDetailsScreenEvents.SaveAsPdfClicked)
+
+    assertThat(actions).containsExactly(SignalLoginViewDetailsScreenActions.LaunchSaveAsPdf)
   }
 }

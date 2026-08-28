@@ -49,8 +49,7 @@ class SignalLoginViewDetailsViewModel(
         Log.i(TAG, "Save to password manager clicked, but the flow isn't implemented yet.")
       }
       SignalLoginViewDetailsScreenEvents.SaveAsPdfClicked -> {
-        // TODO [phonenumberless] Render the credentials to a PDF and hand it to the user.
-        Log.i(TAG, "Save as PDF clicked, but the flow isn't implemented yet.")
+        _actions.send(SignalLoginViewDetailsAction.LaunchSaveAsPdf)
       }
     }
   }

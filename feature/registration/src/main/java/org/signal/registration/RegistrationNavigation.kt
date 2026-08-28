@@ -11,6 +11,8 @@ import android.content.Context
 import android.os.Parcelable
 import android.widget.Toast
 import androidx.activity.compose.LocalOnBackPressedDispatcherOwner
+import androidx.activity.compose.rememberLauncherForActivityResult
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material3.CircularProgressIndicator
@@ -18,6 +20,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
@@ -35,6 +38,7 @@ import com.google.accompanist.permissions.ExperimentalPermissionsApi
 import com.google.accompanist.permissions.MultiplePermissionsState
 import com.google.accompanist.permissions.rememberMultiplePermissionsState
 import com.google.accompanist.permissions.rememberPermissionState
+import kotlinx.coroutines.launch
 import kotlinx.parcelize.Parcelize
 import kotlinx.parcelize.TypeParceler
 import kotlinx.serialization.Serializable
@@ -44,6 +48,7 @@ import org.signal.core.ui.navigation.ResultEffect
 import org.signal.core.ui.navigation.TransitionSpecs
 import org.signal.core.util.LinkActions
 import org.signal.core.util.LinkActions.OpenUrlError
+import org.signal.core.util.Result
 import org.signal.core.util.serialization.AccountEntropyPoolSerializer
 import org.signal.network.api.RegistrationApiV2.SessionMetadata
 import org.signal.network.api.RegistrationApiV2.SvrCredentials
@@ -112,6 +117,7 @@ import org.signal.registration.screens.restoreselection.RegisteredState
 import org.signal.registration.screens.signallogin.SignalLoginScreen
 import org.signal.registration.screens.signallogin.SignalLoginScreenActions
 import org.signal.registration.screens.signallogin.SignalLoginViewModel
+import org.signal.registration.screens.signallogindetails.SignalLoginViewDetailsScreenActions
 import org.signal.registration.screens.signallogindetails.SignalLoginViewDetailsViewModel
 import org.signal.registration.screens.signallogininfo.SignalLoginInfoScreen
 import org.signal.registration.screens.signallogininfo.SignalLoginInfoViewModel
@@ -128,6 +134,7 @@ import org.signal.registration.screens.welcome.WelcomeScreenViewModel
 import org.signal.registration.util.AccountEntropyPoolParceler
 import org.signal.registration.util.SessionMetadataParceler
 import org.signal.registration.util.SvrCredentialsParceler
+import org.signal.signallogin.pdf.SignalLoginPdfRenderer
 import org.signal.signallogin.viewdetails.SignalLoginViewDetailsScreen
 
 /**
@@ -679,6 +686,8 @@ private fun EntryProviderScope<NavKey>.navigationEntries(
 
   // -- Signal Login View Details Screen
   entry<RegistrationRoute.SignalLoginViewDetails> {
+    val context = LocalContext.current
+    val scope = rememberCoroutineScope()
     val viewModel: SignalLoginViewDetailsViewModel = viewModel(
       factory = SignalLoginViewDetailsViewModel.Factory(
         parentState = registrationViewModel.state,
@@ -686,6 +695,23 @@ private fun EntryProviderScope<NavKey>.navigationEntries(
       )
     )
     val state by viewModel.state.collectAsStateWithLifecycle()
+
+    val savePdfLauncher = rememberLauncherForActivityResult(ActivityResultContracts.CreateDocument("application/pdf")) { uri ->
+      if (uri != null) {
+        scope.launch {
+          val result = SignalLoginPdfRenderer.renderTo(context, uri, viewModel.state.value)
+          if (result is Result.Failure) {
+            Toast.makeText(context, result.failure.userMessageRes, Toast.LENGTH_LONG).show()
+          }
+        }
+      }
+    }
+
+    CollectActions(viewModel.actions) { action ->
+      when (action) {
+        SignalLoginViewDetailsScreenActions.LaunchSaveAsPdf -> savePdfLauncher.launch(SignalLoginPdfRenderer.suggestedFileName(context))
+      }
+    }
 
     SignalLoginViewDetailsScreen(
       state = state,
