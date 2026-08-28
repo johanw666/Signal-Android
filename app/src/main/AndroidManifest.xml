@@ -1466,6 +1466,10 @@
             android:exported="false" />
 
         <receiver
+            android:name=".service.UnreadReminderManager$UnreadReminderAlarm"
+            android:exported="false" />
+
+        <receiver
             android:name="org.signal.core.util.ClearClipboardAlarmReceiver"
             android:exported="false" />
 
