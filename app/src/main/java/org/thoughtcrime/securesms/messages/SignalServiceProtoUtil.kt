@@ -74,6 +74,9 @@ object SignalServiceProtoUtil {
   val DataMessage.isExpirationUpdate: Boolean
     get() = flags != null && flags!! and DataMessage.Flags.EXPIRATION_TIMER_UPDATE.value != 0
 
+  val DataMessage.isProfileKeyUpdate: Boolean
+    get() = flags != null && flags!! and DataMessage.Flags.PROFILE_KEY_UPDATE.value != 0
+
   val DataMessage.hasRemoteDelete: Boolean
     get() = delete != null && delete!!.targetSentTimestamp != null
 

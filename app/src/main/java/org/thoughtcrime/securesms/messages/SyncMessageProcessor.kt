@@ -96,6 +96,7 @@ import org.thoughtcrime.securesms.messages.SignalServiceProtoUtil.isEmptyGroupV2
 import org.thoughtcrime.securesms.messages.SignalServiceProtoUtil.isExpirationUpdate
 import org.thoughtcrime.securesms.messages.SignalServiceProtoUtil.isGroupV2Update
 import org.thoughtcrime.securesms.messages.SignalServiceProtoUtil.isMediaMessage
+import org.thoughtcrime.securesms.messages.SignalServiceProtoUtil.isProfileKeyUpdate
 import org.thoughtcrime.securesms.messages.SignalServiceProtoUtil.isUnidentified
 import org.thoughtcrime.securesms.messages.SignalServiceProtoUtil.serviceIdsToUnidentifiedStatus
 import org.thoughtcrime.securesms.messages.SignalServiceProtoUtil.toMobileCoinMoney
@@ -264,7 +265,7 @@ object SyncMessageProcessor {
         }
         dataMessage.hasRemoteDelete -> DataMessageProcessor.handleRemoteDelete(context, envelope, dataMessage, senderRecipient.id, earlyMessageCacheEntry, batchCache)
         dataMessage.payment != null -> log(envelope.clientTimestamp!!, "Ignoring payment notification/activation from sync transcript; payment row arrives via SyncMessage.OutgoingPayment.")
-        dataMessage.isMediaMessage -> threadId = handleSynchronizeSentMediaMessage(context, sent, envelope.clientTimestamp!!, senderRecipient)
+        dataMessage.isMediaMessage || dataMessage.giftBadge != null -> threadId = handleSynchronizeSentMediaMessage(context, sent, envelope.clientTimestamp!!, senderRecipient)
         dataMessage.pollCreate != null -> threadId = handleSynchronizedPollCreate(envelope, dataMessage, sent, senderRecipient)
         dataMessage.pollVote != null -> {
           val destination = getSyncMessageDestination(sent)
@@ -282,7 +283,9 @@ object SyncMessageProcessor {
           DataMessageProcessor.handleAdminRemoteDelete(context, envelope, dataMessage, senderRecipient, threadRecipient, earlyMessageCacheEntry, batchCache)
           threadId = SignalDatabase.threads.getOrCreateThreadIdFor(getSyncMessageDestination(sent))
         }
-        else -> threadId = handleSynchronizeSentTextMessage(sent, envelope.clientTimestamp!!)
+        dataMessage.isProfileKeyUpdate -> log(envelope.clientTimestamp!!, "Sent transcript for a profile key update. Nothing to insert.")
+        !dataMessage.body.isNullOrEmpty() -> threadId = handleSynchronizeSentTextMessage(sent, envelope.clientTimestamp!!)
+        else -> warn(envelope.clientTimestamp!!, "Sent transcript has no content we know how to handle. Ignoring. Flags: ${dataMessage.flags}")
       }
 
       if (groupId != null && SignalDatabase.groups.isUnknownGroup(groupId)) {
@@ -733,7 +736,7 @@ object SyncMessageProcessor {
       SignalDatabase.recipients.setExpireMessages(recipient.id, sent.message!!.expireTimerDuration.inWholeSeconds.toInt(), sent.message!!.expireTimerVersion!!)
 
       if (sent.message!!.expireTimerDuration != recipient.expiresInSeconds.seconds) {
-        log(sent.timestamp!!, "Not inserted update message as timer value did not change")
+        log(sent.timestamp!!, "Inserting update message as timer value changed")
         val messageId: Long = SignalDatabase.messages.insertMessageOutbox(expirationUpdateMessage, threadId, false, null).messageId
         SignalDatabase.messages.markAsSent(messageId)
       }
