@@ -17,6 +17,7 @@ import kotlinx.coroutines.launch
 import org.signal.core.ui.compose.CollectActions
 import org.signal.core.ui.compose.ComposeFragment
 import org.signal.core.util.Result
+import org.signal.passwordmanager.SignalCredentialManager
 import org.signal.signallogin.pdf.SignalLoginPdfRenderer
 import org.signal.signallogin.viewdetails.SignalLoginViewDetailsScreen
 
@@ -54,6 +55,15 @@ class SignalLoginViewDetailsFragment : ComposeFragment() {
   private fun handleAction(action: SignalLoginViewDetailsAction) {
     when (action) {
       SignalLoginViewDetailsAction.NavigateBack -> requireActivity().onBackPressedDispatcher.onBackPressed()
+      SignalLoginViewDetailsAction.LaunchSaveToPasswordManager -> {
+        lifecycleScope.launch {
+          SignalCredentialManager.saveCredential(
+            activityContext = requireActivity(),
+            username = viewModel.state.value.accountKey,
+            password = viewModel.state.value.recoveryKey
+          )
+        }
+      }
       SignalLoginViewDetailsAction.LaunchSaveAsPdf -> savePdfLauncher.launch(SignalLoginPdfRenderer.suggestedFileName(requireContext()))
     }
   }

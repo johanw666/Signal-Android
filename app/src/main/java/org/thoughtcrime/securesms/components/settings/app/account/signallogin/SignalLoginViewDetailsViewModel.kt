@@ -45,8 +45,7 @@ class SignalLoginViewDetailsViewModel(
         _actions.send(SignalLoginViewDetailsAction.NavigateBack)
       }
       SignalLoginViewDetailsScreenEvents.SaveToPasswordManagerClicked -> {
-        // TODO [phonenumberless] Store the credentials via the credential manager.
-        Log.i(TAG, "Save to password manager clicked, but the flow isn't implemented yet.")
+        _actions.send(SignalLoginViewDetailsAction.LaunchSaveToPasswordManager)
       }
       SignalLoginViewDetailsScreenEvents.SaveAsPdfClicked -> {
         _actions.send(SignalLoginViewDetailsAction.LaunchSaveAsPdf)

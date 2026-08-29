@@ -709,6 +709,16 @@ private fun EntryProviderScope<NavKey>.navigationEntries(
 
     CollectActions(viewModel.actions) { action ->
       when (action) {
+        SignalLoginViewDetailsScreenActions.LaunchSaveToPasswordManager -> {
+          scope.launch {
+            SignalCredentialManager.saveCredential(
+              activityContext = context,
+              username = viewModel.state.value.accountKey,
+              password = viewModel.state.value.recoveryKey
+            )
+          }
+        }
+
         SignalLoginViewDetailsScreenActions.LaunchSaveAsPdf -> savePdfLauncher.launch(SignalLoginPdfRenderer.suggestedFileName(context))
       }
     }

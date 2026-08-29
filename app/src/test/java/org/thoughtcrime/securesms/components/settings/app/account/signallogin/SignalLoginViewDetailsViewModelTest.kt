@@ -78,6 +78,17 @@ class SignalLoginViewDetailsViewModelTest {
   }
 
   @Test
+  fun `SaveToPasswordManagerClicked launches the save to password manager flow`() = runTest(testDispatcher) {
+    val viewModel = SignalLoginViewDetailsViewModel(repository)
+    val actions = mutableListOf<SignalLoginViewDetailsAction>()
+    backgroundScope.launch { viewModel.actions.toList(actions) }
+
+    viewModel.onEvent(SignalLoginViewDetailsScreenEvents.SaveToPasswordManagerClicked)
+
+    assertThat(actions).containsExactly(SignalLoginViewDetailsAction.LaunchSaveToPasswordManager)
+  }
+
+  @Test
   fun `SaveAsPdfClicked launches the save as PDF flow`() = runTest(testDispatcher) {
     val viewModel = SignalLoginViewDetailsViewModel(repository)
     val actions = mutableListOf<SignalLoginViewDetailsAction>()
