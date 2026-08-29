@@ -187,6 +187,17 @@ object TestTags {
   const val QUICK_RESTORE_QR_RETRY_BUTTON = "quick_restore_qr_retry_button"
   const val QUICK_RESTORE_QR_CANCEL_BUTTON = "quick_restore_qr_cancel_button"
 
+  // Totp Entry Screen
+  const val TOTP_ENTRY_SCREEN = "totp_entry_screen"
+  const val TOTP_ENTRY_INPUT = "totp_entry_input"
+  const val TOTP_ENTRY_DIGIT_0 = "totp_entry_digit_0"
+  const val TOTP_ENTRY_DIGIT_1 = "totp_entry_digit_1"
+  const val TOTP_ENTRY_DIGIT_2 = "totp_entry_digit_2"
+  const val TOTP_ENTRY_DIGIT_3 = "totp_entry_digit_3"
+  const val TOTP_ENTRY_DIGIT_4 = "totp_entry_digit_4"
+  const val TOTP_ENTRY_DIGIT_5 = "totp_entry_digit_5"
+  const val TOTP_ENTRY_CANCEL_BUTTON = "totp_entry_cancel_button"
+
   // Remote Backup Restore Screen
   const val REMOTE_BACKUP_RESTORE_SCREEN = "remote_backup_restore_screen"
   const val REMOTE_BACKUP_RESTORE_RESTORE_BUTTON = "remote_backup_restore_restore_button"

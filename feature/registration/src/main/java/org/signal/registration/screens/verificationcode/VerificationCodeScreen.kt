@@ -372,6 +372,7 @@ private fun CodeField(
               1 -> TestTags.VERIFICATION_CODE_DIGIT_1
               else -> TestTags.VERIFICATION_CODE_DIGIT_2
             },
+            modifier = Modifier.weight(1f, fill = false),
             enabled = !state.isSubmittingCode
           )
           if (i < 2) {
@@ -399,6 +400,7 @@ private fun CodeField(
               4 -> TestTags.VERIFICATION_CODE_DIGIT_4
               else -> TestTags.VERIFICATION_CODE_DIGIT_5
             },
+            modifier = Modifier.weight(1f, fill = false),
             enabled = !state.isSubmittingCode
           )
         }
