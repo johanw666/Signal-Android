@@ -340,9 +340,9 @@ private fun FillFromPasswordManagerButton(onEvent: (EnterAepEvents) -> Unit, mod
     modifier = modifier,
     onClick = {
       coroutineScope.launch {
-        val password = SignalCredentialManager.getCredential(context)
-        if (password != null) {
-          onEvent(EnterAepEvents.BackupKeyChanged(password))
+        val credential = SignalCredentialManager.getCredential(context)
+        if (credential != null) {
+          onEvent(EnterAepEvents.BackupKeyChanged(credential.password))
         }
       }
     }

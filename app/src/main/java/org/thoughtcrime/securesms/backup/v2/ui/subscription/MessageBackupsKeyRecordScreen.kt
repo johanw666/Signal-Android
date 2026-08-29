@@ -775,7 +775,7 @@ private suspend fun getKeyFromCredentialManager(
   @UiContext activityContext: Context,
   id: String
 ): String? {
-  return SignalCredentialManager.getCredential(activityContext, id)
+  return SignalCredentialManager.getCredential(activityContext, id)?.password
 }
 
 @DayNightPreviews

@@ -87,6 +87,10 @@ class SignalLoginCredentialEntryViewModel(
         stateEmitter(state.copy(recoveryKey = AepInput.from(event.value, state.recoveryKey.error), areCredentialsIncorrect = false))
       }
 
+      is SignalLoginCredentialEntryScreenEvents.PasswordManagerCredentialSelected -> {
+        applyPasswordManagerCredentialSelected(state, event, parentEventEmitter, stateEmitter)
+      }
+
       is SignalLoginCredentialEntryScreenEvents.RecoveryKeyVisibilityToggled -> {
         stateEmitter(state.copy(isRecoveryKeyRevealed = !state.isRecoveryKeyRevealed))
       }
@@ -102,6 +106,34 @@ class SignalLoginCredentialEntryViewModel(
       is SignalLoginCredentialEntryScreenEvents.NextClicked -> {
         applyNextClicked(state, parentEventEmitter, stateEmitter)
       }
+    }
+  }
+
+  /**
+   * Fills both halves of the login with what the password manager handed back, then submits it right away if the pair
+   * is complete so the user doesn't have to tap the next button themselves.
+   */
+  private suspend fun applyPasswordManagerCredentialSelected(
+    state: SignalLoginCredentialEntryState,
+    event: SignalLoginCredentialEntryScreenEvents.PasswordManagerCredentialSelected,
+    parentEventEmitter: (RegistrationFlowEvent) -> Unit,
+    stateEmitter: (SignalLoginCredentialEntryState) -> Unit
+  ) {
+    val accountId = event.accountId.replace(FORMATTING_CHARACTERS, "").lowercase()
+    val filledState = state.copy(
+      accountId = accountId,
+      accountIdError = validateAccountId(accountId),
+      recoveryKey = AepInput.from(event.recoveryKey),
+      areCredentialsIncorrect = false
+    )
+
+    stateEmitter(filledState)
+
+    if (filledState.isNextEnabled) {
+      Log.i(TAG, "[CredentialSelected] The password manager supplied a complete login. Submitting it.")
+      applyNextClicked(filledState, parentEventEmitter, stateEmitter)
+    } else {
+      Log.w(TAG, "[CredentialSelected] The password manager supplied a login we can't submit as-is. Leaving it in the fields for the user to fix.")
     }
   }
 

@@ -21,6 +21,11 @@ sealed class SignalLoginCredentialEntryScreenEvents {
     override fun toString(): String = "RecoveryKeyChanged(value=${value.censor()})"
   }
 
+  /** The user picked a saved login from the password manager prompt. Carries both halves as the manager stored them. */
+  data class PasswordManagerCredentialSelected(val accountId: String, val recoveryKey: String) : SignalLoginCredentialEntryScreenEvents() {
+    override fun toString(): String = "PasswordManagerCredentialSelected(accountId=${accountId.censor()}, recoveryKey=${recoveryKey.censor()})"
+  }
+
   /** The user tapped the eye button that switches the recovery key between masked and spelled out. */
   data object RecoveryKeyVisibilityToggled : SignalLoginCredentialEntryScreenEvents()
 

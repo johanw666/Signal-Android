@@ -33,10 +33,17 @@ import androidx.compose.material3.TextButton
 import androidx.compose.material3.TextField
 import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.runtime.saveable.rememberSaveable
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.focus.onFocusChanged
 import androidx.compose.ui.input.nestedscroll.nestedScroll
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.painterResource
@@ -53,11 +60,13 @@ import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import kotlinx.coroutines.launch
 import org.signal.core.ui.compose.AllDevicePreviews
 import org.signal.core.ui.compose.Buttons
 import org.signal.core.ui.compose.Dialogs
 import org.signal.core.ui.compose.Previews
 import org.signal.core.ui.compose.SignalIcons
+import org.signal.passwordmanager.SignalCredentialManager
 import org.signal.passwordmanager.compose.attachPasswordAutoFillHelper
 import org.signal.passwordmanager.compose.passwordAutoFillHelper
 import org.signal.registration.R
@@ -231,17 +240,48 @@ private fun CredentialTextFields(
   state: SignalLoginCredentialEntryState,
   onEvent: (SignalLoginCredentialEntryScreenEvents) -> Unit
 ) {
-  AccountIdTextField(state = state, onEvent = onEvent)
+  val passwordManagerPrompt = passwordManagerPromptOnFocus(state, onEvent)
+
+  AccountIdTextField(state = state, onEvent = onEvent, modifier = passwordManagerPrompt)
 
   Spacer(modifier = Modifier.height(12.dp))
 
-  RecoveryKeyTextField(state = state, onEvent = onEvent)
+  RecoveryKeyTextField(state = state, onEvent = onEvent, modifier = passwordManagerPrompt)
+}
+
+/**
+ * Builds a modifier that prompts the password manager the first time either credential field is tapped, so a saved
+ * login can fill both halves at once. Only fires while the fields are still empty, and only once per screen so a
+ * dismissed prompt doesn't keep coming back.
+ */
+@Composable
+private fun passwordManagerPromptOnFocus(
+  state: SignalLoginCredentialEntryState,
+  onEvent: (SignalLoginCredentialEntryScreenEvents) -> Unit
+): Modifier {
+  val context = LocalContext.current
+  val coroutineScope = rememberCoroutineScope()
+  var hasPrompted by rememberSaveable { mutableStateOf(false) }
+
+  return Modifier.onFocusChanged { focusState ->
+    val fieldsAreEmpty = state.accountId.isEmpty() && state.recoveryKey.enteredText.isEmpty()
+    if (focusState.isFocused && !hasPrompted && fieldsAreEmpty && SignalCredentialManager.isSupported(context)) {
+      hasPrompted = true
+      coroutineScope.launch {
+        val credential = SignalCredentialManager.getCredential(context)
+        if (credential != null) {
+          onEvent(SignalLoginCredentialEntryScreenEvents.PasswordManagerCredentialSelected(accountId = credential.username, recoveryKey = credential.password))
+        }
+      }
+    }
+  }
 }
 
 @Composable
 private fun AccountIdTextField(
   state: SignalLoginCredentialEntryState,
-  onEvent: (SignalLoginCredentialEntryScreenEvents) -> Unit
+  onEvent: (SignalLoginCredentialEntryScreenEvents) -> Unit,
+  modifier: Modifier = Modifier
 ) {
   TextField(
     value = state.accountId,
@@ -273,7 +313,7 @@ private fun AccountIdTextField(
     },
     isError = state.accountIdError != null || state.areCredentialsIncorrect,
     visualTransformation = AccountIdVisualTransformation,
-    modifier = Modifier
+    modifier = modifier
       .fillMaxWidth()
       .testTag(TestTags.SIGNAL_LOGIN_CREDENTIAL_ACCOUNT_ID_FIELD)
   )
@@ -282,7 +322,8 @@ private fun AccountIdTextField(
 @Composable
 private fun RecoveryKeyTextField(
   state: SignalLoginCredentialEntryState,
-  onEvent: (SignalLoginCredentialEntryScreenEvents) -> Unit
+  onEvent: (SignalLoginCredentialEntryScreenEvents) -> Unit,
+  modifier: Modifier = Modifier
 ) {
   val keyboardController = LocalSoftwareKeyboardController.current
   val autoFillHelper = passwordAutoFillHelper { onEvent(SignalLoginCredentialEntryScreenEvents.RecoveryKeyChanged(it)) }
@@ -334,7 +375,7 @@ private fun RecoveryKeyTextField(
     },
     isError = state.recoveryKey.error != null || state.areCredentialsIncorrect,
     visualTransformation = visualTransformation,
-    modifier = Modifier
+    modifier = modifier
       .fillMaxWidth()
       .testTag(TestTags.SIGNAL_LOGIN_CREDENTIAL_RECOVERY_KEY_FIELD)
       .attachPasswordAutoFillHelper(autoFillHelper)

@@ -25,6 +25,7 @@ import androidx.credentials.exceptions.CreateCredentialProviderConfigurationExce
 import androidx.credentials.exceptions.CreateCredentialUnknownException
 import androidx.credentials.exceptions.GetCredentialException
 import org.signal.core.util.PlayServicesUtil
+import org.signal.core.util.censor
 import org.signal.core.util.logging.Log
 
 /**
@@ -106,15 +107,15 @@ object SignalCredentialManager {
 
   /**
    * Prompts the device password manager to let the user pick a saved password credential and
-   * returns its value, or null if none was chosen or retrieval failed. If [id] is provided, only a
-   * credential with that id will be returned. Must be called with an Activity context so the
+   * returns both halves of it, or null if none was chosen or retrieval failed. If [id] is provided,
+   * only a credential with that id will be returned. Must be called with an Activity context so the
    * Credential Manager UI can be shown.
    */
-  suspend fun getCredential(@UiContext activityContext: Context, id: String? = null): String? = try {
+  suspend fun getCredential(@UiContext activityContext: Context, id: String? = null): UsernamePasswordCredential? = try {
     val result = CredentialManager.create(activityContext).getCredential(activityContext, GetCredentialRequest(listOf(GetPasswordOption())))
     val credential = result.credential
     if (credential is PasswordCredential && (id == null || credential.id == id)) {
-      credential.password
+      UsernamePasswordCredential(username = credential.id, password = credential.password)
     } else {
       Log.w(TAG, "Failed to find a matching credential from the password manager.")
       null
@@ -152,6 +153,11 @@ object SignalCredentialManager {
 
     return null
   }
+}
+
+/** A username/password pair the user picked from their password manager. */
+data class UsernamePasswordCredential(val username: String, val password: String) {
+  override fun toString(): String = "UsernamePasswordCredential(username=${username.censor()}, password=${password.censor()})"
 }
 
 /** Represents the result of a [SignalCredentialManager] save operation. */

@@ -16,6 +16,12 @@ import androidx.compose.ui.test.performTextInput
 import androidx.test.core.app.ApplicationProvider
 import assertk.assertThat
 import assertk.assertions.contains
+import io.mockk.coEvery
+import io.mockk.coVerify
+import io.mockk.every
+import io.mockk.mockkObject
+import io.mockk.unmockkAll
+import org.junit.After
 import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
@@ -23,6 +29,8 @@ import org.robolectric.RobolectricTestRunner
 import org.robolectric.annotation.Config
 import org.signal.core.ui.CoreUiDependenciesRule
 import org.signal.core.ui.compose.theme.SignalTheme
+import org.signal.passwordmanager.SignalCredentialManager
+import org.signal.passwordmanager.UsernamePasswordCredential
 import org.signal.registration.screens.aepentry.AepInput
 import org.signal.registration.test.TestTags
 
@@ -42,6 +50,33 @@ class SignalLoginCredentialEntryScreenTest {
   val coreUiDependenciesRule = CoreUiDependenciesRule(ApplicationProvider.getApplicationContext())
 
   private val events = mutableListOf<SignalLoginCredentialEntryScreenEvents>()
+
+  @After
+  fun tearDown() {
+    unmockkAll()
+  }
+
+  @Test
+  fun `when an empty field is tapped, the password manager is prompted and the picked credential is emitted`() {
+    stubPasswordManager()
+    setContent(SignalLoginCredentialEntryState())
+
+    composeTestRule.onNodeWithTag(TestTags.SIGNAL_LOGIN_CREDENTIAL_ACCOUNT_ID_FIELD).performClick()
+    composeTestRule.waitForIdle()
+
+    assertThat(events).contains(SignalLoginCredentialEntryScreenEvents.PasswordManagerCredentialSelected(accountId = VALID_ACCOUNT_ID, recoveryKey = VALID_RECOVERY_KEY))
+  }
+
+  @Test
+  fun `when a field is tapped with a login already entered, the password manager is not prompted`() {
+    stubPasswordManager()
+    setContent(completeState())
+
+    composeTestRule.onNodeWithTag(TestTags.SIGNAL_LOGIN_CREDENTIAL_ACCOUNT_ID_FIELD).performClick()
+    composeTestRule.waitForIdle()
+
+    coVerify(exactly = 0) { SignalCredentialManager.getCredential(any()) }
+  }
 
   @Test
   fun `when text is typed into the account ID field, AccountIdChanged is emitted`() {
@@ -128,6 +163,12 @@ class SignalLoginCredentialEntryScreenTest {
     setContent(completeState().copy(isLoggingIn = true))
 
     composeTestRule.onNodeWithTag(TestTags.SIGNAL_LOGIN_CREDENTIAL_NEXT_BUTTON).assertIsNotEnabled()
+  }
+
+  private fun stubPasswordManager() {
+    mockkObject(SignalCredentialManager)
+    every { SignalCredentialManager.isSupported(any()) } returns true
+    coEvery { SignalCredentialManager.getCredential(any()) } returns UsernamePasswordCredential(username = VALID_ACCOUNT_ID, password = VALID_RECOVERY_KEY)
   }
 
   private fun completeState(): SignalLoginCredentialEntryState {

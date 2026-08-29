@@ -145,6 +145,57 @@ class SignalLoginCredentialEntryViewModelTest {
   }
 
   @Test
+  fun `PasswordManagerCredentialSelected with a complete credential fills both fields and submits the login`() = runTest(testDispatcher) {
+    val aep = AccountEntropyPool(VALID_AEP)
+    stubSuccessfulLogin(aep)
+
+    applyEvent(
+      SignalLoginCredentialEntryState(),
+      SignalLoginCredentialEntryScreenEvents.PasswordManagerCredentialSelected(
+        accountId = "A6B28482-2E32-83D0-7F23-91360A4C2B91",
+        recoveryKey = VALID_AEP.uppercase()
+      )
+    )
+
+    assertThat(emittedStates.first().accountId).isEqualTo(VALID_ACCOUNT_ID)
+    assertThat(emittedStates.first().recoveryKey.normalized).isEqualTo(VALID_AEP)
+
+    coVerify {
+      mockRepository.reRegisterAccountWithoutPhoneNumber(
+        aci = VALID_ACI,
+        recoveryPassword = aep.deriveMasterKey().deriveRegistrationRecoveryPassword(),
+        aep = match { it.value == VALID_AEP },
+        registrationLock = null
+      )
+    }
+  }
+
+  @Test
+  fun `PasswordManagerCredentialSelected with an unusable credential fills the fields without submitting`() = runTest(testDispatcher) {
+    applyEvent(
+      SignalLoginCredentialEntryState(),
+      SignalLoginCredentialEntryScreenEvents.PasswordManagerCredentialSelected(accountId = "not-an-account-id", recoveryKey = "short")
+    )
+
+    assertThat(emittedParentEvents).isEmpty()
+    assertThat(emittedStates.last().isNextEnabled).isFalse()
+    coVerify(exactly = 0) { mockRepository.reRegisterAccountWithoutPhoneNumber(any(), any(), any(), any(), any()) }
+  }
+
+  @Test
+  fun `PasswordManagerCredentialSelected clears a previously rejected login`() = runTest(testDispatcher) {
+    stubSuccessfulLogin(AccountEntropyPool(VALID_AEP))
+
+    applyEvent(
+      completeState().copy(areCredentialsIncorrect = true),
+      SignalLoginCredentialEntryScreenEvents.PasswordManagerCredentialSelected(accountId = VALID_ACCOUNT_ID, recoveryKey = VALID_AEP)
+    )
+
+    assertThat(emittedStates.first().areCredentialsIncorrect).isFalse()
+    coVerify { mockRepository.reRegisterAccountWithoutPhoneNumber(any(), any(), any(), any(), any()) }
+  }
+
+  @Test
   fun `RecoveryKeyVisibilityToggled flips whether the key is spelled out`() = runTest(testDispatcher) {
     applyEvent(SignalLoginCredentialEntryState(), SignalLoginCredentialEntryScreenEvents.RecoveryKeyVisibilityToggled)
 
