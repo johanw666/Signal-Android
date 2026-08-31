@@ -163,7 +163,6 @@ class MediaPreviewFragment :
     val startingAttachmentId = PartAuthority.requireAttachmentId(args.initialMediaUri)
     val threadId = args.threadId
     val appContext = requireContext().applicationContext
-    viewModel.fetchInitialAttachment(args)
     viewModel.fetchAttachments(appContext, startingAttachmentId, threadId, sorting)
     val dbObserver = DatabaseObserver.Observer { viewModel.refetchAttachments(appContext, startingAttachmentId, threadId, sorting) }
     AppDependencies.databaseObserver.registerAttachmentUpdatedObserver(dbObserver)
@@ -230,43 +229,26 @@ class MediaPreviewFragment :
     }
     when (currentState.loadState) {
       MediaPreviewState.LoadState.DATA_LOADED -> bindDataLoadedState(currentState)
-      MediaPreviewState.LoadState.MEDIA_READY -> {
-        // The full attachment window can arrive after the initially-opened media has already decoded.
-        if (syncPagerItems(currentState)) {
-          bindMediaReadyState(currentState)
-        }
-      }
+      MediaPreviewState.LoadState.MEDIA_READY -> bindMediaReadyState(currentState)
       else -> Unit
     }
   }
 
-  /**
-   * Pushes the current record set into the pager. Both calls are self-guarded, so this is a no-op unless the
-   * backing items or the selected position actually changed.
-   */
-  private fun syncPagerItems(currentState: MediaPreviewState): Boolean {
+  private fun bindDataLoadedState(currentState: MediaPreviewState) {
     val currentPosition = currentState.position
+
     val backingItems = currentState.mediaRecords.mapNotNull { it.attachment }
     if (backingItems.isEmpty() || currentPosition < 0) {
       onMediaNotAvailable()
-      return false
+      return
     }
-
     pagerAdapter.updateBackingItems(backingItems)
 
     if (binding.mediaPager.currentItem != currentPosition) {
       binding.mediaPager.setCurrentItem(currentPosition, false)
     }
 
-    return true
-  }
-
-  private fun bindDataLoadedState(currentState: MediaPreviewState) {
-    if (!syncPagerItems(currentState)) {
-      return
-    }
-
-    val currentItem: MediaTable.MediaRecord = currentState.mediaRecords[currentState.position]
+    val currentItem: MediaTable.MediaRecord = currentState.mediaRecords[currentPosition]
     bindTextViews(currentItem, currentState.showThread, currentState.messageBodies)
     bindMenuItems(currentItem)
   }
