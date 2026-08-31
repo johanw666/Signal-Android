@@ -12,13 +12,13 @@
     <!-- Title of the screen that shows the user the full keys that make up their Signal Login. -->
     <string name="SignalLoginViewDetailsScreen__signal_login">Signal Login</string>
     <!-- Content description for the back arrow in the top app bar. -->
-    <string name="SignalLoginViewDetailsScreen__navigate_back">Navigate back</string>
+    <string name="SignalLoginViewDetailsScreen__navigate_back">دوبارہ نیویگیٹ کریں</string>
     <!-- Section header above the account key. -->
-    <string name="SignalLoginViewDetailsScreen__account_key">Account key</string>
+    <string name="SignalLoginViewDetailsScreen__account_key">اکاؤنٹ کیی</string>
     <!-- Section header above the recovery key. -->
     <string name="SignalLoginViewDetailsScreen__recovery_key">ریکوری کیی</string>
     <!-- Action button that stores the Signal Login in the device password manager. -->
     <string name="SignalLoginViewDetailsScreen__save_to_password_manager">پاسورڈ مینیجر میں محفوظ کریں</string>
     <!-- Action button that saves the Signal Login as a PDF. -->
-    <string name="SignalLoginViewDetailsScreen__save_as_pdf">Save as PDF</string>
+    <string name="SignalLoginViewDetailsScreen__save_as_pdf">PDF کے طور پر محفوظ کریں</string>
 </resources>

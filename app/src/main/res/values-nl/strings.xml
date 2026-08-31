@@ -4344,9 +4344,9 @@
     <!-- Preference item to set notification settings when chats are muted -->
     <string name="preferences_notifications__while_muted">Indien gedempt</string>
     <!-- Option in settings to turn on reaction notifications -->
-    <string name="preferences_notifications__reaction">Meldingen voor reacties</string>
+    <string name="preferences_notifications__reaction">Reactiemeldingen</string>
     <!-- Body option in settings to turn on reaction notifications    -->
-    <string name="preferences_notifications__notify_reaction">Ontvang meldingen voor emoji-reacties op berichten die je verstuurt</string>
+    <string name="preferences_notifications__notify_reaction">Ontvang meldingen voor emoji-reacties op je berichten</string>
     <!-- Option in settings to turn on unread reminders -->
     <string name="preferences_notifications__unread">Ongelezen herinneringen</string>
     <!-- Body option to turn on unread reminders -->
@@ -5966,7 +5966,7 @@
     <!-- Description for toggle row to control replies settings while muted -->
     <string name="MutedNotificationsFragment__replies_body">Ontvang meldingen wanneer iemand op je bericht antwoordt terwijl deze chat is gedempt.</string>
     <!-- Description for toggle row to control unread reminders while muted -->
-    <string name="MutedNotificationsFragment__unread_body">Occasionally notify when there are unread messages while this chat is muted.</string>
+    <string name="MutedNotificationsFragment__unread_body">Ontvang af en toe meldingen over ongelezen berichten terwijl deze chat is gedempt.</string>
 
     <!-- NotificationProfilesFragment -->
     <!-- Title for notification profiles screen that shows all existing profiles; Title with hyphenation. Translation can use soft hyphen - Unicode U+00AD -->
@@ -6324,9 +6324,9 @@
     <string name="AvatarPickerFragment__save">Opslaan</string>
     <string name="AvatarPickerFragment__clear_avatar">Profielfoto verwijderen</string>
     <!-- Content description for the edit icon displayed over the currently selected avatar. -->
-    <string name="AvatarPickerFragment__edit_avatar">Edit avatar</string>
+    <string name="AvatarPickerFragment__edit_avatar">Profielfoto bewerken</string>
     <!-- Accessibility label describing the menu shown when long pressing one of your saved avatars. -->
-    <string name="AvatarPickerFragment__avatar_options">Avatar options</string>
+    <string name="AvatarPickerFragment__avatar_options">Opties voor je profielfoto</string>
     <string name="AvatarPickerRepository__failed_to_save_avatar">Profielfoto opslaan is mislukt</string>
 
     <!-- TextAvatarCreationFragment -->
@@ -9971,13 +9971,13 @@
     </plurals>
     <!-- Notification placeholder for unread messages -->
     <plurals name="UnreadReminderJob__messages">
-        <item quantity="one">%1$d ongelezen bericht</item>
-        <item quantity="other">%1$d ongelezen berichten</item>
+        <item quantity="one">%1$d unread message</item>
+        <item quantity="other">%1$d unread messages</item>
     </plurals>
     <!-- Notification placeholder for a single recipient who sent unread messages -->
     <string name="UnreadReminderJob__authors_one">%1$s</string>
     <!-- Notification placeholder for two recipients who sent unread messages -->
-    <string name="UnreadReminderJob__authors_two">%1$s en %2$s</string>
+    <string name="UnreadReminderJob__authors_two">%1$s and %2$s</string>
     <!-- Notification placeholder for three or more recipients who sent unread messages -->
     <string name="UnreadReminderJob__authors_many">%1$s and others</string>
     <!-- Notification placeholder that sums up a single unread mention. Placeholder is the name of the person who sent the message -->

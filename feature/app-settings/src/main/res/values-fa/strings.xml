@@ -60,20 +60,20 @@
     <!-- Account setting that takes the user to the authenticator app setup flow -->
     <string name="AccountSettingsFragment__authenticator_app">برنامه احراز هویت</string>
     <!-- Description of the authenticator app setting when none are configured -->
-    <string name="AccountSettingsFragment__one_time_verification_codes">One-time verification codes</string>
+    <string name="AccountSettingsFragment__one_time_verification_codes">کدهای تأیید یکبارمصرف</string>
     <!-- Description of the authenticator app setting saying how many are configured -->
     <plurals name="AccountSettingsFragment__d_configured">
-        <item quantity="one">%1$d configured</item>
-        <item quantity="other">%1$d configured</item>
+        <item quantity="one">%1$d پیکربندی‌شده</item>
+        <item quantity="other">%1$d پیکربندی‌شده</item>
     </plurals>
     <!-- Account setting that takes the user to the passkeys screen -->
-    <string name="AccountSettingsFragment__passkeys">Passkeys</string>
+    <string name="AccountSettingsFragment__passkeys">کلیدهای عبور</string>
     <!-- Description of the passkeys setting when none exist -->
-    <string name="AccountSettingsFragment__device_biometrics_or_fido2_security_key">Device biometrics or FIDO2 security key</string>
+    <string name="AccountSettingsFragment__device_biometrics_or_fido2_security_key">اطلاعات بیومتریک دستگاه یا رمز امنیتی FIDO2</string>
     <!-- Description of the passkeys setting saying how many exist -->
     <plurals name="AccountSettingsFragment__d_passkeys">
-        <item quantity="one">%1$d passkey</item>
-        <item quantity="other">%1$d passkeys</item>
+        <item quantity="one">%1$d کلید عبور</item>
+        <item quantity="other">%1$d کلید عبور</item>
     </plurals>
     <!-- Description of two-factor authentication, shown below the two-factor authentication rows -->
     <string name="AccountSettingsFragment__use_a_second_form_of_authentication">هنگام استفاده از اطلاعات ورود به سیگنال در دستگاه جدید، از یک روش احراز هویت ثانویه برای محافظت از حساب خود استفاده کنید.</string>
@@ -82,7 +82,7 @@
 
     <!-- AuthenticatorSetupScreen -->
     <!-- Title of the screen that walks the user through setting up an authenticator app -->
-    <string name="AuthenticatorSetupScreen__set_up_your_authenticator_app">Set up your authenticator app</string>
+    <string name="AuthenticatorSetupScreen__set_up_your_authenticator_app">راه‌اندازی برنامه احراز هویت</string>
     <!-- Instructions shown at the top of the authenticator app setup screen -->
     <string name="AuthenticatorSetupScreen__follow_these_steps">برای راه‌اندازی برنامه احراز هویت خود، این مراحل را دنبال کنید.</string>
     <!-- Clickable text that takes the user to a support article -->
@@ -114,27 +114,27 @@
 
     <!-- PasskeysScreen -->
     <!-- Title of the screen where the user sets up passkeys -->
-    <string name="PasskeysScreen__passkeys">Passkeys</string>
+    <string name="PasskeysScreen__passkeys">کلیدهای عبور</string>
     <!-- Description of passkeys shown at the top of the screen -->
-    <string name="PasskeysScreen__with_passkeys_you_can_easily_add">With passkeys you can easily add a secure second form of authentication to your account. Passkeys can use your device\'s biometrics or a compatible FIDO2 security key.</string>
+    <string name="PasskeysScreen__with_passkeys_you_can_easily_add">با استفاده از کلیدهای عبور، می‌توانید به‌راحتی نوع دیگری از احراز هویت امن را به حسابتان اضافه کنید. کلیدهای عبور می‌توانند از اطلاعات بیومتریک دستگاه شما یا یک رمز امنیتی FIDO2 سازگار استفاده کنند.</string>
     <!-- Clickable text that takes the user to a support article -->
     <string name="PasskeysScreen__learn_more">اطلاعات بیشتر</string>
     <!-- Bullet point explaining that a passkey can be given a name -->
-    <string name="PasskeysScreen__give_your_passkey_a_friendly_name">Give your passkey a friendly name to identify it</string>
+    <string name="PasskeysScreen__give_your_passkey_a_friendly_name">یک کلید عبور آشنا برای خود انتخاب کنید تا قابل شناسایی باشد</string>
     <!-- Bullet point explaining how a passkey is stored -->
-    <string name="PasskeysScreen__use_your_devices_biometrics">Use your device\'s biometrics or a FIDO2 security key to store your passkey</string>
+    <string name="PasskeysScreen__use_your_devices_biometrics">از اطلاعات بیومتریک دستگاه یا رمز امنیتی FIDO2 برای ذخیره کلید عبورتان استفاده کنید</string>
     <!-- Bullet point explaining that passkeys can be added and removed -->
-    <string name="PasskeysScreen__add_or_remove_passkeys_at_anytime">Add or remove passkeys at anytime.</string>
+    <string name="PasskeysScreen__add_or_remove_passkeys_at_anytime">کلیدهای عبور را در هر زمان اضافه یا حذف کنید.</string>
     <!-- Button that starts creating a passkey -->
-    <string name="PasskeysScreen__set_up_a_passkey">Set up a passkey</string>
+    <string name="PasskeysScreen__set_up_a_passkey">تنظیم کلید عبور</string>
     <!-- Description of passkeys shown at the top of the screen once some already exist -->
-    <string name="PasskeysScreen__set_up_a_passkey_with">Set up a passkey with your device\'s biometrics or a compatible FIDO2 security key.</string>
+    <string name="PasskeysScreen__set_up_a_passkey_with">یک کلید عبور با استفاده از اطلاعات بیومتریک دستگاه خود یا یک رمز امنیتی سازگار با FIDO2 تنظیم کنید.</string>
     <!-- Button that starts creating a passkey once some already exist -->
-    <string name="PasskeysScreen__add_a_new_passkey">Add a new passkey</string>
+    <string name="PasskeysScreen__add_a_new_passkey">افزودن کلید عبور جدید</string>
     <!-- Label under a passkey\'s name saying when it was added. The placeholder is a relative time like "today, 11:00 AM" -->
     <string name="PasskeysScreen__added_s">«%1$s» اضافه شد</string>
     <!-- Accessibility description of the button that opens a passkey\'s menu -->
-    <string name="PasskeysScreen__open_passkey_options">Open passkey options</string>
+    <string name="PasskeysScreen__open_passkey_options">باز کردن گزینه‌های کلید عبور</string>
     <!-- Menu option that renames a passkey -->
     <string name="PasskeysScreen__rename">تغییر نام</string>
     <!-- Menu option that removes a passkey -->
@@ -153,47 +153,47 @@
     <!-- Title of the screen listing the authenticator apps on the account -->
     <string name="AuthenticatorAppsScreen__authenticator_app">برنامه احراز هویت</string>
     <!-- Description of what an authenticator app is for, shown at the top of the screen -->
-    <string name="AuthenticatorAppsScreen__set_up_an_authenticator_app">Set up an authenticator app to generate one-time verification codes</string>
+    <string name="AuthenticatorAppsScreen__set_up_an_authenticator_app">یک برنامه احراز هویت برای تولید کدهای تأیید یکبارمصرف راه‌اندازی کنید</string>
     <!-- Clickable text that takes the user to a support article -->
     <string name="AuthenticatorAppsScreen__learn_more">اطلاعات بیشتر</string>
     <!-- Button that starts setting up another authenticator app -->
-    <string name="AuthenticatorAppsScreen__add_authenticator_app">Add authenticator app</string>
+    <string name="AuthenticatorAppsScreen__add_authenticator_app">افزودن برنامه احراز هویت</string>
     <!-- Section header above the list of configured authenticator apps -->
-    <string name="AuthenticatorAppsScreen__authenticator_apps">Authenticator apps</string>
+    <string name="AuthenticatorAppsScreen__authenticator_apps">برنامه‌های احراز هویت</string>
     <!-- Shown in place of the list when no authenticator apps are configured -->
-    <string name="AuthenticatorAppsScreen__no_authenticator_apps">No authenticator apps</string>
+    <string name="AuthenticatorAppsScreen__no_authenticator_apps">هیچ برنامه احراز هویتی وجود ندارد</string>
     <!-- Subtitle of an authenticator app row saying when it was configured. Placeholder is a date or time. -->
     <string name="AuthenticatorAppsScreen__added_s">«%1$s» اضافه شد</string>
     <!-- Content description of the button that opens an authenticator app\'s options -->
-    <string name="AuthenticatorAppsScreen__open_authenticator_app_options">Open authenticator app options</string>
+    <string name="AuthenticatorAppsScreen__open_authenticator_app_options">باز کردن گزینه‌های برنامه احراز هویت</string>
     <!-- Menu option that renames an authenticator app -->
     <string name="AuthenticatorAppsScreen__rename">تغییر نام</string>
     <!-- Menu option that removes an authenticator app -->
     <string name="AuthenticatorAppsScreen__remove">حذف</string>
     <!-- Title of the dialog confirming removal of an authenticator app -->
-    <string name="AuthenticatorAppsScreen__remove_authenticator_app">Remove authenticator app?</string>
+    <string name="AuthenticatorAppsScreen__remove_authenticator_app">برنامه احراز هویت حذف شود؟</string>
     <!-- Body of the dialog confirming removal of an authenticator app -->
-    <string name="AuthenticatorAppsScreen__to_remove_this_authentication_method">To remove this authentication method the 6-digit code from your authenticator app is required.</string>
+    <string name="AuthenticatorAppsScreen__to_remove_this_authentication_method">برای حذف این روش احراز هویت، کد ۶ رقمی از برنامه احراز هویت شما مورد نیاز است.</string>
     <!-- Title of the dialog shown when the account already has as many authenticator apps as it\'s allowed -->
-    <string name="AuthenticatorAppsScreen__cant_add_authenticator_app">Can\'t add authenticator app</string>
+    <string name="AuthenticatorAppsScreen__cant_add_authenticator_app">افزودن برنامه احراز هویت امکان‌پذیر نیست</string>
     <!-- Body of the dialog shown when the account already has as many authenticator apps as it\'s allowed -->
-    <string name="AuthenticatorAppsScreen__you_cant_add_more_than_d">You can\'t add more than %1$d authenticator apps. Try removing one first.</string>
+    <string name="AuthenticatorAppsScreen__you_cant_add_more_than_d">نمی‌توانید بیش از %1$d برنامه احراز هویت اضافه کنید. ابتدا یکی را حذف کنید.</string>
     <!-- Toast shown after an authenticator app has been removed -->
-    <string name="AuthenticatorAppsScreen__authenticator_app_removed">Authenticator app removed</string>
+    <string name="AuthenticatorAppsScreen__authenticator_app_removed">برنامه احراز هویت حذف شد</string>
 
     <!-- AuthenticatorNameScreen -->
     <!-- Title of the screen where the user names an authenticator app -->
     <string name="AuthenticatorNameScreen__choose_a_name">انتخاب یک نام</string>
     <!-- Instructions shown above the name field when renaming an authenticator app -->
-    <string name="AuthenticatorNameScreen__choose_a_unique_name">Choose a unique name for this authenticator app.</string>
+    <string name="AuthenticatorNameScreen__choose_a_unique_name">یک نام منحصربه‌فرد برای این برنامه احراز هویت انتخاب کنید.</string>
     <!-- Instructions shown above the name field when naming a newly configured authenticator app -->
-    <string name="AuthenticatorNameScreen__choose_a_unique_name_to_help_you_identify_it">Choose a unique name for this authenticator app to help you identify it later.</string>
+    <string name="AuthenticatorNameScreen__choose_a_unique_name_to_help_you_identify_it">یک نام منحصربه‌فرد برای این برنامه احراز هویت انتخاب کنید تا بعداً بتوانید آن را شناسایی کنید.</string>
     <!-- Label of the name field -->
     <string name="AuthenticatorNameScreen__name">نام</string>
     <!-- Button that submits the entered name -->
     <string name="AuthenticatorNameScreen__next">بعدی</string>
     <!-- Toast shown after an authenticator app has been successfully set up -->
-    <string name="AuthenticatorNameScreen__authenticator_app_set_up">Authenticator app set up</string>
+    <string name="AuthenticatorNameScreen__authenticator_app_set_up">راه‌اندازی برنامه احراز هویت</string>
     <!-- Toast shown after an authenticator app has been renamed -->
-    <string name="AuthenticatorNameScreen__authenticator_app_renamed">Authenticator app renamed</string>
+    <string name="AuthenticatorNameScreen__authenticator_app_renamed">برنامه احراز هویت تغییر نام داد</string>
 </resources>

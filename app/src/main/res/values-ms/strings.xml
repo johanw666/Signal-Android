@@ -5815,7 +5815,7 @@
     <!-- Description for toggle row to control replies settings while muted -->
     <string name="MutedNotificationsFragment__replies_body">Berikan pemberitahuan apabila seseorang membalas mesej anda semasa sembang ini diredamkan.</string>
     <!-- Description for toggle row to control unread reminders while muted -->
-    <string name="MutedNotificationsFragment__unread_body">Occasionally notify when there are unread messages while this chat is muted.</string>
+    <string name="MutedNotificationsFragment__unread_body">Kadangkala maklumkan apabila terdapat mesej yang belum dibaca semasa sembang ini dibisukan.</string>
 
     <!-- NotificationProfilesFragment -->
     <!-- Title for notification profiles screen that shows all existing profiles; Title with hyphenation. Translation can use soft hyphen - Unicode U+00AD -->
@@ -6170,7 +6170,7 @@
     <!-- Content description for the edit icon displayed over the currently selected avatar. -->
     <string name="AvatarPickerFragment__edit_avatar">Edit avatar</string>
     <!-- Accessibility label describing the menu shown when long pressing one of your saved avatars. -->
-    <string name="AvatarPickerFragment__avatar_options">Avatar options</string>
+    <string name="AvatarPickerFragment__avatar_options">Pilihan Avatar</string>
     <string name="AvatarPickerRepository__failed_to_save_avatar">Gagal menyimpan avatar</string>
 
     <!-- TextAvatarCreationFragment -->
@@ -9766,12 +9766,12 @@
     </plurals>
     <!-- Notification placeholder for unread messages -->
     <plurals name="UnreadReminderJob__messages">
-        <item quantity="other">%1$d mesej yang belum dibaca</item>
+        <item quantity="other">%1$d unread messages</item>
     </plurals>
     <!-- Notification placeholder for a single recipient who sent unread messages -->
     <string name="UnreadReminderJob__authors_one">%1$s</string>
     <!-- Notification placeholder for two recipients who sent unread messages -->
-    <string name="UnreadReminderJob__authors_two">%1$s dan %2$s</string>
+    <string name="UnreadReminderJob__authors_two">%1$s and %2$s</string>
     <!-- Notification placeholder for three or more recipients who sent unread messages -->
     <string name="UnreadReminderJob__authors_many">%1$s and others</string>
     <!-- Notification placeholder that sums up a single unread mention. Placeholder is the name of the person who sent the message -->

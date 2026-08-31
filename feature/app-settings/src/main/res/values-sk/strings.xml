@@ -12,14 +12,14 @@
     <string name="RegistrationLockFragment__switch_keyboard">Prepnúť klávesnicu</string>
     <string name="preferences_chats__transfer_account">Preniesť účet</string>
     <string name="preferences_chats__transfer_account_to_a_new_android_device">Preniesť účet do nového Android zariadenia</string>
-    <string name="preferences_app_protection__signal_pin">Signal PIN kód</string>
-    <string name="preferences_app_protection__create_a_pin">Vytvoriť si PIN</string>
-    <string name="preferences_app_protection__change_your_pin">Zmente si PIN</string>
+    <string name="preferences_app_protection__signal_pin">Signal PIN</string>
+    <string name="preferences_app_protection__create_a_pin">Vytvorte si PIN</string>
+    <string name="preferences_app_protection__change_your_pin">Zmeňte si PIN</string>
     <string name="preferences_app_protection__pin_reminders">PIN pripomienky</string>
     <string name="preferences_app_protection__turn_off">Vypnúť</string>
     <string name="preferences_app_protection__confirm_pin">Potvrďte PIN</string>
-    <string name="preferences_app_protection__confirm_your_signal_pin">Overte váš PIN pre Signal</string>
-    <string name="preferences_app_protection__make_sure_you_memorize_or_securely_store_your_pin">Uistite sa, že si svoj PIN pamätáte, alebo že ho máte bezpečne uložený, pretože ho nie je možné obnoviť. Ak váš PIN zabudnete, mohli by ste stratiť dáta pri opätovnej registrácii vášho Signal účtu.</string>
+    <string name="preferences_app_protection__confirm_your_signal_pin">Potvrďte svoj Signal PIN</string>
+    <string name="preferences_app_protection__make_sure_you_memorize_or_securely_store_your_pin">Uistite sa, že si svoj PIN pamätáte, alebo že ho máte bezpečne uložený, pretože ho nie je možné obnoviť. Ak svoj PIN zabudnete, mohli by ste stratiť údaje pri opätovnej registrácii vášho Signal účtu.</string>
     <string name="preferences_app_protection__incorrect_pin_try_again">Nesprávny PIN. Skúste to znova.</string>
     <string name="preferences_app_protection__registration_lock">Registračný zámok</string>
     <!-- Option in settings that will take use to re-register if they are no longer registered -->
@@ -40,7 +40,7 @@
     <!-- AccountSettingsFragment -->
     <string name="AccountSettingsFragment__account">Účet</string>
     <string name="AccountSettingsFragment__youll_be_asked_less_frequently">Postupom času sa vás budeme pýtať menej často</string>
-    <string name="AccountSettingsFragment__require_your_signal_pin">Na opätovné zaregistrovanie telefónneho čísla v aplikácii Signal si vyžiadajte svoj Signal PIN</string>
+    <string name="AccountSettingsFragment__require_your_signal_pin">Na opätovné zaregistrovanie telefónneho čísla v aplikácii Signal vyžadovať váš Signal PIN</string>
     <string name="AccountSettingsFragment__change_phone_number">Zmeniť telefónne číslo</string>
     <!-- Account setting that allows user to request and export their signal account data -->
     <string name="AccountSettingsFragment__request_account_data">Údaje o vašom účte</string>
@@ -62,24 +62,24 @@
     <!-- Account setting that takes the user to the authenticator app setup flow -->
     <string name="AccountSettingsFragment__authenticator_app">Aplikácia na autentifikáciu</string>
     <!-- Description of the authenticator app setting when none are configured -->
-    <string name="AccountSettingsFragment__one_time_verification_codes">One-time verification codes</string>
+    <string name="AccountSettingsFragment__one_time_verification_codes">Jednorazové overovacie kódy</string>
     <!-- Description of the authenticator app setting saying how many are configured -->
     <plurals name="AccountSettingsFragment__d_configured">
-        <item quantity="one">%1$d configured</item>
-        <item quantity="few">%1$d configured</item>
-        <item quantity="many">%1$d configured</item>
-        <item quantity="other">%1$d configured</item>
+        <item quantity="one">%1$d nastavený</item>
+        <item quantity="few">%1$d nastavené</item>
+        <item quantity="many">%1$d nastavených</item>
+        <item quantity="other">%1$d nastavených</item>
     </plurals>
     <!-- Account setting that takes the user to the passkeys screen -->
-    <string name="AccountSettingsFragment__passkeys">Passkeys</string>
+    <string name="AccountSettingsFragment__passkeys">Prístupové kľúče</string>
     <!-- Description of the passkeys setting when none exist -->
-    <string name="AccountSettingsFragment__device_biometrics_or_fido2_security_key">Device biometrics or FIDO2 security key</string>
+    <string name="AccountSettingsFragment__device_biometrics_or_fido2_security_key">Biometrické údaje zariadenia alebo bezpečnostný kľúč FIDO2</string>
     <!-- Description of the passkeys setting saying how many exist -->
     <plurals name="AccountSettingsFragment__d_passkeys">
-        <item quantity="one">%1$d passkey</item>
-        <item quantity="few">%1$d passkeys</item>
-        <item quantity="many">%1$d passkeys</item>
-        <item quantity="other">%1$d passkeys</item>
+        <item quantity="one">%1$d prístupový kľúč</item>
+        <item quantity="few">%1$d prístupové kľúče</item>
+        <item quantity="many">%1$d prístupových kľúčov</item>
+        <item quantity="other">%1$d prístupových kľúčov</item>
     </plurals>
     <!-- Description of two-factor authentication, shown below the two-factor authentication rows -->
     <string name="AccountSettingsFragment__use_a_second_form_of_authentication">Použite ďalšiu formu autentifikácie, aby ste ochránili svoj účet pri používaní Signal Loginu na novom zariadení.</string>
@@ -88,7 +88,7 @@
 
     <!-- AuthenticatorSetupScreen -->
     <!-- Title of the screen that walks the user through setting up an authenticator app -->
-    <string name="AuthenticatorSetupScreen__set_up_your_authenticator_app">Set up your authenticator app</string>
+    <string name="AuthenticatorSetupScreen__set_up_your_authenticator_app">Nastavte si aplikáciu na autentifikáciu</string>
     <!-- Instructions shown at the top of the authenticator app setup screen -->
     <string name="AuthenticatorSetupScreen__follow_these_steps">Postupujte podľa týchto pokynov pre nastavenie vašej aplikácie na autentifikáciu.</string>
     <!-- Clickable text that takes the user to a support article -->
@@ -120,27 +120,27 @@
 
     <!-- PasskeysScreen -->
     <!-- Title of the screen where the user sets up passkeys -->
-    <string name="PasskeysScreen__passkeys">Passkeys</string>
+    <string name="PasskeysScreen__passkeys">Prístupové kľúče</string>
     <!-- Description of passkeys shown at the top of the screen -->
-    <string name="PasskeysScreen__with_passkeys_you_can_easily_add">With passkeys you can easily add a secure second form of authentication to your account. Passkeys can use your device\'s biometrics or a compatible FIDO2 security key.</string>
+    <string name="PasskeysScreen__with_passkeys_you_can_easily_add">Pomocou prístupových kľúčov môžete k svojmu účtu ľahko pridať druhú bezpečnostnú formu overenia. Prístupové kľúče môžu používať biometrické údaje vášho zariadenia alebo kompatibilný bezpečnostný kľúč FIDO2.</string>
     <!-- Clickable text that takes the user to a support article -->
     <string name="PasskeysScreen__learn_more">Zistiť viac</string>
     <!-- Bullet point explaining that a passkey can be given a name -->
-    <string name="PasskeysScreen__give_your_passkey_a_friendly_name">Give your passkey a friendly name to identify it</string>
+    <string name="PasskeysScreen__give_your_passkey_a_friendly_name">Dajte svojmu prístupovému kľúču priateľský názov pre ľahkú identifikáciu</string>
     <!-- Bullet point explaining how a passkey is stored -->
-    <string name="PasskeysScreen__use_your_devices_biometrics">Use your device\'s biometrics or a FIDO2 security key to store your passkey</string>
+    <string name="PasskeysScreen__use_your_devices_biometrics">Na uloženie prístupového kľúča použite biometrické údaje svojho zariadenia alebo bezpečnostný kľúč FIDO2</string>
     <!-- Bullet point explaining that passkeys can be added and removed -->
-    <string name="PasskeysScreen__add_or_remove_passkeys_at_anytime">Add or remove passkeys at anytime.</string>
+    <string name="PasskeysScreen__add_or_remove_passkeys_at_anytime">Prístupové kľúče môžete kedykoľvek pridať alebo odstrániť.</string>
     <!-- Button that starts creating a passkey -->
-    <string name="PasskeysScreen__set_up_a_passkey">Set up a passkey</string>
+    <string name="PasskeysScreen__set_up_a_passkey">Nastaviť prístupový kľúč</string>
     <!-- Description of passkeys shown at the top of the screen once some already exist -->
-    <string name="PasskeysScreen__set_up_a_passkey_with">Set up a passkey with your device\'s biometrics or a compatible FIDO2 security key.</string>
+    <string name="PasskeysScreen__set_up_a_passkey_with">Nastavte si prístupový kľúč s biometrickými údajmi vášho zariadenia alebo kompatibilným bezpečnostným kľúčom FIDO2.</string>
     <!-- Button that starts creating a passkey once some already exist -->
-    <string name="PasskeysScreen__add_a_new_passkey">Add a new passkey</string>
+    <string name="PasskeysScreen__add_a_new_passkey">Pridať nový prístupový kľúč</string>
     <!-- Label under a passkey\'s name saying when it was added. The placeholder is a relative time like "today, 11:00 AM" -->
-    <string name="PasskeysScreen__added_s">Pridaný/á \"%1$s\"</string>
+    <string name="PasskeysScreen__added_s">Pridaný „%1$s“</string>
     <!-- Accessibility description of the button that opens a passkey\'s menu -->
-    <string name="PasskeysScreen__open_passkey_options">Open passkey options</string>
+    <string name="PasskeysScreen__open_passkey_options">Otvoriť možnosti prístupového kľúča</string>
     <!-- Menu option that renames a passkey -->
     <string name="PasskeysScreen__rename">Premenovať</string>
     <!-- Menu option that removes a passkey -->
@@ -159,47 +159,47 @@
     <!-- Title of the screen listing the authenticator apps on the account -->
     <string name="AuthenticatorAppsScreen__authenticator_app">Aplikácia na autentifikáciu</string>
     <!-- Description of what an authenticator app is for, shown at the top of the screen -->
-    <string name="AuthenticatorAppsScreen__set_up_an_authenticator_app">Set up an authenticator app to generate one-time verification codes</string>
+    <string name="AuthenticatorAppsScreen__set_up_an_authenticator_app">Nastavte aplikáciu na autentifikáciu na generovanie jednorazových overovacích kódov</string>
     <!-- Clickable text that takes the user to a support article -->
     <string name="AuthenticatorAppsScreen__learn_more">Zistiť viac</string>
     <!-- Button that starts setting up another authenticator app -->
-    <string name="AuthenticatorAppsScreen__add_authenticator_app">Add authenticator app</string>
+    <string name="AuthenticatorAppsScreen__add_authenticator_app">Pridať aplikáciu na autentifikáciu</string>
     <!-- Section header above the list of configured authenticator apps -->
-    <string name="AuthenticatorAppsScreen__authenticator_apps">Authenticator apps</string>
+    <string name="AuthenticatorAppsScreen__authenticator_apps">Aplikácie na autentifikáciu</string>
     <!-- Shown in place of the list when no authenticator apps are configured -->
-    <string name="AuthenticatorAppsScreen__no_authenticator_apps">No authenticator apps</string>
+    <string name="AuthenticatorAppsScreen__no_authenticator_apps">Žiadne aplikácie na autentifikáciu</string>
     <!-- Subtitle of an authenticator app row saying when it was configured. Placeholder is a date or time. -->
-    <string name="AuthenticatorAppsScreen__added_s">Pridaný/á \"%1$s\"</string>
+    <string name="AuthenticatorAppsScreen__added_s">Pridaný „%1$s“</string>
     <!-- Content description of the button that opens an authenticator app\'s options -->
-    <string name="AuthenticatorAppsScreen__open_authenticator_app_options">Open authenticator app options</string>
+    <string name="AuthenticatorAppsScreen__open_authenticator_app_options">Otvoriť možnosti aplikácie na autentifikáciu</string>
     <!-- Menu option that renames an authenticator app -->
     <string name="AuthenticatorAppsScreen__rename">Premenovať</string>
     <!-- Menu option that removes an authenticator app -->
     <string name="AuthenticatorAppsScreen__remove">Odstrániť</string>
     <!-- Title of the dialog confirming removal of an authenticator app -->
-    <string name="AuthenticatorAppsScreen__remove_authenticator_app">Remove authenticator app?</string>
+    <string name="AuthenticatorAppsScreen__remove_authenticator_app">Odstrániť aplikáciu na autentifikáciu?</string>
     <!-- Body of the dialog confirming removal of an authenticator app -->
-    <string name="AuthenticatorAppsScreen__to_remove_this_authentication_method">To remove this authentication method the 6-digit code from your authenticator app is required.</string>
+    <string name="AuthenticatorAppsScreen__to_remove_this_authentication_method">Na odstránenie tejto metódy overovania je potrebný 6-miestny kód z vašej aplikácie na autentifikáciu.</string>
     <!-- Title of the dialog shown when the account already has as many authenticator apps as it\'s allowed -->
-    <string name="AuthenticatorAppsScreen__cant_add_authenticator_app">Can\'t add authenticator app</string>
+    <string name="AuthenticatorAppsScreen__cant_add_authenticator_app">Nie je možné pridať aplikáciu na autentifikáciu</string>
     <!-- Body of the dialog shown when the account already has as many authenticator apps as it\'s allowed -->
-    <string name="AuthenticatorAppsScreen__you_cant_add_more_than_d">You can\'t add more than %1$d authenticator apps. Try removing one first.</string>
+    <string name="AuthenticatorAppsScreen__you_cant_add_more_than_d">Nemôžete pridať viac ako %1$d aplikácie na autentifikáciu. Skúste najprv jednu odstrániť.</string>
     <!-- Toast shown after an authenticator app has been removed -->
-    <string name="AuthenticatorAppsScreen__authenticator_app_removed">Authenticator app removed</string>
+    <string name="AuthenticatorAppsScreen__authenticator_app_removed">Aplikácia na autentifikáciu bola odstránená</string>
 
     <!-- AuthenticatorNameScreen -->
     <!-- Title of the screen where the user names an authenticator app -->
-    <string name="AuthenticatorNameScreen__choose_a_name">Zvoľte názov</string>
+    <string name="AuthenticatorNameScreen__choose_a_name">Zvoliť názov</string>
     <!-- Instructions shown above the name field when renaming an authenticator app -->
-    <string name="AuthenticatorNameScreen__choose_a_unique_name">Choose a unique name for this authenticator app.</string>
+    <string name="AuthenticatorNameScreen__choose_a_unique_name">Vyberte si jedinečný názov pre túto aplikáciu na autentifikáciu.</string>
     <!-- Instructions shown above the name field when naming a newly configured authenticator app -->
-    <string name="AuthenticatorNameScreen__choose_a_unique_name_to_help_you_identify_it">Choose a unique name for this authenticator app to help you identify it later.</string>
+    <string name="AuthenticatorNameScreen__choose_a_unique_name_to_help_you_identify_it">Vyberte si jedinečný názov pre túto aplikáciu na autentifikáciu, aby ste ju mohli ľahšie identifikovať.</string>
     <!-- Label of the name field -->
     <string name="AuthenticatorNameScreen__name">Názov</string>
     <!-- Button that submits the entered name -->
     <string name="AuthenticatorNameScreen__next">Ďalej</string>
     <!-- Toast shown after an authenticator app has been successfully set up -->
-    <string name="AuthenticatorNameScreen__authenticator_app_set_up">Authenticator app set up</string>
+    <string name="AuthenticatorNameScreen__authenticator_app_set_up">Aplikácia na autentifikáciu bola nastavená</string>
     <!-- Toast shown after an authenticator app has been renamed -->
-    <string name="AuthenticatorNameScreen__authenticator_app_renamed">Authenticator app renamed</string>
+    <string name="AuthenticatorNameScreen__authenticator_app_renamed">Aplikácia na autentifikáciu bola premenovaná</string>
 </resources>

@@ -59,18 +59,18 @@
     <!-- Account setting that takes the user to the authenticator app setup flow -->
     <string name="AccountSettingsFragment__authenticator_app">驗證 APP</string>
     <!-- Description of the authenticator app setting when none are configured -->
-    <string name="AccountSettingsFragment__one_time_verification_codes">One-time verification codes</string>
+    <string name="AccountSettingsFragment__one_time_verification_codes">一次性驗證碼</string>
     <!-- Description of the authenticator app setting saying how many are configured -->
     <plurals name="AccountSettingsFragment__d_configured">
-        <item quantity="other">%1$d configured</item>
+        <item quantity="other">整咗 %1$d 個設置</item>
     </plurals>
     <!-- Account setting that takes the user to the passkeys screen -->
-    <string name="AccountSettingsFragment__passkeys">Passkeys</string>
+    <string name="AccountSettingsFragment__passkeys">通行密鑰</string>
     <!-- Description of the passkeys setting when none exist -->
-    <string name="AccountSettingsFragment__device_biometrics_or_fido2_security_key">Device biometrics or FIDO2 security key</string>
+    <string name="AccountSettingsFragment__device_biometrics_or_fido2_security_key">裝置生物辨識或者 FIDO2 安全金鑰</string>
     <!-- Description of the passkeys setting saying how many exist -->
     <plurals name="AccountSettingsFragment__d_passkeys">
-        <item quantity="other">%1$d passkeys</item>
+        <item quantity="other">%1$d 個通行密鑰</item>
     </plurals>
     <!-- Description of two-factor authentication, shown below the two-factor authentication rows -->
     <string name="AccountSettingsFragment__use_a_second_form_of_authentication">當你喺新機上面用 Signal Login 嗰陣，請用第二種驗證方式嚟保護你嘅帳戶。</string>
@@ -79,7 +79,7 @@
 
     <!-- AuthenticatorSetupScreen -->
     <!-- Title of the screen that walks the user through setting up an authenticator app -->
-    <string name="AuthenticatorSetupScreen__set_up_your_authenticator_app">Set up your authenticator app</string>
+    <string name="AuthenticatorSetupScreen__set_up_your_authenticator_app">設定你嘅驗證 APP</string>
     <!-- Instructions shown at the top of the authenticator app setup screen -->
     <string name="AuthenticatorSetupScreen__follow_these_steps">跟住下面步驟設定你嘅驗證 APP。</string>
     <!-- Clickable text that takes the user to a support article -->
@@ -111,27 +111,27 @@
 
     <!-- PasskeysScreen -->
     <!-- Title of the screen where the user sets up passkeys -->
-    <string name="PasskeysScreen__passkeys">Passkeys</string>
+    <string name="PasskeysScreen__passkeys">通行密鑰</string>
     <!-- Description of passkeys shown at the top of the screen -->
-    <string name="PasskeysScreen__with_passkeys_you_can_easily_add">With passkeys you can easily add a secure second form of authentication to your account. Passkeys can use your device\'s biometrics or a compatible FIDO2 security key.</string>
+    <string name="PasskeysScreen__with_passkeys_you_can_easily_add">有咗通行密鑰，你就可以輕鬆為帳戶加個安全嘅第二重驗證方式。通行密鑰可以用裝置嘅生物辨識，或者相容嘅 FIDO2 安全金鑰。</string>
     <!-- Clickable text that takes the user to a support article -->
     <string name="PasskeysScreen__learn_more">了解詳情</string>
     <!-- Bullet point explaining that a passkey can be given a name -->
-    <string name="PasskeysScreen__give_your_passkey_a_friendly_name">Give your passkey a friendly name to identify it</string>
+    <string name="PasskeysScreen__give_your_passkey_a_friendly_name">為你嘅通行密鑰設定個容易辨認嘅名</string>
     <!-- Bullet point explaining how a passkey is stored -->
-    <string name="PasskeysScreen__use_your_devices_biometrics">Use your device\'s biometrics or a FIDO2 security key to store your passkey</string>
+    <string name="PasskeysScreen__use_your_devices_biometrics">用裝置嘅生物辨識或者 FIDO2 安全金鑰嚟儲存你嘅通行密鑰</string>
     <!-- Bullet point explaining that passkeys can be added and removed -->
-    <string name="PasskeysScreen__add_or_remove_passkeys_at_anytime">Add or remove passkeys at anytime.</string>
+    <string name="PasskeysScreen__add_or_remove_passkeys_at_anytime">隨時加入或者移除通行密鑰。</string>
     <!-- Button that starts creating a passkey -->
-    <string name="PasskeysScreen__set_up_a_passkey">Set up a passkey</string>
+    <string name="PasskeysScreen__set_up_a_passkey">設定通行密鑰</string>
     <!-- Description of passkeys shown at the top of the screen once some already exist -->
-    <string name="PasskeysScreen__set_up_a_passkey_with">Set up a passkey with your device\'s biometrics or a compatible FIDO2 security key.</string>
+    <string name="PasskeysScreen__set_up_a_passkey_with">用裝置嘅生物辨識功能或者相容嘅 FIDO2 安全金鑰嚟設定通行密鑰。</string>
     <!-- Button that starts creating a passkey once some already exist -->
-    <string name="PasskeysScreen__add_a_new_passkey">Add a new passkey</string>
+    <string name="PasskeysScreen__add_a_new_passkey">加新嘅通行密鑰</string>
     <!-- Label under a passkey\'s name saying when it was added. The placeholder is a relative time like "today, 11:00 AM" -->
     <string name="PasskeysScreen__added_s">已加咗「%1$s」</string>
     <!-- Accessibility description of the button that opens a passkey\'s menu -->
-    <string name="PasskeysScreen__open_passkey_options">Open passkey options</string>
+    <string name="PasskeysScreen__open_passkey_options">打開通行密鑰選項</string>
     <!-- Menu option that renames a passkey -->
     <string name="PasskeysScreen__rename">重新命名</string>
     <!-- Menu option that removes a passkey -->
@@ -150,47 +150,47 @@
     <!-- Title of the screen listing the authenticator apps on the account -->
     <string name="AuthenticatorAppsScreen__authenticator_app">驗證 APP</string>
     <!-- Description of what an authenticator app is for, shown at the top of the screen -->
-    <string name="AuthenticatorAppsScreen__set_up_an_authenticator_app">Set up an authenticator app to generate one-time verification codes</string>
+    <string name="AuthenticatorAppsScreen__set_up_an_authenticator_app">設定驗證 APP 嚟產生一次性驗證碼</string>
     <!-- Clickable text that takes the user to a support article -->
     <string name="AuthenticatorAppsScreen__learn_more">了解詳情</string>
     <!-- Button that starts setting up another authenticator app -->
-    <string name="AuthenticatorAppsScreen__add_authenticator_app">Add authenticator app</string>
+    <string name="AuthenticatorAppsScreen__add_authenticator_app">加驗證 APP</string>
     <!-- Section header above the list of configured authenticator apps -->
-    <string name="AuthenticatorAppsScreen__authenticator_apps">Authenticator apps</string>
+    <string name="AuthenticatorAppsScreen__authenticator_apps">驗證 APP</string>
     <!-- Shown in place of the list when no authenticator apps are configured -->
-    <string name="AuthenticatorAppsScreen__no_authenticator_apps">No authenticator apps</string>
+    <string name="AuthenticatorAppsScreen__no_authenticator_apps">冇驗證 APP</string>
     <!-- Subtitle of an authenticator app row saying when it was configured. Placeholder is a date or time. -->
     <string name="AuthenticatorAppsScreen__added_s">已加咗「%1$s」</string>
     <!-- Content description of the button that opens an authenticator app\'s options -->
-    <string name="AuthenticatorAppsScreen__open_authenticator_app_options">Open authenticator app options</string>
+    <string name="AuthenticatorAppsScreen__open_authenticator_app_options">打開驗證 APP 選項</string>
     <!-- Menu option that renames an authenticator app -->
     <string name="AuthenticatorAppsScreen__rename">重新命名</string>
     <!-- Menu option that removes an authenticator app -->
     <string name="AuthenticatorAppsScreen__remove">移除</string>
     <!-- Title of the dialog confirming removal of an authenticator app -->
-    <string name="AuthenticatorAppsScreen__remove_authenticator_app">Remove authenticator app?</string>
+    <string name="AuthenticatorAppsScreen__remove_authenticator_app">係咪要移除驗證 APP？</string>
     <!-- Body of the dialog confirming removal of an authenticator app -->
-    <string name="AuthenticatorAppsScreen__to_remove_this_authentication_method">To remove this authentication method the 6-digit code from your authenticator app is required.</string>
+    <string name="AuthenticatorAppsScreen__to_remove_this_authentication_method">要移除呢個驗證方式，你需要喺驗證 APP 入面攞個 6 位數驗證碼。</string>
     <!-- Title of the dialog shown when the account already has as many authenticator apps as it\'s allowed -->
-    <string name="AuthenticatorAppsScreen__cant_add_authenticator_app">Can\'t add authenticator app</string>
+    <string name="AuthenticatorAppsScreen__cant_add_authenticator_app">加唔到驗證 APP</string>
     <!-- Body of the dialog shown when the account already has as many authenticator apps as it\'s allowed -->
-    <string name="AuthenticatorAppsScreen__you_cant_add_more_than_d">You can\'t add more than %1$d authenticator apps. Try removing one first.</string>
+    <string name="AuthenticatorAppsScreen__you_cant_add_more_than_d">你冇得加超過 %1$d 個驗證 APP。試下先移除一個。</string>
     <!-- Toast shown after an authenticator app has been removed -->
-    <string name="AuthenticatorAppsScreen__authenticator_app_removed">Authenticator app removed</string>
+    <string name="AuthenticatorAppsScreen__authenticator_app_removed">驗證 APP 剷走咗</string>
 
     <!-- AuthenticatorNameScreen -->
     <!-- Title of the screen where the user names an authenticator app -->
     <string name="AuthenticatorNameScreen__choose_a_name">揀個名</string>
     <!-- Instructions shown above the name field when renaming an authenticator app -->
-    <string name="AuthenticatorNameScreen__choose_a_unique_name">Choose a unique name for this authenticator app.</string>
+    <string name="AuthenticatorNameScreen__choose_a_unique_name">為呢個驗證 APP 揀個特別嘅名。</string>
     <!-- Instructions shown above the name field when naming a newly configured authenticator app -->
-    <string name="AuthenticatorNameScreen__choose_a_unique_name_to_help_you_identify_it">Choose a unique name for this authenticator app to help you identify it later.</string>
+    <string name="AuthenticatorNameScreen__choose_a_unique_name_to_help_you_identify_it">為呢個驗證 APP 揀個特別嘅名，第時可以易啲認到佢。</string>
     <!-- Label of the name field -->
     <string name="AuthenticatorNameScreen__name">姓名</string>
     <!-- Button that submits the entered name -->
     <string name="AuthenticatorNameScreen__next">下一步</string>
     <!-- Toast shown after an authenticator app has been successfully set up -->
-    <string name="AuthenticatorNameScreen__authenticator_app_set_up">Authenticator app set up</string>
+    <string name="AuthenticatorNameScreen__authenticator_app_set_up">驗證 APP 設定</string>
     <!-- Toast shown after an authenticator app has been renamed -->
-    <string name="AuthenticatorNameScreen__authenticator_app_renamed">Authenticator app renamed</string>
+    <string name="AuthenticatorNameScreen__authenticator_app_renamed">驗證 APP 改咗名</string>
 </resources>

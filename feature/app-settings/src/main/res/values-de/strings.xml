@@ -76,7 +76,7 @@
         <item quantity="other">%1$d passkeys</item>
     </plurals>
     <!-- Description of two-factor authentication, shown below the two-factor authentication rows -->
-    <string name="AccountSettingsFragment__use_a_second_form_of_authentication">Nutze eine zweite Authentifizierungsmethode, um dein Konto zu schützen, wenn du deine Signal Login-Schlüssel auf einem neuen Gerät verwendest.</string>
+    <string name="AccountSettingsFragment__use_a_second_form_of_authentication">Nutze eine zweite Authentifizierungsmethode, um dein Konto zu schützen, wenn du Signal Login auf einem neuen Gerät verwendest.</string>
     <!-- Clickable text that takes the user to a support article -->
     <string name="AccountSettingsFragment__learn_more">Mehr erfahren</string>
 
@@ -98,7 +98,7 @@
     <!-- Button that opens the user\'s authenticator app -->
     <string name="AuthenticatorSetupScreen__open">Öffnen</string>
     <!-- Text above the setup key explaining that it can be entered by hand instead -->
-    <string name="AuthenticatorSetupScreen__or_you_can_copy_this_key">Oder kopiere diesen Schlüssel, um es manuell einzurichten.</string>
+    <string name="AuthenticatorSetupScreen__or_you_can_copy_this_key">Oder kopiere diesen Schlüssel für eine manuelle Einrichtung.</string>
     <!-- Button that copies the setup key to the clipboard -->
     <string name="AuthenticatorSetupScreen__copy">Kopieren</string>
     <!-- Toast shown after the setup key has been copied to the clipboard -->

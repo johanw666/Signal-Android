@@ -184,7 +184,7 @@
   <!-- Accessibility label for the send button in media selection -->
   <string name="CameraXFragment_send">Saada</string>
   <!-- Label shown below the elapsed time while a video recording is paused -->
-  <string name="CameraXFragment_paused">Paused</string>
+  <string name="CameraXFragment_paused">Pausil</string>
   <!-- Displayed in a permissions dialog when the user has denied access to hardware for image and video capture. -->
   <string name="CameraXFragment_signal_needs_the_recording_permissions_to_capture_video">Signal vajab videote salvestamiseks mikrofoni luba, kuid see on keelatud. Palun järka rakenduse seadetes, vali \"Load\" ning luba \"Mikrofon\" ja \"Kaamera\".</string>
 

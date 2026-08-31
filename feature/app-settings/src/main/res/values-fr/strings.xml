@@ -54,7 +54,7 @@
         <item quantity="other">%1$d clés</item>
     </plurals>
     <!-- Description of what a Signal Login is, shown below the Signal Login card -->
-    <string name="AccountSettingsFragment__your_signal_login_is_used_to_recover">Votre identifiant Signal vous permet de récupérer et de restaurer votre compte. Conservez ces clés en lieu sûr, dans un gestionnaire de mots de passe fiable.</string>
+    <string name="AccountSettingsFragment__your_signal_login_is_used_to_recover">Votre identifiant Signal vous permet d’accéder à votre compte et de le restaurer. Conservez ces clés en lieu sûr, dans un gestionnaire de mots de passe fiable.</string>
     <!-- Section header for the two-factor authentication section of account settings -->
     <string name="AccountSettingsFragment__two_factor_authentication">Authentification à deux facteurs</string>
     <!-- Account setting that takes the user to the authenticator app setup flow -->

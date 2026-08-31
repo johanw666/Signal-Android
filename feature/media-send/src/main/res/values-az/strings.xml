@@ -184,7 +184,7 @@
   <!-- Accessibility label for the send button in media selection -->
   <string name="CameraXFragment_send">Göndər</string>
   <!-- Label shown below the elapsed time while a video recording is paused -->
-  <string name="CameraXFragment_paused">Paused</string>
+  <string name="CameraXFragment_paused">Fasilə verildi</string>
   <!-- Displayed in a permissions dialog when the user has denied access to hardware for image and video capture. -->
   <string name="CameraXFragment_signal_needs_the_recording_permissions_to_capture_video">Signal-ın, video çəkmək üçün mikrofon icazəsinə ehtiyacı var, ancaq bu icazə birdəfəlik rədd edilib. Zəhmət olmasa tətbiq tənzimləmələrində \"İcazələr\"i seçib \"Mikrofon\" və \"Kamera\"nı fəallaşdırın.</string>
 

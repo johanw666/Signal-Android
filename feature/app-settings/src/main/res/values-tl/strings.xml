@@ -69,7 +69,7 @@
     <!-- Account setting that takes the user to the passkeys screen -->
     <string name="AccountSettingsFragment__passkeys">Passkeys</string>
     <!-- Description of the passkeys setting when none exist -->
-    <string name="AccountSettingsFragment__device_biometrics_or_fido2_security_key">Device biometrics or FIDO2 security key</string>
+    <string name="AccountSettingsFragment__device_biometrics_or_fido2_security_key">Device biometrics o FIDO2 security key</string>
     <!-- Description of the passkeys setting saying how many exist -->
     <plurals name="AccountSettingsFragment__d_passkeys">
         <item quantity="one">%1$d passkey</item>
@@ -82,7 +82,7 @@
 
     <!-- AuthenticatorSetupScreen -->
     <!-- Title of the screen that walks the user through setting up an authenticator app -->
-    <string name="AuthenticatorSetupScreen__set_up_your_authenticator_app">Set up your authenticator app</string>
+    <string name="AuthenticatorSetupScreen__set_up_your_authenticator_app">I-set up ang authenticator app mo</string>
     <!-- Instructions shown at the top of the authenticator app setup screen -->
     <string name="AuthenticatorSetupScreen__follow_these_steps">Sundin ang steps na ito para i-set up ang authenticator app mo.</string>
     <!-- Clickable text that takes the user to a support article -->
@@ -116,27 +116,27 @@
     <!-- Title of the screen where the user sets up passkeys -->
     <string name="PasskeysScreen__passkeys">Passkeys</string>
     <!-- Description of passkeys shown at the top of the screen -->
-    <string name="PasskeysScreen__with_passkeys_you_can_easily_add">With passkeys you can easily add a secure second form of authentication to your account. Passkeys can use your device\'s biometrics or a compatible FIDO2 security key.</string>
+    <string name="PasskeysScreen__with_passkeys_you_can_easily_add">Gamit ang passkeys, madali ka nang makakapaglagay ng secure na pangalawang uri ng authentication sa account mo. Maaaring gamitin ng passkeys ang biometrics ng device mo o ang isang compatible na FIDO2 security key.</string>
     <!-- Clickable text that takes the user to a support article -->
     <string name="PasskeysScreen__learn_more">Matuto pa</string>
     <!-- Bullet point explaining that a passkey can be given a name -->
-    <string name="PasskeysScreen__give_your_passkey_a_friendly_name">Give your passkey a friendly name to identify it</string>
+    <string name="PasskeysScreen__give_your_passkey_a_friendly_name">Bigyan ng madaling pangalan ang passkey mo para matukoy ito</string>
     <!-- Bullet point explaining how a passkey is stored -->
-    <string name="PasskeysScreen__use_your_devices_biometrics">Use your device\'s biometrics or a FIDO2 security key to store your passkey</string>
+    <string name="PasskeysScreen__use_your_devices_biometrics">Gamitin ang biometrics ng device mo o ang isang FIDO2 security key para ma-store ang iyong passkey</string>
     <!-- Bullet point explaining that passkeys can be added and removed -->
-    <string name="PasskeysScreen__add_or_remove_passkeys_at_anytime">Add or remove passkeys at anytime.</string>
+    <string name="PasskeysScreen__add_or_remove_passkeys_at_anytime">Mag-add o mag-alis ng passkeys anumang oras.</string>
     <!-- Button that starts creating a passkey -->
-    <string name="PasskeysScreen__set_up_a_passkey">Set up a passkey</string>
+    <string name="PasskeysScreen__set_up_a_passkey">Mag-set up ng passkey</string>
     <!-- Description of passkeys shown at the top of the screen once some already exist -->
-    <string name="PasskeysScreen__set_up_a_passkey_with">Set up a passkey with your device\'s biometrics or a compatible FIDO2 security key.</string>
+    <string name="PasskeysScreen__set_up_a_passkey_with">Mag-set up ng passkey gamit ang biometrics ng device mo o ang isang compatible na FIDO2 security key.</string>
     <!-- Button that starts creating a passkey once some already exist -->
-    <string name="PasskeysScreen__add_a_new_passkey">Add a new passkey</string>
+    <string name="PasskeysScreen__add_a_new_passkey">Mag-add ng bagong passkey</string>
     <!-- Label under a passkey\'s name saying when it was added. The placeholder is a relative time like "today, 11:00 AM" -->
-    <string name="PasskeysScreen__added_s">Added \"%1$s\"</string>
+    <string name="PasskeysScreen__added_s">In-add ang \"%1$s\"</string>
     <!-- Accessibility description of the button that opens a passkey\'s menu -->
-    <string name="PasskeysScreen__open_passkey_options">Open passkey options</string>
+    <string name="PasskeysScreen__open_passkey_options">Buksan ang passkey options</string>
     <!-- Menu option that renames a passkey -->
-    <string name="PasskeysScreen__rename">Rename</string>
+    <string name="PasskeysScreen__rename">I-rename</string>
     <!-- Menu option that removes a passkey -->
     <string name="PasskeysScreen__remove">Tanggalin</string>
 
@@ -153,47 +153,47 @@
     <!-- Title of the screen listing the authenticator apps on the account -->
     <string name="AuthenticatorAppsScreen__authenticator_app">Authenticator app</string>
     <!-- Description of what an authenticator app is for, shown at the top of the screen -->
-    <string name="AuthenticatorAppsScreen__set_up_an_authenticator_app">Set up an authenticator app to generate one-time verification codes</string>
+    <string name="AuthenticatorAppsScreen__set_up_an_authenticator_app">Mag-set up ng authenticator app para makagawa ng one-time verification codes</string>
     <!-- Clickable text that takes the user to a support article -->
     <string name="AuthenticatorAppsScreen__learn_more">Matuto pa</string>
     <!-- Button that starts setting up another authenticator app -->
-    <string name="AuthenticatorAppsScreen__add_authenticator_app">Add authenticator app</string>
+    <string name="AuthenticatorAppsScreen__add_authenticator_app">Mag-add ng authenticator app</string>
     <!-- Section header above the list of configured authenticator apps -->
     <string name="AuthenticatorAppsScreen__authenticator_apps">Authenticator apps</string>
     <!-- Shown in place of the list when no authenticator apps are configured -->
-    <string name="AuthenticatorAppsScreen__no_authenticator_apps">No authenticator apps</string>
+    <string name="AuthenticatorAppsScreen__no_authenticator_apps">Walang authenticator app</string>
     <!-- Subtitle of an authenticator app row saying when it was configured. Placeholder is a date or time. -->
-    <string name="AuthenticatorAppsScreen__added_s">Added \"%1$s\"</string>
+    <string name="AuthenticatorAppsScreen__added_s">In-add ang \"%1$s\"</string>
     <!-- Content description of the button that opens an authenticator app\'s options -->
-    <string name="AuthenticatorAppsScreen__open_authenticator_app_options">Open authenticator app options</string>
+    <string name="AuthenticatorAppsScreen__open_authenticator_app_options">Buksan ang authenticator app options</string>
     <!-- Menu option that renames an authenticator app -->
-    <string name="AuthenticatorAppsScreen__rename">Rename</string>
+    <string name="AuthenticatorAppsScreen__rename">I-rename</string>
     <!-- Menu option that removes an authenticator app -->
     <string name="AuthenticatorAppsScreen__remove">Tanggalin</string>
     <!-- Title of the dialog confirming removal of an authenticator app -->
-    <string name="AuthenticatorAppsScreen__remove_authenticator_app">Remove authenticator app?</string>
+    <string name="AuthenticatorAppsScreen__remove_authenticator_app">Tanggalin ang authenticator app?</string>
     <!-- Body of the dialog confirming removal of an authenticator app -->
-    <string name="AuthenticatorAppsScreen__to_remove_this_authentication_method">To remove this authentication method the 6-digit code from your authenticator app is required.</string>
+    <string name="AuthenticatorAppsScreen__to_remove_this_authentication_method">Para tanggalin ang authentication method na ito, kailangan ang 6-digit code mula sa iyong authenticator app.</string>
     <!-- Title of the dialog shown when the account already has as many authenticator apps as it\'s allowed -->
-    <string name="AuthenticatorAppsScreen__cant_add_authenticator_app">Can\'t add authenticator app</string>
+    <string name="AuthenticatorAppsScreen__cant_add_authenticator_app">Hindi makapag-add ang authenticator app</string>
     <!-- Body of the dialog shown when the account already has as many authenticator apps as it\'s allowed -->
-    <string name="AuthenticatorAppsScreen__you_cant_add_more_than_d">You can\'t add more than %1$d authenticator apps. Try removing one first.</string>
+    <string name="AuthenticatorAppsScreen__you_cant_add_more_than_d">Hindi ka maaaring mag-add ng higit sa %1$d authenticator apps. Subukan munang magtanggal ng isa.</string>
     <!-- Toast shown after an authenticator app has been removed -->
-    <string name="AuthenticatorAppsScreen__authenticator_app_removed">Authenticator app removed</string>
+    <string name="AuthenticatorAppsScreen__authenticator_app_removed">Tinanggal ang authenticator app</string>
 
     <!-- AuthenticatorNameScreen -->
     <!-- Title of the screen where the user names an authenticator app -->
-    <string name="AuthenticatorNameScreen__choose_a_name">Choose a name</string>
+    <string name="AuthenticatorNameScreen__choose_a_name">Pumil ng pangalan</string>
     <!-- Instructions shown above the name field when renaming an authenticator app -->
-    <string name="AuthenticatorNameScreen__choose_a_unique_name">Choose a unique name for this authenticator app.</string>
+    <string name="AuthenticatorNameScreen__choose_a_unique_name">Pumili ng unique na pangalan para sa authenticator app na ito.</string>
     <!-- Instructions shown above the name field when naming a newly configured authenticator app -->
-    <string name="AuthenticatorNameScreen__choose_a_unique_name_to_help_you_identify_it">Choose a unique name for this authenticator app to help you identify it later.</string>
+    <string name="AuthenticatorNameScreen__choose_a_unique_name_to_help_you_identify_it">Pumili ng unique na pangalan para sa authenticator app na ito para madali itong matukoy sa susunod.</string>
     <!-- Label of the name field -->
     <string name="AuthenticatorNameScreen__name">Pangalan</string>
     <!-- Button that submits the entered name -->
     <string name="AuthenticatorNameScreen__next">Susunod</string>
     <!-- Toast shown after an authenticator app has been successfully set up -->
-    <string name="AuthenticatorNameScreen__authenticator_app_set_up">Authenticator app set up</string>
+    <string name="AuthenticatorNameScreen__authenticator_app_set_up">Na-set up ang authenticator app</string>
     <!-- Toast shown after an authenticator app has been renamed -->
-    <string name="AuthenticatorNameScreen__authenticator_app_renamed">Authenticator app renamed</string>
+    <string name="AuthenticatorNameScreen__authenticator_app_renamed">Ni-rename ang authenticator app</string>
 </resources>

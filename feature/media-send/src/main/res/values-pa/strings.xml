@@ -184,7 +184,7 @@
   <!-- Accessibility label for the send button in media selection -->
   <string name="CameraXFragment_send">ਭੇਜੋ</string>
   <!-- Label shown below the elapsed time while a video recording is paused -->
-  <string name="CameraXFragment_paused">Paused</string>
+  <string name="CameraXFragment_paused">ਰੋਕਿਆ ਗਿਆ</string>
   <!-- Displayed in a permissions dialog when the user has denied access to hardware for image and video capture. -->
   <string name="CameraXFragment_signal_needs_the_recording_permissions_to_capture_video">ਵੀਡੀਓ ਨੂੰ ਰਿਕਾਰਡ ਕਰਨ ਲਈ Signal ਨੂੰ ਮਾਈਕ੍ਰੋਫ਼ੋਨ ਸੰਬੰਧੀ ਇਜਾਜ਼ਤਾਂ ਦੀ ਲੋੜ ਹੈ, ਪਰ ਇਹਨਾਂ ਇਜਾਜ਼ਤਾਂ ਲਈ ਇਨਕਾਰ ਕਰ ਦਿੱਤਾ ਗਿਆ ਹੈ। ਕਿਰਪਾ ਕਰਕੇ ਐਪ ਦੀਆਂ ਸੈਟਿੰਗਾਂ ਵਿੱਚ ਜਾਓ, \"ਇਜਾਜ਼ਤਾਂ\" ਨੂੰ ਚੁਣੋ, ਅਤੇ \"ਮਾਈਕ੍ਰੋਫ਼ੋਨ\" ਅਤੇ \"ਕੈਮਰਾ\" ਨੂੰ ਸਮਰੱਥ ਕਰੋ।</string>
 

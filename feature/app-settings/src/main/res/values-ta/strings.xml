@@ -60,20 +60,20 @@
     <!-- Account setting that takes the user to the authenticator app setup flow -->
     <string name="AccountSettingsFragment__authenticator_app">அங்கீகரிப்புச் செயலி</string>
     <!-- Description of the authenticator app setting when none are configured -->
-    <string name="AccountSettingsFragment__one_time_verification_codes">One-time verification codes</string>
+    <string name="AccountSettingsFragment__one_time_verification_codes">ஒருமுறை பயன்படுத்தும் சரிபார்ப்புக் குறியீடுகள்</string>
     <!-- Description of the authenticator app setting saying how many are configured -->
     <plurals name="AccountSettingsFragment__d_configured">
-        <item quantity="one">%1$d configured</item>
-        <item quantity="other">%1$d configured</item>
+        <item quantity="one">%1$d உள்ளமைக்கப்பட்டது</item>
+        <item quantity="other">%1$d உள்ளமைக்கப்பட்டன</item>
     </plurals>
     <!-- Account setting that takes the user to the passkeys screen -->
-    <string name="AccountSettingsFragment__passkeys">Passkeys</string>
+    <string name="AccountSettingsFragment__passkeys">கடவுக்குறியீடுகள்</string>
     <!-- Description of the passkeys setting when none exist -->
-    <string name="AccountSettingsFragment__device_biometrics_or_fido2_security_key">Device biometrics or FIDO2 security key</string>
+    <string name="AccountSettingsFragment__device_biometrics_or_fido2_security_key">சாதனத்தின் பயோமெட்ரிக்ஸ் அல்லது FIDO2 பாதுகாப்புக் குறியீடு</string>
     <!-- Description of the passkeys setting saying how many exist -->
     <plurals name="AccountSettingsFragment__d_passkeys">
-        <item quantity="one">%1$d passkey</item>
-        <item quantity="other">%1$d passkeys</item>
+        <item quantity="one">%1$d கடவுக்குறியீடு</item>
+        <item quantity="other">%1$d கடவுக்குறியீடுகள்</item>
     </plurals>
     <!-- Description of two-factor authentication, shown below the two-factor authentication rows -->
     <string name="AccountSettingsFragment__use_a_second_form_of_authentication">புதிய சாதனத்தில் உங்கள் Signal Login-ஐப் பயன்படுத்தும்போது, உங்கள் கணக்கைப் பாதுகாக்க இரண்டாவது அங்கீகார முறையைப் பயன்படுத்தவும்.</string>
@@ -82,7 +82,7 @@
 
     <!-- AuthenticatorSetupScreen -->
     <!-- Title of the screen that walks the user through setting up an authenticator app -->
-    <string name="AuthenticatorSetupScreen__set_up_your_authenticator_app">Set up your authenticator app</string>
+    <string name="AuthenticatorSetupScreen__set_up_your_authenticator_app">உங்கள் அங்கீகரிப்புச் செயலியை அமைக்கவும்</string>
     <!-- Instructions shown at the top of the authenticator app setup screen -->
     <string name="AuthenticatorSetupScreen__follow_these_steps">உங்களது அங்கீகரிப்புச் செயலியை அமைக்க, இந்தப் படிகளைப் பின்பற்றவும்.</string>
     <!-- Clickable text that takes the user to a support article -->
@@ -114,29 +114,29 @@
 
     <!-- PasskeysScreen -->
     <!-- Title of the screen where the user sets up passkeys -->
-    <string name="PasskeysScreen__passkeys">Passkeys</string>
+    <string name="PasskeysScreen__passkeys">கடவுக்குறியீடுகள்</string>
     <!-- Description of passkeys shown at the top of the screen -->
-    <string name="PasskeysScreen__with_passkeys_you_can_easily_add">With passkeys you can easily add a secure second form of authentication to your account. Passkeys can use your device\'s biometrics or a compatible FIDO2 security key.</string>
+    <string name="PasskeysScreen__with_passkeys_you_can_easily_add">கடவுக்குறியீடுகள் மூலம் உங்கள் கணக்கில் பாதுகாப்பான இரண்டாவது அங்கீகார முறையை எளிதாகச் சேர்க்கலாம். கடவுக்குறியீடுகள் உங்கள் சாதனத்தின் பயோமெட்ரிக்ஸை அல்லது இணக்கமான FIDO2 பாதுகாப்புக் குறியீட்டைப் பயன்படுத்தும்.</string>
     <!-- Clickable text that takes the user to a support article -->
     <string name="PasskeysScreen__learn_more">மேலும் அறிக</string>
     <!-- Bullet point explaining that a passkey can be given a name -->
-    <string name="PasskeysScreen__give_your_passkey_a_friendly_name">Give your passkey a friendly name to identify it</string>
+    <string name="PasskeysScreen__give_your_passkey_a_friendly_name">உங்கள் கடவுக்குறியீட்டை அடையாளம் காண அதற்கு ஒரு பெயரைச் சூட்டவும்</string>
     <!-- Bullet point explaining how a passkey is stored -->
-    <string name="PasskeysScreen__use_your_devices_biometrics">Use your device\'s biometrics or a FIDO2 security key to store your passkey</string>
+    <string name="PasskeysScreen__use_your_devices_biometrics">உங்கள் கடவுக்குறியீட்டைச் சேமிக்க, உங்கள் சாதனத்தின் பயோமெட்ரிக்ஸை அல்லது FIDO2 பாதுகாப்புக் குறியீட்டைப் பயன்படுத்தவும்</string>
     <!-- Bullet point explaining that passkeys can be added and removed -->
-    <string name="PasskeysScreen__add_or_remove_passkeys_at_anytime">Add or remove passkeys at anytime.</string>
+    <string name="PasskeysScreen__add_or_remove_passkeys_at_anytime">எப்போது வேண்டுமானாலும் கடவுக்குறியீடுகளைச் சேர்க்கலாம் அல்லது அகற்றலாம்.</string>
     <!-- Button that starts creating a passkey -->
-    <string name="PasskeysScreen__set_up_a_passkey">Set up a passkey</string>
+    <string name="PasskeysScreen__set_up_a_passkey">கடவுக்குறியீட்டை அமைக்கவும்</string>
     <!-- Description of passkeys shown at the top of the screen once some already exist -->
-    <string name="PasskeysScreen__set_up_a_passkey_with">Set up a passkey with your device\'s biometrics or a compatible FIDO2 security key.</string>
+    <string name="PasskeysScreen__set_up_a_passkey_with">உங்கள் சாதனத்தின் பயோமெட்ரிக்ஸ் அல்லது இணக்கமான FIDO2 பாதுகாப்புக் குறியீட்டுடன் ஒரு கடவுக்குறியீட்டை அமைக்கவும்.</string>
     <!-- Button that starts creating a passkey once some already exist -->
-    <string name="PasskeysScreen__add_a_new_passkey">Add a new passkey</string>
+    <string name="PasskeysScreen__add_a_new_passkey">புதிய கடவுக்குறியீட்டைச் சேர்</string>
     <!-- Label under a passkey\'s name saying when it was added. The placeholder is a relative time like "today, 11:00 AM" -->
     <string name="PasskeysScreen__added_s">சேர்க்கப்பட்டது \"%1$s\"</string>
     <!-- Accessibility description of the button that opens a passkey\'s menu -->
-    <string name="PasskeysScreen__open_passkey_options">Open passkey options</string>
+    <string name="PasskeysScreen__open_passkey_options">கடவுக்குறியீடு விருப்பங்களைத் திற</string>
     <!-- Menu option that renames a passkey -->
-    <string name="PasskeysScreen__rename">Rename</string>
+    <string name="PasskeysScreen__rename">மறுபெயரிடுக</string>
     <!-- Menu option that removes a passkey -->
     <string name="PasskeysScreen__remove">அகற்று</string>
 
@@ -153,47 +153,47 @@
     <!-- Title of the screen listing the authenticator apps on the account -->
     <string name="AuthenticatorAppsScreen__authenticator_app">அங்கீகரிப்புச் செயலி</string>
     <!-- Description of what an authenticator app is for, shown at the top of the screen -->
-    <string name="AuthenticatorAppsScreen__set_up_an_authenticator_app">Set up an authenticator app to generate one-time verification codes</string>
+    <string name="AuthenticatorAppsScreen__set_up_an_authenticator_app">ஒருமுறை மட்டுமே பயன்படுத்தக்கூடிய சரிபார்ப்புக் குறியீடுகளை உருவாக்க, அங்கீகரிப்புச் செயலியை அமைக்கவும்</string>
     <!-- Clickable text that takes the user to a support article -->
     <string name="AuthenticatorAppsScreen__learn_more">மேலும் அறிக</string>
     <!-- Button that starts setting up another authenticator app -->
-    <string name="AuthenticatorAppsScreen__add_authenticator_app">Add authenticator app</string>
+    <string name="AuthenticatorAppsScreen__add_authenticator_app">அங்கீகரிப்புச் செயலியைச் சேர்</string>
     <!-- Section header above the list of configured authenticator apps -->
-    <string name="AuthenticatorAppsScreen__authenticator_apps">Authenticator apps</string>
+    <string name="AuthenticatorAppsScreen__authenticator_apps">அங்கீகரிப்புச் செயலிகள்</string>
     <!-- Shown in place of the list when no authenticator apps are configured -->
-    <string name="AuthenticatorAppsScreen__no_authenticator_apps">No authenticator apps</string>
+    <string name="AuthenticatorAppsScreen__no_authenticator_apps">அங்கீகரிப்புச் செயலிகள் எதுவும் இல்லை</string>
     <!-- Subtitle of an authenticator app row saying when it was configured. Placeholder is a date or time. -->
     <string name="AuthenticatorAppsScreen__added_s">சேர்க்கப்பட்டது \"%1$s\"</string>
     <!-- Content description of the button that opens an authenticator app\'s options -->
-    <string name="AuthenticatorAppsScreen__open_authenticator_app_options">Open authenticator app options</string>
+    <string name="AuthenticatorAppsScreen__open_authenticator_app_options">அங்கீகரிப்புச் செயலி விருப்பங்களைத் திறக்கவும்</string>
     <!-- Menu option that renames an authenticator app -->
-    <string name="AuthenticatorAppsScreen__rename">Rename</string>
+    <string name="AuthenticatorAppsScreen__rename">மறுபெயரிடுக</string>
     <!-- Menu option that removes an authenticator app -->
     <string name="AuthenticatorAppsScreen__remove">அகற்று</string>
     <!-- Title of the dialog confirming removal of an authenticator app -->
-    <string name="AuthenticatorAppsScreen__remove_authenticator_app">Remove authenticator app?</string>
+    <string name="AuthenticatorAppsScreen__remove_authenticator_app">அங்கீகரிப்புச் செயலியை அகற்றவா?</string>
     <!-- Body of the dialog confirming removal of an authenticator app -->
-    <string name="AuthenticatorAppsScreen__to_remove_this_authentication_method">To remove this authentication method the 6-digit code from your authenticator app is required.</string>
+    <string name="AuthenticatorAppsScreen__to_remove_this_authentication_method">இந்த அங்கீகார முறையை அகற்ற, உங்களது அங்கீகரிப்புச் செயலியிலிருந்து 6-இலக்கக் குறியீடு தேவை.</string>
     <!-- Title of the dialog shown when the account already has as many authenticator apps as it\'s allowed -->
-    <string name="AuthenticatorAppsScreen__cant_add_authenticator_app">Can\'t add authenticator app</string>
+    <string name="AuthenticatorAppsScreen__cant_add_authenticator_app">அங்கீகரிப்புச் செயலியைச் சேர்க்க முடியவில்லை</string>
     <!-- Body of the dialog shown when the account already has as many authenticator apps as it\'s allowed -->
-    <string name="AuthenticatorAppsScreen__you_cant_add_more_than_d">You can\'t add more than %1$d authenticator apps. Try removing one first.</string>
+    <string name="AuthenticatorAppsScreen__you_cant_add_more_than_d">%1$d அங்கீகரிப்புச் செயலிகளுக்கு மேல் உங்களால் சேர்க்க முடியாது. முதலில் ஒன்றை அகற்றிவிட்டு முயலவும்.</string>
     <!-- Toast shown after an authenticator app has been removed -->
-    <string name="AuthenticatorAppsScreen__authenticator_app_removed">Authenticator app removed</string>
+    <string name="AuthenticatorAppsScreen__authenticator_app_removed">அங்கீகரிப்புச் செயலி அகற்றப்பட்டது</string>
 
     <!-- AuthenticatorNameScreen -->
     <!-- Title of the screen where the user names an authenticator app -->
-    <string name="AuthenticatorNameScreen__choose_a_name">Choose a name</string>
+    <string name="AuthenticatorNameScreen__choose_a_name">பெயரைத் தேர்வுசெய்யவும்</string>
     <!-- Instructions shown above the name field when renaming an authenticator app -->
-    <string name="AuthenticatorNameScreen__choose_a_unique_name">Choose a unique name for this authenticator app.</string>
+    <string name="AuthenticatorNameScreen__choose_a_unique_name">இந்த அங்கீகரிப்புச் செயலிக்குத் தனித்துவமான பெயரைத் தேர்வுசெய்யவும்.</string>
     <!-- Instructions shown above the name field when naming a newly configured authenticator app -->
-    <string name="AuthenticatorNameScreen__choose_a_unique_name_to_help_you_identify_it">Choose a unique name for this authenticator app to help you identify it later.</string>
+    <string name="AuthenticatorNameScreen__choose_a_unique_name_to_help_you_identify_it">இந்த அங்கீகரிப்புச் செயலியைப் பின்னர் எளிதாக அடையாளம் காண, இதற்குத் தனித்துவமான ஒரு பெயரைத் தேர்வுசெய்யவும்.</string>
     <!-- Label of the name field -->
     <string name="AuthenticatorNameScreen__name">பெயர்</string>
     <!-- Button that submits the entered name -->
     <string name="AuthenticatorNameScreen__next">அடுத்தது</string>
     <!-- Toast shown after an authenticator app has been successfully set up -->
-    <string name="AuthenticatorNameScreen__authenticator_app_set_up">Authenticator app set up</string>
+    <string name="AuthenticatorNameScreen__authenticator_app_set_up">அங்கீகரிப்புச் செயலி அமைவு</string>
     <!-- Toast shown after an authenticator app has been renamed -->
-    <string name="AuthenticatorNameScreen__authenticator_app_renamed">Authenticator app renamed</string>
+    <string name="AuthenticatorNameScreen__authenticator_app_renamed">அங்கீகரிப்புச் செயலிக்கு மறுபெயரிடப்பட்டது</string>
 </resources>

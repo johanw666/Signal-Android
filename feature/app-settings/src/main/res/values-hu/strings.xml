@@ -60,20 +60,20 @@
     <!-- Account setting that takes the user to the authenticator app setup flow -->
     <string name="AccountSettingsFragment__authenticator_app">Hitelesítő alkalmazás</string>
     <!-- Description of the authenticator app setting when none are configured -->
-    <string name="AccountSettingsFragment__one_time_verification_codes">One-time verification codes</string>
+    <string name="AccountSettingsFragment__one_time_verification_codes">Egyszeri megerősítő kódok</string>
     <!-- Description of the authenticator app setting saying how many are configured -->
     <plurals name="AccountSettingsFragment__d_configured">
-        <item quantity="one">%1$d configured</item>
-        <item quantity="other">%1$d configured</item>
+        <item quantity="one">%1$d konfigurálva</item>
+        <item quantity="other">%1$d konfigurálva</item>
     </plurals>
     <!-- Account setting that takes the user to the passkeys screen -->
-    <string name="AccountSettingsFragment__passkeys">Passkeys</string>
+    <string name="AccountSettingsFragment__passkeys">Hozzáférési kulcsok</string>
     <!-- Description of the passkeys setting when none exist -->
-    <string name="AccountSettingsFragment__device_biometrics_or_fido2_security_key">Device biometrics or FIDO2 security key</string>
+    <string name="AccountSettingsFragment__device_biometrics_or_fido2_security_key">Eszközbiometria vagy FIDO2 biztonsági kulcs</string>
     <!-- Description of the passkeys setting saying how many exist -->
     <plurals name="AccountSettingsFragment__d_passkeys">
-        <item quantity="one">%1$d passkey</item>
-        <item quantity="other">%1$d passkeys</item>
+        <item quantity="one">%1$d hozzáférési kulcs</item>
+        <item quantity="other">%1$d hozzáférési kulcs</item>
     </plurals>
     <!-- Description of two-factor authentication, shown below the two-factor authentication rows -->
     <string name="AccountSettingsFragment__use_a_second_form_of_authentication">Használj egy második hitelesítési módot a fiókod védelme érdekében, amikor új eszközön használod a Signalhoz tartozó bejelentkezési adataidat.</string>
@@ -82,7 +82,7 @@
 
     <!-- AuthenticatorSetupScreen -->
     <!-- Title of the screen that walks the user through setting up an authenticator app -->
-    <string name="AuthenticatorSetupScreen__set_up_your_authenticator_app">Set up your authenticator app</string>
+    <string name="AuthenticatorSetupScreen__set_up_your_authenticator_app">Állítsd be a hitelesítő alkalmazásodat</string>
     <!-- Instructions shown at the top of the authenticator app setup screen -->
     <string name="AuthenticatorSetupScreen__follow_these_steps">A hitelesítő alkalmazás beállításához kövesd az alábbi lépéseket.</string>
     <!-- Clickable text that takes the user to a support article -->
@@ -114,27 +114,27 @@
 
     <!-- PasskeysScreen -->
     <!-- Title of the screen where the user sets up passkeys -->
-    <string name="PasskeysScreen__passkeys">Passkeys</string>
+    <string name="PasskeysScreen__passkeys">Hozzáférési kulcsok</string>
     <!-- Description of passkeys shown at the top of the screen -->
-    <string name="PasskeysScreen__with_passkeys_you_can_easily_add">With passkeys you can easily add a secure second form of authentication to your account. Passkeys can use your device\'s biometrics or a compatible FIDO2 security key.</string>
+    <string name="PasskeysScreen__with_passkeys_you_can_easily_add">A hozzáférési kulcsok segítségével könnyedén hozzáadhatsz egy biztonságos második hitelesítési módot a fiókodhoz. A hozzáférési kulcsok használhatják az eszköz biometrikus adatait vagy egy kompatibilis FIDO2 biztonsági kulcsot.</string>
     <!-- Clickable text that takes the user to a support article -->
     <string name="PasskeysScreen__learn_more">Tudj meg többet</string>
     <!-- Bullet point explaining that a passkey can be given a name -->
-    <string name="PasskeysScreen__give_your_passkey_a_friendly_name">Give your passkey a friendly name to identify it</string>
+    <string name="PasskeysScreen__give_your_passkey_a_friendly_name">Adj a hozzáférési kulcsodnak egy felhasználóbarát nevet, hogy könnyen azonosítható legyen</string>
     <!-- Bullet point explaining how a passkey is stored -->
-    <string name="PasskeysScreen__use_your_devices_biometrics">Use your device\'s biometrics or a FIDO2 security key to store your passkey</string>
+    <string name="PasskeysScreen__use_your_devices_biometrics">Használd az eszközöd biometrikus adatait vagy az FIDO2 biztonsági kulcsodat a hozzáférési kulcsod tárolásához</string>
     <!-- Bullet point explaining that passkeys can be added and removed -->
-    <string name="PasskeysScreen__add_or_remove_passkeys_at_anytime">Add or remove passkeys at anytime.</string>
+    <string name="PasskeysScreen__add_or_remove_passkeys_at_anytime">Bármikor hozzáadhatsz vagy eltávolíthatsz hozzáférési kulcsokat.</string>
     <!-- Button that starts creating a passkey -->
-    <string name="PasskeysScreen__set_up_a_passkey">Set up a passkey</string>
+    <string name="PasskeysScreen__set_up_a_passkey">Állíts be egy hozzáférési kulcsot</string>
     <!-- Description of passkeys shown at the top of the screen once some already exist -->
-    <string name="PasskeysScreen__set_up_a_passkey_with">Set up a passkey with your device\'s biometrics or a compatible FIDO2 security key.</string>
+    <string name="PasskeysScreen__set_up_a_passkey_with">Állíts be egy hozzáférési kulcsot az eszköz biometrikus adataival vagy egy kompatibilis FIDO2 biztonsági kulccsal.</string>
     <!-- Button that starts creating a passkey once some already exist -->
-    <string name="PasskeysScreen__add_a_new_passkey">Add a new passkey</string>
+    <string name="PasskeysScreen__add_a_new_passkey">Adj hozzá egy új hozzáférési kulcsot</string>
     <!-- Label under a passkey\'s name saying when it was added. The placeholder is a relative time like "today, 11:00 AM" -->
     <string name="PasskeysScreen__added_s">\"%1$s\" hozzáadva</string>
     <!-- Accessibility description of the button that opens a passkey\'s menu -->
-    <string name="PasskeysScreen__open_passkey_options">Open passkey options</string>
+    <string name="PasskeysScreen__open_passkey_options">Hozzáférési kulcs opciók megnyitása</string>
     <!-- Menu option that renames a passkey -->
     <string name="PasskeysScreen__rename">Átnevezés</string>
     <!-- Menu option that removes a passkey -->
@@ -153,47 +153,47 @@
     <!-- Title of the screen listing the authenticator apps on the account -->
     <string name="AuthenticatorAppsScreen__authenticator_app">Hitelesítő alkalmazás</string>
     <!-- Description of what an authenticator app is for, shown at the top of the screen -->
-    <string name="AuthenticatorAppsScreen__set_up_an_authenticator_app">Set up an authenticator app to generate one-time verification codes</string>
+    <string name="AuthenticatorAppsScreen__set_up_an_authenticator_app">Egyszer használatos ellenőrző kódok generálásához állíts be egy hitelesítő alkalmazást</string>
     <!-- Clickable text that takes the user to a support article -->
     <string name="AuthenticatorAppsScreen__learn_more">Tudj meg többet</string>
     <!-- Button that starts setting up another authenticator app -->
-    <string name="AuthenticatorAppsScreen__add_authenticator_app">Add authenticator app</string>
+    <string name="AuthenticatorAppsScreen__add_authenticator_app">Hitelesítő alkalmazás hozzáadása</string>
     <!-- Section header above the list of configured authenticator apps -->
-    <string name="AuthenticatorAppsScreen__authenticator_apps">Authenticator apps</string>
+    <string name="AuthenticatorAppsScreen__authenticator_apps">Hitelesítő alkalmazások</string>
     <!-- Shown in place of the list when no authenticator apps are configured -->
-    <string name="AuthenticatorAppsScreen__no_authenticator_apps">No authenticator apps</string>
+    <string name="AuthenticatorAppsScreen__no_authenticator_apps">Nincs hitelesítő alkalmazás</string>
     <!-- Subtitle of an authenticator app row saying when it was configured. Placeholder is a date or time. -->
     <string name="AuthenticatorAppsScreen__added_s">\"%1$s\" hozzáadva</string>
     <!-- Content description of the button that opens an authenticator app\'s options -->
-    <string name="AuthenticatorAppsScreen__open_authenticator_app_options">Open authenticator app options</string>
+    <string name="AuthenticatorAppsScreen__open_authenticator_app_options">Hitelesítő alkalmazás opciók megnyitása</string>
     <!-- Menu option that renames an authenticator app -->
     <string name="AuthenticatorAppsScreen__rename">Átnevezés</string>
     <!-- Menu option that removes an authenticator app -->
     <string name="AuthenticatorAppsScreen__remove">Eltávolítás</string>
     <!-- Title of the dialog confirming removal of an authenticator app -->
-    <string name="AuthenticatorAppsScreen__remove_authenticator_app">Remove authenticator app?</string>
+    <string name="AuthenticatorAppsScreen__remove_authenticator_app">Hitelesítő alkalmazás eltávolítása?</string>
     <!-- Body of the dialog confirming removal of an authenticator app -->
-    <string name="AuthenticatorAppsScreen__to_remove_this_authentication_method">To remove this authentication method the 6-digit code from your authenticator app is required.</string>
+    <string name="AuthenticatorAppsScreen__to_remove_this_authentication_method">A hitelesítési módszer eltávolításához a hitelesítő alkalmazás 6 számjegyű kódjára van szükség.</string>
     <!-- Title of the dialog shown when the account already has as many authenticator apps as it\'s allowed -->
-    <string name="AuthenticatorAppsScreen__cant_add_authenticator_app">Can\'t add authenticator app</string>
+    <string name="AuthenticatorAppsScreen__cant_add_authenticator_app">Nem lehet hitelesítő alkalmazást hozzáadni</string>
     <!-- Body of the dialog shown when the account already has as many authenticator apps as it\'s allowed -->
-    <string name="AuthenticatorAppsScreen__you_cant_add_more_than_d">You can\'t add more than %1$d authenticator apps. Try removing one first.</string>
+    <string name="AuthenticatorAppsScreen__you_cant_add_more_than_d">Legfeljebb %1$d hitelesítő alkalmazást adhatsz hozzá. Először próbálj egyet eltávolítani.</string>
     <!-- Toast shown after an authenticator app has been removed -->
-    <string name="AuthenticatorAppsScreen__authenticator_app_removed">Authenticator app removed</string>
+    <string name="AuthenticatorAppsScreen__authenticator_app_removed">Hitelesítő alkalmazás eltávolítva</string>
 
     <!-- AuthenticatorNameScreen -->
     <!-- Title of the screen where the user names an authenticator app -->
     <string name="AuthenticatorNameScreen__choose_a_name">Válassz egy nevet</string>
     <!-- Instructions shown above the name field when renaming an authenticator app -->
-    <string name="AuthenticatorNameScreen__choose_a_unique_name">Choose a unique name for this authenticator app.</string>
+    <string name="AuthenticatorNameScreen__choose_a_unique_name">Válassz egy egyedi nevet ennek a hitelesítő alkalmazásnak.</string>
     <!-- Instructions shown above the name field when naming a newly configured authenticator app -->
-    <string name="AuthenticatorNameScreen__choose_a_unique_name_to_help_you_identify_it">Choose a unique name for this authenticator app to help you identify it later.</string>
+    <string name="AuthenticatorNameScreen__choose_a_unique_name_to_help_you_identify_it">Válassz egy egyedi nevet ennek a hitelesítő alkalmazásnak, hogy később könnyebben azonosíthasd.</string>
     <!-- Label of the name field -->
     <string name="AuthenticatorNameScreen__name">Név</string>
     <!-- Button that submits the entered name -->
     <string name="AuthenticatorNameScreen__next">Tovább</string>
     <!-- Toast shown after an authenticator app has been successfully set up -->
-    <string name="AuthenticatorNameScreen__authenticator_app_set_up">Authenticator app set up</string>
+    <string name="AuthenticatorNameScreen__authenticator_app_set_up">Hitelesítő alkalmazás beállítása</string>
     <!-- Toast shown after an authenticator app has been renamed -->
-    <string name="AuthenticatorNameScreen__authenticator_app_renamed">Authenticator app renamed</string>
+    <string name="AuthenticatorNameScreen__authenticator_app_renamed">Hitelesítő alkalmazás átnevezve</string>
 </resources>

@@ -60,20 +60,20 @@
     <!-- Account setting that takes the user to the authenticator app setup flow -->
     <string name="AccountSettingsFragment__authenticator_app">అథెంటికేటర్ యాప్</string>
     <!-- Description of the authenticator app setting when none are configured -->
-    <string name="AccountSettingsFragment__one_time_verification_codes">One-time verification codes</string>
+    <string name="AccountSettingsFragment__one_time_verification_codes">ఒక్కసారి వాడే ధృవీకరణ కోడ్‌లు</string>
     <!-- Description of the authenticator app setting saying how many are configured -->
     <plurals name="AccountSettingsFragment__d_configured">
-        <item quantity="one">%1$d configured</item>
-        <item quantity="other">%1$d configured</item>
+        <item quantity="one">%1$d కాన్ఫిగర్ చేయబడింది</item>
+        <item quantity="other">%1$d కాన్ఫిగర్ చేయబడినవి</item>
     </plurals>
     <!-- Account setting that takes the user to the passkeys screen -->
-    <string name="AccountSettingsFragment__passkeys">Passkeys</string>
+    <string name="AccountSettingsFragment__passkeys">పాస్‌కీలు</string>
     <!-- Description of the passkeys setting when none exist -->
-    <string name="AccountSettingsFragment__device_biometrics_or_fido2_security_key">Device biometrics or FIDO2 security key</string>
+    <string name="AccountSettingsFragment__device_biometrics_or_fido2_security_key">పరికరం బయోమెట్రిక్స్ లేదా FIDO2 భద్రతా కీ</string>
     <!-- Description of the passkeys setting saying how many exist -->
     <plurals name="AccountSettingsFragment__d_passkeys">
-        <item quantity="one">%1$d passkey</item>
-        <item quantity="other">%1$d passkeys</item>
+        <item quantity="one">%1$d పాస్‌కీ</item>
+        <item quantity="other">%1$d పాస్‌కీలు</item>
     </plurals>
     <!-- Description of two-factor authentication, shown below the two-factor authentication rows -->
     <string name="AccountSettingsFragment__use_a_second_form_of_authentication">కొత్త పరికరంలో మీ Signal లాగిన్‌ను ఉపయోగిస్తున్నప్పుడు, మీ ఖాతాను రక్షించుకోవడానికి రెండవ ప్రమాణీకరణ పద్ధతిని ఉపయోగించండి.</string>
@@ -82,7 +82,7 @@
 
     <!-- AuthenticatorSetupScreen -->
     <!-- Title of the screen that walks the user through setting up an authenticator app -->
-    <string name="AuthenticatorSetupScreen__set_up_your_authenticator_app">Set up your authenticator app</string>
+    <string name="AuthenticatorSetupScreen__set_up_your_authenticator_app">మీ అథెంటికేటర్ యాప్‌ను సెటప్ చేయండి</string>
     <!-- Instructions shown at the top of the authenticator app setup screen -->
     <string name="AuthenticatorSetupScreen__follow_these_steps">మీ అథెంటికేటర్ యాప్‌ను సెటప్ చేయడానికి ఈ దశలను అనుసరించండి.</string>
     <!-- Clickable text that takes the user to a support article -->
@@ -114,29 +114,29 @@
 
     <!-- PasskeysScreen -->
     <!-- Title of the screen where the user sets up passkeys -->
-    <string name="PasskeysScreen__passkeys">Passkeys</string>
+    <string name="PasskeysScreen__passkeys">పాస్‌కీలు</string>
     <!-- Description of passkeys shown at the top of the screen -->
-    <string name="PasskeysScreen__with_passkeys_you_can_easily_add">With passkeys you can easily add a secure second form of authentication to your account. Passkeys can use your device\'s biometrics or a compatible FIDO2 security key.</string>
+    <string name="PasskeysScreen__with_passkeys_you_can_easily_add">పాస్‌కీలతో, మీరు మీ ఖాతాకు సురక్షితమైన రెండవ ప్రమాణీకరణ విధానాన్ని సులభంగా జోడించవచ్చు. పాస్‌కీలు మీ పరికరం యొక్క బయోమెట్రిక్స్ లేదా అనుకూలమైన FIDO2 సెక్యూరిటీ కీని ఉపయోగించగలవు.</string>
     <!-- Clickable text that takes the user to a support article -->
     <string name="PasskeysScreen__learn_more">మరింత తెలుసుకోండి</string>
     <!-- Bullet point explaining that a passkey can be given a name -->
-    <string name="PasskeysScreen__give_your_passkey_a_friendly_name">Give your passkey a friendly name to identify it</string>
+    <string name="PasskeysScreen__give_your_passkey_a_friendly_name">మీ పాస్‌కీని గుర్తించడానికి వీలుగా దానికి ఒక స్నేహపూర్వకమైన పేరు పెట్టండి.</string>
     <!-- Bullet point explaining how a passkey is stored -->
-    <string name="PasskeysScreen__use_your_devices_biometrics">Use your device\'s biometrics or a FIDO2 security key to store your passkey</string>
+    <string name="PasskeysScreen__use_your_devices_biometrics">మీ పాస్‌కీని భద్రపరచడానికి మీ పరికరం యొక్క బయోమెట్రిక్స్ లేదా FIDO2 సెక్యూరిటీ కీని ఉపయోగించండి</string>
     <!-- Bullet point explaining that passkeys can be added and removed -->
-    <string name="PasskeysScreen__add_or_remove_passkeys_at_anytime">Add or remove passkeys at anytime.</string>
+    <string name="PasskeysScreen__add_or_remove_passkeys_at_anytime">ఎప్పుడైనా పాస్‌కీలను జోడించండి లేదా తొలగించండి.</string>
     <!-- Button that starts creating a passkey -->
-    <string name="PasskeysScreen__set_up_a_passkey">Set up a passkey</string>
+    <string name="PasskeysScreen__set_up_a_passkey">పాస్‌కీని సెటప్ చేయండి</string>
     <!-- Description of passkeys shown at the top of the screen once some already exist -->
-    <string name="PasskeysScreen__set_up_a_passkey_with">Set up a passkey with your device\'s biometrics or a compatible FIDO2 security key.</string>
+    <string name="PasskeysScreen__set_up_a_passkey_with">మీ పరికరం యొక్క బయోమెట్రిక్స్ లేదా అనుకూలమైన FIDO2 సెక్యూరిటీ కీతో పాస్‌కీని సెటప్ చేయండి.</string>
     <!-- Button that starts creating a passkey once some already exist -->
-    <string name="PasskeysScreen__add_a_new_passkey">Add a new passkey</string>
+    <string name="PasskeysScreen__add_a_new_passkey">కొత్త పాస్‌కీని జోడించండి</string>
     <!-- Label under a passkey\'s name saying when it was added. The placeholder is a relative time like "today, 11:00 AM" -->
     <string name="PasskeysScreen__added_s">\"8%1$sజోడించబడింది</string>
     <!-- Accessibility description of the button that opens a passkey\'s menu -->
-    <string name="PasskeysScreen__open_passkey_options">Open passkey options</string>
+    <string name="PasskeysScreen__open_passkey_options">పాస్‌కీ ఎంపికలను తెరవండి</string>
     <!-- Menu option that renames a passkey -->
-    <string name="PasskeysScreen__rename">Rename</string>
+    <string name="PasskeysScreen__rename">పేరు మార్చండి</string>
     <!-- Menu option that removes a passkey -->
     <string name="PasskeysScreen__remove">తొలగించండి</string>
 
@@ -153,47 +153,47 @@
     <!-- Title of the screen listing the authenticator apps on the account -->
     <string name="AuthenticatorAppsScreen__authenticator_app">అథెంటికేటర్ యాప్</string>
     <!-- Description of what an authenticator app is for, shown at the top of the screen -->
-    <string name="AuthenticatorAppsScreen__set_up_an_authenticator_app">Set up an authenticator app to generate one-time verification codes</string>
+    <string name="AuthenticatorAppsScreen__set_up_an_authenticator_app">ఒకసారి ధృవీకరణ కోడ్‌లను ఉత్పత్తి చేయడానికి అథెంటికేటర్ యాప్‌ను సెటప్ చేయండి</string>
     <!-- Clickable text that takes the user to a support article -->
     <string name="AuthenticatorAppsScreen__learn_more">మరింత తెలుసుకోండి</string>
     <!-- Button that starts setting up another authenticator app -->
-    <string name="AuthenticatorAppsScreen__add_authenticator_app">Add authenticator app</string>
+    <string name="AuthenticatorAppsScreen__add_authenticator_app">అథెంటికేటర్ యాప్‌ను జోడించండి</string>
     <!-- Section header above the list of configured authenticator apps -->
-    <string name="AuthenticatorAppsScreen__authenticator_apps">Authenticator apps</string>
+    <string name="AuthenticatorAppsScreen__authenticator_apps">అథెంటికేటర్ యాప్‌లు</string>
     <!-- Shown in place of the list when no authenticator apps are configured -->
-    <string name="AuthenticatorAppsScreen__no_authenticator_apps">No authenticator apps</string>
+    <string name="AuthenticatorAppsScreen__no_authenticator_apps">ఎటువంటి అథెంటికేటర్ యాప్‌లు లేవు</string>
     <!-- Subtitle of an authenticator app row saying when it was configured. Placeholder is a date or time. -->
     <string name="AuthenticatorAppsScreen__added_s">\"8%1$sజోడించబడింది</string>
     <!-- Content description of the button that opens an authenticator app\'s options -->
-    <string name="AuthenticatorAppsScreen__open_authenticator_app_options">Open authenticator app options</string>
+    <string name="AuthenticatorAppsScreen__open_authenticator_app_options">అథెంటికేటర్ యాప్ ఎంపికలను తెరవండి</string>
     <!-- Menu option that renames an authenticator app -->
-    <string name="AuthenticatorAppsScreen__rename">Rename</string>
+    <string name="AuthenticatorAppsScreen__rename">పేరు మార్చండి</string>
     <!-- Menu option that removes an authenticator app -->
     <string name="AuthenticatorAppsScreen__remove">తొలగించండి</string>
     <!-- Title of the dialog confirming removal of an authenticator app -->
-    <string name="AuthenticatorAppsScreen__remove_authenticator_app">Remove authenticator app?</string>
+    <string name="AuthenticatorAppsScreen__remove_authenticator_app">అథెంటికేటర్ యాప్‌ను తొలగించాలా?</string>
     <!-- Body of the dialog confirming removal of an authenticator app -->
-    <string name="AuthenticatorAppsScreen__to_remove_this_authentication_method">To remove this authentication method the 6-digit code from your authenticator app is required.</string>
+    <string name="AuthenticatorAppsScreen__to_remove_this_authentication_method">ఈ ప్రమాణీకరణ పద్ధతిని తొలగించడానికి, మీ అథెంటికేటర్ యాప్ నుండి 6-అంకెల కోడ్ అవసరం.</string>
     <!-- Title of the dialog shown when the account already has as many authenticator apps as it\'s allowed -->
-    <string name="AuthenticatorAppsScreen__cant_add_authenticator_app">Can\'t add authenticator app</string>
+    <string name="AuthenticatorAppsScreen__cant_add_authenticator_app">అథెంటికేటర్ యాప్‌ను జోడించలేకపోతున్నాను</string>
     <!-- Body of the dialog shown when the account already has as many authenticator apps as it\'s allowed -->
-    <string name="AuthenticatorAppsScreen__you_cant_add_more_than_d">You can\'t add more than %1$d authenticator apps. Try removing one first.</string>
+    <string name="AuthenticatorAppsScreen__you_cant_add_more_than_d">మీరు %1$d కంటే ఎక్కువ అథెంటికేటర్ యాప్‌లను జోడించలేరు. ముందుగా ఒకదాన్ని తీసివేయడానికి ప్రయత్నించండి.</string>
     <!-- Toast shown after an authenticator app has been removed -->
-    <string name="AuthenticatorAppsScreen__authenticator_app_removed">Authenticator app removed</string>
+    <string name="AuthenticatorAppsScreen__authenticator_app_removed">అథెంటికేటర్ యాప్ తొలగించబడింది</string>
 
     <!-- AuthenticatorNameScreen -->
     <!-- Title of the screen where the user names an authenticator app -->
-    <string name="AuthenticatorNameScreen__choose_a_name">Choose a name</string>
+    <string name="AuthenticatorNameScreen__choose_a_name">ఒక పేరును ఎంచుకోండి</string>
     <!-- Instructions shown above the name field when renaming an authenticator app -->
-    <string name="AuthenticatorNameScreen__choose_a_unique_name">Choose a unique name for this authenticator app.</string>
+    <string name="AuthenticatorNameScreen__choose_a_unique_name">ఈ అథెంటికేటర్ యాప్ కోసం ఒక ప్రత్యేకమైన పేరును ఎంచుకోండి.</string>
     <!-- Instructions shown above the name field when naming a newly configured authenticator app -->
-    <string name="AuthenticatorNameScreen__choose_a_unique_name_to_help_you_identify_it">Choose a unique name for this authenticator app to help you identify it later.</string>
+    <string name="AuthenticatorNameScreen__choose_a_unique_name_to_help_you_identify_it">దానిని తర్వాత గుర్తించడంలో మీకు సహాయపడటానికి, ఈ అథెంటికేటర్ యాప్ కోసం ఒక ప్రత్యేకమైన పేరును ఎంచుకోండి.</string>
     <!-- Label of the name field -->
     <string name="AuthenticatorNameScreen__name">పేరు</string>
     <!-- Button that submits the entered name -->
     <string name="AuthenticatorNameScreen__next">తరువాత</string>
     <!-- Toast shown after an authenticator app has been successfully set up -->
-    <string name="AuthenticatorNameScreen__authenticator_app_set_up">Authenticator app set up</string>
+    <string name="AuthenticatorNameScreen__authenticator_app_set_up">అథెంటికేటర్ యాప్ సెటప్</string>
     <!-- Toast shown after an authenticator app has been renamed -->
-    <string name="AuthenticatorNameScreen__authenticator_app_renamed">Authenticator app renamed</string>
+    <string name="AuthenticatorNameScreen__authenticator_app_renamed">అథెంటికేటర్ యాప్ పేరు మార్చబడింది</string>
 </resources>

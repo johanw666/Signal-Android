@@ -184,7 +184,7 @@
   <!-- Accessibility label for the send button in media selection -->
   <string name="CameraXFragment_send">அனுப்புக</string>
   <!-- Label shown below the elapsed time while a video recording is paused -->
-  <string name="CameraXFragment_paused">Paused</string>
+  <string name="CameraXFragment_paused">இடைநிறுத்தப்பட்டது</string>
   <!-- Displayed in a permissions dialog when the user has denied access to hardware for image and video capture. -->
   <string name="CameraXFragment_signal_needs_the_recording_permissions_to_capture_video">காணொளிகளைப் பதிவு செய்ய Signal மைக்ரோஃபோன் அனுமதி தேவை, ஆனால் அது மறுக்கப்பட்டது. செயலியின் அமைப்புகளுக்கு சென்று, \"அனுமதிகள்\" என்பதைத் தேர்ந்தெடுத்து \"மைக்ரோஃபோன்\" மற்றும் \"கேமரா\" என்பவற்றை இயலச் செய்யவும்.</string>
 

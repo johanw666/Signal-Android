@@ -184,7 +184,7 @@
   <!-- Accessibility label for the send button in media selection -->
   <string name="CameraXFragment_send">Stuur</string>
   <!-- Label shown below the elapsed time while a video recording is paused -->
-  <string name="CameraXFragment_paused">Paused</string>
+  <string name="CameraXFragment_paused">Gepouseer</string>
   <!-- Displayed in a permissions dialog when the user has denied access to hardware for image and video capture. -->
   <string name="CameraXFragment_signal_needs_the_recording_permissions_to_capture_video">Signal het mikrofoontoestemmings nodig om video\'s op te neem, maar dit is geweier. Gaan asseblief na die programinstellings, kies \"Toestemmings\" en skakel \"Mikrofoon\" en \"Kamera\" aan.</string>
 

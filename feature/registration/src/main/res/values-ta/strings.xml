@@ -656,19 +656,19 @@
     <!-- Title of the screen where a user with an existing Signal Login types in their account key. -->
     <string name="SignalLoginScreen__signal_login">Signal Login</string>
     <!-- Description telling the user what to enter to log in. -->
-    <string name="SignalLoginScreen__enter_your_32_character_account_key">Enter your 32-character account key to get started.</string>
+    <string name="SignalLoginScreen__enter_your_32_character_account_key">தொடங்குவதற்கு, உங்களது 32-எழுத்துக்கள் கொண்ட கணக்குக் குறியீட்டை உள்ளிடவும்.</string>
     <!-- Label of the text field the account key is typed into. -->
-    <string name="SignalLoginScreen__account_key">Account key</string>
+    <string name="SignalLoginScreen__account_key">கணக்குக் குறியீடு</string>
     <!-- Button that opens a support article for users who can\'t find their account key. -->
     <string name="SignalLoginScreen__need_help">உங்களுக்கு உதவி வேண்டுமா?</string>
     <!-- Action button that submits the entered account key. -->
     <string name="SignalLoginScreen__next">அடுத்தது</string>
     <!-- Error shown when too many characters were entered. First placeholder is how many were entered, second is the maximum. -->
-    <string name="SignalLoginScreen__too_long">Too long. %1$d/%2$d characters.</string>
+    <string name="SignalLoginScreen__too_long">மிக நீளமாக உள்ளது. %1$d/%2$d எழுத்துக்கள்.</string>
     <!-- Error shown when the entered account key contains characters that can\'t appear in one. -->
-    <string name="SignalLoginScreen__invalid_account_key">Invalid account key</string>
+    <string name="SignalLoginScreen__invalid_account_key">தவறான கணக்குக் குறியீடு</string>
     <!-- Error shown when the service doesn\'t recognize the entered account key. -->
-    <string name="SignalLoginScreen__incorrect_account_key">Incorrect account key</string>
+    <string name="SignalLoginScreen__incorrect_account_key">தவறான கணக்குக் குறியீடு</string>
 
     <!-- Add username screen -->
     <!-- Title of the screen offering the user an optional username. -->
@@ -698,7 +698,7 @@
     <!-- Error shown when the chosen username cannot be reserved. -->
     <string name="AddUsernameScreen__this_username_is_not_available">இந்தப் பயனர் பெயர் கிடைக்கவில்லை. வேறு ஒன்றை முயலவும்.</string>
     <!-- Error shown when the user\'s temporary hold on a username expired before they submitted it. -->
-    <string name="AddUsernameScreen__your_username_reservation_expired">Your username reservation expired. Please try again.</string>
+    <string name="AddUsernameScreen__your_username_reservation_expired">உங்கள் பயனர்பெயர் முன்பதிவு காலாவதியாகிவிட்டது. மீண்டும் முயலுங்கள்.</string>
 
     <!-- ContactSupportDialog -->
     <!-- Title of the dialog asking the user whether they want to attach a debug log to their support request -->
