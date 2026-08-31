@@ -43,6 +43,7 @@ import androidx.lifecycle.compose.LocalLifecycleOwner
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import org.signal.core.ui.compose.AllNightPreviews
+import org.signal.core.ui.compose.KeepScreenOnEffect
 import org.signal.core.ui.compose.Previews
 import kotlin.time.Duration.Companion.milliseconds
 import androidx.camera.core.Preview as CameraPreview
@@ -91,6 +92,8 @@ fun CameraScreen(
   val isInPreview = LocalInspectionMode.current
 
   var surfaceRequest by remember { mutableStateOf<SurfaceRequest?>(null) }
+
+  KeepScreenOnEffect(enabled = state.isRecording)
 
   // Bind once; a screen rotation rebuilds just the preview (below), not the whole camera.
   LaunchedEffect(lifecycleOwner, state.lensFacing) {
