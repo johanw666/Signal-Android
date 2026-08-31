@@ -608,7 +608,7 @@ class GroupTable(context: Context?, databaseHelper: SignalDatabase?) :
     if (groupRecord.isPresent && groupRecord.get().hasV2GroupProperties) {
       val pendingMembers: List<DecryptedPendingMember> = groupRecord.get().requireV2GroupProperties().decryptedGroup.pendingMembers
       val invitedByAci: ByteString? = DecryptedGroupUtil.findPendingByServiceId(pendingMembers, Recipient.self().requireAci())
-        .or { DecryptedGroupUtil.findPendingByServiceId(pendingMembers, Recipient.self().requirePni()) }
+        .or { Recipient.self().pni.flatMap { pni -> DecryptedGroupUtil.findPendingByServiceId(pendingMembers, pni) } }
         .map { it.addedByAci }
         .orElse(null)
 

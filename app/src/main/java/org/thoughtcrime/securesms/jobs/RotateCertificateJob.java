@@ -4,6 +4,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
 import org.signal.core.util.logging.Log;
+import org.signal.network.exceptions.NonSuccessfulResponseCodeException;
 import org.thoughtcrime.securesms.jobmanager.Job;
 import org.thoughtcrime.securesms.jobmanager.impl.NetworkConstraint;
 import org.thoughtcrime.securesms.jobmanager.impl.SealedSenderConstraint;
@@ -65,16 +66,26 @@ public final class RotateCertificateJob extends BaseJob {
     synchronized (RotateCertificateJob.class) {
       Collection<CertificateType> certificateTypes = SignalStore.phoneNumberPrivacy()
                                                                 .getAllCertificateTypes();
+      Collection<CertificateType> requiredTypes    = SignalStore.phoneNumberPrivacy()
+                                                                .getRequiredCertificateTypes();
 
       Log.i(TAG, "Rotating these certificates " + certificateTypes);
 
       for (CertificateType certificateType: certificateTypes) {
         byte[] certificate;
 
-        switch (certificateType) {
-          case ACI_AND_E164: certificate = NetworkResultUtil.toBasicLegacy(SignalNetwork.certificate().getSenderCertificate()); break;
-          case ACI_ONLY    : certificate = NetworkResultUtil.toBasicLegacy(SignalNetwork.certificate().getSenderCertificateForPhoneNumberPrivacy()); break;
-          default          : throw new AssertionError();
+        try {
+          switch (certificateType) {
+            case ACI_AND_E164: certificate = NetworkResultUtil.toBasicLegacy(SignalNetwork.certificate().getSenderCertificate()); break;
+            case ACI_ONLY    : certificate = NetworkResultUtil.toBasicLegacy(SignalNetwork.certificate().getSenderCertificateForPhoneNumberPrivacy()); break;
+            default          : throw new AssertionError();
+          }
+        } catch (NonSuccessfulResponseCodeException e) {
+          if (requiredTypes.contains(certificateType)) {
+            throw e;
+          }
+          Log.w(TAG, String.format("The server rejected the request for the non-required %s certificate. Skipping it.", certificateType), e);
+          continue;
         }
 
         Log.i(TAG, String.format("Successfully got %s certificate", certificateType));

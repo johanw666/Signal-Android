@@ -106,6 +106,7 @@ final class GroupManagerV2 {
   private final GroupsV2Authorization  authorization;
   private final ServiceIds             serviceIds;
   private final ACI                    selfAci;
+  @Nullable
   private final PNI                    selfPni;
   private final GroupCandidateHelper   groupCandidateHelper;
   private final SendGroupUpdateHelper  sendGroupUpdateHelper;
@@ -137,7 +138,7 @@ final class GroupManagerV2 {
     this.authorization          = authorization;
     this.serviceIds             = serviceIds;
     this.selfAci                = serviceIds.getAci();
-    this.selfPni                = serviceIds.requirePni();
+    this.selfPni                = serviceIds.getPni();
     this.groupCandidateHelper   = groupCandidateHelper;
     this.sendGroupUpdateHelper  = sendGroupUpdateHelper;
   }
@@ -476,7 +477,7 @@ final class GroupManagerV2 {
       DecryptedGroup decryptedGroup = v2GroupProperties.getDecryptedGroup();
       Optional<DecryptedMember>        selfMember        = DecryptedGroupUtil.findMemberByAci(decryptedGroup.members, selfAci);
       Optional<DecryptedPendingMember> aciPendingMember  = DecryptedGroupUtil.findPendingByServiceId(decryptedGroup.pendingMembers, selfAci);
-      Optional<DecryptedPendingMember> pniPendingMember  = DecryptedGroupUtil.findPendingByServiceId(decryptedGroup.pendingMembers, selfPni);
+      Optional<DecryptedPendingMember> pniPendingMember  = selfPni != null ? DecryptedGroupUtil.findPendingByServiceId(decryptedGroup.pendingMembers, selfPni) : Optional.empty();
       Optional<DecryptedPendingMember> selfPendingMember = Optional.empty();
       ServiceId                        serviceId         = selfAci;
 
@@ -573,7 +574,7 @@ final class GroupManagerV2 {
       }
 
       Optional<DecryptedPendingMember> aciInPending = DecryptedGroupUtil.findPendingByServiceId(group.pendingMembers, selfAci);
-      Optional<DecryptedPendingMember> pniInPending = DecryptedGroupUtil.findPendingByServiceId(group.pendingMembers, selfPni);
+      Optional<DecryptedPendingMember> pniInPending = selfPni != null ? DecryptedGroupUtil.findPendingByServiceId(group.pendingMembers, selfPni) : Optional.empty();
 
       GroupCandidate selfGroupCandidate = groupCandidateHelper.recipientIdToCandidate(Recipient.self().getId());
 

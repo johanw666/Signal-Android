@@ -80,7 +80,9 @@ public final class PhoneNumberPrivacyValues extends SignalStoreValues {
    * these certificates types.
    */
   public Collection<CertificateType> getRequiredCertificateTypes() {
-    if (isPhoneNumberSharingEnabled()) {
+    if (SignalStore.account().isPhoneNumberless()) {
+      return ACI_ONLY_CERTIFICATE;
+    } else if (isPhoneNumberSharingEnabled()) {
       return ACI_AND_E164_CERTIFICATE;
     } else {
       return ACI_ONLY_CERTIFICATE;
@@ -88,10 +90,14 @@ public final class PhoneNumberPrivacyValues extends SignalStoreValues {
   }
 
   /**
-   * All certificate types required according to the feature flags.
+   * All certificate types the account can fetch.
    */
   public Collection<CertificateType> getAllCertificateTypes() {
-    return BOTH_CERTIFICATES;
+    if (SignalStore.account().isPhoneNumberless()) {
+      return ACI_ONLY_CERTIFICATE;
+    } else {
+      return BOTH_CERTIFICATES;
+    }
   }
 
   public enum PhoneNumberSharingMode {
