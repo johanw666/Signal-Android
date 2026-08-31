@@ -167,7 +167,6 @@ class CameraXFragment : ComposeFragment(), CameraFragment {
       state = state,
       onEvent = { event -> controller?.onCameraXScreenEvent(event) },
       videoRecordingConfig = rememberVideoRecordingConfig(
-        mediaConstraints = controller?.mediaConstraints,
         maxDurationSecondsOverride = controller?.maxVideoDuration ?: 0
       ),
       onCheckPermissions = { checkPermissions(state.isVideoEnabled) },
@@ -301,16 +300,10 @@ data class VideoRecordingConfig(
  * @param maxDurationSecondsOverride A positive value replaces the derived cap, leaving the backing choice intact.
  */
 @Composable
-internal fun rememberVideoRecordingConfig(mediaConstraints: MediaConstraints?, maxDurationSecondsOverride: Int = 0): VideoRecordingConfig {
-  if (mediaConstraints == null) {
-    return VideoRecordingConfig(maxDurationSeconds = maxDurationSecondsOverride)
-  }
-
+internal fun rememberVideoRecordingConfig(maxDurationSecondsOverride: Int = 0): VideoRecordingConfig {
   val context = LocalContext.current
 
-  // Keyed on the derived duration rather than the MediaConstraints instance, because implementations hand
-  // back a fresh object on every call and would otherwise restart resolution on every recomposition.
-  val memoryBackedDurationSeconds = VideoUtil.getMemoryBackedMaxRecordDurationSeconds(mediaConstraints)
+  val memoryBackedDurationSeconds = VideoUtil.getMemoryBackedMaxRecordDurationSeconds(context)
   val memoryBackedCap = maxDurationSecondsOverride.takeIf { it > 0 } ?: memoryBackedDurationSeconds
   val memoryBacked = VideoRecordingConfig(
     useEncryptedDisk = false,
@@ -409,12 +402,26 @@ class VideoFileDescriptor(val context: Context) {
       Log.w(TAG, "Failed to create encrypted disk file descriptor, falling back to memory")
     }
 
+    val recording = createMemoryBacked(config.memoryBackedMaxDurationSeconds)
+    if (recording != null || config.memoryBackedMaxDurationSeconds <= VideoUtil.MAX_IN_MEMORY_RECORD_DURATION_SECONDS_LOW_MEMORY) {
+      return recording
+    }
+
+    Log.w(TAG, "Not enough memory to reserve ${config.memoryBackedMaxDurationSeconds}s. Retrying at the low-memory cap.")
+    return createMemoryBacked(VideoUtil.MAX_IN_MEMORY_RECORD_DURATION_SECONDS_LOW_MEMORY)
+  }
+
+  /**
+   * Reserves the RAM a recording of [maxDurationSeconds] needs and hands back the descriptor to record into,
+   * or null when the device cannot spare that much.
+   */
+  private fun createMemoryBacked(maxDurationSeconds: Int): ActiveRecording? {
     return try {
-      val memory = CameraXUtil.createMemoryVideoFileDescriptor(context)
+      val memory = CameraXUtil.createMemoryVideoFileDescriptor(context, VideoUtil.getMemoryBackedRecordSizeBytes(maxDurationSeconds))
       videoFileDescriptor = memory
-      ActiveRecording(memory.parcelFd, config.memoryBackedMaxDurationSeconds)
+      ActiveRecording(memory.parcelFd, maxDurationSeconds)
     } catch (e: IOException) {
-      Log.w(TAG, "Failed to create video file descriptor", e)
+      Log.w(TAG, "Failed to create a ${maxDurationSeconds}s video file descriptor", e)
       null
     }
   }

@@ -59,7 +59,6 @@ internal class MediaCaptureViewModel(
         storiesEnabled = storiesEnabled,
         mode = mode,
         recipientId = recipientId,
-        mediaConstraints = mediaConstraints,
         storyMaxVideoDuration = storyMaxVideoDuration,
         isVideoCaptureSupported = MediaConstraints.isVideoTranscodeAvailable()
       )

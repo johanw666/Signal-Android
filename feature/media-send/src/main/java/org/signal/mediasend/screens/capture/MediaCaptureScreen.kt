@@ -33,7 +33,6 @@ import org.signal.core.ui.compose.Previews
 import org.signal.core.ui.compose.endFadingEdge
 import org.signal.mediasend.MediaSendFlowActivityContract
 import org.signal.mediasend.MediaSendRoute
-import org.signal.mediasend.PreviewMediaConstraints
 import org.signal.mediasend.screens.edit.rememberPreviewMedia
 import org.signal.mediasend.screens.shared.NEXT_BUTTON_CIRCLE_SIZE
 import org.signal.mediasend.screens.shared.NEXT_BUTTON_HEIGHT
@@ -224,7 +223,6 @@ private fun rememberPreviewCaptureState(): MediaCaptureState = remember {
   MediaCaptureState(
     isCameraFirst = true,
     storiesEnabled = true,
-    mode = MediaSendFlowActivityContract.Mode.ChooseAfterMediaSelection,
-    mediaConstraints = PreviewMediaConstraints
+    mode = MediaSendFlowActivityContract.Mode.ChooseAfterMediaSelection
   )
 }

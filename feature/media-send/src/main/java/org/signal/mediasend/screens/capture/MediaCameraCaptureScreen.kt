@@ -11,7 +11,6 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.tooling.preview.Preview
 import org.signal.camera.hud.CaptureButtonMode
 import org.signal.core.ui.compose.Previews
-import org.signal.mediasend.PreviewMediaConstraints
 
 /**
  * Allows the user to capture images and video from the hardware camera to utilize in the media send flow.
@@ -36,7 +35,6 @@ internal fun MediaCameraCaptureScreen(
     },
     onEvent = { event -> onEvent(MediaCaptureScreenEvents.Camera(event)) },
     videoRecordingConfig = rememberVideoRecordingConfig(
-      mediaConstraints = state.mediaConstraints,
       maxDurationSecondsOverride = state.maxVideoDurationSecondsOverride
     ),
     onCheckPermissions = permissions.requestCapturePermissions,
@@ -52,7 +50,7 @@ internal fun MediaCameraCaptureScreen(
 private fun MediaCameraCaptureScreenPreview() {
   Previews.Preview {
     MediaCameraCaptureScreen(
-      state = MediaCaptureState(mediaConstraints = PreviewMediaConstraints),
+      state = MediaCaptureState(),
       onEvent = {}
     )
   }
