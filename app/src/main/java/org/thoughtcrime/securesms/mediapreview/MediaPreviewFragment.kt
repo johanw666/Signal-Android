@@ -96,7 +96,6 @@ class MediaPreviewFragment :
     requireActivity()
   })
   private val debouncer = Debouncer(2, TimeUnit.SECONDS)
-  private val refetchDebouncer = Debouncer(REFETCH_DEBOUNCE_MS)
   private val args: MediaIntentFactory.MediaPreviewArgs by lazy { MediaIntentFactory.requireArguments(requireArguments()) }
 
   private lateinit var pagerAdapter: MediaPreviewAdapter
@@ -166,11 +165,7 @@ class MediaPreviewFragment :
     val appContext = requireContext().applicationContext
     viewModel.fetchInitialAttachment(args)
     viewModel.fetchAttachments(appContext, startingAttachmentId, threadId, sorting)
-    // A single attachment's insert/upload/archive lifecycle notifies many times over a couple of seconds, and each
-    // notification would otherwise re-run the whole gallery query.
-    val dbObserver = DatabaseObserver.Observer {
-      refetchDebouncer.publish { viewModel.refetchAttachments(appContext, startingAttachmentId, threadId, sorting) }
-    }
+    val dbObserver = DatabaseObserver.Observer { viewModel.refetchAttachments(appContext, startingAttachmentId, threadId, sorting) }
     AppDependencies.databaseObserver.registerAttachmentUpdatedObserver(dbObserver)
     this.dbChangeObserver = dbObserver
   }
@@ -621,7 +616,6 @@ class MediaPreviewFragment :
 
   override fun onDestroy() {
     super.onDestroy()
-    refetchDebouncer.clear()
     val observer = dbChangeObserver
     if (observer != null) {
       AppDependencies.databaseObserver.unregisterObserver(observer)
@@ -789,7 +783,6 @@ class MediaPreviewFragment :
   companion object {
     private const val EXPANDED_CAPTION_HEIGHT_FALLBACK_DP = 400
     private const val EXPANDED_CAPTION_HEIGHT_PERCENT: Float = 0.7F
-    private const val REFETCH_DEBOUNCE_MS = 250L
 
     private val TAG = Log.tag(MediaPreviewFragment::class.java)
 
