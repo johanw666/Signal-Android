@@ -106,7 +106,7 @@ class RegistrationViewModel(
         lastSmsVerificationCodeRequest = event.nextSmsAllowedTimestamp?.let { VerificationCodeRequest(event.e164, it) } ?: state.lastSmsVerificationCodeRequest,
         lastCallVerificationCodeRequest = event.nextCallAllowedTimestamp?.let { VerificationCodeRequest(event.e164, it) } ?: state.lastCallVerificationCodeRequest
       )
-      is RegistrationFlowEvent.Registered -> state.copy(aci = event.aci, accountEntropyPool = event.accountEntropyPool, storageCapable = event.storageCapable)
+      is RegistrationFlowEvent.Registered -> state.copy(aci = event.aci, accountEntropyPool = event.accountEntropyPool, storageCapable = event.storageCapable, isPhoneNumberlessAccount = event.phoneNumberless)
       is RegistrationFlowEvent.MasterKeyRestoredFromSvr -> state.copy(temporaryMasterKey = event.masterKey)
       is RegistrationFlowEvent.NavigateToScreen -> applyNavigationToScreenEvent(state, event)
       is RegistrationFlowEvent.NavigateBackToScreen -> applyNavigateBackToScreenEvent(state, event)
@@ -157,8 +157,8 @@ class RegistrationViewModel(
       is RegistrationRoute.Welcome,
       is RegistrationRoute.PinCreate,
       is RegistrationRoute.PinEntryForSvrRestore,
-      is RegistrationRoute.SignalLoginInfo,
-      is RegistrationRoute.RemoteRestore -> true
+      is RegistrationRoute.SignalLoginInfo -> true
+      is RegistrationRoute.RemoteRestore -> !this.backwardNavigationAllowed
       is RegistrationRoute.ArchiveRestoreSelection -> this.registeredState != RegisteredState.NotRegistered
       else -> false
     }

@@ -174,17 +174,22 @@ class PinEntryForRegistrationLockViewModel(
       is RequestResult.Success -> {
         Log.i(TAG, "[PinEntered] Successfully registered!")
         val (response, keyMaterial, aci) = registerResult.result
-        parentEventEmitter(RegistrationFlowEvent.Registered(aci, keyMaterial.accountEntropyPool, response.storageCapable))
+        parentEventEmitter(RegistrationFlowEvent.Registered(aci, keyMaterial.accountEntropyPool, response.storageCapable, phoneNumberless = response.e164 == null))
         repository.enqueueSvrResetGuessCountJob()
-        repository.restoreAccountRecord()
         val pendingRestore = pendingRestoreNavigation()
         when {
           pendingRestore != null -> {
             Log.i(TAG, "[PinEntered] A restore was pending behind the registration lock. Resuming it now.")
+            repository.restoreAccountRecord()
             parentEventEmitter.navigateTo(pendingRestore)
           }
-          response.reregistration && parentState.value.pendingRestoreOption == null && parentState.value.preExistingRegistrationData == null -> parentEventEmitter.navigateTo(RegistrationRoute.ArchiveRestoreSelection.forPostRegisterWithPinKnown())
-          else -> parentEventEmitter(RegistrationFlowEvent.RegistrationComplete)
+          response.reregistration && parentState.value.pendingRestoreOption == null && parentState.value.preExistingRegistrationData == null -> {
+            parentEventEmitter.navigateTo(RegistrationRoute.ArchiveRestoreSelection.forPostRegisterWithPinKnown())
+          }
+          else -> {
+            repository.restoreAccountRecord()
+            parentEventEmitter(RegistrationFlowEvent.RegistrationComplete)
+          }
         }
         state
       }

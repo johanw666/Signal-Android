@@ -11,8 +11,8 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.Job
-import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
@@ -35,7 +35,7 @@ import kotlin.time.Duration.Companion.seconds
 
 class LocalBackupRestoreViewModel(
   private val repository: RegistrationRepository,
-  parentState: Flow<RegistrationFlowState>,
+  private val parentState: StateFlow<RegistrationFlowState>,
   private val parentEventEmitter: (RegistrationFlowEvent) -> Unit,
   private val isPreRegistration: Boolean,
   private val resultBus: ResultEventBus,
@@ -166,7 +166,11 @@ class LocalBackupRestoreViewModel(
 
       repository.setRestoreDecision(RestoreDecision.COMPLETED)
 
-      if (progress.restoredSvrPin != null) {
+      if (parentState.value.isPhoneNumberlessAccount) {
+        Log.i(TAG, "[onRestoreComplete] Account has no phone number, and therefore no PIN. Completing registration.")
+        repository.restoreAccountRecord()
+        parentEventEmitter(RegistrationFlowEvent.RegistrationComplete)
+      } else if (progress.restoredSvrPin != null) {
         repository.restoreAccountRecord()
         parentEventEmitter(RegistrationFlowEvent.RegistrationComplete)
       } else if (state.storageCapable) {
@@ -266,7 +270,7 @@ class LocalBackupRestoreViewModel(
 
   class Factory(
     private val repository: RegistrationRepository,
-    private val parentState: Flow<RegistrationFlowState>,
+    private val parentState: StateFlow<RegistrationFlowState>,
     private val parentEventEmitter: (RegistrationFlowEvent) -> Unit,
     private val isPreRegistration: Boolean,
     private val knownAep: AccountEntropyPool?,

@@ -87,7 +87,7 @@ class FakeNetworkController(
   }
 
   data class UpdateSessionRequest(val sessionId: String?, val pushChallengeToken: String?, val captchaToken: String?)
-  data class RegisterAccountRequest(val e164: String?, val sessionId: String?, val recoveryPassword: String?, val registrationLock: String?)
+  data class RegisterAccountRequest(val e164: String?, val sessionId: String?, val recoveryPassword: String?, val registrationLock: String?, val aci: ACI? = null, val pniPreKeys: PreKeyCollection? = null, val pniRegistrationId: Int? = null)
   data class SetPinRequest(val pin: String, val masterKey: MasterKey)
   data class RestoreMasterKeyRequest(val svrCredentials: SvrCredentials, val pin: String)
   data class SetRestoreMethodRequest(val token: String, val method: RestoreMethod)
@@ -275,7 +275,8 @@ class FakeNetworkController(
   ): RegisterAccountResponse {
     return RegisterAccountResponse(
       aci = UUID.randomUUID().toString(),
-      pni = UUID.randomUUID().toString(),
+      // An account with no phone number has no PNI, exactly as the service reports it.
+      pni = if (e164 != null) UUID.randomUUID().toString() else null,
       e164 = e164,
       usernameHash = null,
       usernameLinkHandle = null,
@@ -327,9 +328,10 @@ class FakeNetworkController(
     aciPreKeys: PreKeyCollection,
     pniPreKeys: PreKeyCollection?,
     fcmToken: String?,
-    skipDeviceTransfer: Boolean
+    skipDeviceTransfer: Boolean,
+    aci: ACI?
   ): RequestResult<RegisterAccountResponse, RegisterAccountError> {
-    val request = RegisterAccountRequest(e164, sessionId, recoveryPassword, attributes.registrationLock)
+    val request = RegisterAccountRequest(e164, sessionId, recoveryPassword, attributes.registrationLock, aci, pniPreKeys, attributes.pniRegistrationId)
     lastRegisterAccountRequest = request
     return onRegisterAccount(request)
   }

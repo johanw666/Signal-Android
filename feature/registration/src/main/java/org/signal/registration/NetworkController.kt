@@ -100,15 +100,19 @@ interface NetworkController {
    * Must provide exactly one of [sessionId], [recoveryPassword], or [receiptCredentialPresentation].
    *
    * Providing a [receiptCredentialPresentation] (built by [createReceiptCredentialPresentation] from the credential
-   * issued by [createLoginPurchaseReceiptCredential]) registers an account that has no phone number. For that mode,
-   * [e164] and [pniPreKeys] must be null, and [attributes] must have a null `pniRegistrationId` and a null
-   * `discoverableByPhoneNumber`.
+   * issued by [createLoginPurchaseReceiptCredential]) registers a new account that has no phone number, and providing
+   * an [aci] alongside a [recoveryPassword] logs back in to an existing one. For both, [e164] must be null and
+   * [attributes] must have a null `discoverableByPhoneNumber`. Creating a new account also requires a null
+   * [pniPreKeys] and a null `attributes.pniRegistrationId`, while logging back in requires both to be present -- the
+   * service demands PNI key material of any recovery-by-identifier, then ignores it for an account with no phone
+   * number, so throwaway material is fine.
    *
    * `POST /v1/registration`
    *
    * @param e164 The phone number in E.164 format (used as username for basic auth). Null when registering without a
    *   phone number, in which case the implementation generates a placeholder username the service ignores.
    * @param password The password for basic auth
+   * @param aci The ACI of the existing numberless account to log back in to, used as the username for basic auth.
    */
   suspend fun registerAccount(
     e164: String?,
@@ -120,7 +124,8 @@ interface NetworkController {
     aciPreKeys: PreKeyCollection,
     pniPreKeys: PreKeyCollection?,
     fcmToken: String?,
-    skipDeviceTransfer: Boolean
+    skipDeviceTransfer: Boolean,
+    aci: ACI?
   ): RequestResult<RegisterAccountResponse, RegisterAccountError>
 
   /**

@@ -92,15 +92,15 @@ class EnterAepForLocalBackupViewModel(
   }
 
   private suspend fun applySubmit(inputState: EnterAepState, stateEmitter: (EnterAepState) -> Unit) {
-    check(inputState.isBackupKeyValid) { "AEP is not valid, should not have gotten here." }
+    check(inputState.recoveryKey.isValid) { "AEP is not valid, should not have gotten here." }
 
     if (!isPreRegistration) {
-      resultBus.sendResult(resultKey, EnterAepForLocalBackupResult.RestoreReady(inputState.backupKey))
+      resultBus.sendResult(resultKey, EnterAepForLocalBackupResult.RestoreReady(inputState.recoveryKey.normalized))
       parentEventEmitter.navigateBack()
       return
     }
 
-    val aep = AccountEntropyPool(inputState.backupKey)
+    val aep = AccountEntropyPool(inputState.recoveryKey.normalized)
 
     stateEmitter(inputState.copy(isRegistering = true))
 
@@ -108,7 +108,7 @@ class EnterAepForLocalBackupViewModel(
     // only mean the backup belongs to a different account rather than a mistyped key.
     if (!repository.verifyLocalBackupKey(checkNotNull(backupUri).toUri(), aep)) {
       Log.w(TAG, "[Submit] Entered key cannot decrypt the selected backup.")
-      stateEmitter(inputState.copy(isRegistering = false, aepValidationError = AepValidationError.Incorrect))
+      stateEmitter(inputState.copy(isRegistering = false, recoveryKey = inputState.recoveryKey.copy(error = AepValidationError.Incorrect)))
       return
     }
 
@@ -131,8 +131,8 @@ class EnterAepForLocalBackupViewModel(
         val (response, keyMaterial, aci) = result.result
 
         stateEmitter(inputState.copy(isRegistering = false))
-        parentEventEmitter(RegistrationFlowEvent.Registered(aci, keyMaterial.accountEntropyPool, response.storageCapable))
-        resultBus.sendResult(resultKey, EnterAepForLocalBackupResult.RestoreReady(inputState.backupKey))
+        parentEventEmitter(RegistrationFlowEvent.Registered(aci, keyMaterial.accountEntropyPool, response.storageCapable, phoneNumberless = response.e164 == null))
+        resultBus.sendResult(resultKey, EnterAepForLocalBackupResult.RestoreReady(inputState.recoveryKey.normalized))
         parentEventEmitter.navigateBack()
       }
       is RequestResult.NonSuccess -> {

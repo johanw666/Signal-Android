@@ -1,0 +1,150 @@
+/*
+ * Copyright 2026 Signal Messenger, LLC
+ * SPDX-License-Identifier: AGPL-3.0-only
+ */
+
+package org.signal.registration.screens.signallogincredentials
+
+import android.app.Application
+import androidx.compose.ui.test.assertIsEnabled
+import androidx.compose.ui.test.assertIsNotEnabled
+import androidx.compose.ui.test.junit4.createComposeRule
+import androidx.compose.ui.test.onNodeWithTag
+import androidx.compose.ui.test.performClick
+import androidx.compose.ui.test.performScrollTo
+import androidx.compose.ui.test.performTextInput
+import androidx.test.core.app.ApplicationProvider
+import assertk.assertThat
+import assertk.assertions.contains
+import org.junit.Rule
+import org.junit.Test
+import org.junit.runner.RunWith
+import org.robolectric.RobolectricTestRunner
+import org.robolectric.annotation.Config
+import org.signal.core.ui.CoreUiDependenciesRule
+import org.signal.core.ui.compose.theme.SignalTheme
+import org.signal.registration.screens.aepentry.AepInput
+import org.signal.registration.test.TestTags
+
+@RunWith(RobolectricTestRunner::class)
+@Config(application = Application::class)
+class SignalLoginCredentialEntryScreenTest {
+
+  companion object {
+    private const val VALID_ACCOUNT_ID = "a6b284822e3283d07f2391360a4c2b91"
+    private const val VALID_RECOVERY_KEY = "uy38jh2778hjjhj8lk19ga61s672jsj089r023s6a57809bap92j2yh5t326vv7t"
+  }
+
+  @get:Rule
+  val composeTestRule = createComposeRule()
+
+  @get:Rule
+  val coreUiDependenciesRule = CoreUiDependenciesRule(ApplicationProvider.getApplicationContext())
+
+  private val events = mutableListOf<SignalLoginCredentialEntryScreenEvents>()
+
+  @Test
+  fun `when text is typed into the account ID field, AccountIdChanged is emitted`() {
+    setContent(SignalLoginCredentialEntryState())
+
+    composeTestRule.onNodeWithTag(TestTags.SIGNAL_LOGIN_CREDENTIAL_ACCOUNT_ID_FIELD).performTextInput("a6b2")
+
+    assertThat(events).contains(SignalLoginCredentialEntryScreenEvents.AccountIdChanged("a6b2"))
+  }
+
+  @Test
+  fun `when text is typed into the recovery key field, RecoveryKeyChanged is emitted`() {
+    setContent(SignalLoginCredentialEntryState())
+
+    composeTestRule.onNodeWithTag(TestTags.SIGNAL_LOGIN_CREDENTIAL_RECOVERY_KEY_FIELD).performTextInput("uy38")
+
+    assertThat(events).contains(SignalLoginCredentialEntryScreenEvents.RecoveryKeyChanged("uy38"))
+  }
+
+  @Test
+  fun `when the eye button is clicked, RecoveryKeyVisibilityToggled is emitted`() {
+    setContent(SignalLoginCredentialEntryState())
+
+    composeTestRule.onNodeWithTag(TestTags.SIGNAL_LOGIN_CREDENTIAL_REVEAL_RECOVERY_KEY_BUTTON, useUnmergedTree = true).performScrollTo().performClick()
+
+    assertThat(events).contains(SignalLoginCredentialEntryScreenEvents.RecoveryKeyVisibilityToggled)
+  }
+
+  @Test
+  fun `when Need help is clicked, NeedHelpClicked is emitted`() {
+    setContent(SignalLoginCredentialEntryState())
+
+    composeTestRule.onNodeWithTag(TestTags.SIGNAL_LOGIN_CREDENTIAL_NEED_HELP_BUTTON).performClick()
+
+    assertThat(events).contains(SignalLoginCredentialEntryScreenEvents.NeedHelpClicked)
+  }
+
+  @Test
+  fun `when Next is clicked with a complete login, NextClicked is emitted`() {
+    setContent(completeState())
+
+    composeTestRule.onNodeWithTag(TestTags.SIGNAL_LOGIN_CREDENTIAL_NEXT_BUTTON).performClick()
+
+    assertThat(events).contains(SignalLoginCredentialEntryScreenEvents.NextClicked)
+  }
+
+  @Test
+  fun `given a complete login, Next is enabled`() {
+    setContent(completeState())
+
+    composeTestRule.onNodeWithTag(TestTags.SIGNAL_LOGIN_CREDENTIAL_NEXT_BUTTON).assertIsEnabled()
+  }
+
+  @Test
+  fun `given an incomplete account ID, Next is disabled`() {
+    setContent(completeState().copy(accountId = "a6b28482"))
+
+    composeTestRule.onNodeWithTag(TestTags.SIGNAL_LOGIN_CREDENTIAL_NEXT_BUTTON).assertIsNotEnabled()
+  }
+
+  @Test
+  fun `given an incomplete recovery key, Next is disabled`() {
+    setContent(completeState().copy(recoveryKey = AepInput.from("uy38jh27")))
+
+    composeTestRule.onNodeWithTag(TestTags.SIGNAL_LOGIN_CREDENTIAL_NEXT_BUTTON).assertIsNotEnabled()
+  }
+
+  @Test
+  fun `given an account ID with an invalid character, Next is disabled`() {
+    setContent(completeState().copy(accountIdError = AccountIdError.Invalid))
+
+    composeTestRule.onNodeWithTag(TestTags.SIGNAL_LOGIN_CREDENTIAL_NEXT_BUTTON).assertIsNotEnabled()
+  }
+
+  @Test
+  fun `given a rejected login, Next stays disabled until something is edited`() {
+    setContent(completeState().copy(areCredentialsIncorrect = true))
+
+    composeTestRule.onNodeWithTag(TestTags.SIGNAL_LOGIN_CREDENTIAL_NEXT_BUTTON).assertIsNotEnabled()
+  }
+
+  @Test
+  fun `while logging in, Next is disabled`() {
+    setContent(completeState().copy(isLoggingIn = true))
+
+    composeTestRule.onNodeWithTag(TestTags.SIGNAL_LOGIN_CREDENTIAL_NEXT_BUTTON).assertIsNotEnabled()
+  }
+
+  private fun completeState(): SignalLoginCredentialEntryState {
+    return SignalLoginCredentialEntryState(
+      accountId = VALID_ACCOUNT_ID,
+      recoveryKey = AepInput.from(VALID_RECOVERY_KEY)
+    )
+  }
+
+  private fun setContent(state: SignalLoginCredentialEntryState) {
+    composeTestRule.setContent {
+      SignalTheme {
+        SignalLoginCredentialEntryScreen(
+          state = state,
+          onEvent = { events += it }
+        )
+      }
+    }
+  }
+}

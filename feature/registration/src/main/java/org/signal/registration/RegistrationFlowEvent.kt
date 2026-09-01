@@ -75,9 +75,11 @@ sealed interface RegistrationFlowEvent {
    * @param aci The account identifier the server assigned (or re-confirmed) in the registration response.
    * @param storageCapable Whether the server reports that this account already has SVR/PIN data, as returned in the
    * registration response. Used later (e.g. when skipping a restore) to decide between PIN entry and PIN creation.
+   * @param phoneNumberless Whether the registration response came back without a phone number. Such an account has no
+   * PIN, so the screens that would otherwise ask for or create one must be skipped.
    */
-  data class Registered(val aci: ACI, val accountEntropyPool: AccountEntropyPool, val storageCapable: Boolean) : RegistrationFlowEvent {
-    override fun toString(): String = "Registered(aci=${aci.logString()}, accountEntropyPool=${accountEntropyPool.displayValue.censor()}, storageCapable=$storageCapable)"
+  data class Registered(val aci: ACI, val accountEntropyPool: AccountEntropyPool, val storageCapable: Boolean, val phoneNumberless: Boolean) : RegistrationFlowEvent {
+    override fun toString(): String = "Registered(aci=${aci.logString()}, accountEntropyPool=${accountEntropyPool.displayValue.censor()}, storageCapable=$storageCapable, phoneNumberless=$phoneNumberless)"
   }
 
   /** The master key has been restored from SVR. */

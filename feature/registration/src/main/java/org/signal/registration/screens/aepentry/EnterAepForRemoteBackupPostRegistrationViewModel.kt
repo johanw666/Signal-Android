@@ -66,9 +66,9 @@ class EnterAepForRemoteBackupPostRegistrationViewModel(
    * failing partway through a restore with no recourse.
    */
   private suspend fun applySubmit(inputState: EnterAepState, stateEmitter: (EnterAepState) -> Unit) {
-    check(inputState.isBackupKeyValid) { "AEP is not valid, should not have gotten here." }
+    check(inputState.recoveryKey.isValid) { "AEP is not valid, should not have gotten here." }
 
-    val aep = AccountEntropyPool(inputState.backupKey)
+    val aep = AccountEntropyPool(inputState.recoveryKey.normalized)
 
     stateEmitter(inputState.copy(isRegistering = true))
 
@@ -83,10 +83,13 @@ class EnterAepForRemoteBackupPostRegistrationViewModel(
       }
       is RequestResult.NonSuccess -> {
         when (val error = result.error) {
-          is NetworkController.VerifyBackupKeyError.IncorrectKey,
+          is NetworkController.VerifyBackupKeyError.IncorrectKey -> {
+            Log.w(TAG, "[Submit] Entered backup key is incorrect.")
+            stateEmitter(inputState.copy(isRegistering = false, recoveryKey = inputState.recoveryKey.copy(error = AepValidationError.Incorrect)))
+          }
           is NetworkController.VerifyBackupKeyError.NoBackup -> {
-            Log.w(TAG, "[Submit] Entered backup key is incorrect (error: $error).")
-            stateEmitter(inputState.copy(isRegistering = false, aepValidationError = AepValidationError.Incorrect))
+            Log.w(TAG, "[Submit] The key verified, but the account has no remote backup.")
+            stateEmitter(inputState.copy(isRegistering = false, registrationError = RegistrationError.NoRemoteBackup))
           }
           is NetworkController.VerifyBackupKeyError.RateLimited -> {
             Log.w(TAG, "[Submit] Rate limited (retryAfter: ${error.retryAfter}).")

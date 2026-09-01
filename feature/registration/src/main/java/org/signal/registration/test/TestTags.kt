@@ -57,11 +57,13 @@ object TestTags {
   const val SIGNAL_LOGIN_PAYMENT_CONTINUE_BUTTON = "signal_login_payment_continue_button"
   const val SIGNAL_LOGIN_PAYMENT_RECEIPT_CREDENTIAL_FIELD = "signal_login_payment_receipt_credential_field"
 
-  // Signal Login Screen
-  const val SIGNAL_LOGIN_SCREEN = "signal_login_screen"
-  const val SIGNAL_LOGIN_ACCOUNT_KEY_FIELD = "signal_login_account_key_field"
-  const val SIGNAL_LOGIN_NEED_HELP_BUTTON = "signal_login_need_help_button"
-  const val SIGNAL_LOGIN_NEXT_BUTTON = "signal_login_next_button"
+  // Signal Login Credential Entry Screen
+  const val SIGNAL_LOGIN_CREDENTIAL_ENTRY_SCREEN = "signal_login_credential_entry_screen"
+  const val SIGNAL_LOGIN_CREDENTIAL_ACCOUNT_ID_FIELD = "signal_login_credential_account_id_field"
+  const val SIGNAL_LOGIN_CREDENTIAL_RECOVERY_KEY_FIELD = "signal_login_credential_recovery_key_field"
+  const val SIGNAL_LOGIN_CREDENTIAL_REVEAL_RECOVERY_KEY_BUTTON = "signal_login_credential_reveal_recovery_key_button"
+  const val SIGNAL_LOGIN_CREDENTIAL_NEED_HELP_BUTTON = "signal_login_credential_need_help_button"
+  const val SIGNAL_LOGIN_CREDENTIAL_NEXT_BUTTON = "signal_login_credential_next_button"
 
   // Signal Login Info Screen
   const val SIGNAL_LOGIN_INFO_SCREEN = "signal_login_info_screen"

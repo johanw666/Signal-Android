@@ -22,6 +22,7 @@ import kotlinx.coroutines.tasks.await
 import kotlinx.coroutines.withContext
 import kotlinx.coroutines.withTimeoutOrNull
 import kotlinx.serialization.json.Json
+import okio.ByteString
 import okio.ByteString.Companion.toByteString
 import org.signal.archive.LocalBackupRestoreProgress
 import org.signal.core.models.AccountEntropyPool
@@ -355,7 +356,7 @@ class RegistrationRepository(
   }
 
   /**
-   * Registers a new account that has no phone number, redeeming [receiptCredentialPresentation] (issued for a
+   * Registers a brand new account that has no phone number, by redeeming [receiptCredentialPresentation] (issued for a
    * completed Signal Login purchase) as proof of payment.
    *
    * @return The registration result containing account information or an error
@@ -369,7 +370,10 @@ class RegistrationRepository(
       sessionId = null,
       recoveryPassword = null,
       receiptCredentialPresentation = receiptCredentialPresentation,
-      skipDeviceTransfer = skipDeviceTransfer
+      aci = null,
+      registrationLock = null,
+      skipDeviceTransfer = skipDeviceTransfer,
+      existingAccountEntropyPool = null
     )
 
     if (result is RequestResult.Success) {
@@ -379,6 +383,35 @@ class RegistrationRepository(
 
       // Redeeming a receipt credential always creates a brand-new account, so there is nothing to restore.
       setRestoreDecision(RestoreDecision.NEW_ACCOUNT)
+    }
+
+    result
+  }
+
+  /**
+   * Logs back in to the account with no phone number identified by [aci], using the [recoveryPassword] and [aep]
+   * behind it.
+   */
+  suspend fun reRegisterAccountWithoutPhoneNumber(
+    aci: ACI,
+    recoveryPassword: String,
+    aep: AccountEntropyPool,
+    registrationLock: String? = null,
+    skipDeviceTransfer: Boolean = true
+  ): RequestResult<RegisteredAccountData, RegisterAccountError> = withContext(Dispatchers.IO) {
+    val result = registerAccount(
+      e164 = null,
+      sessionId = null,
+      recoveryPassword = recoveryPassword,
+      receiptCredentialPresentation = null,
+      aci = aci,
+      registrationLock = registrationLock,
+      skipDeviceTransfer = skipDeviceTransfer,
+      existingAccountEntropyPool = aep
+    )
+
+    if (result is RequestResult.Success && result.result.response.authCredentialSalt == null) {
+      Log.w(TAG, "[reRegisterAccountWithoutPhoneNumber] The service did not return an authCredentialSalt!")
     }
 
     result
@@ -653,8 +686,10 @@ class RegistrationRepository(
    * 4. On success, saves the registration data to persistent storage
    *
    * Must provide exactly one of [sessionId], [recoveryPassword], or [receiptCredentialPresentation]. Providing a
-   * [receiptCredentialPresentation] registers an account that has no phone number, so [e164] must be null and no PNI
-   * key material is generated or sent.
+   * [receiptCredentialPresentation] or an [aci] registers an account that has no phone number, so [e164] must be null.
+   * A [receiptCredentialPresentation] sends no PNI key material at all, while an [aci] always sends throwaway PNI key
+   * material, which the service requires of any recovery-by-identifier. That material is only kept locally if the
+   * response says the reclaimed account has a phone number, meaning the service kept it too.
    *
    * @param e164 The phone number in E.164 format (used for basic auth). Null when registering without a phone number.
    * @param sessionId The verified session ID from phone number verification.
@@ -663,6 +698,7 @@ class RegistrationRepository(
    * @param registrationLock The registration lock token derived from the master key (if unlocking a reglocked account). Important: if you provide this, the user will be registered with reglock enabled.
    * @param skipDeviceTransfer Whether to skip device transfer flow
    * @param preExistingRegistrationData If present, we will use the pre-existing key material from this pre-existing registration rather than generating new key material.
+   * @param aci The ACI of the existing phone-numberless account being logged back in to. Requires a [recoveryPassword], and implies there is no [e164].
    * @return The registration result containing account information or an error
    */
   private suspend fun registerAccount(
@@ -670,6 +706,7 @@ class RegistrationRepository(
     sessionId: String?,
     recoveryPassword: String?,
     receiptCredentialPresentation: ReceiptCredentialPresentation? = null,
+    aci: ACI? = null,
     registrationLock: String? = null,
     skipDeviceTransfer: Boolean = true,
     existingAccountEntropyPool: AccountEntropyPool? = null,
@@ -677,16 +714,17 @@ class RegistrationRepository(
     existingPniIdentityKeyPair: IdentityKeyPair? = null,
     unrestrictedUnidentifiedAccess: Boolean = false
   ): RequestResult<RegisteredAccountData, RegisterAccountError> = withContext(Dispatchers.IO) {
-    val phoneNumberless = receiptCredentialPresentation != null
+    val phoneNumberless = receiptCredentialPresentation != null || aci != null
 
     check(listOfNotNull(sessionId, recoveryPassword, receiptCredentialPresentation).size == 1) { "Must provide exactly one of: sessionId, recoveryPassword, receiptCredentialPresentation" }
+    check(aci == null || recoveryPassword != null) { "Must provide a recoveryPassword alongside an aci" }
     if (phoneNumberless) {
       check(e164 == null) { "Must not provide an e164 when registering without a phone number" }
     } else {
       check(e164 != null) { "Must provide an e164 when registering with a phone number" }
     }
 
-    Log.i(TAG, "[registerAccount] Starting registration for $e164. sessionId: ${sessionId != null}, recoveryPassword: ${recoveryPassword != null}, receiptCredentialPresentation: $phoneNumberless, registrationLock: ${registrationLock != null}, skipDeviceTransfer: $skipDeviceTransfer, existingAep: ${existingAccountEntropyPool != null}")
+    Log.i(TAG, "[registerAccount] Starting registration for $e164. sessionId: ${sessionId != null}, recoveryPassword: ${recoveryPassword != null}, receiptCredentialPresentation: ${receiptCredentialPresentation != null}, aci: ${aci != null}, phoneNumberless: $phoneNumberless, registrationLock: ${registrationLock != null}, skipDeviceTransfer: $skipDeviceTransfer, existingAep: ${existingAccountEntropyPool != null}")
 
     val inProgressData = storageController.readInProgressRegistrationData()
     val resumedAciIdentityKeyPair = inProgressData.accountData?.aciIdentityKeyPair?.takeIf { it.size > 0 }?.let { IdentityKeyPair(it.toByteArray()) }
@@ -732,6 +770,16 @@ class RegistrationRepository(
 
     SensitiveLog.d(TAG, "[registerAccount] Using master key [${Hex.toStringCondensed(newMasterKey.serialize())}] and RRP [$newRecoveryPassword]")
 
+    val pniKeyMaterialForRequest = when {
+      // Traditional registration with a number requires PNI material
+      !phoneNumberless -> checkNotNull(keyMaterial.pni) { "Missing PNI key material for a primary registration!" }
+      // Numberless re-registration requires PNI material just in case, and the response tells us if we should keep it
+      aci != null -> generatePniKeyMaterial()
+      // Fresh numberless registration requires null PNI material
+      receiptCredentialPresentation != null -> null
+      else -> error("Invalid state! numberless: $phoneNumberless, hasAci: ${aci != null}, hasReceiptCredential: ${receiptCredentialPresentation != null}")
+    }
+
     val accountAttributes = AccountAttributes(
       signalingKey = null,
       registrationId = keyMaterial.aciRegistrationId,
@@ -743,18 +791,15 @@ class RegistrationRepository(
       unrestrictedUnidentifiedAccess = unrestrictedUnidentifiedAccess,
       discoverableByPhoneNumber = if (phoneNumberless) null else false, // Important -- this should be false initially, and then the user should be given a choice as to whether to turn it on later
       capabilities = getAccountCapabilities().copy(optionalPhoneNumber = phoneNumberless),
-      pniRegistrationId = keyMaterial.pni?.registrationId,
+      pniRegistrationId = pniKeyMaterialForRequest?.registrationId,
       recoveryPassword = newRecoveryPassword
     )
 
-    val pniPreKeys = if (phoneNumberless) {
-      null
-    } else {
-      val pniKeyMaterial = checkNotNull(keyMaterial.pni) { "Missing PNI key material for a primary registration!" }
+    val pniPreKeys = pniKeyMaterialForRequest?.let {
       PreKeyCollection(
-        identityKey = pniKeyMaterial.identityKeyPair.publicKey,
-        signedPreKey = pniKeyMaterial.signedPreKey,
-        lastResortKyberPreKey = pniKeyMaterial.lastResortKyberPreKey
+        identityKey = it.identityKeyPair.publicKey,
+        signedPreKey = it.signedPreKey,
+        lastResortKyberPreKey = it.lastResortKyberPreKey
       )
     }
 
@@ -768,7 +813,8 @@ class RegistrationRepository(
       aciPreKeys = keyMaterial.toAciPreKeyCollection(),
       pniPreKeys = pniPreKeys,
       fcmToken = fcmToken,
-      skipDeviceTransfer = skipDeviceTransfer
+      skipDeviceTransfer = skipDeviceTransfer,
+      aci = aci
     )
 
     when (result) {
@@ -776,6 +822,14 @@ class RegistrationRepository(
         if (!isPhoneNumberlessRegistrationAvailable) {
           checkNotNull(result.result.e164) { "Missing e164 in the response for a primary registration!" }
           checkNotNull(result.result.pni) { "Missing PNI in the response for a primary registration!" }
+        }
+
+        // Numberless re-reg sends throwaway PNI material, and the response tells us if we had a phone number or not.
+        // Only keep the PNI material if it turns out there was a number associated with the account.
+        val pniKeyMaterialToKeep = keyMaterial.pni ?: pniKeyMaterialForRequest?.takeIf { result.result.pni != null }
+
+        if (aci != null) {
+          Log.i(TAG, "[registerAccount] Reclaimed an account that ${if (result.result.pni != null) "has" else "does not have"} a phone number. Keeping the PNI key material we sent: ${pniKeyMaterialToKeep != null}")
         }
 
         storageController.updateInProgressRegistrationData {
@@ -788,10 +842,24 @@ class RegistrationRepository(
           this.servicePassword = keyMaterial.servicePassword
           this.reRegistration = result.result.reregistration
           this.authCredentialSalt = result.result.authCredentialSalt?.let { Base64.decode(it).toByteString() }
+
+          if (pniKeyMaterialToKeep != null) {
+            this.pniIdentityKeyPair = pniKeyMaterialToKeep.identityKeyPair.serialize().toByteString()
+            this.pniSignedPreKey = pniKeyMaterialToKeep.signedPreKey.serialize().toByteString()
+            this.pniLastResortKyberPreKey = pniKeyMaterialToKeep.lastResortKyberPreKey.serialize().toByteString()
+            this.pniRegistrationId = pniKeyMaterialToKeep.registrationId
+          } else {
+            // An earlier, abandoned attempt in this same registration may have left PNI material behind, and an
+            // account with no PNI must not be committed holding on to it.
+            this.pniIdentityKeyPair = ByteString.EMPTY
+            this.pniSignedPreKey = ByteString.EMPTY
+            this.pniLastResortKyberPreKey = ByteString.EMPTY
+            this.pniRegistrationId = 0
+          }
         }
         storageController.commitRegistrationData()
 
-        RequestResult.Success(RegisteredAccountData(result.result, keyMaterial, ACI.parseOrThrow(result.result.aci)))
+        RequestResult.Success(RegisteredAccountData(result.result, keyMaterial.copy(pni = pniKeyMaterialToKeep), ACI.parseOrThrow(result.result.aci)))
       }
       is RequestResult.NonSuccess -> result
       is RequestResult.RetryableNetworkError -> result
@@ -1133,7 +1201,8 @@ class RegistrationRepository(
 
   /**
    * @param includePniKeyMaterial Whether to generate PNI key material at all. False for an account with no phone number,
-   *   which has no PNI to attach the keys to.
+   *   which has no PNI to attach the keys to. See [generatePniKeyMaterial] for the material such a registration sends
+   *   without keeping.
    */
   private fun generateKeyMaterial(
     existingAccountEntropyPool: AccountEntropyPool? = null,
@@ -1150,18 +1219,7 @@ class RegistrationRepository(
     val aciSignedPreKey = generateSignedPreKey(generatePreKeyId(), timestamp, aciIdentityKeyPair)
     val aciLastResortKyberPreKey = generateKyberPreKey(generatePreKeyId(), timestamp, aciIdentityKeyPair)
 
-    val pniKeyMaterial = if (includePniKeyMaterial) {
-      val pniIdentityKeyPair = existingPniIdentityKeyPair ?: IdentityKeyPair.generate()
-
-      KeyMaterial.PniKeyMaterial(
-        identityKeyPair = pniIdentityKeyPair,
-        signedPreKey = generateSignedPreKey(generatePreKeyId(), timestamp, pniIdentityKeyPair),
-        lastResortKyberPreKey = generateKyberPreKey(generatePreKeyId(), timestamp, pniIdentityKeyPair),
-        registrationId = generateRegistrationId()
-      )
-    } else {
-      null
-    }
+    val pniKeyMaterial = if (includePniKeyMaterial) generatePniKeyMaterial(existingPniIdentityKeyPair) else null
 
     val profileKey = profileKey ?: generateProfileKey()
 
@@ -1175,6 +1233,19 @@ class RegistrationRepository(
       unidentifiedAccessKey = deriveUnidentifiedAccessKey(profileKey),
       servicePassword = generatePassword(),
       accountEntropyPool = accountEntropyPool
+    )
+  }
+
+  /** A self-consistent set of PNI key material: the pre-keys are signed by the identity key returned alongside them. */
+  private fun generatePniKeyMaterial(existingPniIdentityKeyPair: IdentityKeyPair? = null): KeyMaterial.PniKeyMaterial {
+    val pniIdentityKeyPair = existingPniIdentityKeyPair ?: IdentityKeyPair.generate()
+    val timestamp = System.currentTimeMillis()
+
+    return KeyMaterial.PniKeyMaterial(
+      identityKeyPair = pniIdentityKeyPair,
+      signedPreKey = generateSignedPreKey(generatePreKeyId(), timestamp, pniIdentityKeyPair),
+      lastResortKyberPreKey = generateKyberPreKey(generatePreKeyId(), timestamp, pniIdentityKeyPair),
+      registrationId = generateRegistrationId()
     )
   }
 

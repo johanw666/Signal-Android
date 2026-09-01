@@ -372,7 +372,7 @@ class VerificationCodeViewModel(
       is RequestResult.Success -> {
         val (response, keyMaterial, aci) = registerResult.result
 
-        parentEventEmitter(RegistrationFlowEvent.Registered(aci, keyMaterial.accountEntropyPool, response.storageCapable))
+        parentEventEmitter(RegistrationFlowEvent.Registered(aci, keyMaterial.accountEntropyPool, response.storageCapable, phoneNumberless = response.e164 == null))
 
         val pendingRestore = pendingRestoreNavigation()
         when {

@@ -5,15 +5,8 @@
 
 package org.signal.registration.screens.aepentry
 
-import org.signal.core.util.censor
-
 data class EnterAepState(
-  /** The user's typed text, preserved verbatim (illegal chars stripped). Bound to the TextField so #/= stay visible as the user types them. */
-  val enteredText: String = "",
-  /** Storage-normalized lowercase form of [enteredText], used for validation and submit. */
-  val backupKey: String = "",
-  val isBackupKeyValid: Boolean = false,
-  val aepValidationError: AepValidationError? = null,
+  val recoveryKey: AepInput = AepInput(),
   val chunkLength: Int = 4,
   val isRegistering: Boolean = false,
   val registrationError: RegistrationError? = null,
@@ -22,7 +15,7 @@ data class EnterAepState(
   /** Whether a password manager / credential provider is available to fill the recovery key. */
   val isPasswordManagerAvailable: Boolean = false
 ) {
-  override fun toString(): String = "EnterAepState(enteredText=${enteredText.censor()}, backupKey=${backupKey.censor()}, isBackupKeyValid=$isBackupKeyValid, aepValidationError=$aepValidationError, chunkLength=$chunkLength, isRegistering=$isRegistering, registrationError=$registrationError, showDifferentAccountDialog=$showDifferentAccountDialog, isPasswordManagerAvailable=$isPasswordManagerAvailable)"
+  override fun toString(): String = "EnterAepState(recoveryKey=$recoveryKey, chunkLength=$chunkLength, isRegistering=$isRegistering, registrationError=$registrationError, showDifferentAccountDialog=$showDifferentAccountDialog, isPasswordManagerAvailable=$isPasswordManagerAvailable)"
 }
 
 sealed interface AepValidationError {
@@ -33,6 +26,9 @@ sealed interface AepValidationError {
 
 sealed interface RegistrationError {
   data object IncorrectRecoveryPassword : RegistrationError
+
+  /** The key verified against the account, but there is no remote backup to restore. Distinct from an incorrect key. */
+  data object NoRemoteBackup : RegistrationError
   data object RateLimited : RegistrationError
   data object NetworkError : RegistrationError
   data object UnknownError : RegistrationError

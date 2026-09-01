@@ -92,7 +92,7 @@ class EnterAepForLocalBackupViewModelTest {
   @Test
   fun `Submit without requiring registration hands the key back and navigates back`() = runTest {
     val viewModel = createViewModel(isPreRegistration = false)
-    val initialState = EnterAepState(backupKey = VALID_AEP, isBackupKeyValid = true)
+    val initialState = EnterAepState(recoveryKey = AepInput.from(VALID_AEP))
 
     viewModel.applyEvent(initialState, EnterAepEvents.Submit, stateEmitter)
 
@@ -107,13 +107,13 @@ class EnterAepForLocalBackupViewModelTest {
   @Test
   fun `Submit with a key that cannot decrypt the backup shows an inline error without registering`() = runTest {
     val viewModel = createViewModel()
-    val initialState = EnterAepState(backupKey = VALID_AEP, isBackupKeyValid = true)
+    val initialState = EnterAepState(recoveryKey = AepInput.from(VALID_AEP))
 
     coEvery { mockRepository.verifyLocalBackupKey(any(), any()) } returns false
 
     viewModel.applyEvent(initialState, EnterAepEvents.Submit, stateEmitter)
 
-    assertThat(emittedStates.last().aepValidationError).isEqualTo(AepValidationError.Incorrect)
+    assertThat(emittedStates.last().recoveryKey.error).isEqualTo(AepValidationError.Incorrect)
     assertThat(emittedStates.last().isRegistering).isEqualTo(false)
     coVerify(exactly = 0) { mockRepository.registerAccountWithRecoveryPassword(any(), any(), any(), any(), any(), any()) }
   }
@@ -126,7 +126,7 @@ class EnterAepForLocalBackupViewModelTest {
       io.mockk.every { accountEntropyPool } returns aep
     }
     val mockResponse = mockk<RegisterAccountResponse>(relaxed = true)
-    val initialState = EnterAepState(backupKey = VALID_AEP, isBackupKeyValid = true)
+    val initialState = EnterAepState(recoveryKey = AepInput.from(VALID_AEP))
 
     coEvery { mockRepository.verifyLocalBackupKey(any(), any()) } returns true
     coEvery { mockRepository.registerAccountWithRecoveryPassword(any(), any(), any(), any(), any(), any()) } returns
@@ -144,7 +144,7 @@ class EnterAepForLocalBackupViewModelTest {
   @Test
   fun `Submit with RegistrationRecoveryPasswordIncorrect shows the different account dialog`() = runTest {
     val viewModel = createViewModel()
-    val initialState = EnterAepState(backupKey = VALID_AEP, isBackupKeyValid = true)
+    val initialState = EnterAepState(recoveryKey = AepInput.from(VALID_AEP))
 
     coEvery { mockRepository.verifyLocalBackupKey(any(), any()) } returns true
     coEvery { mockRepository.registerAccountWithRecoveryPassword(any(), any(), any(), any(), any(), any()) } returns
@@ -162,7 +162,7 @@ class EnterAepForLocalBackupViewModelTest {
   @Test
   fun `ConfirmDifferentAccountRestore forces the session path and hands control back for SMS verification`() = runTest {
     val viewModel = createViewModel()
-    val initialState = EnterAepState(backupKey = VALID_AEP, isBackupKeyValid = true, showDifferentAccountDialog = true)
+    val initialState = EnterAepState(recoveryKey = AepInput.from(VALID_AEP), showDifferentAccountDialog = true)
 
     viewModel.applyEvent(initialState, EnterAepEvents.ConfirmDifferentAccountRestore, stateEmitter)
 
@@ -176,7 +176,7 @@ class EnterAepForLocalBackupViewModelTest {
   @Test
   fun `DismissDifferentAccountDialog clears the dialog`() = runTest {
     val viewModel = createViewModel()
-    val initialState = EnterAepState(backupKey = VALID_AEP, isBackupKeyValid = true, showDifferentAccountDialog = true)
+    val initialState = EnterAepState(recoveryKey = AepInput.from(VALID_AEP), showDifferentAccountDialog = true)
 
     viewModel.applyEvent(initialState, EnterAepEvents.DismissDifferentAccountDialog, stateEmitter)
 
@@ -192,7 +192,7 @@ class EnterAepForLocalBackupViewModelTest {
       io.mockk.every { accountEntropyPool } returns aep
     }
     val mockResponse = mockk<RegisterAccountResponse>(relaxed = true)
-    val initialState = EnterAepState(backupKey = VALID_AEP, isBackupKeyValid = true)
+    val initialState = EnterAepState(recoveryKey = AepInput.from(VALID_AEP))
     val registrationLockData = RegistrationLockResponse(
       timeRemaining = 86400000L,
       svr2Credentials = SvrCredentials(username = "test-username", password = "test-password")
@@ -217,7 +217,7 @@ class EnterAepForLocalBackupViewModelTest {
   @Test
   fun `Submit with RegistrationLock when already providing the reglock token navigates to PinEntryForRegistrationLock`() = runTest {
     val viewModel = createViewModel()
-    val initialState = EnterAepState(backupKey = VALID_AEP, isBackupKeyValid = true)
+    val initialState = EnterAepState(recoveryKey = AepInput.from(VALID_AEP))
     val registrationLockData = RegistrationLockResponse(
       timeRemaining = 86400000L,
       svr2Credentials = SvrCredentials(username = "test-username", password = "test-password")
@@ -241,7 +241,7 @@ class EnterAepForLocalBackupViewModelTest {
   @Test
   fun `Submit with RateLimited sets registrationError to RateLimited`() = runTest {
     val viewModel = createViewModel()
-    val initialState = EnterAepState(backupKey = VALID_AEP, isBackupKeyValid = true)
+    val initialState = EnterAepState(recoveryKey = AepInput.from(VALID_AEP))
 
     coEvery { mockRepository.verifyLocalBackupKey(any(), any()) } returns true
     coEvery { mockRepository.registerAccountWithRecoveryPassword(any(), any(), any(), any(), any(), any()) } returns
@@ -258,7 +258,7 @@ class EnterAepForLocalBackupViewModelTest {
   @Test
   fun `Submit with RetryableNetworkError sets registrationError to NetworkError`() = runTest {
     val viewModel = createViewModel()
-    val initialState = EnterAepState(backupKey = VALID_AEP, isBackupKeyValid = true)
+    val initialState = EnterAepState(recoveryKey = AepInput.from(VALID_AEP))
 
     coEvery { mockRepository.verifyLocalBackupKey(any(), any()) } returns true
     coEvery { mockRepository.registerAccountWithRecoveryPassword(any(), any(), any(), any(), any(), any()) } returns

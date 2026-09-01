@@ -155,6 +155,24 @@ class PersistedFlowStateTest {
   }
 
   @Test
+  fun `round-trip serialization with SignalLoginCredentialEntry`() {
+    val state = PersistedFlowState(
+      backStack = listOf(
+        RegistrationRoute.Welcome,
+        RegistrationRoute.SignalLoginCredentialEntry
+      ),
+      sessionMetadata = null,
+      sessionE164 = null,
+      doNotAttemptRecoveryPassword = false
+    )
+
+    val encoded = json.encodeToString(PersistedFlowState.serializer(), state)
+    val decoded = json.decodeFromString(PersistedFlowState.serializer(), encoded)
+
+    assertThat(decoded).isEqualTo(state)
+  }
+
+  @Test
   fun `deserialization ignores unknown keys for forward compatibility`() {
     val validJson = """{"backStack":[{"type":"org.signal.registration.RegistrationRoute.Welcome"}],"sessionMetadata":null,"sessionE164":null,"doNotAttemptRecoveryPassword":false,"unknownField":"value"}"""
     val decoded = json.decodeFromString(PersistedFlowState.serializer(), validJson)
@@ -183,6 +201,7 @@ class PersistedFlowStateTest {
       accountEntropyPool = AccountEntropyPool.generate(),
       aci = ACI.from(UUID.fromString("3f8b6a90-8f9c-4a3e-9c7d-1f2e3a4b5c6d")),
       storageCapable = true,
+      isPhoneNumberlessAccount = true,
       temporaryMasterKey = MasterKey(ByteArray(32)),
       doNotAttemptRecoveryPassword = true,
       lastSmsVerificationCodeRequest = VerificationCodeRequest("+15551234567", 12_345L),
@@ -198,6 +217,7 @@ class PersistedFlowStateTest {
     assertThat(persisted.aci).isEqualTo("3f8b6a90-8f9c-4a3e-9c7d-1f2e3a4b5c6d")
     assertThat(persisted.doNotAttemptRecoveryPassword).isEqualTo(true)
     assertThat(persisted.storageCapable).isEqualTo(true)
+    assertThat(persisted.phoneNumberlessAccount).isEqualTo(true)
     assertThat(persisted.smsVerificationCodeRequest).isEqualTo(VerificationCodeRequest("+15551234567", 12_345L))
     assertThat(persisted.callVerificationCodeRequest).isEqualTo(VerificationCodeRequest("+15551234567", 23_456L))
   }
@@ -222,6 +242,7 @@ class PersistedFlowStateTest {
       aci = "3f8b6a90-8f9c-4a3e-9c7d-1f2e3a4b5c6d",
       doNotAttemptRecoveryPassword = true,
       storageCapable = true,
+      phoneNumberlessAccount = true,
       smsVerificationCodeRequest = VerificationCodeRequest("+15551234567", 12_345L),
       callVerificationCodeRequest = VerificationCodeRequest("+15551234567", 23_456L)
     )
@@ -245,6 +266,7 @@ class PersistedFlowStateTest {
     assertThat(flowState.preExistingRegistrationData).isNull()
     assertThat(flowState.doNotAttemptRecoveryPassword).isEqualTo(true)
     assertThat(flowState.storageCapable).isEqualTo(true)
+    assertThat(flowState.isPhoneNumberlessAccount).isEqualTo(true)
     assertThat(flowState.lastSmsVerificationCodeRequest).isEqualTo(VerificationCodeRequest("+15551234567", 12_345L))
     assertThat(flowState.lastCallVerificationCodeRequest).isEqualTo(VerificationCodeRequest("+15551234567", 23_456L))
   }

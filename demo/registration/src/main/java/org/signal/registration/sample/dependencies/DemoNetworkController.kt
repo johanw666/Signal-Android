@@ -25,6 +25,7 @@ import okhttp3.Response
 import org.signal.core.models.AccountEntropyPool
 import org.signal.core.models.MasterKey
 import org.signal.core.models.ServiceId
+import org.signal.core.models.ServiceId.ACI
 import org.signal.core.models.backup.MessageBackupKey
 import org.signal.core.util.Base64
 import org.signal.core.util.Hex
@@ -212,7 +213,8 @@ class DemoNetworkController(
     aciPreKeys: PreKeyCollection,
     pniPreKeys: PreKeyCollection?,
     fcmToken: String?,
-    skipDeviceTransfer: Boolean
+    skipDeviceTransfer: Boolean,
+    aci: ACI?
   ): RequestResult<RegisterAccountResponse, RegisterAccountError> {
     return registrationApi.registerAccount(
       e164 = e164,
@@ -224,7 +226,8 @@ class DemoNetworkController(
       aciPreKeys = aciPreKeys,
       pniPreKeys = pniPreKeys,
       fcmToken = fcmToken,
-      skipDeviceTransfer = skipDeviceTransfer
+      skipDeviceTransfer = skipDeviceTransfer,
+      aci = aci
     )
   }
 

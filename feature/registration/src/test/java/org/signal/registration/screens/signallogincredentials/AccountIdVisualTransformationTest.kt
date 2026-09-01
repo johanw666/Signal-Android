@@ -3,14 +3,14 @@
  * SPDX-License-Identifier: AGPL-3.0-only
  */
 
-package org.signal.registration.screens.signallogin
+package org.signal.registration.screens.signallogincredentials
 
 import androidx.compose.ui.text.AnnotatedString
 import assertk.assertThat
 import assertk.assertions.isEqualTo
 import org.junit.Test
 
-class AccountKeyVisualTransformationTest {
+class AccountIdVisualTransformationTest {
 
   companion object {
     private const val FULL_KEY = "a6b284822e3283d07f2391360a4c2b91"
@@ -42,7 +42,7 @@ class AccountKeyVisualTransformationTest {
   fun `every cursor position maps into the transformed text and back`() {
     for (length in 0..FULL_KEY.length) {
       val key = FULL_KEY.take(length)
-      val mapping = AccountKeyVisualTransformation.filter(AnnotatedString(key)).offsetMapping
+      val mapping = AccountIdVisualTransformation.filter(AnnotatedString(key)).offsetMapping
       val transformedLength = transform(key).length
 
       for (offset in 0..length) {
@@ -54,5 +54,5 @@ class AccountKeyVisualTransformationTest {
     }
   }
 
-  private fun transform(text: String): String = AccountKeyVisualTransformation.filter(AnnotatedString(text)).text.text
+  private fun transform(text: String): String = AccountIdVisualTransformation.filter(AnnotatedString(text)).text.text
 }

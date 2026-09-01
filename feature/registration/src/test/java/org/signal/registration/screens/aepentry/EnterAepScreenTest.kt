@@ -101,8 +101,7 @@ class EnterAepScreenTest {
       SignalTheme {
         EnterAepScreen(
           state = EnterAepState(
-            isBackupKeyValid = true,
-            aepValidationError = null,
+            recoveryKey = AepInput(isValid = true),
             isRegistering = false
           ),
           onEvent = { event ->

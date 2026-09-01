@@ -114,6 +114,8 @@ enum class SignalIcons(private val icon: SignalIcon) : SignalIcon by icon {
   Video(icon(R.drawable.symbol_video_24)),
   ViewOnce(icon(R.drawable.symbol_view_once_24)),
   ViewOnceInfinite(icon(R.drawable.symbol_view_once_infinite_24)),
+  Visible(icon(R.drawable.symbol_visible_24)),
+  VisibleSlash(icon(R.drawable.symbol_visible_slash_24)),
   X(icon(R.drawable.symbol_x_24)),
   XCircle(icon(R.drawable.symbol_x_circle_24)),
   XCircleFill(icon(R.drawable.symbol_x_circle_fill_24))

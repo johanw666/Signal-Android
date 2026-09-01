@@ -114,9 +114,9 @@ import org.signal.registration.screens.restoreselection.ArchiveRestoreOption
 import org.signal.registration.screens.restoreselection.ArchiveRestoreSelectionScreen
 import org.signal.registration.screens.restoreselection.ArchiveRestoreSelectionViewModel
 import org.signal.registration.screens.restoreselection.RegisteredState
-import org.signal.registration.screens.signallogin.SignalLoginScreen
-import org.signal.registration.screens.signallogin.SignalLoginScreenActions
-import org.signal.registration.screens.signallogin.SignalLoginViewModel
+import org.signal.registration.screens.signallogincredentials.SignalLoginCredentialEntryScreen
+import org.signal.registration.screens.signallogincredentials.SignalLoginCredentialEntryScreenActions
+import org.signal.registration.screens.signallogincredentials.SignalLoginCredentialEntryViewModel
 import org.signal.registration.screens.signallogindetails.SignalLoginViewDetailsScreenActions
 import org.signal.registration.screens.signallogindetails.SignalLoginViewDetailsViewModel
 import org.signal.registration.screens.signallogininfo.SignalLoginInfoScreen
@@ -180,9 +180,9 @@ sealed interface RegistrationRoute : NavKey, Parcelable {
   @Serializable
   data object SignalLoginViewDetails : RegistrationRoute
 
-  /** Log in with the account key of a Signal Login the user already owns. */
+  /** Logging in with a Signal Login the user already owns: the account ID and the recovery key that pairs with it. */
   @Serializable
-  data object SignalLogin : RegistrationRoute
+  data object SignalLoginCredentialEntry : RegistrationRoute
 
   /** Optional username selection for a phone-numberless account. */
   @Serializable
@@ -268,6 +268,24 @@ sealed interface RegistrationRoute : NavKey, Parcelable {
           registeredState = RegisteredState.RegisteredAndPinKnown
         )
       }
+
+      /**
+       * For an account reclaimed with an [aep] the user typed in, so either restore source can be read straight away
+       * without asking for a PIN.
+       */
+      fun forPostRegisterWithKnownAep(aep: AccountEntropyPool, hasRemoteBackup: Boolean): ArchiveRestoreSelection {
+        return ArchiveRestoreSelection(
+          restoreOptions = buildList {
+            if (hasRemoteBackup) {
+              add(ArchiveRestoreOption.SignalSecureBackup)
+            }
+            add(ArchiveRestoreOption.LocalBackup)
+            add(ArchiveRestoreOption.None)
+          },
+          registeredState = RegisteredState.RegisteredAndPinKnown,
+          aep = aep
+        )
+      }
     }
   }
 
@@ -301,9 +319,15 @@ sealed interface RegistrationRoute : NavKey, Parcelable {
   @Serializable
   data object EnterAepForRemoteBackupPostRegistration : RegistrationRoute
 
+  /**
+   * @param backwardNavigationAllowed Whether the user can reasonably go backwards in the nav graph.
+   */
   @Serializable
   @TypeParceler<AccountEntropyPool, AccountEntropyPoolParceler>
-  data class RemoteRestore(@Serializable(with = AccountEntropyPoolSerializer::class) val aep: AccountEntropyPool) : RegistrationRoute
+  data class RemoteRestore(
+    @Serializable(with = AccountEntropyPoolSerializer::class) val aep: AccountEntropyPool,
+    val backwardNavigationAllowed: Boolean = false
+  ) : RegistrationRoute
 
   @Serializable
   data object QuickRestoreQrScan : RegistrationRoute
@@ -729,10 +753,10 @@ private fun EntryProviderScope<NavKey>.navigationEntries(
     )
   }
 
-  // -- Signal Login Screen
-  entry<RegistrationRoute.SignalLogin> {
-    val viewModel: SignalLoginViewModel = viewModel(
-      factory = SignalLoginViewModel.Factory(
+  // -- Signal Login Credential Entry Screen
+  entry<RegistrationRoute.SignalLoginCredentialEntry> {
+    val viewModel: SignalLoginCredentialEntryViewModel = viewModel(
+      factory = SignalLoginCredentialEntryViewModel.Factory(
         repository = registrationRepository,
         parentEventEmitter = registrationViewModel::onEvent
       )
@@ -741,11 +765,11 @@ private fun EntryProviderScope<NavKey>.navigationEntries(
     val context = LocalContext.current
     CollectActions(viewModel.actions) { action ->
       when (action) {
-        SignalLoginScreenActions.OpenNeedHelpArticle -> openUrl(context, SIGNAL_LOGIN_LEARN_MORE_URL)
+        SignalLoginCredentialEntryScreenActions.OpenNeedHelpArticle -> openUrl(context, SIGNAL_LOGIN_LEARN_MORE_URL)
       }
     }
 
-    SignalLoginScreen(
+    SignalLoginCredentialEntryScreen(
       state = state,
       onEvent = { viewModel.onEvent(it) }
     )
@@ -889,6 +913,7 @@ private fun EntryProviderScope<NavKey>.navigationEntries(
     val viewModel: RemoteBackupRestoreViewModel = viewModel(
       factory = RemoteBackupRestoreViewModel.Factory(
         aep = key.aep,
+        canNavigateBackwards = key.backwardNavigationAllowed,
         repository = registrationRepository,
         parentState = registrationViewModel.state,
         parentEventEmitter = registrationViewModel::onEvent

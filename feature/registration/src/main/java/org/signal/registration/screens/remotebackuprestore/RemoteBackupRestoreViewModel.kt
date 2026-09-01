@@ -36,6 +36,7 @@ import kotlin.time.Duration.Companion.seconds
 
 class RemoteBackupRestoreViewModel(
   private val aep: AccountEntropyPool,
+  private val canNavigateBackwards: Boolean,
   private val repository: RegistrationRepository,
   private val parentState: StateFlow<RegistrationFlowState>,
   private val parentEventEmitter: (RegistrationFlowEvent) -> Unit,
@@ -76,8 +77,21 @@ class RemoteBackupRestoreViewModel(
         stateEmitter(state)
       }
       is RemoteBackupRestoreScreenEvents.Cancel -> {
-        parentEventEmitter.navigateBack()
-        stateEmitter(state)
+        if (state.isSkipping) {
+          Log.i(TAG, "[Cancel] Already moving on without a remote restore. Ignoring.")
+          return
+        }
+
+        if (canNavigateBackwards) {
+          Log.i(TAG, "[Cancel] Going back to previous screen.")
+          parentEventEmitter.navigateBack()
+          return
+        }
+
+        Log.i(TAG, "[Cancel] Moving on without a remote restore.")
+        stateEmitter(state.copy(isSkipping = true))
+        repository.setRestoreDecision(RestoreDecision.SKIPPED)
+        continuePastRestore()
       }
       is RemoteBackupRestoreScreenEvents.DismissError -> {
         stateEmitter(state.copy(restoreState = RemoteBackupRestoreState.RestoreState.None, restoreProgress = null))
@@ -87,6 +101,28 @@ class RemoteBackupRestoreViewModel(
       }
       is RemoteBackupRestoreScreenEvents.DismissContactSupport -> {
         stateEmitter(state.copy(showContactSupportDialog = false))
+      }
+    }
+  }
+
+  private suspend fun continuePastRestore() {
+    when {
+      parentState.value.isPhoneNumberlessAccount -> {
+        Log.i(TAG, "[continuePastRestore] Account has no phone number, and therefore no PIN. Completing registration.")
+        repository.restoreAccountRecord()
+        parentEventEmitter(RegistrationFlowEvent.RegistrationComplete)
+      }
+      repository.hasKnownPin() -> {
+        repository.restoreAccountRecord()
+        parentEventEmitter(RegistrationFlowEvent.RegistrationComplete)
+      }
+      parentState.value.storageCapable -> {
+        Log.i(TAG, "[continuePastRestore] No PIN is known and the account is storage capable. Navigating to PIN entry to restore the existing PIN.")
+        parentEventEmitter.navigateTo(RegistrationRoute.PinEntryForSvrRestore)
+      }
+      else -> {
+        Log.i(TAG, "[continuePastRestore] No PIN is known and the account is not storage capable. Navigating to PIN creation.")
+        parentEventEmitter.navigateTo(RegistrationRoute.PinCreate)
       }
     }
   }
@@ -136,21 +172,7 @@ class RemoteBackupRestoreViewModel(
             )
             repository.persistRestoredBackupState(progress.restoredSvrPin, progress.restoredProfileKey)
             repository.setRestoreDecision(RestoreDecision.COMPLETED)
-
-            when {
-              repository.hasKnownPin() -> {
-                repository.restoreAccountRecord()
-                parentEventEmitter(RegistrationFlowEvent.RegistrationComplete)
-              }
-              parentState.value.storageCapable -> {
-                Log.i(TAG, "[restoreBackup] No PIN is known and the account is storage capable. Navigating to PIN entry to restore the existing PIN.")
-                parentEventEmitter.navigateTo(RegistrationRoute.PinEntryForSvrRestore)
-              }
-              else -> {
-                Log.i(TAG, "[restoreBackup] No PIN is known and the account is not storage capable. Navigating to PIN creation.")
-                parentEventEmitter.navigateTo(RegistrationRoute.PinCreate)
-              }
-            }
+            continuePastRestore()
           }
           is RemoteBackupRestoreProgress.NetworkError -> {
             Log.w(TAG, "[restoreBackup] Remote restore failed with network error.", progress.cause)
@@ -267,12 +289,13 @@ class RemoteBackupRestoreViewModel(
 
   class Factory(
     private val aep: AccountEntropyPool,
+    private val canNavigateBackwards: Boolean,
     private val repository: RegistrationRepository,
     private val parentState: StateFlow<RegistrationFlowState>,
     private val parentEventEmitter: (RegistrationFlowEvent) -> Unit
   ) : ViewModelProvider.Factory {
     override fun <T : ViewModel> create(modelClass: Class<T>): T {
-      return RemoteBackupRestoreViewModel(aep, repository, parentState, parentEventEmitter) as T
+      return RemoteBackupRestoreViewModel(aep, canNavigateBackwards, repository, parentState, parentEventEmitter) as T
     }
   }
 }

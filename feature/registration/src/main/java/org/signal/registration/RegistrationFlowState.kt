@@ -46,6 +46,9 @@ data class RegistrationFlowState(
   /** Whether the server reported that this account already has SVR/PIN data, captured from the registration response. */
   val storageCapable: Boolean = false,
 
+  /** Whether this account has no phone number, captured from the registration response. Such an account has no PIN. */
+  val isPhoneNumberlessAccount: Boolean = false,
+
   /** The master key we restored from SVR. Needed for initial storage service restore, but afterwards we'll generate a new one. */
   val temporaryMasterKey: MasterKey? = null,
 
@@ -77,7 +80,7 @@ data class RegistrationFlowState(
   val isRestoringNavigationState: Boolean = true
 ) : Parcelable {
   override fun toString(): String {
-    return "RegistrationFlowState(backStack=${backStack.joinToString()}, sessionMetadata=$sessionMetadata, sessionE164=$sessionE164, submittedVerificationCode=${submittedVerificationCode?.censor()}, accountEntropyPool=${accountEntropyPool?.displayValue?.censor()}, aci=${aci?.logString()}, storageCapable=$storageCapable, temporaryMasterKey=${temporaryMasterKey?.toString()?.censor()}, preExistingRegistrationData=$preExistingRegistrationData, doNotAttemptRecoveryPassword=$doNotAttemptRecoveryPassword, pendingRestoreOption=$pendingRestoreOption, unverifiedRestoredAep=${unverifiedRestoredAep?.displayValue?.censor()}, restoreMethodToken=${restoreMethodToken?.censor()}, lastSmsVerificationCodeRequest=$lastSmsVerificationCodeRequest, lastCallVerificationCodeRequest=$lastCallVerificationCodeRequest, isRestoringNavigation=$isRestoringNavigationState)"
+    return "RegistrationFlowState(backStack=${backStack.joinToString()}, sessionMetadata=$sessionMetadata, sessionE164=$sessionE164, submittedVerificationCode=${submittedVerificationCode?.censor()}, accountEntropyPool=${accountEntropyPool?.displayValue?.censor()}, aci=${aci?.logString()}, storageCapable=$storageCapable, isPhoneNumberlessAccount=$isPhoneNumberlessAccount, temporaryMasterKey=${temporaryMasterKey?.toString()?.censor()}, preExistingRegistrationData=$preExistingRegistrationData, doNotAttemptRecoveryPassword=$doNotAttemptRecoveryPassword, pendingRestoreOption=$pendingRestoreOption, unverifiedRestoredAep=${unverifiedRestoredAep?.displayValue?.censor()}, restoreMethodToken=${restoreMethodToken?.censor()}, lastSmsVerificationCodeRequest=$lastSmsVerificationCodeRequest, lastCallVerificationCodeRequest=$lastCallVerificationCodeRequest, isRestoringNavigation=$isRestoringNavigationState)"
   }
 }
 

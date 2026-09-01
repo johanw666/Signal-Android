@@ -71,9 +71,9 @@ class EnterAepForRemoteBackupPreRegistrationViewModel(
   }
 
   private suspend fun applySubmit(inputState: EnterAepState, stateEmitter: (EnterAepState) -> Unit) {
-    check(inputState.isBackupKeyValid) { "AEP is not valid, should not have gotten here." }
+    check(inputState.recoveryKey.isValid) { "AEP is not valid, should not have gotten here." }
 
-    val aep = AccountEntropyPool(inputState.backupKey)
+    val aep = AccountEntropyPool(inputState.recoveryKey.normalized)
 
     stateEmitter(inputState.copy(isRegistering = true))
     parentEventEmitter(RegistrationFlowEvent.UserSuppliedAepSubmitted(aep))
@@ -94,7 +94,7 @@ class EnterAepForRemoteBackupPreRegistrationViewModel(
         val (response, keyMaterial, aci) = result.result
 
         stateEmitter(inputState.copy(isRegistering = false))
-        parentEventEmitter(RegistrationFlowEvent.Registered(aci, keyMaterial.accountEntropyPool, response.storageCapable))
+        parentEventEmitter(RegistrationFlowEvent.Registered(aci, keyMaterial.accountEntropyPool, response.storageCapable, phoneNumberless = response.e164 == null))
         parentEventEmitter.navigateTo(RegistrationRoute.RemoteRestore(aep))
       }
       is RequestResult.NonSuccess -> {
@@ -105,7 +105,7 @@ class EnterAepForRemoteBackupPreRegistrationViewModel(
               inputState.copy(
                 isRegistering = false,
                 registrationError = RegistrationError.IncorrectRecoveryPassword,
-                aepValidationError = AepValidationError.Incorrect
+                recoveryKey = inputState.recoveryKey.copy(error = AepValidationError.Incorrect)
               )
             )
           }

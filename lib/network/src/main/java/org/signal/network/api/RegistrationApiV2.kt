@@ -280,11 +280,18 @@ class RegistrationApiV2(
    * Submit the cryptographic assets required for an account to use the service.
    * Must provide exactly one of [sessionId], [recoveryPassword], or [receiptCredentialPresentation].
    *
-   * Providing a [receiptCredentialPresentation] (issued by [createLoginPurchaseReceiptCredential]) registers an
-   * account that has no phone number. For that mode, [e164] and [pniPreKeys] must be null, [attributes] must have a
-   * null `pniRegistrationId` and a null `discoverableByPhoneNumber`, and the basic auth username is a placeholder the
-   * service ignores (it must not parse as an e164 or a UUID -- the service reads a UUID username as a request to
-   * recover the account with that ACI; re-registering an existing numberless account isn't supported yet).
+   * There are two ways to register an account that has no phone number, and both require [e164] to be null and
+   * [attributes] to have a null `discoverableByPhoneNumber`:
+   *
+   * - Providing a [receiptCredentialPresentation] (issued by [createLoginPurchaseReceiptCredential]) creates a brand
+   *   new numberless account. [pniPreKeys] and `attributes.pniRegistrationId` must be null. The basic auth username is
+   *   a placeholder the service ignores; it must not parse as an e164 or a UUID, because the service reads a UUID
+   *   username as a request to recover the account with that ACI.
+   * - Providing an [aci] alongside a [recoveryPassword] logs back in to the numberless account with that ACI. The
+   *   ACI is the basic auth username, which is exactly how the service is told which account to recover. A full set of
+   *   [pniPreKeys] and an `attributes.pniRegistrationId` are required even so: the service demands them of any
+   *   recovery-by-identifier, and then ignores them when the recovered account has no phone number. Throwaway key
+   *   material is fine, as long as the pre-keys are signed by the PNI identity key sent alongside them.
    *
    * `POST /v1/registration`
    * - 200: Success, body is the account response
@@ -300,6 +307,7 @@ class RegistrationApiV2(
    *
    * @param e164 The phone number in E.164 format (used as username for basic auth). Null when registering without a phone number.
    * @param password The password for basic auth
+   * @param aci The ACI of the existing numberless account to log back in to, used as the username for basic auth.
    * @param totp A TOTP one-time password, required when recovering an account that has TOTP keys.
    */
   suspend fun registerAccount(
@@ -313,16 +321,23 @@ class RegistrationApiV2(
     pniPreKeys: PreKeyCollection?,
     fcmToken: String?,
     skipDeviceTransfer: Boolean,
+    aci: ACI? = null,
     totp: Int? = null
   ): RequestResult<RegisterAccountResponse, RegisterAccountError> {
-    val phoneNumberless = receiptCredentialPresentation != null
+    val redeemingReceipt = receiptCredentialPresentation != null
+    val phoneNumberless = redeemingReceipt || aci != null
 
     require(listOfNotNull(sessionId, recoveryPassword, receiptCredentialPresentation).size == 1) { "You must supply exactly one of: Session ID, Recovery Password, or Receipt Credential Presentation." }
+    require(aci == null || recoveryPassword != null) { "Must send a recovery password alongside an ACI." }
     if (phoneNumberless) {
       check(phonenumberlessRegistrationAllowed) { "Phone-number-less registration is not allowed in this build!" }
-      require(e164 == null && pniPreKeys == null) { "Must not send an e164 or PNI key material when registering without a phone number." }
-      require(attributes.pniRegistrationId == null) { "Must not send PNI key material when registering without a phone number." }
+      require(e164 == null) { "Must not send an e164 when registering without a phone number." }
       require(attributes.discoverableByPhoneNumber == null) { "Must not set phone number discoverability when registering without a phone number." }
+      if (aci != null) {
+        require(pniPreKeys != null && attributes.pniRegistrationId != null) { "Must send PNI key material when recovering an account by identifier, even though the service ignores it." }
+      } else {
+        require(pniPreKeys == null && attributes.pniRegistrationId == null) { "Must not send PNI key material when registering a new account without a phone number." }
+      }
     } else {
       require(e164 != null && pniPreKeys != null) { "Must send an e164 and PNI key material when registering with a phone number." }
       require(attributes.pniRegistrationId != null) { "Must send PNI key material when registering with a phone number." }
@@ -351,7 +366,7 @@ class RegistrationApiV2(
         host = RequestSpec.Host.Service,
         path = "/v1/registration",
         body = if (phoneNumberless) body.toJsonRequestBodyOmittingNulls() else body.toJsonRequestBody(),
-        auth = RequestSpec.Auth.Header("Authorization", basicAuth(e164 ?: NO_NUMBER_AUTH_USERNAME, password))
+        auth = RequestSpec.Auth.Header("Authorization", basicAuth(e164 ?: aci?.toString() ?: NO_NUMBER_AUTH_USERNAME, password))
       )
     )
 
@@ -359,7 +374,7 @@ class RegistrationApiV2(
       parseSuccess = { SignalJson.json.decodeFromString<RegisterAccountResponse>(it.bodyString()) },
       mapError = { error ->
         when (error.statusCode) {
-          400 -> if (phoneNumberless) RegisterAccountError.InvalidReceiptCredentialPresentation(error.bodyString()) else RegisterAccountError.InvalidRequest(error.bodyString())
+          400 -> if (redeemingReceipt) RegisterAccountError.InvalidReceiptCredentialPresentation(error.bodyString()) else RegisterAccountError.InvalidRequest(error.bodyString())
           422 -> RegisterAccountError.InvalidRequest(error.bodyString())
           401 -> RegisterAccountError.SessionNotFoundOrNotVerified(error.bodyString())
           403 -> RegisterAccountError.RegistrationRecoveryPasswordIncorrect(error.bodyString())
@@ -827,7 +842,10 @@ class RegistrationApiV2(
     val code: String
   )
 
-  /** The PNI properties are all null when registering an account that has no phone number, in which case they are omitted from the request. */
+  /**
+   * The PNI properties are all null when registering a new account that has no phone number, in which case they are
+   * omitted from the request.
+   */
   @OptIn(ExperimentalSerializationApi::class)
   @Serializable
   private class RegisterAccountRequestBody(

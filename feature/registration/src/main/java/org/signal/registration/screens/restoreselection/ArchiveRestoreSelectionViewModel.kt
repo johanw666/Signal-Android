@@ -87,7 +87,7 @@ class ArchiveRestoreSelectionViewModel(
                 parentEventEmitter.navigateTo(RegistrationRoute.PhoneNumberEntry)
               }
               knownAep != null -> {
-                parentEventEmitter.navigateTo(RegistrationRoute.RemoteRestore(knownAep))
+                parentEventEmitter.navigateTo(RegistrationRoute.RemoteRestore(knownAep, backwardNavigationAllowed = true))
               }
               else -> {
                 parentEventEmitter.navigateTo(RegistrationRoute.EnterAepForRemoteBackupPostRegistration)
@@ -137,10 +137,14 @@ class ArchiveRestoreSelectionViewModel(
             state.copy(showSkipWarningDialog = false)
           }
           RegisteredState.RegisteredAndPinKnown -> {
+            val skipping = state.copy(showSkipWarningDialog = false, isSkipping = true)
+            stateEmitter(skipping)
+
             notifyOldDevice(state.restoreMethodToken, RestoreMethod.DECLINE)
             repository.setRestoreDecision(RestoreDecision.SKIPPED)
+            repository.restoreAccountRecord()
             parentEventEmitter(RegistrationFlowEvent.RegistrationComplete)
-            state.copy(showSkipWarningDialog = false)
+            skipping
           }
         }
       }

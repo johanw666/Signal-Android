@@ -286,7 +286,7 @@ class RegistrationViewModelTest {
     val viewModel = RegistrationViewModel(mockRepository, SavedStateHandle())
     advanceUntilIdle()
 
-    viewModel.onEvent(RegistrationFlowEvent.Registered(ACI.from(UUID.randomUUID()), AccountEntropyPool.generate(), storageCapable = false))
+    viewModel.onEvent(RegistrationFlowEvent.Registered(ACI.from(UUID.randomUUID()), AccountEntropyPool.generate(), storageCapable = false, phoneNumberless = false))
     advanceUntilIdle()
 
     coVerify(exactly = 0) { mockRepository.saveFlowState(any()) }
@@ -521,6 +521,27 @@ class RegistrationViewModelTest {
   }
 
   @Test
+  fun `applyEvent NavigateToScreen RemoteRestore entered from restore selection keeps backStack`() = runTest(testDispatcher) {
+    coEvery { mockRepository.restoreFlowState() } returns null
+    coEvery { mockRepository.getPreExistingRegistrationData() } returns null
+
+    val viewModel = RegistrationViewModel(mockRepository, SavedStateHandle())
+    advanceUntilIdle()
+
+    val restoreSelection = RegistrationRoute.ArchiveRestoreSelection.forPostRegisterWithKnownAep(AccountEntropyPool.generate(), hasRemoteBackup = true)
+    val initialState = RegistrationFlowState(backStack = listOf(restoreSelection))
+
+    val remoteRestore = RegistrationRoute.RemoteRestore(AccountEntropyPool.generate(), backwardNavigationAllowed = true)
+
+    val result = viewModel.applyEvent(
+      initialState,
+      RegistrationFlowEvent.NavigateToScreen(remoteRestore)
+    )
+
+    assertThat(result.backStack).isEqualTo(listOf(restoreSelection, remoteRestore))
+  }
+
+  @Test
   fun `applyEvent NavigateToScreen post-registration ArchiveRestoreSelection clears backStack`() = runTest(testDispatcher) {
     coEvery { mockRepository.restoreFlowState() } returns null
     coEvery { mockRepository.getPreExistingRegistrationData() } returns null
@@ -738,7 +759,7 @@ class RegistrationViewModelTest {
 
     val result = viewModel.applyEvent(
       RegistrationFlowState(),
-      RegistrationFlowEvent.Registered(aci, aep, storageCapable = true)
+      RegistrationFlowEvent.Registered(aci, aep, storageCapable = true, phoneNumberless = false)
     )
 
     assertThat(result.aci).isEqualTo(aci)

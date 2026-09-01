@@ -5,6 +5,7 @@
 
 package org.signal.registration.screens.restoreselection
 
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -18,6 +19,7 @@ import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
+import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
@@ -160,6 +162,8 @@ private fun RestoreOptions(state: ArchiveRestoreSelectionState, onEvent: (Archiv
     }
     RestoreOptionCard(
       option = option,
+      enabled = !state.isSkipping,
+      showSpinner = state.isSkipping && option == ArchiveRestoreOption.None,
       onClick = { onEvent(ArchiveRestoreSelectionScreenEvents.RestoreOptionSelected(option)) }
     )
   }
@@ -168,6 +172,8 @@ private fun RestoreOptions(state: ArchiveRestoreSelectionState, onEvent: (Archiv
 @Composable
 private fun RestoreOptionCard(
   option: ArchiveRestoreOption,
+  enabled: Boolean,
+  showSpinner: Boolean,
   onClick: () -> Unit,
   modifier: Modifier = Modifier
 ) {
@@ -177,6 +183,7 @@ private fun RestoreOptionCard(
         imageVector = SignalIcons.SignalBackupsDisplay.imageVector,
         title = stringResource(R.string.ArchiveRestoreSelectionScreen__from_signal_backups),
         subtitle = stringResource(R.string.ArchiveRestoreSelectionScreen__your_free_or_paid_signal_backup_plan),
+        enabled = enabled,
         onClick = onClick,
         modifier = modifier.testTag(TestTags.ARCHIVE_RESTORE_SELECTION_FROM_SIGNAL_BACKUPS)
       )
@@ -187,6 +194,7 @@ private fun RestoreOptionCard(
         imageVector = SignalIcons.TransferDisplay.imageVector,
         title = stringResource(R.string.ArchiveRestoreSelectionScreen__from_your_old_phone),
         subtitle = stringResource(R.string.ArchiveRestoreSelectionScreen__transfer_directly_from_old),
+        enabled = enabled,
         onClick = onClick,
         modifier = modifier.testTag(TestTags.ARCHIVE_RESTORE_SELECTION_DEVICE_TRANSFER)
       )
@@ -197,6 +205,7 @@ private fun RestoreOptionCard(
         imageVector = SignalIcons.FolderDisplay.imageVector,
         title = stringResource(R.string.ArchiveRestoreSelectionScreen__local_backup_card_title),
         subtitle = stringResource(R.string.ArchiveRestoreSelectionScreen__local_backup_card_description),
+        enabled = enabled,
         onClick = onClick,
         modifier = modifier.testTag(TestTags.ARCHIVE_RESTORE_SELECTION_FROM_BACKUP_FOLDER)
       )
@@ -207,6 +216,8 @@ private fun RestoreOptionCard(
         imageVector = SignalIcons.MobileNextDisplay.imageVector,
         title = stringResource(R.string.ArchiveRestoreSelectionScreen__skip_restore_title),
         subtitle = stringResource(R.string.ArchiveRestoreSelectionScreen__skip_restore_description),
+        enabled = enabled,
+        showSpinner = showSpinner,
         onClick = onClick,
         modifier = modifier.testTag(TestTags.ARCHIVE_RESTORE_SELECTION_NONE)
       )
@@ -220,10 +231,13 @@ private fun SelectionCard(
   title: String,
   subtitle: String,
   onClick: () -> Unit,
+  enabled: Boolean = true,
+  showSpinner: Boolean = false,
   modifier: Modifier = Modifier
 ) {
   Card(
     onClick = onClick,
+    enabled = enabled,
     colors = CardDefaults.cardColors(
       containerColor = MaterialTheme.colorScheme.surfaceContainerLow
     ),
@@ -233,7 +247,17 @@ private fun SelectionCard(
       verticalAlignment = Alignment.CenterVertically,
       modifier = Modifier.padding(16.dp)
     ) {
-      Icon(imageVector = imageVector, contentDescription = null, tint = MaterialTheme.colorScheme.primary, modifier = Modifier.size(48.dp))
+      if (showSpinner) {
+        Box(contentAlignment = Alignment.Center, modifier = Modifier.size(48.dp)) {
+          CircularProgressIndicator(
+            modifier = Modifier.size(24.dp),
+            strokeWidth = 3.dp,
+            color = MaterialTheme.colorScheme.primary
+          )
+        }
+      } else {
+        Icon(imageVector = imageVector, contentDescription = null, tint = MaterialTheme.colorScheme.primary, modifier = Modifier.size(48.dp))
+      }
 
       Spacer(modifier = Modifier.width(16.dp))
 

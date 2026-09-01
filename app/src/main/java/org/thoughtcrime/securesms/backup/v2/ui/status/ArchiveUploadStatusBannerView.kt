@@ -213,7 +213,7 @@ fun ArchiveUploadStatusBannerView(
         ) {
           DropdownMenus.ItemWithIcon(
             menuController = menuController,
-            drawableResId = R.drawable.symbol_visible_slash,
+            imageVector = SignalIcons.VisibleSlash.imageVector,
             stringResId = R.string.BackupStatus__hide,
             onClick = { emitter(ArchiveUploadStatusBannerViewEvents.HideClicked) }
           )

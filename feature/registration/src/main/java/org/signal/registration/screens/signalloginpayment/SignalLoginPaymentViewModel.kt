@@ -89,7 +89,7 @@ class SignalLoginPaymentViewModel(
           localState = applyManualReceiptCredentialSubmitted(localState, parentEventEmitter)
           stateEmitter(localState.copy(showSpinner = false))
         } else if (state.selectedOption == SignalLoginPaymentState.Option.ExistingLogin) {
-          parentEventEmitter.navigateTo(RegistrationRoute.SignalLogin)
+          parentEventEmitter.navigateTo(RegistrationRoute.SignalLoginCredentialEntry)
         } else {
           // TODO [phonenumberless] Launch the purchase flow.
           Log.i(TAG, "Continue clicked for ${state.selectedOption}, but the purchase flow isn't implemented yet.")
@@ -134,7 +134,7 @@ class SignalLoginPaymentViewModel(
         Log.i(TAG, "[ManualReceipt] Successfully registered without a phone number.")
         val (response, keyMaterial, aci) = result.result
 
-        parentEventEmitter(RegistrationFlowEvent.Registered(aci, keyMaterial.accountEntropyPool, response.storageCapable))
+        parentEventEmitter(RegistrationFlowEvent.Registered(aci, keyMaterial.accountEntropyPool, response.storageCapable, phoneNumberless = response.e164 == null))
         parentEventEmitter.navigateTo(RegistrationRoute.SignalLoginInfo)
         state
       }
