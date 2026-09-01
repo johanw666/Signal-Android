@@ -55,7 +55,6 @@ import org.thoughtcrime.securesms.components.PromptBatterySaverDialogFragment
 import org.thoughtcrime.securesms.components.settings.app.routes.AppSettingsRoute
 import org.thoughtcrime.securesms.components.settings.app.routes.AppSettingsRouter
 import org.thoughtcrime.securesms.components.settings.models.Banner
-import org.thoughtcrime.securesms.keyvalue.SignalStore
 import org.thoughtcrime.securesms.notifications.NotificationChannels
 import org.thoughtcrime.securesms.notifications.TurnOnNotificationsBottomSheet
 import org.thoughtcrime.securesms.util.RemoteConfig
@@ -380,7 +379,7 @@ fun NotificationsSettingsScreen(
         item {
           Rows.TextRow(
             text = stringResource(R.string.preferences_notifications__while_muted),
-            label = getWhileMutedString(),
+            label = getWhileMutedString(state),
             enabled = state.messageNotificationsState.notificationsEnabled,
             onClick = callbacks::onMutedClicked
           )
@@ -613,15 +612,15 @@ fun NotificationsSettingsScreen(
 }
 
 @Composable
-private fun getWhileMutedString(): String {
+private fun getWhileMutedString(state: NotificationsSettingsState): String {
   val body = mutableListOf<String>()
-  if (SignalStore.settings.allowCallsWhileMuted) {
+  if (state.messageNotificationsState.allowCallsWhileMuted) {
     body.add(stringResource(R.string.MutedNotificationsFragment__calls))
   }
-  if (SignalStore.settings.allowMentionsWhileMuted) {
+  if (state.messageNotificationsState.allowMentionsWhileMuted) {
     body.add(stringResource(R.string.MutedNotificationsFragment__mentions))
   }
-  if (SignalStore.settings.allowRepliesWhileMuted) {
+  if (state.messageNotificationsState.allowRepliesWhileMuted) {
     body.add(stringResource(R.string.MutedNotificationsFragment__replies))
   }
   return if (body.isNotEmpty()) {
@@ -696,7 +695,10 @@ private fun rememberTestState(): NotificationsSettingsState = remember {
       priority = 1,
       troubleshootNotifications = true,
       reactionNotificationEnabled = true,
-      unreadReminderEnabled = true
+      unreadReminderEnabled = true,
+      allowCallsWhileMuted = false,
+      allowMentionsWhileMuted = true,
+      allowRepliesWhileMuted = true
     ),
     callNotificationsState = CallNotificationsState(
       notificationsEnabled = true,

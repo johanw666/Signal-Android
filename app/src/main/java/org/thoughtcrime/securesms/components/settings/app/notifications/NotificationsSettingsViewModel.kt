@@ -21,10 +21,11 @@ import org.thoughtcrime.securesms.notifications.NotificationChannels
 import org.thoughtcrime.securesms.notifications.SlowNotificationHeuristics
 import org.thoughtcrime.securesms.preferences.widgets.NotificationPrivacyPreference
 import org.thoughtcrime.securesms.recipients.Recipient
+import org.thoughtcrime.securesms.recipients.RecipientForeverObserver
 import org.thoughtcrime.securesms.storage.StorageSyncHelper
 import org.thoughtcrime.securesms.util.TextSecurePreferences
 
-class NotificationsSettingsViewModel(private val sharedPreferences: SharedPreferences) : ViewModel() {
+class NotificationsSettingsViewModel(private val sharedPreferences: SharedPreferences) : ViewModel(), RecipientForeverObserver {
 
   companion object {
     private val TAG = Log.tag(NotificationsSettingsViewModel::class)
@@ -33,6 +34,8 @@ class NotificationsSettingsViewModel(private val sharedPreferences: SharedPrefer
   private val store = MutableStateFlow(getState())
 
   val state: StateFlow<NotificationsSettingsState> = store
+
+  private val self = Recipient.self().live()
 
   init {
     if (NotificationChannels.supported()) {
@@ -45,6 +48,16 @@ class NotificationsSettingsViewModel(private val sharedPreferences: SharedPrefer
     viewModelScope.launch(Dispatchers.Default) {
       store.update { getState(calculateSlowNotifications = true) }
     }
+
+    self.observeForever(this)
+  }
+
+  override fun onRecipientChanged(recipient: Recipient) {
+    refresh()
+  }
+
+  override fun onCleared() {
+    self.removeForeverObserver(this)
   }
 
   fun refresh() {
@@ -189,7 +202,10 @@ class NotificationsSettingsViewModel(private val sharedPreferences: SharedPrefer
         false
       },
       reactionNotificationEnabled = SignalStore.settings.reactionNotifications,
-      unreadReminderEnabled = SignalStore.settings.unreadReminderEnabled
+      unreadReminderEnabled = SignalStore.settings.unreadReminderEnabled,
+      allowCallsWhileMuted = SignalStore.settings.allowCallsWhileMuted,
+      allowMentionsWhileMuted = SignalStore.settings.allowMentionsWhileMuted,
+      allowRepliesWhileMuted = SignalStore.settings.allowRepliesWhileMuted
     ),
     callNotificationsState = CallNotificationsState(
       notificationsEnabled = SignalStore.settings.isCallNotificationsEnabled && canEnableNotifications(),

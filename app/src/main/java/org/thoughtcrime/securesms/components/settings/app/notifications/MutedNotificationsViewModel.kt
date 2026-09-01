@@ -31,9 +31,11 @@ class MutedNotificationsViewModel(private val recipientId: RecipientId? = null) 
   val state = _state.asStateFlow()
 
   init {
-    if (recipientId != null) {
-      viewModelScope.launch(SignalDispatchers.Default) {
-        Recipient.observable(recipientId).asFlow().collectLatest { recipient ->
+    val observedRecipientId = recipientId ?: Recipient.self().id
+
+    viewModelScope.launch(SignalDispatchers.Default) {
+      Recipient.observable(observedRecipientId).asFlow().collectLatest { recipient ->
+        if (recipientId != null) {
           _state.update {
             it.copy(
               isGlobal = false,
@@ -42,6 +44,17 @@ class MutedNotificationsViewModel(private val recipientId: RecipientId? = null) 
               allowMentions = recipient.mentionSetting == NotificationSetting.ALWAYS_NOTIFY,
               showReplies = recipient.isPushV2Group,
               allowReplies = recipient.replyNotificationSetting == NotificationSetting.ALWAYS_NOTIFY
+            )
+          }
+        } else {
+          _state.update {
+            it.copy(
+              isGlobal = true,
+              allowCalls = SignalStore.settings.allowCallsWhileMuted,
+              showMentions = true,
+              allowMentions = SignalStore.settings.allowMentionsWhileMuted,
+              showReplies = true,
+              allowReplies = SignalStore.settings.allowRepliesWhileMuted
             )
           }
         }

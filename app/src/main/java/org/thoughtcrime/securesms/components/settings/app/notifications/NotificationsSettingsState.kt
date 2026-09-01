@@ -21,7 +21,10 @@ data class MessageNotificationsState(
   val priority: Int,
   val troubleshootNotifications: Boolean,
   val reactionNotificationEnabled: Boolean,
-  val unreadReminderEnabled: Boolean
+  val unreadReminderEnabled: Boolean,
+  val allowCallsWhileMuted: Boolean,
+  val allowMentionsWhileMuted: Boolean,
+  val allowRepliesWhileMuted: Boolean
 )
 
 data class CallNotificationsState(
