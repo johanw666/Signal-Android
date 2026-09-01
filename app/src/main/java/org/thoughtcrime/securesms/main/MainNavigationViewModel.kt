@@ -50,7 +50,7 @@ import kotlin.time.Duration.Companion.milliseconds
 class MainNavigationViewModel(
   savedStateHandle: SavedStateHandle,
   initialListLocation: MainListRoute = MainListRoute.Chats
-) : EventDrivenViewModel<MainNavigationEvents>(TAG), MainNavigationEventSink {
+) : EventDrivenViewModel<MainNavigationEvents>(TAG, shouldLogEvents = false), MainNavigationEventSink {
 
   companion object {
     private val TAG = Log.tag(MainNavigationViewModel::class)
