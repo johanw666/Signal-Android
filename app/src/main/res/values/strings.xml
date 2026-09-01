@@ -6194,7 +6194,8 @@
     <string name="ConversationSettingsFragment__unmute">Unmute</string>
     <!-- The subtitle for a settings item that describes how long the user\'s chat is muted. If a chat is muted, you will not receive notifications unless @mentioned. The placeholder represents a time (e.g. 10pm, March 4, etc). -->
     <string name="ConversationSettingsFragment__conversation_muted_until_s">Chat muted until %1$s</string>
-    <string name="ConversationSettingsFragment__conversation_muted_forever">Chat muted forever</string>
+    <!-- Subtitle when conversation is muted forever -->
+    <string name="ConversationSettingsFragment__conversation_muted_forever">Always</string>
     <string name="ConversationSettingsFragment__copied_phone_number_to_clipboard">Copied phone number to clipboard.</string>
     <string name="ConversationSettingsFragment__phone_number">Phone number</string>
     <string name="ConversationSettingsFragment__get_badges">Get badges for your profile by supporting Signal. Tap on a badge to learn more.</string>
@@ -6250,7 +6251,7 @@
     <!-- Label for the setting to configure custom notification sounds and vibration for a conversation -->
     <string name="SoundsAndNotificationsSettingsFragment__custom_notifications">Custom notifications</string>
     <!-- Section header for settings that control which notifications still come through when a conversation is muted -->
-    <string name="SoundsAndNotificationsSettingsFragment__when_muted">When muted</string>
+    <string name="SoundsAndNotificationsSettingsFragment__when_muted">While muted</string>
     <!-- Label for the calls notification setting in conversation sounds and notifications -->
     <string name="SoundsAndNotificationsSettingsFragment__calls">Calls</string>
     <!-- Explanatory text shown in the calls notification setting dialog describing what the setting controls -->

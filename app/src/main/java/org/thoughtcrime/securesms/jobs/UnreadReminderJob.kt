@@ -33,7 +33,6 @@ import org.thoughtcrime.securesms.recipients.Recipient
 import org.thoughtcrime.securesms.recipients.RecipientId
 import org.thoughtcrime.securesms.util.AvatarUtil
 import org.thoughtcrime.securesms.util.ConversationUtil
-import org.thoughtcrime.securesms.util.RemoteConfig
 
 /**
  * Job that sends an unread reminder notification for a single muted thread.
@@ -46,7 +45,7 @@ class UnreadReminderJob(private val threadId: Long, private val lastReminderTime
 
     @JvmStatic
     fun enqueue(threadId: Long, lastReminderTime: Long) {
-      if (!RemoteConfig.internalUser || !NotificationChannels.getInstance().areNotificationsEnabled()) {
+      if (!NotificationChannels.getInstance().areNotificationsEnabled()) {
         return
       }
 

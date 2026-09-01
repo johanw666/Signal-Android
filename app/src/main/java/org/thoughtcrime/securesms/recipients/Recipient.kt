@@ -52,7 +52,6 @@ import org.thoughtcrime.securesms.phonenumbers.NumberUtil
 import org.thoughtcrime.securesms.profiles.ProfileName
 import org.thoughtcrime.securesms.recipients.Recipient.Companion.external
 import org.thoughtcrime.securesms.service.webrtc.links.CallLinkRoomId
-import org.thoughtcrime.securesms.util.RemoteConfig
 import org.thoughtcrime.securesms.util.SignalE164Util
 import org.thoughtcrime.securesms.util.SpanUtil
 import org.thoughtcrime.securesms.util.ViewUtil
@@ -346,11 +345,11 @@ class Recipient(
 
   /** Whether calls should break through mute for this recipient. */
   val callNotificationSetting: NotificationSetting
-    get() = if (RemoteConfig.internalUser) NotificationSetting.resolve(callNotificationSettingValue, SignalStore.settings.allowCallsWhileMuted) else NotificationSetting.ALWAYS_NOTIFY
+    get() = NotificationSetting.resolve(callNotificationSettingValue, SignalStore.settings.allowCallsWhileMuted)
 
   /** Whether replies should break through mute for this recipient. */
   val replyNotificationSetting: NotificationSetting
-    get() = if (groupIdValue == null) NotificationSetting.DO_NOT_NOTIFY else if (RemoteConfig.internalUser) NotificationSetting.resolve(replyNotificationSettingValue, SignalStore.settings.allowRepliesWhileMuted) else mentionSetting
+    get() = if (groupIdValue == null) NotificationSetting.DO_NOT_NOTIFY else NotificationSetting.resolve(replyNotificationSettingValue, SignalStore.settings.allowRepliesWhileMuted)
 
   /** Whether this conversation's unread content should be included in the periodic unread reminder */
   val unreadReminderSetting: NotificationSetting

@@ -17,6 +17,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.shape.CircleShape
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -57,7 +58,6 @@ import org.thoughtcrime.securesms.components.settings.app.routes.AppSettingsRout
 import org.thoughtcrime.securesms.components.settings.models.Banner
 import org.thoughtcrime.securesms.notifications.NotificationChannels
 import org.thoughtcrime.securesms.notifications.TurnOnNotificationsBottomSheet
-import org.thoughtcrime.securesms.util.RemoteConfig
 import org.thoughtcrime.securesms.util.RingtoneUtil
 import org.thoughtcrime.securesms.util.navigation.safeNavigate
 import org.thoughtcrime.securesms.util.viewModel
@@ -333,7 +333,8 @@ fun NotificationsSettingsScreen(
       dismiss = stringResource(android.R.string.cancel),
       onDismiss = { showDialog = false },
       confirm = stringResource(R.string.NotificationsSettingsFragment__reset_confirm),
-      onConfirm = callbacks::onReset
+      onConfirm = callbacks::onReset,
+      confirmColor = MaterialTheme.colorScheme.error
     )
   }
 
@@ -375,35 +376,33 @@ fun NotificationsSettingsScreen(
         )
       }
 
-      if (RemoteConfig.internalUser) {
-        item {
-          Rows.TextRow(
-            text = stringResource(R.string.preferences_notifications__while_muted),
-            label = getWhileMutedString(state),
-            enabled = state.messageNotificationsState.notificationsEnabled,
-            onClick = callbacks::onMutedClicked
-          )
-        }
+      item {
+        Rows.TextRow(
+          text = stringResource(R.string.preferences_notifications__while_muted),
+          label = getWhileMutedString(state),
+          enabled = state.messageNotificationsState.notificationsEnabled,
+          onClick = callbacks::onMutedClicked
+        )
+      }
 
-        item {
-          Rows.ToggleRow(
-            text = stringResource(R.string.preferences_notifications__reaction),
-            label = stringResource(R.string.preferences_notifications__notify_reaction),
-            enabled = state.messageNotificationsState.canEnableNotifications,
-            checked = state.messageNotificationsState.reactionNotificationEnabled,
-            onCheckChanged = callbacks::setReactionNotificationEnabled
-          )
-        }
+      item {
+        Rows.ToggleRow(
+          text = stringResource(R.string.preferences_notifications__reaction),
+          label = stringResource(R.string.preferences_notifications__notify_reaction),
+          enabled = state.messageNotificationsState.canEnableNotifications,
+          checked = state.messageNotificationsState.reactionNotificationEnabled,
+          onCheckChanged = callbacks::setReactionNotificationEnabled
+        )
+      }
 
-        item {
-          Rows.ToggleRow(
-            text = stringResource(R.string.preferences_notifications__unread),
-            label = stringResource(R.string.preferences_notifications__notify_unread),
-            enabled = state.messageNotificationsState.canEnableNotifications,
-            checked = state.messageNotificationsState.unreadReminderEnabled,
-            onCheckChanged = callbacks::setUnreadReminderEnabled
-          )
-        }
+      item {
+        Rows.ToggleRow(
+          text = stringResource(R.string.preferences_notifications__unread),
+          label = stringResource(R.string.preferences_notifications__notify_unread),
+          enabled = state.messageNotificationsState.canEnableNotifications,
+          checked = state.messageNotificationsState.unreadReminderEnabled,
+          onCheckChanged = callbacks::setUnreadReminderEnabled
+        )
       }
 
       item {
@@ -588,24 +587,22 @@ fun NotificationsSettingsScreen(
 
       item {
         Rows.TextRow(
-          text = stringResource(R.string.NotificationsSettingsFragment__profiles),
+          text = stringResource(R.string.NotificationsSettingsFragment__notification_profiles),
           label = stringResource(R.string.NotificationsSettingsFragment__create_a_profile_to_receive_notifications_only_from_people_and_groups_you_choose),
           onClick = callbacks::onNavigationProfilesClick
         )
       }
 
-      if (RemoteConfig.internalUser) {
-        item {
-          Dividers.Default()
-        }
+      item {
+        Dividers.Default()
+      }
 
-        item {
-          Rows.TextRow(
-            text = stringResource(R.string.NotificationsSettingsFragment__reset),
-            label = stringResource(R.string.NotificationsSettingsFragment__reset_notifications),
-            onClick = { showDialog = true }
-          )
-        }
+      item {
+        Rows.TextRow(
+          text = stringResource(R.string.NotificationsSettingsFragment__reset),
+          label = stringResource(R.string.NotificationsSettingsFragment__reset_notifications),
+          onClick = { showDialog = true }
+        )
       }
     }
   }

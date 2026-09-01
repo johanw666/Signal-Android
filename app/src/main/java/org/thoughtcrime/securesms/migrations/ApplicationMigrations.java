@@ -18,6 +18,7 @@ import org.thoughtcrime.securesms.stickers.BlessedPacks;
 import org.thoughtcrime.securesms.util.TextSecurePreferences;
 import org.thoughtcrime.securesms.util.VersionTracker;
 
+import java.util.Currency;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
@@ -212,9 +213,10 @@ public class ApplicationMigrations {
     static final int STICKER_PACK_STORAGE_SYNC     = 168;
     static final int GROUP_DELETED_AT_BACKFILL     = 169;
     static final int KT_RESET_FAILURE              = 170;
+    static final int ENABLE_MUTED_CALL_SETTING     = 171;
   }
 
-  public static final int CURRENT_VERSION = 170;
+  public static final int CURRENT_VERSION = 171;
 
   /**
    * This *must* be called after the {@link JobManager} has been instantiated, but *before* the call
@@ -227,7 +229,7 @@ public class ApplicationMigrations {
       TextSecurePreferences.setAppMigrationVersion(context, 0);
     }
 
-    if (!isUpdate(context)) {
+    if (!isUpdate(context)) { // this returned false
       Log.d(TAG, "Not an update. Skipping.");
       VersionTracker.updateLastSeenVersion(context);
       return;
@@ -983,6 +985,10 @@ public class ApplicationMigrations {
 
     if (lastSeenVersion < Version.KT_RESET_FAILURE) {
       jobs.put(Version.KT_RESET_FAILURE, new KeyTransparencyFailureMigrationJob());
+    }
+
+    if (lastSeenVersion < Version.ENABLE_MUTED_CALL_SETTING) {
+      jobs.put(Version.ENABLE_MUTED_CALL_SETTING, new EnableMutedCallsMigrationJob());
     }
 
     return jobs;
