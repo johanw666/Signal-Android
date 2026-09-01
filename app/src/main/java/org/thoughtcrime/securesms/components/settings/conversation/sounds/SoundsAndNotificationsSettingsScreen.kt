@@ -74,7 +74,9 @@ fun SoundsAndNotificationsSettingsScreen(
 
       // Mute
       item {
-        val muteSummary = if (isMuted) {
+        val muteSummary = if (isMuted && state.muteUntil == Long.MAX_VALUE) {
+          stringResource(R.string.ConversationSettingsFragment__conversation_muted_always)
+        } else if (isMuted) {
           formatMuteUntil(state.muteUntil)
         } else {
           stringResource(R.string.SoundsAndNotificationsSettingsFragment__not_muted)
