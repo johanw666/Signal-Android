@@ -15,6 +15,9 @@ class AccountIdVisualTransformationTest {
   companion object {
     private const val FULL_KEY = "a6b284822e3283d07f2391360a4c2b91"
     private const val FULL_KEY_FORMATTED = "A6B28482-2E32-83D0-7F23-91360A4C2B91"
+
+    /** Characters whose whole-string uppercase mapping is longer than the character itself. */
+    private val LENGTH_CHANGING_CHARACTERS = listOf('ß', 'ŉ', 'ﬀ', 'ﬁ', 'ǰ')
   }
 
   @Test
@@ -50,6 +53,34 @@ class AccountIdVisualTransformationTest {
 
         assertThat(transformed in 0..transformedLength).isEqualTo(true)
         assertThat(mapping.transformedToOriginal(transformed)).isEqualTo(offset)
+      }
+    }
+  }
+
+  @Test
+  fun `characters that uppercase into multiple characters stay one character long`() {
+    for (character in LENGTH_CHANGING_CHARACTERS) {
+      assertThat(transform(character.toString()).length).isEqualTo(1)
+      assertThat(transform("a6b2848$character")).isEqualTo("A6B2848${character.uppercaseChar()}")
+    }
+  }
+
+  @Test
+  fun `every cursor position round trips even when the key holds characters that normally expand`() {
+    for (character in LENGTH_CHANGING_CHARACTERS) {
+      val key = character + FULL_KEY.drop(1)
+      val mapping = AccountIdVisualTransformation.filter(AnnotatedString(key)).offsetMapping
+      val transformedLength = transform(key).length
+
+      for (offset in 0..key.length) {
+        val transformed = mapping.originalToTransformed(offset)
+
+        assertThat(transformed in 0..transformedLength).isEqualTo(true)
+        assertThat(mapping.transformedToOriginal(transformed)).isEqualTo(offset)
+      }
+
+      for (offset in 0..transformedLength) {
+        assertThat(mapping.transformedToOriginal(offset) in 0..key.length).isEqualTo(true)
       }
     }
   }

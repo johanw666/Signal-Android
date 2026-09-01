@@ -16,14 +16,17 @@ internal object AccountIdFormat {
   /** Offsets in a raw account ID that a dash is inserted in front of. */
   private val DASH_OFFSETS = intArrayOf(8, 12, 16, 20)
 
-  /** Rewrites a raw account ID with the dashes a UUID is normally written with. */
+  /**
+   * Rewrites a raw account ID with the dashes and uppercasing a UUID is normally written with.
+   */
   fun dashed(accountId: String): String {
     return buildString {
       for ((index, character) in accountId.withIndex()) {
         if (index in DASH_OFFSETS) {
           append('-')
         }
-        append(character)
+        // Uppercase on a per-character basis so as to not screw up offsets
+        append(character.uppercaseChar())
       }
     }
   }

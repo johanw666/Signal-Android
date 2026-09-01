@@ -470,7 +470,7 @@ internal object AccountIdVisualTransformation : VisualTransformation {
 
   override fun filter(text: AnnotatedString): TransformedText {
     return TransformedText(
-      text = AnnotatedString(AccountIdFormat.dashed(text.text).uppercase()),
+      text = AnnotatedString(AccountIdFormat.dashed(text.text)),
       offsetMapping = AccountIdOffsetMapping(text.length)
     )
   }
