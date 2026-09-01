@@ -6,6 +6,9 @@
 package org.signal.registration.screens.signallogincredentials
 
 import android.app.Application
+import androidx.compose.ui.autofill.ContentType
+import androidx.compose.ui.semantics.SemanticsProperties
+import androidx.compose.ui.semantics.getOrNull
 import androidx.compose.ui.test.assertIsEnabled
 import androidx.compose.ui.test.assertIsNotEnabled
 import androidx.compose.ui.test.junit4.createComposeRule
@@ -16,6 +19,7 @@ import androidx.compose.ui.test.performTextInput
 import androidx.test.core.app.ApplicationProvider
 import assertk.assertThat
 import assertk.assertions.contains
+import assertk.assertions.isEqualTo
 import io.mockk.coEvery
 import io.mockk.coVerify
 import io.mockk.every
@@ -76,6 +80,20 @@ class SignalLoginCredentialEntryScreenTest {
     composeTestRule.waitForIdle()
 
     coVerify(exactly = 0) { SignalCredentialManager.getCredential(any()) }
+  }
+
+  @Test
+  fun `the account ID field is tagged for autofill as the username`() {
+    setContent(SignalLoginCredentialEntryState())
+
+    assertThat(contentTypeOf(TestTags.SIGNAL_LOGIN_CREDENTIAL_ACCOUNT_ID_FIELD)).isEqualTo(ContentType.Username)
+  }
+
+  @Test
+  fun `the recovery key field is tagged for autofill as the password`() {
+    setContent(SignalLoginCredentialEntryState())
+
+    assertThat(contentTypeOf(TestTags.SIGNAL_LOGIN_CREDENTIAL_RECOVERY_KEY_FIELD)).isEqualTo(ContentType.Password)
   }
 
   @Test
@@ -163,6 +181,10 @@ class SignalLoginCredentialEntryScreenTest {
     setContent(completeState().copy(isLoggingIn = true))
 
     composeTestRule.onNodeWithTag(TestTags.SIGNAL_LOGIN_CREDENTIAL_NEXT_BUTTON).assertIsNotEnabled()
+  }
+
+  private fun contentTypeOf(tag: String): ContentType? {
+    return composeTestRule.onNodeWithTag(tag).fetchSemanticsNode().config.getOrNull(SemanticsProperties.ContentType)
   }
 
   private fun stubPasswordManager() {

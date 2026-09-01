@@ -41,6 +41,8 @@ import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.autofill.ContentType
+import androidx.compose.ui.autofill.contentType
 import androidx.compose.ui.focus.onFocusChanged
 import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.platform.LocalContext
@@ -315,6 +317,7 @@ private fun AccountIdTextField(
     visualTransformation = AccountIdVisualTransformation,
     modifier = modifier
       .fillMaxWidth()
+      .contentType(ContentType.Username)
       .testTag(TestTags.SIGNAL_LOGIN_CREDENTIAL_ACCOUNT_ID_FIELD)
   )
 }
@@ -377,6 +380,7 @@ private fun RecoveryKeyTextField(
     visualTransformation = visualTransformation,
     modifier = modifier
       .fillMaxWidth()
+      .contentType(ContentType.Password)
       .testTag(TestTags.SIGNAL_LOGIN_CREDENTIAL_RECOVERY_KEY_FIELD)
       .attachPasswordAutoFillHelper(autoFillHelper)
   )
