@@ -11,6 +11,7 @@ import org.thoughtcrime.securesms.components.settings.app.AppSettingsActivity;
 import org.thoughtcrime.securesms.conversation.ConversationIntents;
 import org.thoughtcrime.securesms.groups.ui.creategroup.CreateGroupActivity;
 import org.thoughtcrime.securesms.main.MainDetailRoute;
+import org.thoughtcrime.securesms.main.MainNavigationEvents;
 import org.thoughtcrime.securesms.main.MainNavigationViewModel;
 import org.thoughtcrime.securesms.recipients.RecipientId;
 
@@ -50,7 +51,7 @@ public class MainNavigator {
                                                                       .withStartingPosition(startingPosition)
                                                                       .asIncognito(incognito)
                                                                       .toConversationArgs())
-                                               .subscribe(args -> viewModel.goTo(new MainDetailRoute.Conversation(args)));
+                                               .subscribe(args -> viewModel.onEvent(new MainNavigationEvents.GoToDetail(new MainDetailRoute.Conversation(args))));
 
     lifecycleDisposable.add(disposable);
   }

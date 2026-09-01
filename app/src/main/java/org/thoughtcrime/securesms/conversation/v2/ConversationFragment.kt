@@ -298,7 +298,8 @@ import org.thoughtcrime.securesms.linkpreview.LinkPreviewViewModelV2
 import org.thoughtcrime.securesms.longmessage.LongMessageFragment
 import org.thoughtcrime.securesms.main.MainDetailRoute
 import org.thoughtcrime.securesms.main.MainListRoute
-import org.thoughtcrime.securesms.main.MainNavigationChatDetailRouter
+import org.thoughtcrime.securesms.main.MainNavigationEventSink
+import org.thoughtcrime.securesms.main.MainNavigationEvents
 import org.thoughtcrime.securesms.main.MainNavigationViewModel
 import org.thoughtcrime.securesms.main.MainSnackbarHostKey
 import org.thoughtcrime.securesms.mediaoverview.MediaOverviewActivity
@@ -581,7 +582,7 @@ class ConversationFragment :
   private lateinit var conversationItemDecorations: ConversationItemDecorations
   private lateinit var optionsMenuCallback: ConversationOptionsMenuCallback
 
-  private lateinit var chatRouter: MainNavigationChatDetailRouter
+  private lateinit var mainNavigationEventSink: MainNavigationEventSink
 
   private var animationsAllowed = false
   private var pinnedShortcutReceiver: BroadcastReceiver? = null
@@ -662,7 +663,7 @@ class ConversationFragment :
 
   override fun onAttach(context: Context) {
     super.onAttach(context)
-    chatRouter = context as MainNavigationChatDetailRouter
+    mainNavigationEventSink = context as MainNavigationEventSink
   }
 
   override fun onCreate(savedInstanceState: Bundle?) {
@@ -3004,7 +3005,7 @@ class ConversationFragment :
     ConversationDialogs.displayDeleteDialog(requireContext(), recipient) {
       messageRequestViewModel
         .onDelete()
-        .doAfterSuccess { chatRouter.exitDetailLocation() }
+        .doAfterSuccess { mainNavigationEventSink.onEvent(MainNavigationEvents.ExitDetail) }
         .subscribeWithShowProgress("delete message request")
     }
   }
@@ -3151,7 +3152,8 @@ class ConversationFragment :
 
   private fun handleDisplayDetails(conversationMessage: ConversationMessage) {
     val recipientSnapshot = viewModel.recipientSnapshot ?: return
-    chatRouter.goToChatDetail(MainDetailRoute.Chats.MessageDetails(recipientSnapshot.id, MessageId(conversationMessage.messageRecord.id)))
+    val messageDetails = MainDetailRoute.Chats.MessageDetails(recipientSnapshot.id, MessageId(conversationMessage.messageRecord.id))
+    mainNavigationEventSink.onEvent(MainNavigationEvents.GoToDetail(messageDetails))
   }
 
   private fun handleDeleteMessages(messageParts: Set<MultiselectPart>) {
@@ -3707,7 +3709,7 @@ class ConversationFragment :
       } else if (messageRecord.hasFailedWithNetworkFailures()) {
         ConversationDialogs.displayMessageCouldNotBeSentDialog(requireContext(), messageRecord)
       } else {
-        chatRouter.goToChatDetail(MainDetailRoute.Chats.MessageDetails(recipientId, MessageId(messageRecord.id)))
+        mainNavigationEventSink.onEvent(MainNavigationEvents.GoToDetail(MainDetailRoute.Chats.MessageDetails(recipientId, MessageId(messageRecord.id))))
       }
     }
 
@@ -4388,7 +4390,7 @@ class ConversationFragment :
     override fun handleManageGroup() {
       viewModel.recipientSnapshot?.let { recipient ->
         container.hideKeyboard(composeText)
-        chatRouter.goToChatDetail(MainDetailRoute.Chats.ConversationSettings(recipient.id))
+        mainNavigationEventSink.onEvent(MainNavigationEvents.GoToDetail(MainDetailRoute.Chats.ConversationSettings(recipient.id)))
       }
     }
 
@@ -4426,7 +4428,7 @@ class ConversationFragment :
       viewModel.recipientSnapshot?.let { recipient ->
         if (!viewModel.hasMessageRequestState || recipient.isBlocked) {
           container.hideKeyboard(composeText)
-          chatRouter.goToChatDetail(MainDetailRoute.Chats.ConversationSettings(recipient.id))
+          mainNavigationEventSink.onEvent(MainNavigationEvents.GoToDetail(MainDetailRoute.Chats.ConversationSettings(recipient.id)))
         }
       }
     }

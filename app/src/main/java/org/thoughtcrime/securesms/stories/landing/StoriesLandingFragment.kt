@@ -34,6 +34,7 @@ import org.thoughtcrime.securesms.database.model.StoryViewState
 import org.thoughtcrime.securesms.dependencies.AppDependencies
 import org.thoughtcrime.securesms.main.MainDetailRoute
 import org.thoughtcrime.securesms.main.MainListRoute
+import org.thoughtcrime.securesms.main.MainNavigationEvents
 import org.thoughtcrime.securesms.main.MainNavigationViewModel
 import org.thoughtcrime.securesms.main.MainSnackbarHostKey
 import org.thoughtcrime.securesms.main.MainToolbarViewModel
@@ -188,7 +189,7 @@ class StoriesLandingFragment : DSLSettingsFragment(layoutId = R.layout.stories_l
           MyStoriesItem.Model(
             lifecycleOwner = viewLifecycleOwner,
             onClick = {
-              mainNavigationViewModel.goToCameraFirstStoryCapture()
+              mainNavigationViewModel.onEvent(MainNavigationEvents.GoToCameraFirstStoryCapture)
             }
           )
         )
@@ -258,7 +259,7 @@ class StoriesLandingFragment : DSLSettingsFragment(layoutId = R.layout.stories_l
         openStoryViewer(model, preview, true)
       },
       onAvatarClick = {
-        mainNavigationViewModel.goToCameraFirstStoryCapture()
+        mainNavigationViewModel.onEvent(MainNavigationEvents.GoToCameraFirstStoryCapture)
       },
       onLockList = {
         recyclerView?.suppressLayout(true)
@@ -271,7 +272,7 @@ class StoriesLandingFragment : DSLSettingsFragment(layoutId = R.layout.stories_l
 
   private fun openStoryViewer(model: StoriesLandingItem.Model, preview: View, isFromInfoContextMenuAction: Boolean) {
     if (model.data.storyRecipient.isMyStory) {
-      mainNavigationViewModel.goTo(MainDetailRoute.Stories.MyStories)
+      mainNavigationViewModel.onEvent(MainNavigationEvents.GoToDetail(MainDetailRoute.Stories.MyStories))
     } else if (model.data.primaryStory.messageRecord.isOutgoing && model.data.primaryStory.messageRecord.isFailed) {
       if (model.data.primaryStory.messageRecord.isIdentityMismatchFailure) {
         SafetyNumberBottomSheet

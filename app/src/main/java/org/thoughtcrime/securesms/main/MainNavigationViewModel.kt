@@ -27,6 +27,7 @@ import kotlinx.coroutines.reactive.asFlow
 import kotlinx.coroutines.rx3.asObservable
 import kotlinx.coroutines.withContext
 import kotlinx.coroutines.withTimeoutOrNull
+import org.signal.core.ui.compose.EventDrivenViewModel
 import org.signal.core.ui.compose.split.ListDetailEvents
 import org.signal.core.ui.compose.split.ListDetailNavigator
 import org.signal.core.ui.compose.split.PaneAnchor
@@ -49,7 +50,7 @@ import kotlin.time.Duration.Companion.milliseconds
 class MainNavigationViewModel(
   savedStateHandle: SavedStateHandle,
   initialListLocation: MainListRoute = MainListRoute.Chats
-) : ViewModel(), MainNavigationRouter {
+) : EventDrivenViewModel<MainNavigationEvents>(TAG), MainNavigationEventSink {
 
   companion object {
     private val TAG = Log.tag(MainNavigationViewModel::class)
@@ -156,11 +157,20 @@ class MainNavigationViewModel(
     }
   }
 
-  /**
-   * The user dragged the pane divider to [anchor].
-   */
-  fun onPaneAnchorSelected(anchor: PaneAnchor) {
-    navigator.processEvent(ListDetailEvents.AnchorSelected(anchor))
+  override suspend fun processEvent(event: MainNavigationEvents) {
+    when (event) {
+      is MainNavigationEvents.GoToTab -> goToTab(event.tab)
+      is MainNavigationEvents.GoToList -> goToList(event.route)
+      is MainNavigationEvents.GoToDetail -> goToDetail(event.route)
+      MainNavigationEvents.ExitDetail -> navigator.processEvent(ListDetailEvents.ExitDetail)
+      MainNavigationEvents.GoToCameraFirstStoryCapture -> internalNavigationEvents.emit(NavigationEvent.STORY_CAMERA_FIRST)
+      MainNavigationEvents.RefreshNavigationBar -> refreshNavigationBarState()
+      MainNavigationEvents.RequestNextMegaphone -> requestNextMegaphone()
+      is MainNavigationEvents.MegaphoneVisible -> megaphoneRepository.markVisible(event.megaphone.event)
+      is MainNavigationEvents.MegaphoneSnoozed -> onMegaphoneSnoozed(event.event)
+      is MainNavigationEvents.MegaphoneCompleted -> onMegaphoneCompleted(event.event)
+      is MainNavigationEvents.ListDetailEvent -> navigator.processEvent(event.event)
+    }
   }
 
   /** Set from the MainActivity composition, and cleared when it is disposed. */
@@ -168,7 +178,38 @@ class MainNavigationViewModel(
     captureChatListSnapshot = capture
   }
 
-  override fun goTo(location: MainDetailRoute) = setDetailLocation(location)
+  /**
+   * Clicking the tab already displayed reveals its list and tells that tab's screen about the click —
+   * scrolling to the top, and the like — rather than navigating anywhere.
+   */
+  private suspend fun goToTab(tab: MainListRoute) {
+    if (navigator.displayedList.value == tab) {
+      navigator.processEvent(ListDetailEvents.RevealList)
+      internalTabClickEvents.emit(tab)
+    } else {
+      goToList(tab)
+    }
+  }
+
+  /** Switching tabs only changes which stack is displayed; each tab comes back to whatever it had open. */
+  private fun goToList(route: MainListRoute) {
+    navigator.processEvent(
+      ListDetailEvents.GoToList(
+        listRoute = route,
+        root = route.tab,
+        push = route == MainListRoute.Archive
+      )
+    )
+  }
+
+  private suspend fun goToDetail(route: MainDetailRoute) {
+    when (route) {
+      is MainDetailRoute.Chats -> pushChatsDetailLocation(route)
+      is MainDetailRoute.Conversation -> goToConversation(route)
+      is MainDetailRoute.Calls, is MainDetailRoute.CallLinkDetails -> pushCallsDetailLocation(route)
+      is MainDetailRoute.Stories -> navigator.processEvent(ListDetailEvents.Push(route, MainListRoute.Stories))
+    }
+  }
 
   private suspend fun MainDetailRoute.Conversation.withPreloadedWallpaper(): MainDetailRoute.Conversation {
     val args = conversationArgs
@@ -196,33 +237,15 @@ class MainNavigationViewModel(
     return copy(conversationArgs = updatedArgs)
   }
 
-  private fun setDetailLocation(location: MainDetailRoute) {
-    when (location) {
-      is MainDetailRoute.Chats -> pushChatsDetailLocation(location)
-      is MainDetailRoute.Conversation -> goToConversation(location)
-      is MainDetailRoute.Calls, is MainDetailRoute.CallLinkDetails -> pushCallsDetailLocation(location)
-      is MainDetailRoute.Stories -> pushStoriesDetailLocation(location)
-    }
-  }
-
-  /**
-   * Drops the detail content above the current list, leaving that list displayed on its own.
-   */
-  override fun exitDetailLocation() {
-    navigator.processEvent(ListDetailEvents.ExitDetail)
-  }
-
-  private fun goToConversation(location: MainDetailRoute.Conversation) {
+  private suspend fun goToConversation(location: MainDetailRoute.Conversation) {
     val captureSnapshot = captureChatListSnapshot
 
     if (captureSnapshot == null) {
-      // share intent or process restore - push synchronously, since there's no chat-list snapshot to capture and no need to preload a wallpaper
+      // share intent or process restore - there's no chat-list snapshot to capture and no need to preload a wallpaper
       pushChatsDetailLocation(location)
     } else {
-      viewModelScope.launch {
-        captureSnapshot()
-        pushChatsDetailLocation(location.withPreloadedWallpaper())
-      }
+      captureSnapshot()
+      pushChatsDetailLocation(location.withPreloadedWallpaper())
     }
   }
 
@@ -244,53 +267,23 @@ class MainNavigationViewModel(
     navigator.processEvent(ListDetailEvents.Push(location, MainListRoute.Calls))
   }
 
-  private fun pushStoriesDetailLocation(location: MainDetailRoute) {
-    navigator.processEvent(ListDetailEvents.Push(location, MainListRoute.Stories))
-  }
-
-  /** Pops the stack belonging to whichever tab the user is currently on. */
-  fun popCurrentDetailLocation() {
-    navigator.processEvent(ListDetailEvents.Back)
-  }
-
-  /** Switching tabs only changes which stack is displayed; each tab comes back to whatever it had open. */
-  override fun goTo(location: MainListRoute) {
-    navigator.processEvent(
-      ListDetailEvents.GoToList(
-        listRoute = location,
-        root = location.tab,
-        push = location == MainListRoute.Archive
-      )
-    )
-  }
-
-  fun goToCameraFirstStoryCapture() {
-    viewModelScope.launch {
-      internalNavigationEvents.emit(NavigationEvent.STORY_CAMERA_FIRST)
-    }
-  }
-
-  fun getNextMegaphone() {
+  private fun requestNextMegaphone() {
     megaphoneRepository.getNextMegaphone { next ->
       internalMegaphone.update { next ?: Megaphone.NONE }
     }
   }
 
-  fun onMegaphoneSnoozed(event: Megaphones.Event) {
+  private fun onMegaphoneSnoozed(event: Megaphones.Event) {
     megaphoneRepository.markInteractedWith(event)
     internalMegaphone.update { Megaphone.NONE }
   }
 
-  fun onMegaphoneCompleted(event: Megaphones.Event) {
+  private fun onMegaphoneCompleted(event: Megaphones.Event) {
     internalMegaphone.update { Megaphone.NONE }
     megaphoneRepository.markFinished(event)
   }
 
-  fun onMegaphoneVisible(visible: Megaphone) {
-    megaphoneRepository.markVisible(visible.event)
-  }
-
-  fun refreshNavigationBarState() {
+  private fun refreshNavigationBarState() {
     internalMainNavigationBarState.update {
       it.copy(
         compact = SignalStore.settings.useCompactNavigationBar,
@@ -303,34 +296,6 @@ class MainNavigationViewModel(
 
   fun getNotificationProfiles(): Flow<List<NotificationProfile>> {
     return notificationProfilesRepository.getProfiles().asFlow()
-  }
-
-  fun onChatsSelected() {
-    onTabSelected(MainListRoute.Chats)
-  }
-
-  fun onArchiveSelected() {
-    onTabSelected(MainListRoute.Archive)
-  }
-
-  fun onCallsSelected() {
-    onTabSelected(MainListRoute.Calls)
-  }
-
-  fun onStoriesSelected() {
-    onTabSelected(MainListRoute.Stories)
-  }
-
-  private fun onTabSelected(destination: MainListRoute) {
-    viewModelScope.launch {
-      val displayed = navigator.displayedList.value
-      if (displayed == destination) {
-        navigator.processEvent(ListDetailEvents.RevealList)
-        internalTabClickEvents.emit(destination)
-      } else {
-        goTo(destination)
-      }
-    }
   }
 
   private fun <T : Any> performStoreUpdate(flow: Flow<T>, fn: (T, MainNavigationBarState) -> MainNavigationBarState) {

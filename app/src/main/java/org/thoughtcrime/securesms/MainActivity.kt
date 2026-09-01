@@ -82,6 +82,7 @@ import kotlinx.coroutines.withContext
 import org.signal.core.ui.BottomSheetUtil
 import org.signal.core.ui.NavigationType
 import org.signal.core.ui.compose.Snackbars
+import org.signal.core.ui.compose.split.ListDetailEvents
 import org.signal.core.ui.compose.split.ListDetailNavDisplay
 import org.signal.core.ui.compose.split.ListDetailPaneLayout
 import org.signal.core.ui.compose.split.ListDetailPaneMetrics
@@ -145,8 +146,9 @@ import org.thoughtcrime.securesms.main.MainDetailRoute
 import org.thoughtcrime.securesms.main.MainListRoute
 import org.thoughtcrime.securesms.main.MainMegaphoneState
 import org.thoughtcrime.securesms.main.MainNavigationBar
+import org.thoughtcrime.securesms.main.MainNavigationEventSink
+import org.thoughtcrime.securesms.main.MainNavigationEvents
 import org.thoughtcrime.securesms.main.MainNavigationRail
-import org.thoughtcrime.securesms.main.MainNavigationRouter
 import org.thoughtcrime.securesms.main.MainNavigationViewModel
 import org.thoughtcrime.securesms.main.MainSnackbar
 import org.thoughtcrime.securesms.main.MainSnackbarHostKey
@@ -188,7 +190,7 @@ class MainActivity :
   MainNavigator.NavigatorProvider,
   Material3OnScrollHelperBinder,
   ConversationListFragment.Callback,
-  MainNavigationRouter,
+  MainNavigationEventSink,
   CallLogFragment.Callback,
   GooglePayComponent {
 
@@ -263,7 +265,7 @@ class MainActivity :
 
   private val mainBottomChromeCallback = BottomChromeCallback()
   private val megaphoneActionController = MainMegaphoneActionController()
-  private val mainNavigationCallback = MainNavigationCallback()
+  private val mainNavigationCallback: (MainListRoute) -> Unit = { mainNavigationViewModel.onEvent(MainNavigationEvents.GoToTab(it)) }
 
   override val googlePayRepository: GooglePayRepository by lazy { GooglePayRepository(this) }
   override val googlePayResultPublisher: Subject<GooglePayComponent.GooglePayResult> = PublishSubject.create()
@@ -287,7 +289,7 @@ class MainActivity :
 
     AppForegroundObserver.addListener(object : AppForegroundObserver.Listener {
       override fun onForeground() {
-        mainNavigationViewModel.getNextMegaphone()
+        mainNavigationViewModel.onEvent(MainNavigationEvents.RequestNextMegaphone)
       }
     })
 
@@ -397,7 +399,7 @@ class MainActivity :
       val isBackHandlerEnabled = mainToolbarState.destination != MainListRoute.Chats && !isActionModeActive && !isSearchModeActive
 
       BackHandler(enabled = isBackHandlerEnabled) {
-        mainNavigationViewModel.goTo(MainListRoute.Chats)
+        mainNavigationViewModel.onEvent(MainNavigationEvents.GoToList(MainListRoute.Chats))
       }
 
       BackHandler(enabled = isActionModeActive) {
@@ -491,8 +493,8 @@ class MainActivity :
             entries = tabEntries,
             isSplitPane = isSplitPane,
             paneAnchor = paneAnchor,
-            onBack = { mainNavigationViewModel.popCurrentDetailLocation() },
-            onExitDetail = { mainNavigationViewModel.exitDetailLocation() },
+            onBack = { mainNavigationViewModel.onEvent(MainNavigationEvents.ListDetailEvent(ListDetailEvents.Back)) },
+            onExitDetail = { mainNavigationViewModel.onEvent(MainNavigationEvents.ExitDetail) },
             layout = paneLayout,
             listPaneChrome = listPaneChrome,
             emptyDetailContent = emptyDetailContent,
@@ -540,7 +542,7 @@ class MainActivity :
     return rememberListDetailPaneLayout(
       paneAnchor = paneAnchor,
       maxWidth = maxWidth,
-      onAnchorSelected = { mainNavigationViewModel.onPaneAnchorSelected(it) },
+      onAnchorSelected = { mainNavigationViewModel.onEvent(MainNavigationEvents.ListDetailEvent(ListDetailEvents.AnchorSelected(it))) },
       metrics = contentLayoutData,
       // Searching hides the rail, leaving nothing of the list pane behind once the detail fills the window.
       collapsedListWidth = when {
@@ -690,29 +692,20 @@ class MainActivity :
     val extras = intent.extras ?: return
 
     if (extras.getBoolean(KEY_EXIT_DETAIL, false)) {
-      mainNavigationViewModel.exitDetailLocation()
+      mainNavigationViewModel.onEvent(MainNavigationEvents.ExitDetail)
       return
     }
 
     val detailLocation = extras.getParcelableCompat(KEY_DETAIL_LOCATION, MainDetailRoute::class.java)
     if (detailLocation != null) {
-      goTo(detailLocation)
+      mainNavigationViewModel.onEvent(MainNavigationEvents.GoToDetail(detailLocation))
       return
     }
 
-    val startingTab = extras.getSerializableCompat(KEY_STARTING_TAB, MainListRoute::class.java)
+    val startingTab = extras.getSerializableCompat(KEY_STARTING_TAB, MainListRoute::class.java) ?: return
 
-    when (startingTab) {
-      MainListRoute.Chats -> mainNavigationViewModel.onChatsSelected()
-      MainListRoute.Archive -> mainNavigationViewModel.onArchiveSelected()
-      MainListRoute.Calls -> mainNavigationViewModel.onCallsSelected()
-      MainListRoute.Stories -> {
-        if (Stories.isFeatureEnabled()) {
-          mainNavigationViewModel.onStoriesSelected()
-        }
-      }
-
-      null -> Unit
+    if (startingTab != MainListRoute.Stories || Stories.isFeatureEnabled()) {
+      mainNavigationViewModel.onEvent(MainNavigationEvents.GoToTab(startingTab))
     }
   }
 
@@ -749,7 +742,7 @@ class MainActivity :
     }
 
     vitalsViewModel.checkSlowNotificationHeuristics()
-    mainNavigationViewModel.refreshNavigationBarState()
+    mainNavigationViewModel.onEvent(MainNavigationEvents.RefreshNavigationBar)
 
     CallQuality.consumeQualityRequest()?.let {
       CallQualityBottomSheetFragment.create(it).show(supportFragmentManager, BottomSheetUtil.STANDARD_BOTTOM_SHEET_FRAGMENT_TAG)
@@ -775,7 +768,7 @@ class MainActivity :
 
     if (resultCode == RESULT_OK && requestCode == CreateSvrPinActivity.REQUEST_NEW_PIN) {
       mainNavigationViewModel.snackbarRegistry.emit(SnackbarState(message = getString(R.string.ConfirmKbsPinFragment__pin_created), hostKey = MainSnackbarHostKey.MainChrome))
-      mainNavigationViewModel.onMegaphoneCompleted(Megaphones.Event.PINS_FOR_ALL)
+      mainNavigationViewModel.onEvent(MainNavigationEvents.MegaphoneCompleted(Megaphones.Event.PINS_FOR_ALL))
     }
 
     if (resultCode == RESULT_OK && requestCode == UsernameEditFragment.REQUEST_CODE) {
@@ -796,7 +789,7 @@ class MainActivity :
           hostKey = MainSnackbarHostKey.MainChrome
         )
       )
-      mainNavigationViewModel.onMegaphoneSnoozed(Megaphones.Event.VERIFY_BACKUP_KEY)
+      mainNavigationViewModel.onEvent(MainNavigationEvents.MegaphoneSnoozed(Megaphones.Event.VERIFY_BACKUP_KEY))
     }
   }
 
@@ -896,8 +889,8 @@ class MainActivity :
         return
       }
 
-      mainNavigationViewModel.goTo(MainListRoute.Chats)
-      mainNavigationViewModel.goTo(MainDetailRoute.Conversation(ConversationIntents.readArgsFromBundle(extras)))
+      mainNavigationViewModel.onEvent(MainNavigationEvents.GoToList(MainListRoute.Chats))
+      mainNavigationViewModel.onEvent(MainNavigationEvents.GoToDetail(MainDetailRoute.Conversation(ConversationIntents.readArgsFromBundle(extras))))
       intent.action = null
       setIntent(intent)
     }
@@ -1033,7 +1026,7 @@ class MainActivity :
     }
 
     override fun onOpenArchiveClick() {
-      mainNavigationViewModel.onArchiveSelected()
+      mainNavigationViewModel.onEvent(MainNavigationEvents.GoToTab(MainListRoute.Archive))
     }
 
     override fun onStarredMessagesClick() {
@@ -1069,11 +1062,11 @@ class MainActivity :
     }
 
     override fun onStoryPrivacyClick() {
-      mainNavigationViewModel.goTo(MainDetailRoute.Stories.PrivacySettings)
+      mainNavigationViewModel.onEvent(MainNavigationEvents.GoToDetail(MainDetailRoute.Stories.PrivacySettings))
     }
 
     override fun onStoryArchiveClick() {
-      mainNavigationViewModel.goTo(MainDetailRoute.Stories.Archive)
+      mainNavigationViewModel.onEvent(MainNavigationEvents.GoToDetail(MainDetailRoute.Stories.Archive))
     }
 
     override fun onCloseSearchClick() {
@@ -1125,7 +1118,7 @@ class MainActivity :
     }
 
     override fun onMegaphoneVisible(megaphone: Megaphone) {
-      mainNavigationViewModel.onMegaphoneVisible(megaphone)
+      mainNavigationViewModel.onEvent(MainNavigationEvents.MegaphoneVisible(megaphone))
     }
 
     override fun onSnackbarDismissed() = Unit
@@ -1154,11 +1147,11 @@ class MainActivity :
     }
 
     override fun onMegaphoneSnooze(event: Megaphones.Event) {
-      mainNavigationViewModel.onMegaphoneSnoozed(event)
+      mainNavigationViewModel.onEvent(MainNavigationEvents.MegaphoneSnoozed(event))
     }
 
     override fun onMegaphoneCompleted(event: Megaphones.Event) {
-      mainNavigationViewModel.onMegaphoneCompleted(event)
+      mainNavigationViewModel.onEvent(MainNavigationEvents.MegaphoneCompleted(event))
     }
 
     override fun onMegaphoneDialogFragmentRequested(dialogFragment: DialogFragment) {
@@ -1166,18 +1159,5 @@ class MainActivity :
     }
   }
 
-  private inner class MainNavigationCallback : (MainListRoute) -> Unit {
-    override fun invoke(location: MainListRoute) {
-      when (location) {
-        MainListRoute.Chats -> mainNavigationViewModel.onChatsSelected()
-        MainListRoute.Calls -> mainNavigationViewModel.onCallsSelected()
-        MainListRoute.Stories -> mainNavigationViewModel.onStoriesSelected()
-        MainListRoute.Archive -> mainNavigationViewModel.onArchiveSelected()
-      }
-    }
-  }
-
-  override fun goTo(location: MainListRoute) = mainNavigationViewModel.goTo(location)
-  override fun goTo(location: MainDetailRoute) = mainNavigationViewModel.goTo(location)
-  override fun exitDetailLocation() = mainNavigationViewModel.exitDetailLocation()
+  override fun onEvent(event: MainNavigationEvents) = mainNavigationViewModel.onEvent(event)
 }

@@ -25,6 +25,7 @@ import org.junit.Test
 import org.junit.runner.RunWith
 import org.robolectric.RobolectricTestRunner
 import org.robolectric.annotation.Config
+import org.signal.core.ui.compose.split.ListDetailEvents
 import org.signal.core.ui.compose.split.PaneAnchor
 import org.thoughtcrime.securesms.database.SignalDatabase
 import org.thoughtcrime.securesms.database.model.MessageId
@@ -33,9 +34,8 @@ import org.thoughtcrime.securesms.service.webrtc.links.CallLinkRoomId
 import org.thoughtcrime.securesms.testutil.MockAppDependenciesRule
 
 /**
- * Covers the view model as the sole owner of the tab back stacks: everything a screen can ask for goes
- * through [MainNavigationRouter] or [MainNavigationViewModel.popCurrentDetailLocation], and the stacks it
- * hands the display are what those calls leave behind.
+ * Covers the view model as the sole owner of the tab back stacks: everything a screen can ask for arrives
+ * as a [MainNavigationEvents], and the stacks it hands the display are what those events leave behind.
  */
 @OptIn(ExperimentalCoroutinesApi::class)
 @RunWith(RobolectricTestRunner::class)
@@ -79,6 +79,12 @@ class MainNavigationViewModelTest {
     Dispatchers.resetMain()
   }
 
+  /** Events are answered off the view model's own channel, so every one of them is drained before asserting. */
+  private fun MainNavigationViewModel.sendEvent(event: MainNavigationEvents) {
+    onEvent(event)
+    testDispatcher.scheduler.advanceUntilIdle()
+  }
+
   @Test
   fun `given a new view model, then chats is displayed with no detail`() {
     assertEquals(MainListRoute.Chats, viewModel.currentTab.value)
@@ -87,41 +93,41 @@ class MainNavigationViewModelTest {
 
   @Test
   fun `when going to a detail location, then it is pushed onto the displayed tab`() {
-    viewModel.goTo(conversationSettings)
+    viewModel.sendEvent(MainNavigationEvents.GoToDetail(conversationSettings))
 
     assertEquals(listOf(MainListRoute.Chats, conversationSettings), viewModel.navigator[MainListRoute.Chats])
   }
 
   @Test
   fun `given stacked detail, when popping, then only the top of the stack is dropped`() {
-    viewModel.goTo(conversationSettings)
-    viewModel.goTo(messageDetails)
+    viewModel.sendEvent(MainNavigationEvents.GoToDetail(conversationSettings))
+    viewModel.sendEvent(MainNavigationEvents.GoToDetail(messageDetails))
 
-    viewModel.popCurrentDetailLocation()
+    viewModel.sendEvent(MainNavigationEvents.ListDetailEvent(ListDetailEvents.Back))
 
     assertEquals(listOf(MainListRoute.Chats, conversationSettings), viewModel.navigator[MainListRoute.Chats])
   }
 
   @Test
   fun `given stacked detail, when exiting detail, then all of it is dropped`() {
-    viewModel.goTo(conversationSettings)
-    viewModel.goTo(messageDetails)
+    viewModel.sendEvent(MainNavigationEvents.GoToDetail(conversationSettings))
+    viewModel.sendEvent(MainNavigationEvents.GoToDetail(messageDetails))
 
-    viewModel.exitDetailLocation()
+    viewModel.sendEvent(MainNavigationEvents.ExitDetail)
 
     assertEquals(listOf(MainListRoute.Chats), viewModel.navigator[MainListRoute.Chats])
   }
 
   @Test
   fun `given a stack at its root, when popping, then nothing is dropped`() {
-    viewModel.popCurrentDetailLocation()
+    viewModel.sendEvent(MainNavigationEvents.ListDetailEvent(ListDetailEvents.Back))
 
     assertEquals(listOf(MainListRoute.Chats), viewModel.navigator[MainListRoute.Chats])
   }
 
   @Test
   fun `when going to the archive, then it is pushed onto the chats stack rather than becoming a tab`() {
-    viewModel.goTo(MainListRoute.Archive)
+    viewModel.sendEvent(MainNavigationEvents.GoToList(MainListRoute.Archive))
 
     assertEquals(MainListRoute.Chats, viewModel.currentTab.value)
     assertEquals(
@@ -132,9 +138,9 @@ class MainNavigationViewModelTest {
 
   @Test
   fun `given the archive is displayed, when going back to chats, then the archive is popped`() {
-    viewModel.goTo(MainListRoute.Archive)
+    viewModel.sendEvent(MainNavigationEvents.GoToList(MainListRoute.Archive))
 
-    viewModel.goTo(MainListRoute.Chats)
+    viewModel.sendEvent(MainNavigationEvents.GoToList(MainListRoute.Chats))
 
     assertEquals(listOf(MainListRoute.Chats), viewModel.navigator[MainListRoute.Chats])
   }
@@ -145,10 +151,10 @@ class MainNavigationViewModelTest {
    */
   @Test
   fun `given detail opened from the archive, when exiting detail, then the archive stays displayed`() {
-    viewModel.goTo(MainListRoute.Archive)
-    viewModel.goTo(conversationSettings)
+    viewModel.sendEvent(MainNavigationEvents.GoToList(MainListRoute.Archive))
+    viewModel.sendEvent(MainNavigationEvents.GoToDetail(conversationSettings))
 
-    viewModel.exitDetailLocation()
+    viewModel.sendEvent(MainNavigationEvents.ExitDetail)
 
     assertEquals(
       listOf(MainListRoute.Chats, MainListRoute.Archive),
@@ -158,9 +164,9 @@ class MainNavigationViewModelTest {
 
   @Test
   fun `given detail is open, when opening the archive, then the detail stays displayed above it`() {
-    viewModel.goTo(conversationSettings)
+    viewModel.sendEvent(MainNavigationEvents.GoToDetail(conversationSettings))
 
-    viewModel.goTo(MainListRoute.Archive)
+    viewModel.sendEvent(MainNavigationEvents.GoToList(MainListRoute.Archive))
 
     assertEquals(
       listOf(MainListRoute.Chats, MainListRoute.Archive, conversationSettings),
@@ -170,8 +176,8 @@ class MainNavigationViewModelTest {
 
   @Test
   fun `when going to a calls destination, then it is pushed onto the calls stack`() {
-    viewModel.goTo(MainListRoute.Calls)
-    viewModel.goTo(callLinkDetails)
+    viewModel.sendEvent(MainNavigationEvents.GoToList(MainListRoute.Calls))
+    viewModel.sendEvent(MainNavigationEvents.GoToDetail(callLinkDetails))
 
     assertEquals(MainListRoute.Calls, viewModel.currentTab.value)
     assertEquals(listOf(MainListRoute.Calls, callLinkDetails), viewModel.navigator[MainListRoute.Calls])
@@ -183,11 +189,11 @@ class MainNavigationViewModelTest {
    */
   @Test
   fun `given detail open on another tab, when switching away and back, then that stack is unchanged`() {
-    viewModel.goTo(MainListRoute.Calls)
-    viewModel.goTo(callLinkDetails)
+    viewModel.sendEvent(MainNavigationEvents.GoToList(MainListRoute.Calls))
+    viewModel.sendEvent(MainNavigationEvents.GoToDetail(callLinkDetails))
 
-    viewModel.goTo(MainListRoute.Chats)
-    viewModel.goTo(MainListRoute.Calls)
+    viewModel.sendEvent(MainNavigationEvents.GoToList(MainListRoute.Chats))
+    viewModel.sendEvent(MainNavigationEvents.GoToList(MainListRoute.Calls))
 
     assertEquals(listOf(MainListRoute.Calls, callLinkDetails), viewModel.navigator[MainListRoute.Calls])
   }
@@ -198,12 +204,12 @@ class MainNavigationViewModelTest {
    */
   @Test
   fun `given detail open on both tabs, when popping from calls, then only the calls stack is affected`() {
-    viewModel.goTo(MainListRoute.Chats)
-    viewModel.goTo(conversationSettings)
-    viewModel.goTo(MainListRoute.Calls)
-    viewModel.goTo(callLinkDetails)
+    viewModel.sendEvent(MainNavigationEvents.GoToList(MainListRoute.Chats))
+    viewModel.sendEvent(MainNavigationEvents.GoToDetail(conversationSettings))
+    viewModel.sendEvent(MainNavigationEvents.GoToList(MainListRoute.Calls))
+    viewModel.sendEvent(MainNavigationEvents.GoToDetail(callLinkDetails))
 
-    viewModel.popCurrentDetailLocation()
+    viewModel.sendEvent(MainNavigationEvents.ListDetailEvent(ListDetailEvents.Back))
 
     assertEquals(listOf(MainListRoute.Calls), viewModel.navigator[MainListRoute.Calls])
     assertEquals(listOf(MainListRoute.Chats, conversationSettings), viewModel.navigator[MainListRoute.Chats])
@@ -211,12 +217,12 @@ class MainNavigationViewModelTest {
 
   @Test
   fun `given detail open on both tabs, when exiting detail from calls, then only the calls stack is affected`() {
-    viewModel.goTo(MainListRoute.Chats)
-    viewModel.goTo(conversationSettings)
-    viewModel.goTo(MainListRoute.Calls)
-    viewModel.goTo(callLinkDetails)
+    viewModel.sendEvent(MainNavigationEvents.GoToList(MainListRoute.Chats))
+    viewModel.sendEvent(MainNavigationEvents.GoToDetail(conversationSettings))
+    viewModel.sendEvent(MainNavigationEvents.GoToList(MainListRoute.Calls))
+    viewModel.sendEvent(MainNavigationEvents.GoToDetail(callLinkDetails))
 
-    viewModel.exitDetailLocation()
+    viewModel.sendEvent(MainNavigationEvents.ExitDetail)
 
     assertEquals(listOf(MainListRoute.Calls), viewModel.navigator[MainListRoute.Calls])
     assertEquals(listOf(MainListRoute.Chats, conversationSettings), viewModel.navigator[MainListRoute.Chats])
@@ -224,12 +230,12 @@ class MainNavigationViewModelTest {
 
   @Test
   fun `given detail open on another tab, when popping from chats, then only the chats stack is affected`() {
-    viewModel.goTo(MainListRoute.Calls)
-    viewModel.goTo(callLinkDetails)
-    viewModel.goTo(MainListRoute.Chats)
-    viewModel.goTo(conversationSettings)
+    viewModel.sendEvent(MainNavigationEvents.GoToList(MainListRoute.Calls))
+    viewModel.sendEvent(MainNavigationEvents.GoToDetail(callLinkDetails))
+    viewModel.sendEvent(MainNavigationEvents.GoToList(MainListRoute.Chats))
+    viewModel.sendEvent(MainNavigationEvents.GoToDetail(conversationSettings))
 
-    viewModel.popCurrentDetailLocation()
+    viewModel.sendEvent(MainNavigationEvents.ListDetailEvent(ListDetailEvents.Back))
 
     assertEquals(listOf(MainListRoute.Chats), viewModel.navigator[MainListRoute.Chats])
     assertEquals(listOf(MainListRoute.Calls, callLinkDetails), viewModel.navigator[MainListRoute.Calls])
@@ -237,8 +243,8 @@ class MainNavigationViewModelTest {
 
   @Test
   fun `when going to a stories destination, then it is pushed onto the stories stack`() {
-    viewModel.goTo(MainListRoute.Stories)
-    viewModel.goTo(MainDetailRoute.Stories.MyStories)
+    viewModel.sendEvent(MainNavigationEvents.GoToList(MainListRoute.Stories))
+    viewModel.sendEvent(MainNavigationEvents.GoToDetail(MainDetailRoute.Stories.MyStories))
 
     assertEquals(
       listOf(MainListRoute.Stories, MainDetailRoute.Stories.MyStories),
@@ -252,10 +258,10 @@ class MainNavigationViewModelTest {
    */
   @Test
   fun `given a stories destination is open, when opening another, then it replaces the first`() {
-    viewModel.goTo(MainListRoute.Stories)
-    viewModel.goTo(MainDetailRoute.Stories.MyStories)
+    viewModel.sendEvent(MainNavigationEvents.GoToList(MainListRoute.Stories))
+    viewModel.sendEvent(MainNavigationEvents.GoToDetail(MainDetailRoute.Stories.MyStories))
 
-    viewModel.goTo(MainDetailRoute.Stories.PrivacySettings)
+    viewModel.sendEvent(MainNavigationEvents.GoToDetail(MainDetailRoute.Stories.PrivacySettings))
 
     assertEquals(
       listOf(MainListRoute.Stories, MainDetailRoute.Stories.PrivacySettings),
@@ -265,30 +271,30 @@ class MainNavigationViewModelTest {
 
   @Test
   fun `given the list fills the window, when detail content opens, then the detail is revealed`() {
-    viewModel.onPaneAnchorSelected(PaneAnchor.LIST_ONLY)
+    viewModel.sendEvent(MainNavigationEvents.ListDetailEvent(ListDetailEvents.AnchorSelected(PaneAnchor.LIST_ONLY)))
 
-    viewModel.goTo(conversationSettings)
+    viewModel.sendEvent(MainNavigationEvents.GoToDetail(conversationSettings))
 
     assertEquals(PaneAnchor.DETAIL_ONLY, viewModel.paneAnchor.value)
   }
 
   @Test
   fun `given the detail fills the window, when the last detail is popped, then the list is revealed`() {
-    viewModel.goTo(conversationSettings)
-    viewModel.onPaneAnchorSelected(PaneAnchor.DETAIL_ONLY)
+    viewModel.sendEvent(MainNavigationEvents.GoToDetail(conversationSettings))
+    viewModel.sendEvent(MainNavigationEvents.ListDetailEvent(ListDetailEvents.AnchorSelected(PaneAnchor.DETAIL_ONLY)))
 
-    viewModel.popCurrentDetailLocation()
+    viewModel.sendEvent(MainNavigationEvents.ListDetailEvent(ListDetailEvents.Back))
 
     assertEquals(PaneAnchor.LIST_ONLY, viewModel.paneAnchor.value)
   }
 
   @Test
   fun `given stacked detail, when the top is popped, then the detail pane stays revealed`() {
-    viewModel.goTo(conversationSettings)
-    viewModel.goTo(messageDetails)
-    viewModel.onPaneAnchorSelected(PaneAnchor.DETAIL_ONLY)
+    viewModel.sendEvent(MainNavigationEvents.GoToDetail(conversationSettings))
+    viewModel.sendEvent(MainNavigationEvents.GoToDetail(messageDetails))
+    viewModel.sendEvent(MainNavigationEvents.ListDetailEvent(ListDetailEvents.AnchorSelected(PaneAnchor.DETAIL_ONLY)))
 
-    viewModel.popCurrentDetailLocation()
+    viewModel.sendEvent(MainNavigationEvents.ListDetailEvent(ListDetailEvents.Back))
 
     assertEquals(PaneAnchor.DETAIL_ONLY, viewModel.paneAnchor.value)
   }

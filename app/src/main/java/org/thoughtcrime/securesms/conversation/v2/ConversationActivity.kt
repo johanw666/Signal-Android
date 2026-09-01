@@ -28,7 +28,8 @@ import org.thoughtcrime.securesms.components.voice.VoiceNoteMediaControllerOwner
 import org.thoughtcrime.securesms.conversation.ConversationIntents
 import org.thoughtcrime.securesms.jobs.ConversationShortcutUpdateJob
 import org.thoughtcrime.securesms.main.MainDetailRoute
-import org.thoughtcrime.securesms.main.MainNavigationChatDetailRouter
+import org.thoughtcrime.securesms.main.MainNavigationEventSink
+import org.thoughtcrime.securesms.main.MainNavigationEvents
 import org.thoughtcrime.securesms.messagedetails.MessageDetailsFragment
 import org.thoughtcrime.securesms.util.DynamicNoActionBarTheme
 import java.util.concurrent.TimeUnit
@@ -36,7 +37,7 @@ import java.util.concurrent.TimeUnit
 /**
  * Wrapper activity for ConversationFragment.
  */
-open class ConversationActivity : PassphraseRequiredActivity(), VoiceNoteMediaControllerOwner, GooglePayComponent, MainNavigationChatDetailRouter {
+open class ConversationActivity : PassphraseRequiredActivity(), VoiceNoteMediaControllerOwner, GooglePayComponent, MainNavigationEventSink {
 
   companion object {
     private val TAG = tag(ConversationActivity::class.java)
@@ -141,13 +142,33 @@ open class ConversationActivity : PassphraseRequiredActivity(), VoiceNoteMediaCo
       .commitNowAllowingStateLoss()
   }
 
-  override fun exitDetailLocation() {
+  /**
+   * Only the events a conversation displayed on its own can answer. The rest belong to the main window,
+   * which is where the same screens send them when it is the one hosting them.
+   */
+  override fun onEvent(event: MainNavigationEvents) {
+    when (event) {
+      MainNavigationEvents.ExitDetail -> exitDetail()
+      is MainNavigationEvents.GoToDetail -> {
+        val route = event.route
+        if (route is MainDetailRoute.Chats) {
+          goToChatDetail(route)
+        } else {
+          Log.w(TAG, "Cannot display $route outside of the main window. Ignoring it.")
+        }
+      }
+
+      else -> Log.w(TAG, "Unsupported outside of the main window: $event. Ignoring it.")
+    }
+  }
+
+  private fun exitDetail() {
     if (!supportFragmentManager.popBackStackImmediate()) {
       finish()
     }
   }
 
-  override fun goToChatDetail(location: MainDetailRoute.Chats) {
+  private fun goToChatDetail(location: MainDetailRoute.Chats) {
     when (location) {
       is MainDetailRoute.Chats.ConversationSettings -> {
         lifecycleScope.launch {

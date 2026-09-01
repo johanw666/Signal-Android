@@ -144,6 +144,7 @@ import org.thoughtcrime.securesms.jobs.RefreshOwnProfileJob;
 import org.thoughtcrime.securesms.keyvalue.AccountValues;
 import org.thoughtcrime.securesms.keyvalue.SignalStore;
 import org.thoughtcrime.securesms.main.MainListRoute;
+import org.thoughtcrime.securesms.main.MainNavigationEvents;
 import org.thoughtcrime.securesms.main.MainNavigationViewModel;
 import org.thoughtcrime.securesms.main.MainSnackbarHostKey;
 import org.thoughtcrime.securesms.main.MainToolbarMode;
@@ -702,7 +703,7 @@ public class ConversationListFragment extends MainFragment implements Conversati
   @Override
   public void onShowArchiveClick() {
     if (viewModel.currentSelectedConversations().isEmpty()) {
-      mainNavigationViewModel.goTo(MainListRoute.Archive);
+      mainNavigationViewModel.onEvent(new MainNavigationEvents.GoToList(MainListRoute.Archive));
     }
   }
 
@@ -765,7 +766,7 @@ public class ConversationListFragment extends MainFragment implements Conversati
           } else if (event instanceof MainToolbarViewModel.Event.Chats.ClearFilter) {
             onClearFilterClick();
           } else if (event instanceof MainToolbarViewModel.Event.Chats.CloseArchive) {
-            mainNavigationViewModel.goTo(MainListRoute.Chats);
+            mainNavigationViewModel.onEvent(new MainNavigationEvents.GoToList(MainListRoute.Chats));
           }
         })
     );
