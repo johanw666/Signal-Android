@@ -143,7 +143,6 @@ class RestoreLocalBackupActivityViewModel : ViewModel() {
           Log.w(TAG, "Local backup does not match current account, not re-enabling local backups")
         }
 
-        SignalStore.onboarding.clearAll()
         StorageServiceRestore.restore()
         RegistrationUtil.maybeMarkRegistrationComplete()
 
