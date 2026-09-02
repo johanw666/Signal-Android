@@ -209,7 +209,11 @@ sealed class NotificationBuilder(protected val context: Context) {
     override fun addActions(replyMethod: ReplyMethod, conversation: NotificationConversation) {
       val extender: NotificationCompat.WearableExtender = NotificationCompat.WearableExtender()
 
-      addMarkAsReadActionActual(conversation)
+      val markAsReadAction: NotificationCompat.Action? = buildMarkAsReadAction(conversation)
+      if (markAsReadAction != null) {
+        builder.addAction(markAsReadAction)
+        extender.addAction(markAsReadAction)
+      }
 
       if (conversation.mostRecentNotification.canReply(context)) {
         val quickReply: PendingIntent? = conversation.getQuickReplyIntent(context)
@@ -244,17 +248,19 @@ sealed class NotificationBuilder(protected val context: Context) {
     }
 
     override fun addMarkAsReadActionActual(conversation: NotificationConversation) {
-      val markAsRead: PendingIntent? = conversation.getMarkAsReadIntent(context)
-      if (markAsRead != null) {
-        val markAsReadAction: NotificationCompat.Action =
-          NotificationCompat.Action.Builder(CoreUiR.drawable.symbol_check_24, context.getString(R.string.MessageNotifier_mark_read), markAsRead)
-            .setSemanticAction(NotificationCompat.Action.SEMANTIC_ACTION_MARK_AS_READ)
-            .setShowsUserInterface(false)
-            .build()
+      val markAsReadAction: NotificationCompat.Action = buildMarkAsReadAction(conversation) ?: return
 
-        builder.addAction(markAsReadAction)
-        builder.extend(NotificationCompat.WearableExtender().addAction(markAsReadAction))
-      }
+      builder.addAction(markAsReadAction)
+      builder.extend(NotificationCompat.WearableExtender().addAction(markAsReadAction))
+    }
+
+    private fun buildMarkAsReadAction(conversation: NotificationConversation): NotificationCompat.Action? {
+      val markAsRead: PendingIntent = conversation.getMarkAsReadIntent(context) ?: return null
+
+      return NotificationCompat.Action.Builder(CoreUiR.drawable.symbol_check_24, context.getString(R.string.MessageNotifier_mark_read), markAsRead)
+        .setSemanticAction(NotificationCompat.Action.SEMANTIC_ACTION_MARK_AS_READ)
+        .setShowsUserInterface(false)
+        .build()
     }
 
     override fun addMarkAsReadActionActual(state: NotificationState) {
