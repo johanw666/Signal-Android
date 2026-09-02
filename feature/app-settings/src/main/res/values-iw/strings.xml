@@ -48,13 +48,6 @@
     <string name="AccountSettingsFragment__signal_login">מפתח Signal</string>
     <!-- Title of the card that opens the user\'s Signal Login account and recovery keys -->
     <string name="AccountSettingsFragment__account_and_recovery">חשבון ושחזור</string>
-    <!-- Subtitle of the Signal Login card describing how many keys make up the login -->
-    <plurals name="AccountSettingsFragment__d_keys">
-        <item quantity="one">מפתח %1$d</item>
-        <item quantity="two">%1$d מפתחות</item>
-        <item quantity="many">%1$d מפתחות</item>
-        <item quantity="other">%1$d מפתחות</item>
-    </plurals>
     <!-- Description of what a Signal Login is, shown below the Signal Login card -->
     <string name="AccountSettingsFragment__your_signal_login_is_used_to_recover">מפתח Signal שלך משמש לשחזור החשבון שלך. יש לתעד את המפתחות האלה במקום בטוח, במנהל סיסמאות אמין.</string>
     <!-- Section header for the two-factor authentication section of account settings -->
@@ -65,10 +58,10 @@
     <string name="AccountSettingsFragment__one_time_verification_codes">קודי אימות חד–פעמיים</string>
     <!-- Description of the authenticator app setting saying how many are configured -->
     <plurals name="AccountSettingsFragment__d_configured">
-        <item quantity="one">%1$d נוצר</item>
-        <item quantity="two">%1$d נוצרו</item>
-        <item quantity="many">%1$d נוצרו</item>
-        <item quantity="other">%1$d נוצרו</item>
+        <item quantity="one">%1$d הוגדרה</item>
+        <item quantity="two">%1$d הוגדרו</item>
+        <item quantity="many">%1$d הוגדרו</item>
+        <item quantity="other">%1$d הוגדרו</item>
     </plurals>
     <!-- Account setting that takes the user to the passkeys screen -->
     <string name="AccountSettingsFragment__passkeys">מפתחות גישה</string>
@@ -88,35 +81,37 @@
 
     <!-- TotpSetupScreen -->
     <!-- Title of the screen that walks the user through setting up an authenticator app -->
-    <string name="TotpSetupScreen__set_up_your_authenticator_app">הגדרת אפליקציית האימות שלך</string>
+    <string name="TotpSetupScreen__set_up_your_authenticator_app">Set up your authenticator app</string>
     <!-- Instructions shown at the top of the authenticator app setup screen -->
-    <string name="TotpSetupScreen__follow_these_steps">יש לבצע את השלבים הבאים כדי להגדיר אפליקציית אימות דו-שלבי:</string>
+    <string name="TotpSetupScreen__follow_these_steps">Follow these steps to set up your authenticator app.</string>
     <!-- Clickable text that takes the user to a support article -->
-    <string name="TotpSetupScreen__learn_more">למידע נוסף</string>
+    <string name="TotpSetupScreen__learn_more">Learn more</string>
     <!-- Header of the first step of authenticator app setup -->
-    <string name="TotpSetupScreen__step_1">שלב 1</string>
+    <string name="TotpSetupScreen__step_1">Step 1</string>
     <!-- Body of the first step of authenticator app setup -->
-    <string name="TotpSetupScreen__install_a_trusted_authenticator_app">להתקין אפליקציה אמינה של אימות דו-שלבי במכשיר שלך.</string>
+    <string name="TotpSetupScreen__install_a_trusted_authenticator_app">Install a trusted authenticator app on your device.</string>
     <!-- Header of the second step of authenticator app setup -->
-    <string name="TotpSetupScreen__step_2">שלב 2</string>
+    <string name="TotpSetupScreen__step_2">Step 2</string>
     <!-- Body of the second step of authenticator app setup -->
-    <string name="TotpSetupScreen__open_your_authenticator_app">לפתוח את אפליקציית האימות באמצעות לחיצה על הכפתור שלמטה כדי להוסיף את חשבון Signal שלך.</string>
+    <string name="TotpSetupScreen__open_your_authenticator_app">Open your authenticator app by tapping the button below to add your Signal account.</string>
     <!-- Button that opens the user\'s authenticator app -->
-    <string name="TotpSetupScreen__open">פתיחה</string>
+    <string name="TotpSetupScreen__open">Open</string>
     <!-- Text above the setup key explaining that it can be entered by hand instead -->
-    <string name="TotpSetupScreen__or_you_can_copy_this_key">אפשר גם להעתיק את הקישור הזה כדי להגדיר באופן ידני.</string>
+    <string name="TotpSetupScreen__or_you_can_copy_this_key">Or you can copy this key to manually set it up.</string>
     <!-- Button that copies the setup key to the clipboard -->
-    <string name="TotpSetupScreen__copy">העתק</string>
+    <string name="TotpSetupScreen__copy">Copy</string>
     <!-- Toast shown after the setup key has been copied to the clipboard -->
-    <string name="TotpSetupScreen__copied_to_clipboard">הועתק ללוח</string>
+    <string name="TotpSetupScreen__copied_to_clipboard">Copied to clipboard</string>
     <!-- Toast shown when there is no app installed that can handle the authenticator setup link -->
-    <string name="TotpSetupScreen__no_authenticator_app_found">לא נמצאה אפליקציית אימות</string>
+    <string name="TotpSetupScreen__no_authenticator_app_found">No authenticator app found</string>
+    <!-- Dialog message shown when we couldn\'t reach the service to start setting up an authenticator app -->
+    <string name="TotpSetupScreen__couldnt_reach_signal">Couldn\'t reach Signal. Check your connection and try again.</string>
     <!-- Header of the third step of authenticator app setup -->
-    <string name="TotpSetupScreen__step_3">שלב 3</string>
+    <string name="TotpSetupScreen__step_3">Step 3</string>
     <!-- Body of the third step of authenticator app setup -->
-    <string name="TotpSetupScreen__copy_the_code_thats_generated">להעתיק את הקוד שנוצר ולחזור לכאן כדי להמשיך.</string>
+    <string name="TotpSetupScreen__copy_the_code_thats_generated">Copy the code that\'s generated and return here to continue.</string>
     <!-- Button that advances from the setup instructions to entering a code -->
-    <string name="TotpSetupScreen__continue">המשך</string>
+    <string name="TotpSetupScreen__continue">Continue</string>
 
     <!-- PasskeysScreen -->
     <!-- Title of the screen where the user sets up passkeys -->
@@ -148,58 +143,68 @@
 
     <!-- TotpCodeEntryScreen -->
     <!-- Title of the screen where the user enters the code from their authenticator app -->
-    <string name="TotpCodeEntryScreen__enter_your_code">הזנת הקוד שלך</string>
+    <string name="TotpCodeEntryScreen__enter_your_code">Enter your code</string>
     <!-- Instructions shown above the code entry field -->
-    <string name="TotpCodeEntryScreen__enter_the_6_digit_code">יש להזין קוד בן 6 ספרות מאפליקציית האימות שלך.</string>
+    <string name="TotpCodeEntryScreen__enter_the_6_digit_code">Enter the 6-digit code from your authenticator app.</string>
     <!-- Label of the code entry field -->
-    <string name="TotpCodeEntryScreen__code">קוד</string>
+    <string name="TotpCodeEntryScreen__code">Code</string>
     <!-- Button that submits the entered code -->
-    <string name="TotpCodeEntryScreen__done">סיום</string>
+    <string name="TotpCodeEntryScreen__done">Done</string>
+    <!-- Error shown under the code field when the code the user entered was rejected -->
+    <string name="TotpCodeEntryScreen__incorrect_code">Incorrect code. Enter the code showing in your authenticator app now.</string>
+    <!-- Error shown under the code field when we couldn\'t reach the service to check the code -->
+    <string name="TotpCodeEntryScreen__couldnt_reach_signal">Couldn\'t reach Signal. Check your connection and try again.</string>
     <!-- TotpAppListScreen -->
     <!-- Title of the screen listing the authenticator apps on the account -->
-    <string name="TotpAppListScreen__authenticator_app">אפליקציית אימות דו-שלבי</string>
+    <string name="TotpAppListScreen__authenticator_app">Authenticator app</string>
     <!-- Description of what an authenticator app is for, shown at the top of the screen -->
-    <string name="TotpAppListScreen__set_up_an_authenticator_app">להגדיר אפליקציית אימות ליצירת קודי אימות חד–פעמיים</string>
+    <string name="TotpAppListScreen__set_up_an_authenticator_app">Set up an authenticator app to generate one-time verification codes</string>
     <!-- Clickable text that takes the user to a support article -->
-    <string name="TotpAppListScreen__learn_more">למידע נוסף</string>
+    <string name="TotpAppListScreen__learn_more">Learn more</string>
     <!-- Button that starts setting up another authenticator app -->
-    <string name="TotpAppListScreen__add_authenticator_app">הוספת אפליקציית אימות</string>
+    <string name="TotpAppListScreen__add_authenticator_app">Add authenticator app</string>
     <!-- Section header above the list of configured authenticator apps -->
-    <string name="TotpAppListScreen__authenticator_apps">אפליקציות אימות דו–שלבי</string>
+    <string name="TotpAppListScreen__authenticator_apps">Authenticator apps</string>
     <!-- Shown in place of the list when no authenticator apps are configured -->
-    <string name="TotpAppListScreen__no_authenticator_apps">אין אפליקציות אימות</string>
+    <string name="TotpAppListScreen__no_authenticator_apps">No authenticator apps</string>
     <!-- Subtitle of an authenticator app row saying when it was configured. Placeholder is a date or time. -->
-    <string name="TotpAppListScreen__added_s">\"%1$s\" התווסף/ה</string>
+    <string name="TotpAppListScreen__added_s">Added %1$s</string>
     <!-- Content description of the button that opens an authenticator app\'s options -->
-    <string name="TotpAppListScreen__open_authenticator_app_options">פתיחת אפשרויות אפליקציית אימות</string>
+    <string name="TotpAppListScreen__open_authenticator_app_options">Open authenticator app options</string>
     <!-- Menu option that renames an authenticator app -->
-    <string name="TotpAppListScreen__rename">שינוי שם</string>
+    <string name="TotpAppListScreen__rename">Rename</string>
     <!-- Menu option that removes an authenticator app -->
-    <string name="TotpAppListScreen__remove">הסרה</string>
+    <string name="TotpAppListScreen__remove">Remove</string>
     <!-- Title of the dialog confirming removal of an authenticator app -->
-    <string name="TotpAppListScreen__remove_authenticator_app">להסיר אפליקציית אימות?</string>
+    <string name="TotpAppListScreen__remove_authenticator_app">Remove authenticator app?</string>
     <!-- Body of the dialog confirming removal of an authenticator app -->
-    <string name="TotpAppListScreen__to_remove_this_authentication_method">כדי להסיר את שיטת האימות הזו, נדרש קוד בן 6 ספרות מאפליקציית האימות שלך.</string>
+    <string name="TotpAppListScreen__you_wont_be_able_to_use_this_app">You won\'t be able to use this app for one-time verification codes when you sign in.</string>
     <!-- Title of the dialog shown when the account already has as many authenticator apps as it\'s allowed -->
-    <string name="TotpAppListScreen__cant_add_authenticator_app">לא ניתן להוסיף אפליקציית אימות</string>
+    <string name="TotpAppListScreen__cant_add_authenticator_app">Can\'t add authenticator app</string>
     <!-- Body of the dialog shown when the account already has as many authenticator apps as it\'s allowed -->
-    <string name="TotpAppListScreen__you_cant_add_more_than_d">לא ניתן להוסיף יותר מ–%1$d אפליקציות אימות. יש לנסות להסיר אחת קודם.</string>
+    <string name="TotpAppListScreen__you_cant_add_more_than_d">You can\'t add more than %1$d authenticator apps. Try removing one first.</string>
+    <!-- Dialog message shown when we couldn\'t work out which authenticator apps are on the account -->
+    <string name="TotpAppListScreen__couldnt_load_authenticator_apps">Couldn\'t load your authenticator apps. Check your connection and try again.</string>
     <!-- Toast shown after an authenticator app has been removed -->
-    <string name="TotpAppListScreen__authenticator_app_removed">אפליקציית אימות הוסרה</string>
+    <string name="TotpAppListScreen__authenticator_app_removed">Authenticator app removed</string>
+    <!-- Toast shown when an authenticator app couldn\'t be removed -->
+    <string name="TotpAppListScreen__couldnt_remove_authenticator_app">Couldn\'t remove authenticator app. Check your connection and try again.</string>
 
     <!-- TotpNameEntryScreen -->
     <!-- Title of the screen where the user names an authenticator app -->
-    <string name="TotpNameEntryScreen__choose_a_name">בחר שם</string>
+    <string name="TotpNameEntryScreen__choose_a_name">Choose a name</string>
     <!-- Instructions shown above the name field when renaming an authenticator app -->
-    <string name="TotpNameEntryScreen__choose_a_unique_name">בחירת שם ייחודי לאפליקציית האימות הזו.</string>
+    <string name="TotpNameEntryScreen__choose_a_unique_name">Choose a unique name for this authenticator app.</string>
     <!-- Instructions shown above the name field when naming a newly configured authenticator app -->
-    <string name="TotpNameEntryScreen__choose_a_unique_name_to_help_you_identify_it">בחירת שם ייחודי לאפליקציית האימות הזו שיעזור לך לזהות אותה בהמשך.</string>
+    <string name="TotpNameEntryScreen__choose_a_unique_name_to_help_you_identify_it">Choose a unique name for this authenticator app to help you identify it later.</string>
     <!-- Label of the name field -->
-    <string name="TotpNameEntryScreen__name">שם</string>
+    <string name="TotpNameEntryScreen__name">Name</string>
     <!-- Button that submits the entered name -->
-    <string name="TotpNameEntryScreen__next">הבא</string>
+    <string name="TotpNameEntryScreen__next">Next</string>
     <!-- Toast shown after an authenticator app has been successfully set up -->
-    <string name="TotpNameEntryScreen__authenticator_app_set_up">הגדרות אפליקציית אימות</string>
+    <string name="TotpNameEntryScreen__authenticator_app_set_up">Authenticator app set up</string>
     <!-- Toast shown after an authenticator app has been renamed -->
-    <string name="TotpNameEntryScreen__authenticator_app_renamed">שונה שם אפליקציית האימות</string>
+    <string name="TotpNameEntryScreen__authenticator_app_renamed">Authenticator app renamed</string>
+    <!-- Toast shown when we couldn\'t reach the service to save the name -->
+    <string name="TotpNameEntryScreen__couldnt_save_name">Couldn\'t save name. Check your connection and try again.</string>
 </resources>

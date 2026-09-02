@@ -645,7 +645,7 @@
     <string name="SignalLoginPaymentScreen__your_purchase_could_not_be_completed">Your purchase could not be completed. You have not been charged.</string>
     <!-- Label for the internal-testing text field where a receipt credential can be pasted to skip payment. Not shown to real users. -->
     <string name="SignalLoginPaymentScreen__paste_a_receipt_credential" translatable="false">Paste a receipt credential (testing)</string>
-    <!-- Error shown when a manually-pasted receipt credential can't be parsed or is rejected. Internal testing only. -->
+    <!-- Error shown when a manually-pasted receipt credential can\'t be parsed or is rejected. Internal testing only. -->
     <string name="SignalLoginPaymentScreen__this_receipt_credential_is_invalid" translatable="false">This receipt credential is invalid.</string>
 
     <!-- Signal Login details screen -->
@@ -719,7 +719,7 @@
     <string name="AddUsernameScreen__this_username_is_not_available">This username is not available. Please try another.</string>
     <!-- Error shown when the user\'s temporary hold on a username expired before they submitted it. -->
     <string name="AddUsernameScreen__your_username_reservation_expired">Your username reservation expired. Please try again.</string>
-    <!-- Error shown when the username formed by the entered name and the user's chosen number is already taken. -->
+    <!-- Error shown when the username formed by the entered name and the user\'s chosen number is already taken. -->
     <string name="AddUsernameScreen__this_username_is_not_available_try_another_number">This username is not available, try another number.</string>
     <!-- Validation error shown when the number the user entered after their username has too few digits. -->
     <string name="AddUsernameScreen__enter_a_minimum_of_d_digits">Invalid username, enter a minimum of %1$d digits.</string>

@@ -100,7 +100,7 @@
     <string name="TotpSetupScreen__copied_to_clipboard">Copied to clipboard</string>
     <!-- Toast shown when there is no app installed that can handle the authenticator setup link -->
     <string name="TotpSetupScreen__no_authenticator_app_found">No authenticator app found</string>
-    <!-- Dialog message shown when we couldn't reach the service to start setting up an authenticator app -->
+    <!-- Dialog message shown when we couldn\'t reach the service to start setting up an authenticator app -->
     <string name="TotpSetupScreen__couldnt_reach_signal">Couldn\'t reach Signal. Check your connection and try again.</string>
     <!-- Header of the third step of authenticator app setup -->
     <string name="TotpSetupScreen__step_3">Step 3</string>
@@ -148,7 +148,7 @@
     <string name="TotpCodeEntryScreen__done">Done</string>
     <!-- Error shown under the code field when the code the user entered was rejected -->
     <string name="TotpCodeEntryScreen__incorrect_code">Incorrect code. Enter the code showing in your authenticator app now.</string>
-    <!-- Error shown under the code field when we couldn't reach the service to check the code -->
+    <!-- Error shown under the code field when we couldn\'t reach the service to check the code -->
     <string name="TotpCodeEntryScreen__couldnt_reach_signal">Couldn\'t reach Signal. Check your connection and try again.</string>
     <!-- TotpAppListScreen -->
     <!-- Title of the screen listing the authenticator apps on the account -->
@@ -179,7 +179,7 @@
     <string name="TotpAppListScreen__cant_add_authenticator_app">Can\'t add authenticator app</string>
     <!-- Body of the dialog shown when the account already has as many authenticator apps as it\'s allowed -->
     <string name="TotpAppListScreen__you_cant_add_more_than_d">You can\'t add more than %1$d authenticator apps. Try removing one first.</string>
-    <!-- Dialog message shown when we couldn't work out which authenticator apps are on the account -->
+    <!-- Dialog message shown when we couldn\'t work out which authenticator apps are on the account -->
     <string name="TotpAppListScreen__couldnt_load_authenticator_apps">Couldn\'t load your authenticator apps. Check your connection and try again.</string>
     <!-- Toast shown after an authenticator app has been removed -->
     <string name="TotpAppListScreen__authenticator_app_removed">Authenticator app removed</string>
@@ -201,6 +201,6 @@
     <string name="TotpNameEntryScreen__authenticator_app_set_up">Authenticator app set up</string>
     <!-- Toast shown after an authenticator app has been renamed -->
     <string name="TotpNameEntryScreen__authenticator_app_renamed">Authenticator app renamed</string>
-    <!-- Toast shown when we couldn't reach the service to save the name -->
+    <!-- Toast shown when we couldn\'t reach the service to save the name -->
     <string name="TotpNameEntryScreen__couldnt_save_name">Couldn\'t save name. Check your connection and try again.</string>
 </resources>

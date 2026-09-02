@@ -3267,6 +3267,8 @@
     <string name="MuteUntilTimePickerBottomSheet__mute_notifications">Bildirişlərin səsini bağla</string>
     <!-- Subtitle in a dialog that describes the timezone the user is picking times in. The first placeholder is a UTC offset, and the second placeholder is a user-friendly name for the timezone, e.g. "All times in (GMT-05:00) Eastern Standard Time" -->
     <string name="MuteUntilTimePickerBottomSheet__timezone_disclaimer">(%1$s) %2$s saat qurşağında bütün vaxtlar</string>
+    <!-- Toast shown when choosing an invalid date to mute until (eg a date in the past) -->
+    <string name="MuteUntilTimePickerBottomSheet__invalid">Invalid time</string>
 
     <!-- KeyCachingService -->
     <string name="KeyCachingService_signal_passphrase_cached">Açmaq üçün toxunun.</string>
@@ -3386,6 +3388,8 @@
     <string name="NotificationChannel_additional_message_notifications">Əlavə mesaj bildirişləri</string>
     <!-- Notification channel name for notifications sent when a device has been linked -->
     <string name="NotificationChannel_new_linked_device">Yeni əlaqələndirilmiş cihaz</string>
+    <!-- Notification channel name for unread reminder notifications -->
+    <string name="NotificationChannel_unread_reminders">Unread reminders</string>
 
     <!-- QuickResponseService -->
     <string name="QuickResponseService_quick_response_unavailable_when_Signal_is_locked">Signal kilidli ikən cəld cavab əlçatmazdır!</string>
@@ -6186,6 +6190,8 @@
     <!-- The subtitle for a settings item that describes how long the user\'s chat is muted. If a chat is muted, you will not receive notifications unless @mentioned. The placeholder represents a time (e.g. 10pm, March 4, etc). -->
     <string name="ConversationSettingsFragment__conversation_muted_until_s">%1$s qədər çatın səsi bağlanıb</string>
     <string name="ConversationSettingsFragment__conversation_muted_forever">Çatın səsi həmişəlik bağlanıb</string>
+    <!-- Subtitle when conversation is muted forever -->
+    <string name="ConversationSettingsFragment__conversation_muted_always">Always</string>
     <string name="ConversationSettingsFragment__copied_phone_number_to_clipboard">Telefon nömrəsi lövhəyə kopyalandı.</string>
     <string name="ConversationSettingsFragment__phone_number">Telefon nömrəsi</string>
     <string name="ConversationSettingsFragment__get_badges">Signal-ı dəstəkləyərək profiliniz üçün nişanlar qazanın. Daha ətraflı məlumat üçün bir nişana toxunun.</string>
@@ -6241,7 +6247,7 @@
     <!-- Label for the setting to configure custom notification sounds and vibration for a conversation -->
     <string name="SoundsAndNotificationsSettingsFragment__custom_notifications">Özəl bildirişlər</string>
     <!-- Section header for settings that control which notifications still come through when a conversation is muted -->
-    <string name="SoundsAndNotificationsSettingsFragment__when_muted">Səs bağlandıqda</string>
+    <string name="SoundsAndNotificationsSettingsFragment__when_muted">While muted</string>
     <!-- Label for the calls notification setting in conversation sounds and notifications -->
     <string name="SoundsAndNotificationsSettingsFragment__calls">Zənglər</string>
     <!-- Explanatory text shown in the calls notification setting dialog describing what the setting controls -->
@@ -9983,15 +9989,80 @@
     <!-- Notification placeholder that sums up a single unread mention. Placeholder is the name of the person who sent the message -->
     <string name="UnreadReminderJob__mentions_one">a mention of you by %1$s</string>
     <!-- Notification placeholder that sums up unread mentions from two people. First placeholder is the number of mentions, second and third are the names of the people who sent them -->
-    <string name="UnreadReminderJob__mentions_two">%1$d mentions of you by %2$s and %3$s</string>
+    <plurals name="UnreadReminderJob__mentions_two">
+        <item quantity="one">%1$d mentions of you by %2$s and %3$s</item>
+        <item quantity="other">%1$d mentions of you by %2$s and %3$s</item>
+    </plurals>
     <!-- Notification placeholder that sums up unread mentions from three or more people. First placeholder is the number of mentions, second is the name of one person who sent them -->
-    <string name="UnreadReminderJob__mentions_many">%1$d mentions of you by %2$s and others</string>
+    <plurals name="UnreadReminderJob__mentions_many">
+        <item quantity="one">%1$d mentions of you by %2$s and others</item>
+        <item quantity="other">%1$d mentions of you by %2$s and others</item>
+    </plurals>
     <!-- Notification placeholder that sums up a single unread reply. Placeholder is the name of the person who sent the message -->
     <string name="UnreadReminderJob__replies_one">a reply from %1$s</string>
     <!-- Notification placeholder that sums up unread replies from two people. First placeholder is the number of replies, second and third are the names of the people who sent them -->
-    <string name="UnreadReminderJob__replies_two">%1$d replies from %2$s and %3$s</string>
+    <plurals name="UnreadReminderJob__replies_two">
+        <item quantity="one">%1$d replies from %2$s and %3$s</item>
+        <item quantity="other">%1$d replies from %2$s and %3$s</item>
+    </plurals>
     <!-- Notification placeholder that sums up unread replies from three or more people. First placeholder is the number of replies, second is the name of one person who sent them -->
-    <string name="UnreadReminderJob__replies_many">%1$d replies from %2$s and others</string>
+    <plurals name="UnreadReminderJob__replies_many">
+        <item quantity="one">%1$d replies from %2$s and others</item>
+        <item quantity="other">%1$d replies from %2$s and others</item>
+    </plurals>
+
+    <!-- Title of the screen where the user chooses which parts of a contact to share -->
+    <string name="ShareContactScreen__share_contact">Share contact</string>
+
+    <!-- Label beneath the company name of the contact being shared -->
+    <string name="ShareContactScreen__company">Company</string>
+    <!-- Label beneath a shared nickname value -->
+    <string name="ShareContactScreen__nickname">Nickname</string>
+    <!-- Label beneath a shared note value -->
+    <string name="ShareContactScreen__notes">Notes</string>
+    <!-- Title of the sheet where the user picks which photo to share -->
+    <string name="ShareContactScreen__select_a_photo_to_share">Select a photo to share</string>
+    <!-- Button that confirms the chosen photo and closes the photo picker sheet -->
+    <string name="ShareContactScreen__done">Done</string>
+    <!-- Accessibility label for the button that sends the contact card -->
+    <string name="ShareContactScreen__send">Send</string>
+    <!-- Accessibility label for the button that opens the photo picker -->
+    <string name="ShareContactScreen__change_photo">Change photo</string>
+    <!-- Accessibility label for the button that opens the name editor -->
+    <string name="ShareContactScreen__edit_name">Edit name</string>
+    <!-- Title of the screen where the user edits the name on a shared contact card -->
+    <string name="EditContactNameScreen__edit_name">Edit name</string>
+    <!-- Button that saves the edited name and returns to the share contact screen -->
+    <string name="EditContactNameScreen__done">Done</string>
+
+    <!-- Button that opens a chat with a shared contact -->
+    <string name="SharedContactDetailsScreen__message">Message</string>
+    <!-- Button that starts a video call with a shared contact -->
+    <string name="SharedContactDetailsScreen__video">Video</string>
+    <!-- Button that starts an audio call with a shared contact -->
+    <string name="SharedContactDetailsScreen__audio">Audio</string>
+    <!-- Context menu entry that starts a video call -->
+    <string name="SharedContactDetailsScreen__video_call">Video call</string>
+    <!-- Context menu entry that starts an audio call -->
+    <string name="SharedContactDetailsScreen__audio_call">Audio call</string>
+    <!-- Context menu entry that opens a shared postal address in a map app -->
+    <string name="SharedContactDetailsScreen__open_in_maps">Open in Maps</string>
+    <!-- Context menu entry that copies a shared contact detail to the clipboard -->
+    <string name="SharedContactDetailsScreen__copy">Copy</string>
+    <!-- Row that invites a shared contact who is not yet on Signal -->
+    <string name="SharedContactDetailsScreen__invite_to_signal">Invite to Signal</string>
+    <!-- Row that saves a shared contact into the device address book -->
+    <string name="SharedContactDetailsScreen__add_to_phone_contacts">Add to phone contacts</string>
+    <!-- Row that adds a shared contact to a Signal group -->
+    <string name="SharedContactDetailsScreen__add_to_a_group">Add to a group</string>
+    <!-- Toast shown after copying a shared contact detail -->
+    <string name="SharedContactDetailsScreen__copied">Copied</string>
+    <!-- Toast shown when there is no contacts app to save a shared contact into -->
+    <string name="SharedContactDetailsScreen__couldnt_open_contacts">Couldn\'t open Contacts</string>
+    <!-- Toast shown when there is no map app to open a shared address in -->
+    <string name="SharedContactDetailsScreen__couldnt_open_maps">Couldn\'t open maps</string>
+    <!-- Subject line of an email invitation to Signal -->
+    <string name="SharedContactDetailsScreen__join_me_on_signal">Join me on Signal</string>
 
     <!-- EOF -->
 </resources>
