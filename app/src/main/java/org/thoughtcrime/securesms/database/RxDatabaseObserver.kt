@@ -1,5 +1,6 @@
 package org.thoughtcrime.securesms.database
 
+import com.squareup.wire.internal.JvmStatic
 import io.reactivex.rxjava3.core.BackpressureStrategy
 import io.reactivex.rxjava3.core.Emitter
 import io.reactivex.rxjava3.core.Flowable
@@ -17,6 +18,9 @@ object RxDatabaseObserver {
   val notificationProfiles: Flowable<Unit> by lazy { notificationProfilesFlowable() }
   val chatFolders: Flowable<Unit> by lazy { chatFoldersFlowable() }
   val starredMessages: Flowable<Unit> by lazy { starredMessagesFlowable() }
+
+  @JvmStatic
+  val blockedUsers: Flowable<Unit> by lazy { blockedUsersFlowable() }
 
   private fun conversationListFlowable(): Flowable<Unit> {
     return databaseFlowable { listener ->
@@ -47,6 +51,12 @@ object RxDatabaseObserver {
   private fun starredMessagesFlowable(): Flowable<Unit> {
     return databaseFlowable { listener ->
       AppDependencies.databaseObserver.registerStarredMessageObserver(listener)
+    }
+  }
+
+  private fun blockedUsersFlowable(): Flowable<Unit> {
+    return databaseFlowable { listener ->
+      AppDependencies.databaseObserver.registerBlockedUsersObserver(listener)
     }
   }
 

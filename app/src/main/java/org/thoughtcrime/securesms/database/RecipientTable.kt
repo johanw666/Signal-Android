@@ -1504,6 +1504,7 @@ open class RecipientTable(context: Context, databaseHelper: SignalDatabase) : Da
     if (update(id, values)) {
       rotateStorageId(id)
       AppDependencies.databaseObserver.notifyRecipientChanged(id)
+      AppDependencies.databaseObserver.notifyBlockedUsersObservers()
     }
   }
 
@@ -4054,6 +4055,7 @@ open class RecipientTable(context: Context, databaseHelper: SignalDatabase) : Da
       }
     }
 
+    AppDependencies.databaseObserver.notifyBlockedUsersObservers()
     AppDependencies.recipientCache.clear()
   }
 
