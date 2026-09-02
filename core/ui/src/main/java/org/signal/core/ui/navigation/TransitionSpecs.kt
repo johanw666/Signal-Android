@@ -9,6 +9,7 @@ import androidx.compose.animation.ContentTransform
 import androidx.compose.animation.EnterTransition
 import androidx.compose.animation.ExitTransition
 import androidx.compose.animation.core.CubicBezierEasing
+import androidx.compose.animation.core.FiniteAnimationSpec
 import androidx.compose.animation.core.tween
 import androidx.compose.animation.fadeIn
 import androidx.compose.animation.fadeOut
@@ -36,8 +37,17 @@ import androidx.navigation3.ui.NavDisplay
 object TransitionSpecs {
 
   private const val PANE_SHIFT_DURATION = 200
-  private val PANE_SHIFT_OFFSET = 48.dp
   private val PANE_SHIFT_EASING = CubicBezierEasing(0.4f, 0.0f, 0.2f, 1f)
+
+  /**
+   * The distance content travels during a [paneShift].
+   */
+  val PANE_SHIFT_OFFSET = 48.dp
+
+  /**
+   * The spec a [paneShift] animates with.
+   */
+  fun <T> paneShiftSpec(): FiniteAnimationSpec<T> = tween(durationMillis = PANE_SHIFT_DURATION, easing = PANE_SHIFT_EASING)
 
   interface Transition {
     companion object {
@@ -80,7 +90,7 @@ object TransitionSpecs {
    * rather than a whole width, cross-fading as it goes, with no scale.
    *
    * A function rather than a [Transition] value because the distance is fixed in dp, so it needs a
-   * [Density]. Values mirror `AppScaffoldAnimationDefaults`, which cannot be referenced from here.
+   * [Density].
    *
    * @param pop reverses the direction, for navigating back.
    */
@@ -88,8 +98,8 @@ object TransitionSpecs {
     val offset = with(density) { PANE_SHIFT_OFFSET.roundToPx() }
     val direction = if (layoutDirection == LayoutDirection.Rtl) -1 else 1
     val sign = if (pop) -1 else 1
-    val slideSpec = tween<IntOffset>(durationMillis = PANE_SHIFT_DURATION, easing = PANE_SHIFT_EASING)
-    val fadeSpec = tween<Float>(durationMillis = PANE_SHIFT_DURATION, easing = PANE_SHIFT_EASING)
+    val slideSpec = paneShiftSpec<IntOffset>()
+    val fadeSpec = paneShiftSpec<Float>()
 
     return slideInHorizontally(animationSpec = slideSpec) { offset * sign * direction } + fadeIn(animationSpec = fadeSpec) togetherWith
       slideOutHorizontally(animationSpec = slideSpec) { -offset * sign * direction } + fadeOut(animationSpec = fadeSpec)
