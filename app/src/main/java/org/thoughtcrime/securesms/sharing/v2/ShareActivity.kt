@@ -41,6 +41,7 @@ import org.thoughtcrime.securesms.sharing.MultiShareSender.MultiShareSendResultC
 import org.thoughtcrime.securesms.sharing.interstitial.ShareInterstitialActivity
 import org.thoughtcrime.securesms.util.ConversationUtil
 import org.thoughtcrime.securesms.util.DynamicNoActionBarTheme
+import org.thoughtcrime.securesms.util.views.SimpleProgressDialog
 import java.util.concurrent.TimeUnit
 
 class ShareActivity : PassphraseRequiredActivity(), MultiselectForwardFragment.Callback {
@@ -343,7 +344,10 @@ class ShareActivity : PassphraseRequiredActivity(), MultiselectForwardFragment.C
   private fun sendWithoutInterstitial(shareEvent: ShareEvent.SendWithoutInterstitial) {
     Log.d(TAG, "Sending without an interstitial...")
 
+    val progressDialog = SimpleProgressDialog.showDelayed(this)
+
     MultiShareSender.send(shareEvent.getMultiShareArgs()) { results: MultiShareSendResultCollection? ->
+      progressDialog.dismissNow()
       MultiShareDialogs.displayResultDialog(this, results!!) {
         finish()
       }
