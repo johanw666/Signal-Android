@@ -31,6 +31,7 @@ import org.signal.registration.RestoreDecision
 import org.signal.registration.screens.aepentry.AepInput
 import org.signal.registration.screens.shared.AccountIdError
 import org.signal.registration.screens.shared.AccountIdFormat
+import org.signal.registration.screens.twofactorselection.TwoFactorMethod
 import org.signal.registration.screens.util.navigateBack
 import org.signal.registration.screens.util.navigateTo
 
@@ -102,7 +103,11 @@ class SignalLoginCredentialEntryViewModel(
       }
 
       is SignalLoginCredentialEntryScreenEvents.NextClicked -> {
-        applyNextClicked(state, parentEventEmitter, stateEmitter)
+        applyNextClicked(state, totp = null, parentEventEmitter, stateEmitter)
+      }
+
+      is SignalLoginCredentialEntryScreenEvents.TwoFactorCodeEntered -> {
+        applyNextClicked(state, totp = event.code.toIntOrNull(), parentEventEmitter, stateEmitter)
       }
     }
   }
@@ -129,7 +134,7 @@ class SignalLoginCredentialEntryViewModel(
 
     if (filledState.isNextEnabled) {
       Log.i(TAG, "[CredentialSelected] The password manager supplied a complete login. Submitting it.")
-      applyNextClicked(filledState, parentEventEmitter, stateEmitter)
+      applyNextClicked(filledState, totp = null, parentEventEmitter, stateEmitter)
     } else {
       Log.w(TAG, "[CredentialSelected] The password manager supplied a login we can't submit as-is. Leaving it in the fields for the user to fix.")
     }
@@ -137,6 +142,7 @@ class SignalLoginCredentialEntryViewModel(
 
   private suspend fun applyNextClicked(
     state: SignalLoginCredentialEntryState,
+    totp: Int?,
     parentEventEmitter: (RegistrationFlowEvent) -> Unit,
     stateEmitter: (SignalLoginCredentialEntryState) -> Unit
   ) {
@@ -154,15 +160,16 @@ class SignalLoginCredentialEntryViewModel(
     stateEmitter(state.copy(isLoggingIn = true))
     parentEventEmitter(RegistrationFlowEvent.UserSuppliedAepSubmitted(aep))
 
-    Log.i(TAG, "[Next] Attempting to log in to ${aci.logString()} with the RRP derived from the entered recovery key.")
+    Log.i(TAG, "[Next] Attempting to log in to ${aci.logString()} with the RRP derived from the entered recovery key. totp: ${totp != null}")
 
-    attemptToLogIn(state, aci, aep, provideRegistrationLock = false, parentEventEmitter, stateEmitter)
+    attemptToLogIn(state, aci, aep, totp, provideRegistrationLock = false, parentEventEmitter, stateEmitter)
   }
 
   private suspend fun attemptToLogIn(
     inputState: SignalLoginCredentialEntryState,
     aci: ACI,
     aep: AccountEntropyPool,
+    totp: Int?,
     provideRegistrationLock: Boolean,
     parentEventEmitter: (RegistrationFlowEvent) -> Unit,
     stateEmitter: (SignalLoginCredentialEntryState) -> Unit
@@ -175,7 +182,8 @@ class SignalLoginCredentialEntryViewModel(
       aci = aci,
       recoveryPassword = recoveryPassword,
       aep = aep,
-      registrationLock = registrationLock
+      registrationLock = registrationLock,
+      totp = totp
     )
 
     when (result) {
@@ -217,7 +225,7 @@ class SignalLoginCredentialEntryViewModel(
               )
             } else {
               Log.w(TAG, "[Next] Registration locked. Retrying with the reglock token derived from the recovery key.")
-              attemptToLogIn(inputState, aci, aep, provideRegistrationLock = true, parentEventEmitter, stateEmitter)
+              attemptToLogIn(inputState, aci, aep, totp, provideRegistrationLock = true, parentEventEmitter, stateEmitter)
             }
           }
           is RegisterAccountError.RateLimited -> {
@@ -230,9 +238,15 @@ class SignalLoginCredentialEntryViewModel(
           is RegisterAccountError.DeviceTransferPossible -> {
             error("[Next] Device transfer possible. This should not happen with RRP-based registration.")
           }
+          RegisterAccountError.TotpMissingOrIncorrect -> {
+            // For now this error only means TOTP, but in the future it will indicate that some two-factor method is
+            // required, so we treat it generically and route through the method selection screen.
+            Log.w(TAG, "[Next] A two-factor code is required. Sending the user to two-factor method selection.")
+            stateEmitter(inputState.copy(isLoggingIn = false))
+            parentEventEmitter.navigateTo(RegistrationRoute.TwoFactorSelection(methods = listOf(TwoFactorMethod.AuthenticatorApp)))
+          }
           is RegisterAccountError.InvalidRequest,
           is RegisterAccountError.InvalidReceiptCredentialPresentation,
-          RegisterAccountError.TotpMissingOrIncorrect,
           RegisterAccountError.PostQuantumRatchetRequired -> {
             Log.w(TAG, "[Next] Unexpected registration error: $error")
             stateEmitter(inputState.copy(isLoggingIn = false, loginError = SignalLoginError.UnknownError))

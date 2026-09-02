@@ -18,13 +18,17 @@ import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.flow.receiveAsFlow
 import org.signal.core.ui.compose.EventDrivenViewModel
 import org.signal.core.util.logging.Log
+import org.signal.registration.RegistrationFlowEvent
+import org.signal.registration.RegistrationRoute
+import org.signal.registration.screens.util.navigateBack
+import org.signal.registration.screens.util.navigateTo
 
 /**
- * Drives [TwoFactorSelectionScreen]. Surfaces the method the user picked (and cancellation) to the host as a
- * [TwoFactorSelectionAction].
+ * Drives [TwoFactorSelectionScreen].
  */
 class TwoFactorSelectionViewModel(
-  methods: List<TwoFactorMethod>
+  methods: List<TwoFactorMethod>,
+  private val parentEventEmitter: (RegistrationFlowEvent) -> Unit
 ) : EventDrivenViewModel<TwoFactorSelectionScreenEvents>(TAG) {
 
   companion object {
@@ -46,22 +50,23 @@ class TwoFactorSelectionViewModel(
   override suspend fun processEvent(event: TwoFactorSelectionScreenEvents) {
     when (event) {
       is TwoFactorSelectionScreenEvents.MethodSelected -> {
-        val action = when (event.method) {
-          TwoFactorMethod.Passkey -> TwoFactorSelectionAction.AuthenticateWithPasskey
-          TwoFactorMethod.AuthenticatorApp -> TwoFactorSelectionAction.NavigateToTotpEntry
+        when (event.method) {
+          TwoFactorMethod.Passkey -> _actions.send(TwoFactorSelectionAction.AuthenticateWithPasskey)
+          TwoFactorMethod.AuthenticatorApp -> parentEventEmitter.navigateTo(RegistrationRoute.TotpEntry)
         }
-
-        _actions.send(action)
       }
       TwoFactorSelectionScreenEvents.CancelClicked -> {
-        _actions.send(TwoFactorSelectionAction.NavigateBack)
+        parentEventEmitter.navigateBack()
       }
     }
   }
 
-  class Factory(private val methods: List<TwoFactorMethod>) : ViewModelProvider.Factory {
+  class Factory(
+    private val methods: List<TwoFactorMethod>,
+    private val parentEventEmitter: (RegistrationFlowEvent) -> Unit
+  ) : ViewModelProvider.Factory {
     override fun <T : ViewModel> create(modelClass: Class<T>): T {
-      return TwoFactorSelectionViewModel(methods) as T
+      return TwoFactorSelectionViewModel(methods, parentEventEmitter) as T
     }
   }
 }

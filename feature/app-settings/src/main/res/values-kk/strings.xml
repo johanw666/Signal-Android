@@ -80,37 +80,37 @@
     <!-- Clickable text that takes the user to a support article -->
     <string name="AccountSettingsFragment__learn_more">Толық ақпарат</string>
 
-    <!-- AuthenticatorSetupScreen -->
+    <!-- TotpSetupScreen -->
     <!-- Title of the screen that walks the user through setting up an authenticator app -->
-    <string name="AuthenticatorSetupScreen__set_up_your_authenticator_app">Set up your authenticator app</string>
+    <string name="TotpSetupScreen__set_up_your_authenticator_app">Set up your authenticator app</string>
     <!-- Instructions shown at the top of the authenticator app setup screen -->
-    <string name="AuthenticatorSetupScreen__follow_these_steps">Аутентификатор қолданбасының параметрлерін реттеу үшін осы қадамдарды орындаңыз.</string>
+    <string name="TotpSetupScreen__follow_these_steps">Аутентификатор қолданбасының параметрлерін реттеу үшін осы қадамдарды орындаңыз.</string>
     <!-- Clickable text that takes the user to a support article -->
-    <string name="AuthenticatorSetupScreen__learn_more">Толық ақпарат</string>
+    <string name="TotpSetupScreen__learn_more">Толық ақпарат</string>
     <!-- Header of the first step of authenticator app setup -->
-    <string name="AuthenticatorSetupScreen__step_1">1-қадам</string>
+    <string name="TotpSetupScreen__step_1">1-қадам</string>
     <!-- Body of the first step of authenticator app setup -->
-    <string name="AuthenticatorSetupScreen__install_a_trusted_authenticator_app">Құрылғыңызда сенімді аутентификатор қолданбасын орнатыңыз.</string>
+    <string name="TotpSetupScreen__install_a_trusted_authenticator_app">Құрылғыңызда сенімді аутентификатор қолданбасын орнатыңыз.</string>
     <!-- Header of the second step of authenticator app setup -->
-    <string name="AuthenticatorSetupScreen__step_2">2-қадам</string>
+    <string name="TotpSetupScreen__step_2">2-қадам</string>
     <!-- Body of the second step of authenticator app setup -->
-    <string name="AuthenticatorSetupScreen__open_your_authenticator_app">Төмендегі түймені басу арқылы аутентификатор қолданбасын ашып, Signal аккаунтын қосыңыз.</string>
+    <string name="TotpSetupScreen__open_your_authenticator_app">Төмендегі түймені басу арқылы аутентификатор қолданбасын ашып, Signal аккаунтын қосыңыз.</string>
     <!-- Button that opens the user\'s authenticator app -->
-    <string name="AuthenticatorSetupScreen__open">Ашу</string>
+    <string name="TotpSetupScreen__open">Ашу</string>
     <!-- Text above the setup key explaining that it can be entered by hand instead -->
-    <string name="AuthenticatorSetupScreen__or_you_can_copy_this_key">Болмаса осы кілтті көшіріп, қолмен реттеуге болады.</string>
+    <string name="TotpSetupScreen__or_you_can_copy_this_key">Болмаса осы кілтті көшіріп, қолмен реттеуге болады.</string>
     <!-- Button that copies the setup key to the clipboard -->
-    <string name="AuthenticatorSetupScreen__copy">Көшірме жасау</string>
+    <string name="TotpSetupScreen__copy">Көшірме жасау</string>
     <!-- Toast shown after the setup key has been copied to the clipboard -->
-    <string name="AuthenticatorSetupScreen__copied_to_clipboard">Буферге көшірілді</string>
+    <string name="TotpSetupScreen__copied_to_clipboard">Буферге көшірілді</string>
     <!-- Toast shown when there is no app installed that can handle the authenticator setup link -->
-    <string name="AuthenticatorSetupScreen__no_authenticator_app_found">Аутентификатор қолданбасы табылмады</string>
+    <string name="TotpSetupScreen__no_authenticator_app_found">Аутентификатор қолданбасы табылмады</string>
     <!-- Header of the third step of authenticator app setup -->
-    <string name="AuthenticatorSetupScreen__step_3">3-қадам</string>
+    <string name="TotpSetupScreen__step_3">3-қадам</string>
     <!-- Body of the third step of authenticator app setup -->
-    <string name="AuthenticatorSetupScreen__copy_the_code_thats_generated">Жасалған кодты көшіріп, жалғастыру үшін осы жерге оралыңыз.</string>
+    <string name="TotpSetupScreen__copy_the_code_thats_generated">Жасалған кодты көшіріп, жалғастыру үшін осы жерге оралыңыз.</string>
     <!-- Button that advances from the setup instructions to entering a code -->
-    <string name="AuthenticatorSetupScreen__continue">Жалғастыру</string>
+    <string name="TotpSetupScreen__continue">Жалғастыру</string>
 
     <!-- PasskeysScreen -->
     <!-- Title of the screen where the user sets up passkeys -->
@@ -140,60 +140,60 @@
     <!-- Menu option that removes a passkey -->
     <string name="PasskeysScreen__remove">Өшіру</string>
 
-    <!-- AuthenticatorCodeEntryScreen -->
+    <!-- TotpCodeEntryScreen -->
     <!-- Title of the screen where the user enters the code from their authenticator app -->
-    <string name="AuthenticatorCodeEntryScreen__enter_your_code">Кодыңызды енгізіңіз</string>
+    <string name="TotpCodeEntryScreen__enter_your_code">Кодыңызды енгізіңіз</string>
     <!-- Instructions shown above the code entry field -->
-    <string name="AuthenticatorCodeEntryScreen__enter_the_6_digit_code">Аутентификатор қолданбасындағы 6 цифрлық кодты енгізіңіз.</string>
+    <string name="TotpCodeEntryScreen__enter_the_6_digit_code">Аутентификатор қолданбасындағы 6 цифрлық кодты енгізіңіз.</string>
     <!-- Label of the code entry field -->
-    <string name="AuthenticatorCodeEntryScreen__code">Код</string>
+    <string name="TotpCodeEntryScreen__code">Код</string>
     <!-- Button that submits the entered code -->
-    <string name="AuthenticatorCodeEntryScreen__done">Дайын</string>
-    <!-- AuthenticatorAppsScreen -->
+    <string name="TotpCodeEntryScreen__done">Дайын</string>
+    <!-- TotpAppListScreen -->
     <!-- Title of the screen listing the authenticator apps on the account -->
-    <string name="AuthenticatorAppsScreen__authenticator_app">Аутентификатор қолданбасы</string>
+    <string name="TotpAppListScreen__authenticator_app">Аутентификатор қолданбасы</string>
     <!-- Description of what an authenticator app is for, shown at the top of the screen -->
-    <string name="AuthenticatorAppsScreen__set_up_an_authenticator_app">Set up an authenticator app to generate one-time verification codes</string>
+    <string name="TotpAppListScreen__set_up_an_authenticator_app">Set up an authenticator app to generate one-time verification codes</string>
     <!-- Clickable text that takes the user to a support article -->
-    <string name="AuthenticatorAppsScreen__learn_more">Толық ақпарат</string>
+    <string name="TotpAppListScreen__learn_more">Толық ақпарат</string>
     <!-- Button that starts setting up another authenticator app -->
-    <string name="AuthenticatorAppsScreen__add_authenticator_app">Add authenticator app</string>
+    <string name="TotpAppListScreen__add_authenticator_app">Add authenticator app</string>
     <!-- Section header above the list of configured authenticator apps -->
-    <string name="AuthenticatorAppsScreen__authenticator_apps">Authenticator apps</string>
+    <string name="TotpAppListScreen__authenticator_apps">Authenticator apps</string>
     <!-- Shown in place of the list when no authenticator apps are configured -->
-    <string name="AuthenticatorAppsScreen__no_authenticator_apps">No authenticator apps</string>
+    <string name="TotpAppListScreen__no_authenticator_apps">No authenticator apps</string>
     <!-- Subtitle of an authenticator app row saying when it was configured. Placeholder is a date or time. -->
-    <string name="AuthenticatorAppsScreen__added_s">\"%1$s\" қосылды</string>
+    <string name="TotpAppListScreen__added_s">\"%1$s\" қосылды</string>
     <!-- Content description of the button that opens an authenticator app\'s options -->
-    <string name="AuthenticatorAppsScreen__open_authenticator_app_options">Open authenticator app options</string>
+    <string name="TotpAppListScreen__open_authenticator_app_options">Open authenticator app options</string>
     <!-- Menu option that renames an authenticator app -->
-    <string name="AuthenticatorAppsScreen__rename">Rename</string>
+    <string name="TotpAppListScreen__rename">Rename</string>
     <!-- Menu option that removes an authenticator app -->
-    <string name="AuthenticatorAppsScreen__remove">Өшіру</string>
+    <string name="TotpAppListScreen__remove">Өшіру</string>
     <!-- Title of the dialog confirming removal of an authenticator app -->
-    <string name="AuthenticatorAppsScreen__remove_authenticator_app">Remove authenticator app?</string>
+    <string name="TotpAppListScreen__remove_authenticator_app">Remove authenticator app?</string>
     <!-- Body of the dialog confirming removal of an authenticator app -->
-    <string name="AuthenticatorAppsScreen__to_remove_this_authentication_method">To remove this authentication method the 6-digit code from your authenticator app is required.</string>
+    <string name="TotpAppListScreen__to_remove_this_authentication_method">To remove this authentication method the 6-digit code from your authenticator app is required.</string>
     <!-- Title of the dialog shown when the account already has as many authenticator apps as it\'s allowed -->
-    <string name="AuthenticatorAppsScreen__cant_add_authenticator_app">Can\'t add authenticator app</string>
+    <string name="TotpAppListScreen__cant_add_authenticator_app">Can\'t add authenticator app</string>
     <!-- Body of the dialog shown when the account already has as many authenticator apps as it\'s allowed -->
-    <string name="AuthenticatorAppsScreen__you_cant_add_more_than_d">You can\'t add more than %1$d authenticator apps. Try removing one first.</string>
+    <string name="TotpAppListScreen__you_cant_add_more_than_d">You can\'t add more than %1$d authenticator apps. Try removing one first.</string>
     <!-- Toast shown after an authenticator app has been removed -->
-    <string name="AuthenticatorAppsScreen__authenticator_app_removed">Authenticator app removed</string>
+    <string name="TotpAppListScreen__authenticator_app_removed">Authenticator app removed</string>
 
-    <!-- AuthenticatorNameScreen -->
+    <!-- TotpNameEntryScreen -->
     <!-- Title of the screen where the user names an authenticator app -->
-    <string name="AuthenticatorNameScreen__choose_a_name">Choose a name</string>
+    <string name="TotpNameEntryScreen__choose_a_name">Choose a name</string>
     <!-- Instructions shown above the name field when renaming an authenticator app -->
-    <string name="AuthenticatorNameScreen__choose_a_unique_name">Choose a unique name for this authenticator app.</string>
+    <string name="TotpNameEntryScreen__choose_a_unique_name">Choose a unique name for this authenticator app.</string>
     <!-- Instructions shown above the name field when naming a newly configured authenticator app -->
-    <string name="AuthenticatorNameScreen__choose_a_unique_name_to_help_you_identify_it">Choose a unique name for this authenticator app to help you identify it later.</string>
+    <string name="TotpNameEntryScreen__choose_a_unique_name_to_help_you_identify_it">Choose a unique name for this authenticator app to help you identify it later.</string>
     <!-- Label of the name field -->
-    <string name="AuthenticatorNameScreen__name">Name</string>
+    <string name="TotpNameEntryScreen__name">Name</string>
     <!-- Button that submits the entered name -->
-    <string name="AuthenticatorNameScreen__next">Келесі</string>
+    <string name="TotpNameEntryScreen__next">Келесі</string>
     <!-- Toast shown after an authenticator app has been successfully set up -->
-    <string name="AuthenticatorNameScreen__authenticator_app_set_up">Authenticator app set up</string>
+    <string name="TotpNameEntryScreen__authenticator_app_set_up">Authenticator app set up</string>
     <!-- Toast shown after an authenticator app has been renamed -->
-    <string name="AuthenticatorNameScreen__authenticator_app_renamed">Authenticator app renamed</string>
+    <string name="TotpNameEntryScreen__authenticator_app_renamed">Authenticator app renamed</string>
 </resources>

@@ -183,7 +183,8 @@ class AppRegistrationNetworkController(
     pniPreKeys: PreKeyCollection?,
     fcmToken: String?,
     skipDeviceTransfer: Boolean,
-    aci: ACI?
+    aci: ACI?,
+    totp: Int?
   ): RequestResult<RegisterAccountResponse, RegisterAccountError> {
     return registrationApi.registerAccount(
       e164 = e164,
@@ -196,7 +197,8 @@ class AppRegistrationNetworkController(
       pniPreKeys = pniPreKeys,
       fcmToken = fcmToken,
       skipDeviceTransfer = skipDeviceTransfer,
-      aci = aci
+      aci = aci,
+      totp = totp
     )
   }
 

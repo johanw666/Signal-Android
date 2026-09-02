@@ -77,37 +77,37 @@
     <!-- Clickable text that takes the user to a support article -->
     <string name="AccountSettingsFragment__learn_more">詳しく見る</string>
 
-    <!-- AuthenticatorSetupScreen -->
+    <!-- TotpSetupScreen -->
     <!-- Title of the screen that walks the user through setting up an authenticator app -->
-    <string name="AuthenticatorSetupScreen__set_up_your_authenticator_app">認証アプリを設定しましょう</string>
+    <string name="TotpSetupScreen__set_up_your_authenticator_app">認証アプリを設定しましょう</string>
     <!-- Instructions shown at the top of the authenticator app setup screen -->
-    <string name="AuthenticatorSetupScreen__follow_these_steps">以下の手順に従って認証アプリを設定してください。</string>
+    <string name="TotpSetupScreen__follow_these_steps">以下の手順に従って認証アプリを設定してください。</string>
     <!-- Clickable text that takes the user to a support article -->
-    <string name="AuthenticatorSetupScreen__learn_more">詳しく見る</string>
+    <string name="TotpSetupScreen__learn_more">詳しく見る</string>
     <!-- Header of the first step of authenticator app setup -->
-    <string name="AuthenticatorSetupScreen__step_1">ステップ1</string>
+    <string name="TotpSetupScreen__step_1">ステップ1</string>
     <!-- Body of the first step of authenticator app setup -->
-    <string name="AuthenticatorSetupScreen__install_a_trusted_authenticator_app">ご利用の端末に、信頼できる認証アプリをインストールしてください。</string>
+    <string name="TotpSetupScreen__install_a_trusted_authenticator_app">ご利用の端末に、信頼できる認証アプリをインストールしてください。</string>
     <!-- Header of the second step of authenticator app setup -->
-    <string name="AuthenticatorSetupScreen__step_2">ステップ2</string>
+    <string name="TotpSetupScreen__step_2">ステップ2</string>
     <!-- Body of the second step of authenticator app setup -->
-    <string name="AuthenticatorSetupScreen__open_your_authenticator_app">下のボタンをタップして認証アプリを開き、Signalアカウントを追加してください。</string>
+    <string name="TotpSetupScreen__open_your_authenticator_app">下のボタンをタップして認証アプリを開き、Signalアカウントを追加してください。</string>
     <!-- Button that opens the user\'s authenticator app -->
-    <string name="AuthenticatorSetupScreen__open">開く</string>
+    <string name="TotpSetupScreen__open">開く</string>
     <!-- Text above the setup key explaining that it can be entered by hand instead -->
-    <string name="AuthenticatorSetupScreen__or_you_can_copy_this_key">または、以下のキーをコピーして手動でセットアップすることもできます。</string>
+    <string name="TotpSetupScreen__or_you_can_copy_this_key">または、以下のキーをコピーして手動でセットアップすることもできます。</string>
     <!-- Button that copies the setup key to the clipboard -->
-    <string name="AuthenticatorSetupScreen__copy">コピー</string>
+    <string name="TotpSetupScreen__copy">コピー</string>
     <!-- Toast shown after the setup key has been copied to the clipboard -->
-    <string name="AuthenticatorSetupScreen__copied_to_clipboard">クリップボードにコピーしました</string>
+    <string name="TotpSetupScreen__copied_to_clipboard">クリップボードにコピーしました</string>
     <!-- Toast shown when there is no app installed that can handle the authenticator setup link -->
-    <string name="AuthenticatorSetupScreen__no_authenticator_app_found">認証アプリが見つかりませんでした</string>
+    <string name="TotpSetupScreen__no_authenticator_app_found">認証アプリが見つかりませんでした</string>
     <!-- Header of the third step of authenticator app setup -->
-    <string name="AuthenticatorSetupScreen__step_3">ステップ3</string>
+    <string name="TotpSetupScreen__step_3">ステップ3</string>
     <!-- Body of the third step of authenticator app setup -->
-    <string name="AuthenticatorSetupScreen__copy_the_code_thats_generated">生成されたコードをコピーして、ここに戻り続行してください。</string>
+    <string name="TotpSetupScreen__copy_the_code_thats_generated">生成されたコードをコピーして、ここに戻り続行してください。</string>
     <!-- Button that advances from the setup instructions to entering a code -->
-    <string name="AuthenticatorSetupScreen__continue">続行</string>
+    <string name="TotpSetupScreen__continue">続行</string>
 
     <!-- PasskeysScreen -->
     <!-- Title of the screen where the user sets up passkeys -->
@@ -137,60 +137,60 @@
     <!-- Menu option that removes a passkey -->
     <string name="PasskeysScreen__remove">削除</string>
 
-    <!-- AuthenticatorCodeEntryScreen -->
+    <!-- TotpCodeEntryScreen -->
     <!-- Title of the screen where the user enters the code from their authenticator app -->
-    <string name="AuthenticatorCodeEntryScreen__enter_your_code">コードを入力してください</string>
+    <string name="TotpCodeEntryScreen__enter_your_code">コードを入力してください</string>
     <!-- Instructions shown above the code entry field -->
-    <string name="AuthenticatorCodeEntryScreen__enter_the_6_digit_code">認証アプリに表示された6桁のコードを入力してください。</string>
+    <string name="TotpCodeEntryScreen__enter_the_6_digit_code">認証アプリに表示された6桁のコードを入力してください。</string>
     <!-- Label of the code entry field -->
-    <string name="AuthenticatorCodeEntryScreen__code">コード</string>
+    <string name="TotpCodeEntryScreen__code">コード</string>
     <!-- Button that submits the entered code -->
-    <string name="AuthenticatorCodeEntryScreen__done">完了</string>
-    <!-- AuthenticatorAppsScreen -->
+    <string name="TotpCodeEntryScreen__done">完了</string>
+    <!-- TotpAppListScreen -->
     <!-- Title of the screen listing the authenticator apps on the account -->
-    <string name="AuthenticatorAppsScreen__authenticator_app">認証アプリ</string>
+    <string name="TotpAppListScreen__authenticator_app">認証アプリ</string>
     <!-- Description of what an authenticator app is for, shown at the top of the screen -->
-    <string name="AuthenticatorAppsScreen__set_up_an_authenticator_app">ワンタイム確認コードを生成するために認証アプリを設定してください</string>
+    <string name="TotpAppListScreen__set_up_an_authenticator_app">ワンタイム確認コードを生成するために認証アプリを設定してください</string>
     <!-- Clickable text that takes the user to a support article -->
-    <string name="AuthenticatorAppsScreen__learn_more">詳しく見る</string>
+    <string name="TotpAppListScreen__learn_more">詳しく見る</string>
     <!-- Button that starts setting up another authenticator app -->
-    <string name="AuthenticatorAppsScreen__add_authenticator_app">認証アプリを追加</string>
+    <string name="TotpAppListScreen__add_authenticator_app">認証アプリを追加</string>
     <!-- Section header above the list of configured authenticator apps -->
-    <string name="AuthenticatorAppsScreen__authenticator_apps">認証アプリ</string>
+    <string name="TotpAppListScreen__authenticator_apps">認証アプリ</string>
     <!-- Shown in place of the list when no authenticator apps are configured -->
-    <string name="AuthenticatorAppsScreen__no_authenticator_apps">認証アプリが設定されていません</string>
+    <string name="TotpAppListScreen__no_authenticator_apps">認証アプリが設定されていません</string>
     <!-- Subtitle of an authenticator app row saying when it was configured. Placeholder is a date or time. -->
-    <string name="AuthenticatorAppsScreen__added_s">「%1$s」を追加しました</string>
+    <string name="TotpAppListScreen__added_s">「%1$s」を追加しました</string>
     <!-- Content description of the button that opens an authenticator app\'s options -->
-    <string name="AuthenticatorAppsScreen__open_authenticator_app_options">認証アプリのオプションを開く</string>
+    <string name="TotpAppListScreen__open_authenticator_app_options">認証アプリのオプションを開く</string>
     <!-- Menu option that renames an authenticator app -->
-    <string name="AuthenticatorAppsScreen__rename">名前を変更する</string>
+    <string name="TotpAppListScreen__rename">名前を変更する</string>
     <!-- Menu option that removes an authenticator app -->
-    <string name="AuthenticatorAppsScreen__remove">削除</string>
+    <string name="TotpAppListScreen__remove">削除</string>
     <!-- Title of the dialog confirming removal of an authenticator app -->
-    <string name="AuthenticatorAppsScreen__remove_authenticator_app">認証アプリを削除しますか？</string>
+    <string name="TotpAppListScreen__remove_authenticator_app">認証アプリを削除しますか？</string>
     <!-- Body of the dialog confirming removal of an authenticator app -->
-    <string name="AuthenticatorAppsScreen__to_remove_this_authentication_method">この認証方法を削除するには、認証アプリの6桁のコードが必要です。</string>
+    <string name="TotpAppListScreen__to_remove_this_authentication_method">この認証方法を削除するには、認証アプリの6桁のコードが必要です。</string>
     <!-- Title of the dialog shown when the account already has as many authenticator apps as it\'s allowed -->
-    <string name="AuthenticatorAppsScreen__cant_add_authenticator_app">認証アプリを追加できません</string>
+    <string name="TotpAppListScreen__cant_add_authenticator_app">認証アプリを追加できません</string>
     <!-- Body of the dialog shown when the account already has as many authenticator apps as it\'s allowed -->
-    <string name="AuthenticatorAppsScreen__you_cant_add_more_than_d">%1$dつを超える数の認証アプリは追加できません。まず1つを削除してください。</string>
+    <string name="TotpAppListScreen__you_cant_add_more_than_d">%1$dつを超える数の認証アプリは追加できません。まず1つを削除してください。</string>
     <!-- Toast shown after an authenticator app has been removed -->
-    <string name="AuthenticatorAppsScreen__authenticator_app_removed">認証アプリが削除されました</string>
+    <string name="TotpAppListScreen__authenticator_app_removed">認証アプリが削除されました</string>
 
-    <!-- AuthenticatorNameScreen -->
+    <!-- TotpNameEntryScreen -->
     <!-- Title of the screen where the user names an authenticator app -->
-    <string name="AuthenticatorNameScreen__choose_a_name">名前を選択してください</string>
+    <string name="TotpNameEntryScreen__choose_a_name">名前を選択してください</string>
     <!-- Instructions shown above the name field when renaming an authenticator app -->
-    <string name="AuthenticatorNameScreen__choose_a_unique_name">この認証アプリには覚えやすい名称をつけてください。</string>
+    <string name="TotpNameEntryScreen__choose_a_unique_name">この認証アプリには覚えやすい名称をつけてください。</string>
     <!-- Instructions shown above the name field when naming a newly configured authenticator app -->
-    <string name="AuthenticatorNameScreen__choose_a_unique_name_to_help_you_identify_it">この認証アプリには、後で分かりやすいように覚えやすい名称をつけてください。</string>
+    <string name="TotpNameEntryScreen__choose_a_unique_name_to_help_you_identify_it">この認証アプリには、後で分かりやすいように覚えやすい名称をつけてください。</string>
     <!-- Label of the name field -->
-    <string name="AuthenticatorNameScreen__name">名前</string>
+    <string name="TotpNameEntryScreen__name">名前</string>
     <!-- Button that submits the entered name -->
-    <string name="AuthenticatorNameScreen__next">次へ</string>
+    <string name="TotpNameEntryScreen__next">次へ</string>
     <!-- Toast shown after an authenticator app has been successfully set up -->
-    <string name="AuthenticatorNameScreen__authenticator_app_set_up">認証アプリを設定しました</string>
+    <string name="TotpNameEntryScreen__authenticator_app_set_up">認証アプリを設定しました</string>
     <!-- Toast shown after an authenticator app has been renamed -->
-    <string name="AuthenticatorNameScreen__authenticator_app_renamed">認証アプリの名前を変更しました</string>
+    <string name="TotpNameEntryScreen__authenticator_app_renamed">認証アプリの名前を変更しました</string>
 </resources>

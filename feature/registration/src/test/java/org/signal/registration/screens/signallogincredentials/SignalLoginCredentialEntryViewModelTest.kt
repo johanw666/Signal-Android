@@ -49,6 +49,7 @@ import org.signal.registration.screens.aepentry.AepInput
 import org.signal.registration.screens.restoreselection.ArchiveRestoreOption
 import org.signal.registration.screens.restoreselection.RegisteredState
 import org.signal.registration.screens.shared.AccountIdError
+import org.signal.registration.screens.twofactorselection.TwoFactorMethod
 import java.io.IOException
 import java.util.UUID
 import kotlin.time.Duration
@@ -416,6 +417,40 @@ class SignalLoginCredentialEntryViewModelTest {
     assertThat(emittedStates.last().loginError).isEqualTo(SignalLoginError.UnknownError)
   }
 
+  @Test
+  fun `NextClicked requiring a two-factor code navigates to two-factor selection offering only the authenticator app`() = runTest(testDispatcher) {
+    coEvery { mockRepository.reRegisterAccountWithoutPhoneNumber(any(), any(), any(), any(), any()) } returns
+      RequestResult.NonSuccess(RegisterAccountError.TotpMissingOrIncorrect)
+
+    applyEvent(completeState(), SignalLoginCredentialEntryScreenEvents.NextClicked)
+
+    assertThat(emittedStates.last().isLoggingIn).isEqualTo(false)
+    assertThat(emittedParentEvents.last())
+      .isInstanceOf<RegistrationFlowEvent.NavigateToScreen>()
+      .prop(RegistrationFlowEvent.NavigateToScreen::route)
+      .isInstanceOf<RegistrationRoute.TwoFactorSelection>()
+      .prop(RegistrationRoute.TwoFactorSelection::methods)
+      .containsExactly(TwoFactorMethod.AuthenticatorApp)
+  }
+
+  @Test
+  fun `TwoFactorCodeEntered retries the login with the entered code`() = runTest(testDispatcher) {
+    val aep = AccountEntropyPool(VALID_AEP)
+    stubSuccessfulLogin(aep)
+
+    applyEvent(completeState(), SignalLoginCredentialEntryScreenEvents.TwoFactorCodeEntered("123456"))
+
+    coVerify {
+      mockRepository.reRegisterAccountWithoutPhoneNumber(
+        aci = VALID_ACI,
+        recoveryPassword = aep.deriveMasterKey().deriveRegistrationRecoveryPassword(),
+        aep = match { it.value == VALID_AEP },
+        registrationLock = null,
+        totp = 123456
+      )
+    }
+  }
+
   @Test(expected = IllegalStateException::class)
   fun `NextClicked with SessionNotFoundOrNotVerified throws`() = runTest(testDispatcher) {
     coEvery { mockRepository.reRegisterAccountWithoutPhoneNumber(any(), any(), any(), any(), any()) } returns
@@ -460,7 +495,7 @@ class SignalLoginCredentialEntryViewModelTest {
   }
 
   private fun stubSuccessfulLogin(aep: AccountEntropyPool, reregistration: Boolean = true) {
-    coEvery { mockRepository.reRegisterAccountWithoutPhoneNumber(any(), any(), any(), any(), any()) } returns successfulResult(aep, reregistration)
+    coEvery { mockRepository.reRegisterAccountWithoutPhoneNumber(any(), any(), any(), any(), any(), any()) } returns successfulResult(aep, reregistration)
   }
 
   private fun stubRemoteBackup(exists: Boolean) {

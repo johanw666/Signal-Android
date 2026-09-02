@@ -246,7 +246,7 @@
 
     <fragment
         android:id="@+id/authenticatorAppsFragment"
-        android:name="org.thoughtcrime.securesms.components.settings.app.account.authenticator.AuthenticatorAppsFragment"
+        android:name="org.thoughtcrime.securesms.components.settings.app.account.authenticator.TotpAppListFragment"
         android:label="authenticator_apps_fragment">
         <action
             android:id="@+id/action_authenticatorAppsFragment_to_authenticatorSetupFragment"
@@ -262,18 +262,11 @@
             app:exitAnim="@anim/fragment_open_exit"
             app:popEnterAnim="@anim/fragment_close_enter"
             app:popExitAnim="@anim/fragment_close_exit" />
-        <action
-            android:id="@+id/action_authenticatorAppsFragment_to_authenticatorCodeEntryFragment"
-            app:destination="@id/authenticatorCodeEntryFragment"
-            app:enterAnim="@anim/fragment_open_enter"
-            app:exitAnim="@anim/fragment_open_exit"
-            app:popEnterAnim="@anim/fragment_close_enter"
-            app:popExitAnim="@anim/fragment_close_exit" />
     </fragment>
 
     <fragment
         android:id="@+id/authenticatorSetupFragment"
-        android:name="org.thoughtcrime.securesms.components.settings.app.account.authenticator.AuthenticatorSetupFragment"
+        android:name="org.thoughtcrime.securesms.components.settings.app.account.authenticator.TotpSetupFragment"
         android:label="authenticator_setup_fragment">
         <action
             android:id="@+id/action_authenticatorSetupFragment_to_authenticatorCodeEntryFragment"
@@ -286,7 +279,7 @@
 
     <fragment
         android:id="@+id/authenticatorCodeEntryFragment"
-        android:name="org.thoughtcrime.securesms.components.settings.app.account.authenticator.AuthenticatorCodeEntryFragment"
+        android:name="org.thoughtcrime.securesms.components.settings.app.account.authenticator.TotpCodeEntryFragment"
         android:label="authenticator_code_entry_fragment">
         <action
             android:id="@+id/action_authenticatorCodeEntryFragment_to_authenticatorNameFragment"
@@ -295,25 +288,25 @@
             app:exitAnim="@anim/fragment_open_exit"
             app:popEnterAnim="@anim/fragment_close_enter"
             app:popExitAnim="@anim/fragment_close_exit" />
+    </fragment>
 
-        <argument
-            android:name="purpose"
-            android:defaultValue="ADD"
-            app:argType="string" />
+    <fragment
+        android:id="@+id/authenticatorNameFragment"
+        android:name="org.thoughtcrime.securesms.components.settings.app.account.authenticator.TotpNameEntryFragment"
+        android:label="authenticator_name_fragment">
 
         <argument
             android:name="app_id"
             android:defaultValue="-1L"
             app:argType="long" />
-    </fragment>
-
-    <fragment
-        android:id="@+id/authenticatorNameFragment"
-        android:name="org.thoughtcrime.securesms.components.settings.app.account.authenticator.AuthenticatorNameFragment"
-        android:label="authenticator_name_fragment">
 
         <argument
-            android:name="app_id"
+            android:name="app_name"
+            android:defaultValue=""
+            app:argType="string" />
+
+        <argument
+            android:name="app_created_at"
             android:defaultValue="-1L"
             app:argType="long" />
     </fragment>

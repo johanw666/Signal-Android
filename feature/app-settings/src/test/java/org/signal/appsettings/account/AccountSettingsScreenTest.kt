@@ -13,6 +13,7 @@ import androidx.compose.ui.test.assertIsNotEnabled
 import androidx.compose.ui.test.hasTestTag
 import androidx.compose.ui.test.junit4.createComposeRule
 import androidx.compose.ui.test.onNodeWithTag
+import androidx.compose.ui.test.onNodeWithText
 import androidx.compose.ui.test.performClick
 import androidx.compose.ui.test.performScrollToNode
 import assertk.assertThat
@@ -21,13 +22,17 @@ import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
 import org.robolectric.RobolectricTestRunner
+import org.robolectric.RuntimeEnvironment
 import org.robolectric.annotation.Config
+import org.signal.appsettings.R
 import org.signal.appsettings.account.AccountSettingsState.Dialog
 import org.signal.core.ui.compose.Dialogs
 
 @RunWith(RobolectricTestRunner::class)
 @Config(application = Application::class)
 class AccountSettingsScreenTest {
+
+  private val context: Application = RuntimeEnvironment.getApplication()
 
   @get:Rule
   val composeTestRule = createComposeRule()
@@ -294,12 +299,12 @@ class AccountSettingsScreenTest {
     setContent(createState())
 
     composeTestRule.onNodeWithTag(AccountSettingsTestTags.CARD_SIGNAL_LOGIN).assertDoesNotExist()
-    composeTestRule.onNodeWithTag(AccountSettingsTestTags.ROW_AUTHENTICATOR_APP).assertDoesNotExist()
+    composeTestRule.onNodeWithTag(AccountSettingsTestTags.ROW_TOTP_APP).assertDoesNotExist()
   }
 
   @Test
   fun givenASignalLogin_whenIClickTheSignalLoginCard_thenIExpectAccountAndRecoveryEvent() {
-    setContent(createState(signalLogin = AccountSettingsState.SignalLogin(authenticatorAppCount = 0, passkeyCount = 0)))
+    setContent(createState(signalLogin = AccountSettingsState.SignalLogin(totpAppCount = 0, passkeyCount = 0)))
 
     composeTestRule.onNodeWithTag(AccountSettingsTestTags.CARD_SIGNAL_LOGIN).performClick()
 
@@ -307,19 +312,34 @@ class AccountSettingsScreenTest {
   }
 
   @Test
-  fun givenASignalLogin_whenIClickAuthenticatorApp_thenIExpectAuthenticatorAppEvent() {
-    setContent(createState(signalLogin = AccountSettingsState.SignalLogin(authenticatorAppCount = 0, passkeyCount = 0)))
+  fun givenASignalLogin_whenIClickTotpApp_thenIExpectTotpAppEvent() {
+    setContent(createState(signalLogin = AccountSettingsState.SignalLogin(totpAppCount = 0, passkeyCount = 0)))
 
     composeTestRule.onNodeWithTag(AccountSettingsTestTags.CARD_SIGNAL_LOGIN).assertIsDisplayed()
 
-    composeTestRule.onNodeWithTag(AccountSettingsTestTags.ROW_AUTHENTICATOR_APP).performClick()
+    composeTestRule.onNodeWithTag(AccountSettingsTestTags.ROW_TOTP_APP).performClick()
 
-    assertThat(events).contains(AccountSettingsEvent.AuthenticatorAppClicked)
+    assertThat(events).contains(AccountSettingsEvent.TotpAppClicked)
+  }
+
+  /** A count we couldn't fetch has to read the same as no count at all, rather than as "0 configured". */
+  @Test
+  fun givenAnUnknownTotpAppCount_whenScreenDisplayed_thenTheRowDoesNotClaimACount() {
+    setContent(createState(signalLogin = AccountSettingsState.SignalLogin(totpAppCount = null, passkeyCount = 0)))
+
+    composeTestRule.onNodeWithText(context.getString(R.string.AccountSettingsFragment__one_time_verification_codes)).assertIsDisplayed()
+  }
+
+  @Test
+  fun givenConfiguredTotpApps_whenScreenDisplayed_thenTheRowShowsTheCount() {
+    setContent(createState(signalLogin = AccountSettingsState.SignalLogin(totpAppCount = 2, passkeyCount = 0)))
+
+    composeTestRule.onNodeWithText(context.resources.getQuantityString(R.plurals.AccountSettingsFragment__d_configured, 2, 2)).assertIsDisplayed()
   }
 
   @Test
   fun givenASignalLogin_whenIClickPasskeys_thenIExpectPasskeysEvent() {
-    setContent(createState(signalLogin = AccountSettingsState.SignalLogin(authenticatorAppCount = 0, passkeyCount = 0)))
+    setContent(createState(signalLogin = AccountSettingsState.SignalLogin(totpAppCount = 0, passkeyCount = 0)))
 
     scrollTo(AccountSettingsTestTags.ROW_PASSKEYS)
 

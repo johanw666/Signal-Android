@@ -117,6 +117,7 @@ import org.signal.registration.screens.restoreselection.ArchiveRestoreSelectionV
 import org.signal.registration.screens.restoreselection.RegisteredState
 import org.signal.registration.screens.signallogincredentials.SignalLoginCredentialEntryScreen
 import org.signal.registration.screens.signallogincredentials.SignalLoginCredentialEntryScreenActions
+import org.signal.registration.screens.signallogincredentials.SignalLoginCredentialEntryScreenEvents
 import org.signal.registration.screens.signallogincredentials.SignalLoginCredentialEntryViewModel
 import org.signal.registration.screens.signallogindetails.SignalLoginViewDetailsScreenActions
 import org.signal.registration.screens.signallogindetails.SignalLoginViewDetailsViewModel
@@ -125,6 +126,12 @@ import org.signal.registration.screens.signallogininfo.SignalLoginInfoViewModel
 import org.signal.registration.screens.signalloginpayment.SignalLoginPaymentScreen
 import org.signal.registration.screens.signalloginpayment.SignalLoginPaymentScreenActions
 import org.signal.registration.screens.signalloginpayment.SignalLoginPaymentViewModel
+import org.signal.registration.screens.totpentry.TotpEntryScreen
+import org.signal.registration.screens.totpentry.TotpEntryViewModel
+import org.signal.registration.screens.twofactorselection.TwoFactorMethod
+import org.signal.registration.screens.twofactorselection.TwoFactorSelectionAction
+import org.signal.registration.screens.twofactorselection.TwoFactorSelectionScreen
+import org.signal.registration.screens.twofactorselection.TwoFactorSelectionViewModel
 import org.signal.registration.screens.util.navigateBack
 import org.signal.registration.screens.util.navigateTo
 import org.signal.registration.screens.verificationcode.VerificationCodeScreen
@@ -190,6 +197,14 @@ sealed interface RegistrationRoute : NavKey, Parcelable {
   data class SignalLoginCredentialEntry(val prefilledAccountId: String? = null) : RegistrationRoute {
     override fun toString(): String = "SignalLoginCredentialEntry(prefilledAccountId=${prefilledAccountId?.censor()})"
   }
+
+  /** Choosing which second factor to authenticate with when logging in requires two-factor authentication. */
+  @Serializable
+  data class TwoFactorSelection(val methods: List<TwoFactorMethod>) : RegistrationRoute
+
+  /** Entering the six-digit code from the user's authenticator app. */
+  @Serializable
+  data object TotpEntry : RegistrationRoute
 
   /** Optional username selection for a phone-numberless account. */
   @Serializable
@@ -370,6 +385,7 @@ private const val BACKUP_CREDENTIAL_RESULT = "backup_credential_result"
 private const val AEP_FOR_LOCAL_BACKUP_RESULT = "aep_for_local_backup_result"
 private const val LOCAL_BACKUP_RESTORE_RESULT = "local_backup_restore_result"
 private const val PHONE_NUMBER_DISCOVERABILITY_RESULT = "phone_number_discoverability_result"
+private const val TWO_FACTOR_CODE_RESULT = "two_factor_code_result"
 private const val PIN_LEARN_MORE_URL = "https://support.signal.org/hc/articles/360007059792"
 
 // TODO [phonenumberless] Point at the real support article once it exists.
@@ -777,7 +793,49 @@ private fun EntryProviderScope<NavKey>.navigationEntries(
       }
     }
 
+    ResultEffect<String>(registrationViewModel.resultBus, TWO_FACTOR_CODE_RESULT) { code ->
+      viewModel.onEvent(SignalLoginCredentialEntryScreenEvents.TwoFactorCodeEntered(code))
+    }
+
     SignalLoginCredentialEntryScreen(
+      state = state,
+      onEvent = { viewModel.onEvent(it) }
+    )
+  }
+
+  // -- Two-Factor Method Selection Screen
+  entry<RegistrationRoute.TwoFactorSelection> { key ->
+    val viewModel: TwoFactorSelectionViewModel = viewModel(
+      factory = TwoFactorSelectionViewModel.Factory(
+        methods = key.methods,
+        parentEventEmitter = parentEventEmitter
+      )
+    )
+    val state by viewModel.state.collectAsStateWithLifecycle()
+    CollectActions(viewModel.actions) { action ->
+      when (action) {
+        TwoFactorSelectionAction.AuthenticateWithPasskey -> error("Passkeys are not offered as a two-factor method yet.")
+      }
+    }
+
+    TwoFactorSelectionScreen(
+      state = state,
+      onEvent = { viewModel.onEvent(it) }
+    )
+  }
+
+  // -- TOTP Code Entry Screen
+  entry<RegistrationRoute.TotpEntry> {
+    val viewModel: TotpEntryViewModel = viewModel(
+      factory = TotpEntryViewModel.Factory(
+        parentEventEmitter = parentEventEmitter,
+        resultBus = registrationViewModel.resultBus,
+        resultKey = TWO_FACTOR_CODE_RESULT
+      )
+    )
+    val state by viewModel.state.collectAsStateWithLifecycle()
+
+    TotpEntryScreen(
       state = state,
       onEvent = { viewModel.onEvent(it) }
     )

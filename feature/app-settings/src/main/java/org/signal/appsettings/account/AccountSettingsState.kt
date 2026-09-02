@@ -26,7 +26,8 @@ data class AccountSettingsState(
    * the sections aren't shown at all.
    */
   data class SignalLogin(
-    val authenticatorAppCount: Int,
+    /** How many authenticator apps are on the account, or null while we don't know -- see `getTotpAppCount`. */
+    val totpAppCount: Int?,
     val passkeyCount: Int
   )
 

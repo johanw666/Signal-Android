@@ -86,37 +86,37 @@
     <!-- Clickable text that takes the user to a support article -->
     <string name="AccountSettingsFragment__learn_more">Sužinoti daugiau</string>
 
-    <!-- AuthenticatorSetupScreen -->
+    <!-- TotpSetupScreen -->
     <!-- Title of the screen that walks the user through setting up an authenticator app -->
-    <string name="AuthenticatorSetupScreen__set_up_your_authenticator_app">Nustatykite savo autentifikavimo programėlę</string>
+    <string name="TotpSetupScreen__set_up_your_authenticator_app">Nustatykite savo autentifikavimo programėlę</string>
     <!-- Instructions shown at the top of the authenticator app setup screen -->
-    <string name="AuthenticatorSetupScreen__follow_these_steps">Nustatykite savo autentifikavimo programėlę vadovaudamiesi šiais veiksmais.</string>
+    <string name="TotpSetupScreen__follow_these_steps">Nustatykite savo autentifikavimo programėlę vadovaudamiesi šiais veiksmais.</string>
     <!-- Clickable text that takes the user to a support article -->
-    <string name="AuthenticatorSetupScreen__learn_more">Sužinoti daugiau</string>
+    <string name="TotpSetupScreen__learn_more">Sužinoti daugiau</string>
     <!-- Header of the first step of authenticator app setup -->
-    <string name="AuthenticatorSetupScreen__step_1">1 žingsnis</string>
+    <string name="TotpSetupScreen__step_1">1 žingsnis</string>
     <!-- Body of the first step of authenticator app setup -->
-    <string name="AuthenticatorSetupScreen__install_a_trusted_authenticator_app">Įrenginyje įdiekite patikimą autentifikavimo programėlę.</string>
+    <string name="TotpSetupScreen__install_a_trusted_authenticator_app">Įrenginyje įdiekite patikimą autentifikavimo programėlę.</string>
     <!-- Header of the second step of authenticator app setup -->
-    <string name="AuthenticatorSetupScreen__step_2">2 žingsnis</string>
+    <string name="TotpSetupScreen__step_2">2 žingsnis</string>
     <!-- Body of the second step of authenticator app setup -->
-    <string name="AuthenticatorSetupScreen__open_your_authenticator_app">Bakstelėkite tolesnį mygtuką ir atverkite autentifikavimo programėlę, kad pridėtumėte „Signal“ paskyrą.</string>
+    <string name="TotpSetupScreen__open_your_authenticator_app">Bakstelėkite tolesnį mygtuką ir atverkite autentifikavimo programėlę, kad pridėtumėte „Signal“ paskyrą.</string>
     <!-- Button that opens the user\'s authenticator app -->
-    <string name="AuthenticatorSetupScreen__open">Atverti</string>
+    <string name="TotpSetupScreen__open">Atverti</string>
     <!-- Text above the setup key explaining that it can be entered by hand instead -->
-    <string name="AuthenticatorSetupScreen__or_you_can_copy_this_key">Taip pat galite nukopijuoti šį raktą ir ją nustatyti rankiniu būdu.</string>
+    <string name="TotpSetupScreen__or_you_can_copy_this_key">Taip pat galite nukopijuoti šį raktą ir ją nustatyti rankiniu būdu.</string>
     <!-- Button that copies the setup key to the clipboard -->
-    <string name="AuthenticatorSetupScreen__copy">Kopijuoti</string>
+    <string name="TotpSetupScreen__copy">Kopijuoti</string>
     <!-- Toast shown after the setup key has been copied to the clipboard -->
-    <string name="AuthenticatorSetupScreen__copied_to_clipboard">Nukopijuota į iškarpinę</string>
+    <string name="TotpSetupScreen__copied_to_clipboard">Nukopijuota į iškarpinę</string>
     <!-- Toast shown when there is no app installed that can handle the authenticator setup link -->
-    <string name="AuthenticatorSetupScreen__no_authenticator_app_found">Autentifikavimo programėlė nerasta</string>
+    <string name="TotpSetupScreen__no_authenticator_app_found">Autentifikavimo programėlė nerasta</string>
     <!-- Header of the third step of authenticator app setup -->
-    <string name="AuthenticatorSetupScreen__step_3">3 žingsnis</string>
+    <string name="TotpSetupScreen__step_3">3 žingsnis</string>
     <!-- Body of the third step of authenticator app setup -->
-    <string name="AuthenticatorSetupScreen__copy_the_code_thats_generated">Nukopijuokite sugeneruotą kodą ir grįžkite čia, kad galėtumėte tęsti.</string>
+    <string name="TotpSetupScreen__copy_the_code_thats_generated">Nukopijuokite sugeneruotą kodą ir grįžkite čia, kad galėtumėte tęsti.</string>
     <!-- Button that advances from the setup instructions to entering a code -->
-    <string name="AuthenticatorSetupScreen__continue">Tęsti</string>
+    <string name="TotpSetupScreen__continue">Tęsti</string>
 
     <!-- PasskeysScreen -->
     <!-- Title of the screen where the user sets up passkeys -->
@@ -146,60 +146,60 @@
     <!-- Menu option that removes a passkey -->
     <string name="PasskeysScreen__remove">Šalinti</string>
 
-    <!-- AuthenticatorCodeEntryScreen -->
+    <!-- TotpCodeEntryScreen -->
     <!-- Title of the screen where the user enters the code from their authenticator app -->
-    <string name="AuthenticatorCodeEntryScreen__enter_your_code">Įveskite kodą</string>
+    <string name="TotpCodeEntryScreen__enter_your_code">Įveskite kodą</string>
     <!-- Instructions shown above the code entry field -->
-    <string name="AuthenticatorCodeEntryScreen__enter_the_6_digit_code">Įveskite 6 skaitmenų kodą iš autentifikavimo programėlės.</string>
+    <string name="TotpCodeEntryScreen__enter_the_6_digit_code">Įveskite 6 skaitmenų kodą iš autentifikavimo programėlės.</string>
     <!-- Label of the code entry field -->
-    <string name="AuthenticatorCodeEntryScreen__code">Kodas</string>
+    <string name="TotpCodeEntryScreen__code">Kodas</string>
     <!-- Button that submits the entered code -->
-    <string name="AuthenticatorCodeEntryScreen__done">Atlikta</string>
-    <!-- AuthenticatorAppsScreen -->
+    <string name="TotpCodeEntryScreen__done">Atlikta</string>
+    <!-- TotpAppListScreen -->
     <!-- Title of the screen listing the authenticator apps on the account -->
-    <string name="AuthenticatorAppsScreen__authenticator_app">Autentifikavimo programėlė</string>
+    <string name="TotpAppListScreen__authenticator_app">Autentifikavimo programėlė</string>
     <!-- Description of what an authenticator app is for, shown at the top of the screen -->
-    <string name="AuthenticatorAppsScreen__set_up_an_authenticator_app">Nustatykite autentifikavimo programėlę generuoti vienkartinius patvirtinimo kodus</string>
+    <string name="TotpAppListScreen__set_up_an_authenticator_app">Nustatykite autentifikavimo programėlę generuoti vienkartinius patvirtinimo kodus</string>
     <!-- Clickable text that takes the user to a support article -->
-    <string name="AuthenticatorAppsScreen__learn_more">Sužinoti daugiau</string>
+    <string name="TotpAppListScreen__learn_more">Sužinoti daugiau</string>
     <!-- Button that starts setting up another authenticator app -->
-    <string name="AuthenticatorAppsScreen__add_authenticator_app">Pridėti autentifikavimo programėlę</string>
+    <string name="TotpAppListScreen__add_authenticator_app">Pridėti autentifikavimo programėlę</string>
     <!-- Section header above the list of configured authenticator apps -->
-    <string name="AuthenticatorAppsScreen__authenticator_apps">Autentifikavimo programėlės</string>
+    <string name="TotpAppListScreen__authenticator_apps">Autentifikavimo programėlės</string>
     <!-- Shown in place of the list when no authenticator apps are configured -->
-    <string name="AuthenticatorAppsScreen__no_authenticator_apps">Autentifikavimo programėlių nėra</string>
+    <string name="TotpAppListScreen__no_authenticator_apps">Autentifikavimo programėlių nėra</string>
     <!-- Subtitle of an authenticator app row saying when it was configured. Placeholder is a date or time. -->
-    <string name="AuthenticatorAppsScreen__added_s">Pridėtas naudotojas „%1$s“</string>
+    <string name="TotpAppListScreen__added_s">Pridėtas naudotojas „%1$s“</string>
     <!-- Content description of the button that opens an authenticator app\'s options -->
-    <string name="AuthenticatorAppsScreen__open_authenticator_app_options">Atverti autentifikavimo programėlės parinktis</string>
+    <string name="TotpAppListScreen__open_authenticator_app_options">Atverti autentifikavimo programėlės parinktis</string>
     <!-- Menu option that renames an authenticator app -->
-    <string name="AuthenticatorAppsScreen__rename">Pervadinti</string>
+    <string name="TotpAppListScreen__rename">Pervadinti</string>
     <!-- Menu option that removes an authenticator app -->
-    <string name="AuthenticatorAppsScreen__remove">Šalinti</string>
+    <string name="TotpAppListScreen__remove">Šalinti</string>
     <!-- Title of the dialog confirming removal of an authenticator app -->
-    <string name="AuthenticatorAppsScreen__remove_authenticator_app">Pašalinti autentifikavimo programėlę?</string>
+    <string name="TotpAppListScreen__remove_authenticator_app">Pašalinti autentifikavimo programėlę?</string>
     <!-- Body of the dialog confirming removal of an authenticator app -->
-    <string name="AuthenticatorAppsScreen__to_remove_this_authentication_method">Norint pašalinti šį autentifikavimo būdą, reikia nurodyti autentifikavimo programėlėje pateiktą 6 skaitmenų kodą.</string>
+    <string name="TotpAppListScreen__to_remove_this_authentication_method">Norint pašalinti šį autentifikavimo būdą, reikia nurodyti autentifikavimo programėlėje pateiktą 6 skaitmenų kodą.</string>
     <!-- Title of the dialog shown when the account already has as many authenticator apps as it\'s allowed -->
-    <string name="AuthenticatorAppsScreen__cant_add_authenticator_app">Negalima pridėti autentifikavimo programėlės</string>
+    <string name="TotpAppListScreen__cant_add_authenticator_app">Negalima pridėti autentifikavimo programėlės</string>
     <!-- Body of the dialog shown when the account already has as many authenticator apps as it\'s allowed -->
-    <string name="AuthenticatorAppsScreen__you_cant_add_more_than_d">Negalite pridėti daugiau kaip %1$d autentifikavimo programėlių. Pirmiausia pabandykite pašalinti vieną jų.</string>
+    <string name="TotpAppListScreen__you_cant_add_more_than_d">Negalite pridėti daugiau kaip %1$d autentifikavimo programėlių. Pirmiausia pabandykite pašalinti vieną jų.</string>
     <!-- Toast shown after an authenticator app has been removed -->
-    <string name="AuthenticatorAppsScreen__authenticator_app_removed">Autentifikavimo programėlė pašalinta</string>
+    <string name="TotpAppListScreen__authenticator_app_removed">Autentifikavimo programėlė pašalinta</string>
 
-    <!-- AuthenticatorNameScreen -->
+    <!-- TotpNameEntryScreen -->
     <!-- Title of the screen where the user names an authenticator app -->
-    <string name="AuthenticatorNameScreen__choose_a_name">Pasirinkite pavadinimą</string>
+    <string name="TotpNameEntryScreen__choose_a_name">Pasirinkite pavadinimą</string>
     <!-- Instructions shown above the name field when renaming an authenticator app -->
-    <string name="AuthenticatorNameScreen__choose_a_unique_name">Šiai autentifikavimo programėlei parinkite unikalų pavadinimą.</string>
+    <string name="TotpNameEntryScreen__choose_a_unique_name">Šiai autentifikavimo programėlei parinkite unikalų pavadinimą.</string>
     <!-- Instructions shown above the name field when naming a newly configured authenticator app -->
-    <string name="AuthenticatorNameScreen__choose_a_unique_name_to_help_you_identify_it">Šiai autentifikavimo programėlei parinkite unikalų pavadinimą, kad vėliau galėtumėte ją identifikuoti.</string>
+    <string name="TotpNameEntryScreen__choose_a_unique_name_to_help_you_identify_it">Šiai autentifikavimo programėlei parinkite unikalų pavadinimą, kad vėliau galėtumėte ją identifikuoti.</string>
     <!-- Label of the name field -->
-    <string name="AuthenticatorNameScreen__name">Vardas</string>
+    <string name="TotpNameEntryScreen__name">Vardas</string>
     <!-- Button that submits the entered name -->
-    <string name="AuthenticatorNameScreen__next">Kitas</string>
+    <string name="TotpNameEntryScreen__next">Kitas</string>
     <!-- Toast shown after an authenticator app has been successfully set up -->
-    <string name="AuthenticatorNameScreen__authenticator_app_set_up">Autentifikavimo programėlės nustatymas</string>
+    <string name="TotpNameEntryScreen__authenticator_app_set_up">Autentifikavimo programėlės nustatymas</string>
     <!-- Toast shown after an authenticator app has been renamed -->
-    <string name="AuthenticatorNameScreen__authenticator_app_renamed">Autentifikavimo programėlės pavadinimas pakeistas</string>
+    <string name="TotpNameEntryScreen__authenticator_app_renamed">Autentifikavimo programėlės pavadinimas pakeistas</string>
 </resources>

@@ -63,7 +63,7 @@ class AccountSettingsViewModelTest {
     every { repository.isClientDeprecated() } returns false
     every { repository.getPinKeyboardType() } returns PinKeyboardType.NUMERIC
     every { repository.isPhoneNumberless() } returns false
-    every { repository.getAuthenticatorAppCount() } returns 0
+    coEvery { repository.getTotpAppCount() } returns 0
     every { repository.getPasskeyCount() } returns 0
     every { repository.verifyLocalPin(any()) } answers { firstArg<String>() == CORRECT_PIN }
     coEvery { repository.setRegistrationLockEnabled(any()) } returns true
@@ -303,14 +303,25 @@ class AccountSettingsViewModelTest {
   @Test
   fun `the Signal Login section is filled in when the account is phone-numberless`() = runTest(testDispatcher) {
     every { repository.isPhoneNumberless() } returns true
-    every { repository.getAuthenticatorAppCount() } returns 2
+    coEvery { repository.getTotpAppCount() } returns 2
     every { repository.getPasskeyCount() } returns 8
 
     val viewModel = createViewModel()
 
     assertThat(viewModel.state.value.isPhoneNumberless).isTrue()
-    assertThat(viewModel.state.value.signalLogin?.authenticatorAppCount).isEqualTo(2)
+    assertThat(viewModel.state.value.signalLogin?.totpAppCount).isEqualTo(2)
     assertThat(viewModel.state.value.signalLogin?.passkeyCount).isEqualTo(8)
+  }
+
+  /** Zero would render as "no authenticator apps", which is a claim we can't make when we couldn't reach the service. */
+  @Test
+  fun `a count we couldn't fetch is null rather than zero`() = runTest(testDispatcher) {
+    every { repository.isPhoneNumberless() } returns true
+    coEvery { repository.getTotpAppCount() } returns null
+
+    val viewModel = createViewModel()
+
+    assertThat(viewModel.state.value.signalLogin?.totpAppCount).isNull()
   }
 
   @Test
@@ -326,15 +337,15 @@ class AccountSettingsViewModelTest {
   }
 
   @Test
-  fun `AuthenticatorAppClicked opens the authenticator apps screen`() = runTest(testDispatcher) {
+  fun `TotpAppClicked opens the authenticator apps screen`() = runTest(testDispatcher) {
     every { repository.isPhoneNumberless() } returns true
 
     val viewModel = createViewModel()
     val actions = collectActions(viewModel.actions)
 
-    viewModel.onEvent(AccountSettingsEvent.AuthenticatorAppClicked)
+    viewModel.onEvent(AccountSettingsEvent.TotpAppClicked)
 
-    assertThat(actions.last()).isEqualTo(AccountSettingsAction.NavigateToAuthenticatorApps)
+    assertThat(actions.last()).isEqualTo(AccountSettingsAction.NavigateToTotpAppList)
   }
 
   @Test

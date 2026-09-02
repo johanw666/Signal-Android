@@ -77,37 +77,37 @@
     <!-- Clickable text that takes the user to a support article -->
     <string name="AccountSettingsFragment__learn_more">자세히 알아보기</string>
 
-    <!-- AuthenticatorSetupScreen -->
+    <!-- TotpSetupScreen -->
     <!-- Title of the screen that walks the user through setting up an authenticator app -->
-    <string name="AuthenticatorSetupScreen__set_up_your_authenticator_app">인증 앱 설정하기</string>
+    <string name="TotpSetupScreen__set_up_your_authenticator_app">인증 앱 설정하기</string>
     <!-- Instructions shown at the top of the authenticator app setup screen -->
-    <string name="AuthenticatorSetupScreen__follow_these_steps">인증 앱을 설정하려면 다음 단계를 따르세요.</string>
+    <string name="TotpSetupScreen__follow_these_steps">인증 앱을 설정하려면 다음 단계를 따르세요.</string>
     <!-- Clickable text that takes the user to a support article -->
-    <string name="AuthenticatorSetupScreen__learn_more">자세히 알아보기</string>
+    <string name="TotpSetupScreen__learn_more">자세히 알아보기</string>
     <!-- Header of the first step of authenticator app setup -->
-    <string name="AuthenticatorSetupScreen__step_1">1단계</string>
+    <string name="TotpSetupScreen__step_1">1단계</string>
     <!-- Body of the first step of authenticator app setup -->
-    <string name="AuthenticatorSetupScreen__install_a_trusted_authenticator_app">기기에 신뢰할 수 있는 인증 앱을 설치하세요.</string>
+    <string name="TotpSetupScreen__install_a_trusted_authenticator_app">기기에 신뢰할 수 있는 인증 앱을 설치하세요.</string>
     <!-- Header of the second step of authenticator app setup -->
-    <string name="AuthenticatorSetupScreen__step_2">2단계</string>
+    <string name="TotpSetupScreen__step_2">2단계</string>
     <!-- Body of the second step of authenticator app setup -->
-    <string name="AuthenticatorSetupScreen__open_your_authenticator_app">아래 버튼을 탭하여 인증 앱을 열고 Signal 계정을 추가하세요.</string>
+    <string name="TotpSetupScreen__open_your_authenticator_app">아래 버튼을 탭하여 인증 앱을 열고 Signal 계정을 추가하세요.</string>
     <!-- Button that opens the user\'s authenticator app -->
-    <string name="AuthenticatorSetupScreen__open">열기</string>
+    <string name="TotpSetupScreen__open">열기</string>
     <!-- Text above the setup key explaining that it can be entered by hand instead -->
-    <string name="AuthenticatorSetupScreen__or_you_can_copy_this_key">또는 이 키를 복사하여 직접 설정할 수도 있습니다.</string>
+    <string name="TotpSetupScreen__or_you_can_copy_this_key">또는 이 키를 복사하여 직접 설정할 수도 있습니다.</string>
     <!-- Button that copies the setup key to the clipboard -->
-    <string name="AuthenticatorSetupScreen__copy">복사</string>
+    <string name="TotpSetupScreen__copy">복사</string>
     <!-- Toast shown after the setup key has been copied to the clipboard -->
-    <string name="AuthenticatorSetupScreen__copied_to_clipboard">클립보드로 복사했습니다.</string>
+    <string name="TotpSetupScreen__copied_to_clipboard">클립보드로 복사했습니다.</string>
     <!-- Toast shown when there is no app installed that can handle the authenticator setup link -->
-    <string name="AuthenticatorSetupScreen__no_authenticator_app_found">인증 앱을 찾을 수 없음</string>
+    <string name="TotpSetupScreen__no_authenticator_app_found">인증 앱을 찾을 수 없음</string>
     <!-- Header of the third step of authenticator app setup -->
-    <string name="AuthenticatorSetupScreen__step_3">3단계</string>
+    <string name="TotpSetupScreen__step_3">3단계</string>
     <!-- Body of the third step of authenticator app setup -->
-    <string name="AuthenticatorSetupScreen__copy_the_code_thats_generated">생성된 코드를 복사한 후 여기에 돌아와 계속 진행하세요.</string>
+    <string name="TotpSetupScreen__copy_the_code_thats_generated">생성된 코드를 복사한 후 여기에 돌아와 계속 진행하세요.</string>
     <!-- Button that advances from the setup instructions to entering a code -->
-    <string name="AuthenticatorSetupScreen__continue">계속</string>
+    <string name="TotpSetupScreen__continue">계속</string>
 
     <!-- PasskeysScreen -->
     <!-- Title of the screen where the user sets up passkeys -->
@@ -137,60 +137,60 @@
     <!-- Menu option that removes a passkey -->
     <string name="PasskeysScreen__remove">삭제</string>
 
-    <!-- AuthenticatorCodeEntryScreen -->
+    <!-- TotpCodeEntryScreen -->
     <!-- Title of the screen where the user enters the code from their authenticator app -->
-    <string name="AuthenticatorCodeEntryScreen__enter_your_code">코드 입력</string>
+    <string name="TotpCodeEntryScreen__enter_your_code">코드 입력</string>
     <!-- Instructions shown above the code entry field -->
-    <string name="AuthenticatorCodeEntryScreen__enter_the_6_digit_code">인증 앱에 표시된 6자리 코드를 입력하세요.</string>
+    <string name="TotpCodeEntryScreen__enter_the_6_digit_code">인증 앱에 표시된 6자리 코드를 입력하세요.</string>
     <!-- Label of the code entry field -->
-    <string name="AuthenticatorCodeEntryScreen__code">코드</string>
+    <string name="TotpCodeEntryScreen__code">코드</string>
     <!-- Button that submits the entered code -->
-    <string name="AuthenticatorCodeEntryScreen__done">확인</string>
-    <!-- AuthenticatorAppsScreen -->
+    <string name="TotpCodeEntryScreen__done">확인</string>
+    <!-- TotpAppListScreen -->
     <!-- Title of the screen listing the authenticator apps on the account -->
-    <string name="AuthenticatorAppsScreen__authenticator_app">인증 앱</string>
+    <string name="TotpAppListScreen__authenticator_app">인증 앱</string>
     <!-- Description of what an authenticator app is for, shown at the top of the screen -->
-    <string name="AuthenticatorAppsScreen__set_up_an_authenticator_app">1회용 인증 코드를 생성하려면 인증 앱을 설정하세요.</string>
+    <string name="TotpAppListScreen__set_up_an_authenticator_app">1회용 인증 코드를 생성하려면 인증 앱을 설정하세요.</string>
     <!-- Clickable text that takes the user to a support article -->
-    <string name="AuthenticatorAppsScreen__learn_more">자세히 알아보기</string>
+    <string name="TotpAppListScreen__learn_more">자세히 알아보기</string>
     <!-- Button that starts setting up another authenticator app -->
-    <string name="AuthenticatorAppsScreen__add_authenticator_app">인증 앱 추가하기</string>
+    <string name="TotpAppListScreen__add_authenticator_app">인증 앱 추가하기</string>
     <!-- Section header above the list of configured authenticator apps -->
-    <string name="AuthenticatorAppsScreen__authenticator_apps">인증 앱</string>
+    <string name="TotpAppListScreen__authenticator_apps">인증 앱</string>
     <!-- Shown in place of the list when no authenticator apps are configured -->
-    <string name="AuthenticatorAppsScreen__no_authenticator_apps">인증 앱 없음</string>
+    <string name="TotpAppListScreen__no_authenticator_apps">인증 앱 없음</string>
     <!-- Subtitle of an authenticator app row saying when it was configured. Placeholder is a date or time. -->
-    <string name="AuthenticatorAppsScreen__added_s">%1$s 추가 완료</string>
+    <string name="TotpAppListScreen__added_s">%1$s 추가 완료</string>
     <!-- Content description of the button that opens an authenticator app\'s options -->
-    <string name="AuthenticatorAppsScreen__open_authenticator_app_options">인증 앱 옵션 열기</string>
+    <string name="TotpAppListScreen__open_authenticator_app_options">인증 앱 옵션 열기</string>
     <!-- Menu option that renames an authenticator app -->
-    <string name="AuthenticatorAppsScreen__rename">이름 변경</string>
+    <string name="TotpAppListScreen__rename">이름 변경</string>
     <!-- Menu option that removes an authenticator app -->
-    <string name="AuthenticatorAppsScreen__remove">삭제</string>
+    <string name="TotpAppListScreen__remove">삭제</string>
     <!-- Title of the dialog confirming removal of an authenticator app -->
-    <string name="AuthenticatorAppsScreen__remove_authenticator_app">인증 앱을 삭제할까요?</string>
+    <string name="TotpAppListScreen__remove_authenticator_app">인증 앱을 삭제할까요?</string>
     <!-- Body of the dialog confirming removal of an authenticator app -->
-    <string name="AuthenticatorAppsScreen__to_remove_this_authentication_method">이 인증 수단을 삭제하려면 인증 앱의 6자리 코드가 필요합니다.</string>
+    <string name="TotpAppListScreen__to_remove_this_authentication_method">이 인증 수단을 삭제하려면 인증 앱의 6자리 코드가 필요합니다.</string>
     <!-- Title of the dialog shown when the account already has as many authenticator apps as it\'s allowed -->
-    <string name="AuthenticatorAppsScreen__cant_add_authenticator_app">인증 앱을 추가할 수 없음</string>
+    <string name="TotpAppListScreen__cant_add_authenticator_app">인증 앱을 추가할 수 없음</string>
     <!-- Body of the dialog shown when the account already has as many authenticator apps as it\'s allowed -->
-    <string name="AuthenticatorAppsScreen__you_cant_add_more_than_d">인증 앱은 최대 %1$d개까지만 등록할 수 있습니다. 기존 앱 하나를 삭제한 후 다시 시도해 주세요.</string>
+    <string name="TotpAppListScreen__you_cant_add_more_than_d">인증 앱은 최대 %1$d개까지만 등록할 수 있습니다. 기존 앱 하나를 삭제한 후 다시 시도해 주세요.</string>
     <!-- Toast shown after an authenticator app has been removed -->
-    <string name="AuthenticatorAppsScreen__authenticator_app_removed">인증 앱이 삭제됨</string>
+    <string name="TotpAppListScreen__authenticator_app_removed">인증 앱이 삭제됨</string>
 
-    <!-- AuthenticatorNameScreen -->
+    <!-- TotpNameEntryScreen -->
     <!-- Title of the screen where the user names an authenticator app -->
-    <string name="AuthenticatorNameScreen__choose_a_name">이름을 선택하세요</string>
+    <string name="TotpNameEntryScreen__choose_a_name">이름을 선택하세요</string>
     <!-- Instructions shown above the name field when renaming an authenticator app -->
-    <string name="AuthenticatorNameScreen__choose_a_unique_name">이 인증 앱에 해당하는 이름을 설정해 주세요.</string>
+    <string name="TotpNameEntryScreen__choose_a_unique_name">이 인증 앱에 해당하는 이름을 설정해 주세요.</string>
     <!-- Instructions shown above the name field when naming a newly configured authenticator app -->
-    <string name="AuthenticatorNameScreen__choose_a_unique_name_to_help_you_identify_it">나중에 알아보기 쉽도록 이 인증 앱에 이름을 설정해 주세요.</string>
+    <string name="TotpNameEntryScreen__choose_a_unique_name_to_help_you_identify_it">나중에 알아보기 쉽도록 이 인증 앱에 이름을 설정해 주세요.</string>
     <!-- Label of the name field -->
-    <string name="AuthenticatorNameScreen__name">이름</string>
+    <string name="TotpNameEntryScreen__name">이름</string>
     <!-- Button that submits the entered name -->
-    <string name="AuthenticatorNameScreen__next">다음</string>
+    <string name="TotpNameEntryScreen__next">다음</string>
     <!-- Toast shown after an authenticator app has been successfully set up -->
-    <string name="AuthenticatorNameScreen__authenticator_app_set_up">인증 앱 설정</string>
+    <string name="TotpNameEntryScreen__authenticator_app_set_up">인증 앱 설정</string>
     <!-- Toast shown after an authenticator app has been renamed -->
-    <string name="AuthenticatorNameScreen__authenticator_app_renamed">인증 앱 이름이 변경됨</string>
+    <string name="TotpNameEntryScreen__authenticator_app_renamed">인증 앱 이름이 변경됨</string>
 </resources>

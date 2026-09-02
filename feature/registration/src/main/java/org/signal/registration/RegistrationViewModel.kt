@@ -182,7 +182,7 @@ class RegistrationViewModel(
   }
 
   private fun applyNavigateBackToScreenEvent(inputState: RegistrationFlowState, event: RegistrationFlowEvent.NavigateBackToScreen): RegistrationFlowState {
-    val index = inputState.backStack.indexOfLast { it == event.route }
+    val index = inputState.backStack.indexOfLast { it::class == event.route::class }
     return if (index >= 0) {
       inputState.copy(backStack = inputState.backStack.take(index + 1))
     } else {

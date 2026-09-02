@@ -80,37 +80,37 @@
     <!-- Clickable text that takes the user to a support article -->
     <string name="AccountSettingsFragment__learn_more">Jifunze zaidi</string>
 
-    <!-- AuthenticatorSetupScreen -->
+    <!-- TotpSetupScreen -->
     <!-- Title of the screen that walks the user through setting up an authenticator app -->
-    <string name="AuthenticatorSetupScreen__set_up_your_authenticator_app">Weka mipangilio yako ya programu ya uthibitishaji</string>
+    <string name="TotpSetupScreen__set_up_your_authenticator_app">Weka mipangilio yako ya programu ya uthibitishaji</string>
     <!-- Instructions shown at the top of the authenticator app setup screen -->
-    <string name="AuthenticatorSetupScreen__follow_these_steps">Fuata hatua hizi ili uweke programu yako ya kithibitishaji.</string>
+    <string name="TotpSetupScreen__follow_these_steps">Fuata hatua hizi ili uweke programu yako ya kithibitishaji.</string>
     <!-- Clickable text that takes the user to a support article -->
-    <string name="AuthenticatorSetupScreen__learn_more">Jifunze zaidi</string>
+    <string name="TotpSetupScreen__learn_more">Jifunze zaidi</string>
     <!-- Header of the first step of authenticator app setup -->
-    <string name="AuthenticatorSetupScreen__step_1">Hatua ya 1</string>
+    <string name="TotpSetupScreen__step_1">Hatua ya 1</string>
     <!-- Body of the first step of authenticator app setup -->
-    <string name="AuthenticatorSetupScreen__install_a_trusted_authenticator_app">Weka programu ya kithibitishaji kwenye kifaa chako.</string>
+    <string name="TotpSetupScreen__install_a_trusted_authenticator_app">Weka programu ya kithibitishaji kwenye kifaa chako.</string>
     <!-- Header of the second step of authenticator app setup -->
-    <string name="AuthenticatorSetupScreen__step_2">Hatua ya 2</string>
+    <string name="TotpSetupScreen__step_2">Hatua ya 2</string>
     <!-- Body of the second step of authenticator app setup -->
-    <string name="AuthenticatorSetupScreen__open_your_authenticator_app">Fungua programu yako ya kithibitishaji kwa kugusa kitufe hapo chini ili uweke akaunti yako ya Signal.</string>
+    <string name="TotpSetupScreen__open_your_authenticator_app">Fungua programu yako ya kithibitishaji kwa kugusa kitufe hapo chini ili uweke akaunti yako ya Signal.</string>
     <!-- Button that opens the user\'s authenticator app -->
-    <string name="AuthenticatorSetupScreen__open">Fungua</string>
+    <string name="TotpSetupScreen__open">Fungua</string>
     <!-- Text above the setup key explaining that it can be entered by hand instead -->
-    <string name="AuthenticatorSetupScreen__or_you_can_copy_this_key">Au unaweza kunakili ufunguo huu ili uweke mwenyewe mipangilio.</string>
+    <string name="TotpSetupScreen__or_you_can_copy_this_key">Au unaweza kunakili ufunguo huu ili uweke mwenyewe mipangilio.</string>
     <!-- Button that copies the setup key to the clipboard -->
-    <string name="AuthenticatorSetupScreen__copy">Nakili</string>
+    <string name="TotpSetupScreen__copy">Nakili</string>
     <!-- Toast shown after the setup key has been copied to the clipboard -->
-    <string name="AuthenticatorSetupScreen__copied_to_clipboard">Imenakiliwa kwenye bodi ya kunakili</string>
+    <string name="TotpSetupScreen__copied_to_clipboard">Imenakiliwa kwenye bodi ya kunakili</string>
     <!-- Toast shown when there is no app installed that can handle the authenticator setup link -->
-    <string name="AuthenticatorSetupScreen__no_authenticator_app_found">Programu ya kithibitishaji haijapatikana</string>
+    <string name="TotpSetupScreen__no_authenticator_app_found">Programu ya kithibitishaji haijapatikana</string>
     <!-- Header of the third step of authenticator app setup -->
-    <string name="AuthenticatorSetupScreen__step_3">Hatua ya 3</string>
+    <string name="TotpSetupScreen__step_3">Hatua ya 3</string>
     <!-- Body of the third step of authenticator app setup -->
-    <string name="AuthenticatorSetupScreen__copy_the_code_thats_generated">Nakili code iliyotayarishwa kisha rudi hapa ili uendelee.</string>
+    <string name="TotpSetupScreen__copy_the_code_thats_generated">Nakili code iliyotayarishwa kisha rudi hapa ili uendelee.</string>
     <!-- Button that advances from the setup instructions to entering a code -->
-    <string name="AuthenticatorSetupScreen__continue">Endelea</string>
+    <string name="TotpSetupScreen__continue">Endelea</string>
 
     <!-- PasskeysScreen -->
     <!-- Title of the screen where the user sets up passkeys -->
@@ -140,60 +140,60 @@
     <!-- Menu option that removes a passkey -->
     <string name="PasskeysScreen__remove">Ondoa</string>
 
-    <!-- AuthenticatorCodeEntryScreen -->
+    <!-- TotpCodeEntryScreen -->
     <!-- Title of the screen where the user enters the code from their authenticator app -->
-    <string name="AuthenticatorCodeEntryScreen__enter_your_code">Weka code yako</string>
+    <string name="TotpCodeEntryScreen__enter_your_code">Weka code yako</string>
     <!-- Instructions shown above the code entry field -->
-    <string name="AuthenticatorCodeEntryScreen__enter_the_6_digit_code">Weka code ya tarakimu 6 kutoka kwenye programu yako ya kithibitishaji.</string>
+    <string name="TotpCodeEntryScreen__enter_the_6_digit_code">Weka code ya tarakimu 6 kutoka kwenye programu yako ya kithibitishaji.</string>
     <!-- Label of the code entry field -->
-    <string name="AuthenticatorCodeEntryScreen__code">Msimbo</string>
+    <string name="TotpCodeEntryScreen__code">Msimbo</string>
     <!-- Button that submits the entered code -->
-    <string name="AuthenticatorCodeEntryScreen__done">Imekamilika</string>
-    <!-- AuthenticatorAppsScreen -->
+    <string name="TotpCodeEntryScreen__done">Imekamilika</string>
+    <!-- TotpAppListScreen -->
     <!-- Title of the screen listing the authenticator apps on the account -->
-    <string name="AuthenticatorAppsScreen__authenticator_app">Programu ya kithibitishaji</string>
+    <string name="TotpAppListScreen__authenticator_app">Programu ya kithibitishaji</string>
     <!-- Description of what an authenticator app is for, shown at the top of the screen -->
-    <string name="AuthenticatorAppsScreen__set_up_an_authenticator_app">Weka mipangilio ya programu ya uthibitishaji kutayarisha code za uthibitishaji wa mara moja</string>
+    <string name="TotpAppListScreen__set_up_an_authenticator_app">Weka mipangilio ya programu ya uthibitishaji kutayarisha code za uthibitishaji wa mara moja</string>
     <!-- Clickable text that takes the user to a support article -->
-    <string name="AuthenticatorAppsScreen__learn_more">Jifunze zaidi</string>
+    <string name="TotpAppListScreen__learn_more">Jifunze zaidi</string>
     <!-- Button that starts setting up another authenticator app -->
-    <string name="AuthenticatorAppsScreen__add_authenticator_app">Weka programu ya uthibitishaji</string>
+    <string name="TotpAppListScreen__add_authenticator_app">Weka programu ya uthibitishaji</string>
     <!-- Section header above the list of configured authenticator apps -->
-    <string name="AuthenticatorAppsScreen__authenticator_apps">Programu ya uthibitishaji</string>
+    <string name="TotpAppListScreen__authenticator_apps">Programu ya uthibitishaji</string>
     <!-- Shown in place of the list when no authenticator apps are configured -->
-    <string name="AuthenticatorAppsScreen__no_authenticator_apps">Hakuna programu za uthibitishaji</string>
+    <string name="TotpAppListScreen__no_authenticator_apps">Hakuna programu za uthibitishaji</string>
     <!-- Subtitle of an authenticator app row saying when it was configured. Placeholder is a date or time. -->
-    <string name="AuthenticatorAppsScreen__added_s">Umemwongeza \"%1$s\"</string>
+    <string name="TotpAppListScreen__added_s">Umemwongeza \"%1$s\"</string>
     <!-- Content description of the button that opens an authenticator app\'s options -->
-    <string name="AuthenticatorAppsScreen__open_authenticator_app_options">Fungua chaguo za programu ya uthibitishaji</string>
+    <string name="TotpAppListScreen__open_authenticator_app_options">Fungua chaguo za programu ya uthibitishaji</string>
     <!-- Menu option that renames an authenticator app -->
-    <string name="AuthenticatorAppsScreen__rename">Badilisha jina</string>
+    <string name="TotpAppListScreen__rename">Badilisha jina</string>
     <!-- Menu option that removes an authenticator app -->
-    <string name="AuthenticatorAppsScreen__remove">Ondoa</string>
+    <string name="TotpAppListScreen__remove">Ondoa</string>
     <!-- Title of the dialog confirming removal of an authenticator app -->
-    <string name="AuthenticatorAppsScreen__remove_authenticator_app">Ungependa kuondoa programu ya uthibitishaji?</string>
+    <string name="TotpAppListScreen__remove_authenticator_app">Ungependa kuondoa programu ya uthibitishaji?</string>
     <!-- Body of the dialog confirming removal of an authenticator app -->
-    <string name="AuthenticatorAppsScreen__to_remove_this_authentication_method">Ili uondoe mbinu hii ya uthibitishaji utahitaji code ya tarakimu 6 ya programu yako ya uthibitishaji.</string>
+    <string name="TotpAppListScreen__to_remove_this_authentication_method">Ili uondoe mbinu hii ya uthibitishaji utahitaji code ya tarakimu 6 ya programu yako ya uthibitishaji.</string>
     <!-- Title of the dialog shown when the account already has as many authenticator apps as it\'s allowed -->
-    <string name="AuthenticatorAppsScreen__cant_add_authenticator_app">Haiwezi kuweka programu ya uthibitishaji</string>
+    <string name="TotpAppListScreen__cant_add_authenticator_app">Haiwezi kuweka programu ya uthibitishaji</string>
     <!-- Body of the dialog shown when the account already has as many authenticator apps as it\'s allowed -->
-    <string name="AuthenticatorAppsScreen__you_cant_add_more_than_d">Huwezi kuweka zaidi ya programu za uthibitishaji %1$d. Jaribu kuondoa moja kwanza.</string>
+    <string name="TotpAppListScreen__you_cant_add_more_than_d">Huwezi kuweka zaidi ya programu za uthibitishaji %1$d. Jaribu kuondoa moja kwanza.</string>
     <!-- Toast shown after an authenticator app has been removed -->
-    <string name="AuthenticatorAppsScreen__authenticator_app_removed">Programu ya uthibitishaji imeondolewa</string>
+    <string name="TotpAppListScreen__authenticator_app_removed">Programu ya uthibitishaji imeondolewa</string>
 
-    <!-- AuthenticatorNameScreen -->
+    <!-- TotpNameEntryScreen -->
     <!-- Title of the screen where the user names an authenticator app -->
-    <string name="AuthenticatorNameScreen__choose_a_name">Chagua jina</string>
+    <string name="TotpNameEntryScreen__choose_a_name">Chagua jina</string>
     <!-- Instructions shown above the name field when renaming an authenticator app -->
-    <string name="AuthenticatorNameScreen__choose_a_unique_name">Chagua jina la kipekee kwa programu hii ya uthibitishaji.</string>
+    <string name="TotpNameEntryScreen__choose_a_unique_name">Chagua jina la kipekee kwa programu hii ya uthibitishaji.</string>
     <!-- Instructions shown above the name field when naming a newly configured authenticator app -->
-    <string name="AuthenticatorNameScreen__choose_a_unique_name_to_help_you_identify_it">Chagua jina la kipekee kwa programu hii ya uthibitishaji ikusaidie kuitambua baadae.</string>
+    <string name="TotpNameEntryScreen__choose_a_unique_name_to_help_you_identify_it">Chagua jina la kipekee kwa programu hii ya uthibitishaji ikusaidie kuitambua baadae.</string>
     <!-- Label of the name field -->
-    <string name="AuthenticatorNameScreen__name">Jina</string>
+    <string name="TotpNameEntryScreen__name">Jina</string>
     <!-- Button that submits the entered name -->
-    <string name="AuthenticatorNameScreen__next">Ifuatayo</string>
+    <string name="TotpNameEntryScreen__next">Ifuatayo</string>
     <!-- Toast shown after an authenticator app has been successfully set up -->
-    <string name="AuthenticatorNameScreen__authenticator_app_set_up">Umeweka mipangilio ya programu ya uthibitishaji</string>
+    <string name="TotpNameEntryScreen__authenticator_app_set_up">Umeweka mipangilio ya programu ya uthibitishaji</string>
     <!-- Toast shown after an authenticator app has been renamed -->
-    <string name="AuthenticatorNameScreen__authenticator_app_renamed">Umebadili jina la programu ya uthibitishaji</string>
+    <string name="TotpNameEntryScreen__authenticator_app_renamed">Umebadili jina la programu ya uthibitishaji</string>
 </resources>

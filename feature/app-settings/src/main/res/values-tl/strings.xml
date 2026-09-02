@@ -80,37 +80,37 @@
     <!-- Clickable text that takes the user to a support article -->
     <string name="AccountSettingsFragment__learn_more">Matuto pa</string>
 
-    <!-- AuthenticatorSetupScreen -->
+    <!-- TotpSetupScreen -->
     <!-- Title of the screen that walks the user through setting up an authenticator app -->
-    <string name="AuthenticatorSetupScreen__set_up_your_authenticator_app">I-set up ang authenticator app mo</string>
+    <string name="TotpSetupScreen__set_up_your_authenticator_app">I-set up ang authenticator app mo</string>
     <!-- Instructions shown at the top of the authenticator app setup screen -->
-    <string name="AuthenticatorSetupScreen__follow_these_steps">Sundin ang steps na ito para i-set up ang authenticator app mo.</string>
+    <string name="TotpSetupScreen__follow_these_steps">Sundin ang steps na ito para i-set up ang authenticator app mo.</string>
     <!-- Clickable text that takes the user to a support article -->
-    <string name="AuthenticatorSetupScreen__learn_more">Matuto pa</string>
+    <string name="TotpSetupScreen__learn_more">Matuto pa</string>
     <!-- Header of the first step of authenticator app setup -->
-    <string name="AuthenticatorSetupScreen__step_1">Step 1</string>
+    <string name="TotpSetupScreen__step_1">Step 1</string>
     <!-- Body of the first step of authenticator app setup -->
-    <string name="AuthenticatorSetupScreen__install_a_trusted_authenticator_app">Mag-install ng trusted authenticator app sa device mo.</string>
+    <string name="TotpSetupScreen__install_a_trusted_authenticator_app">Mag-install ng trusted authenticator app sa device mo.</string>
     <!-- Header of the second step of authenticator app setup -->
-    <string name="AuthenticatorSetupScreen__step_2">Step 2</string>
+    <string name="TotpSetupScreen__step_2">Step 2</string>
     <!-- Body of the second step of authenticator app setup -->
-    <string name="AuthenticatorSetupScreen__open_your_authenticator_app">Buksan ang authenticator app sa pamamagitan ng pag-tap sa button sa ibaba para i-add ang Signal account mo.</string>
+    <string name="TotpSetupScreen__open_your_authenticator_app">Buksan ang authenticator app sa pamamagitan ng pag-tap sa button sa ibaba para i-add ang Signal account mo.</string>
     <!-- Button that opens the user\'s authenticator app -->
-    <string name="AuthenticatorSetupScreen__open">Buksan</string>
+    <string name="TotpSetupScreen__open">Buksan</string>
     <!-- Text above the setup key explaining that it can be entered by hand instead -->
-    <string name="AuthenticatorSetupScreen__or_you_can_copy_this_key">O kopyahin ang key na ito para i-set up ito manually.</string>
+    <string name="TotpSetupScreen__or_you_can_copy_this_key">O kopyahin ang key na ito para i-set up ito manually.</string>
     <!-- Button that copies the setup key to the clipboard -->
-    <string name="AuthenticatorSetupScreen__copy">Kopyahin</string>
+    <string name="TotpSetupScreen__copy">Kopyahin</string>
     <!-- Toast shown after the setup key has been copied to the clipboard -->
-    <string name="AuthenticatorSetupScreen__copied_to_clipboard">Kinopya sa clipboard</string>
+    <string name="TotpSetupScreen__copied_to_clipboard">Kinopya sa clipboard</string>
     <!-- Toast shown when there is no app installed that can handle the authenticator setup link -->
-    <string name="AuthenticatorSetupScreen__no_authenticator_app_found">Walang nahanap na authenticator app</string>
+    <string name="TotpSetupScreen__no_authenticator_app_found">Walang nahanap na authenticator app</string>
     <!-- Header of the third step of authenticator app setup -->
-    <string name="AuthenticatorSetupScreen__step_3">Step 3</string>
+    <string name="TotpSetupScreen__step_3">Step 3</string>
     <!-- Body of the third step of authenticator app setup -->
-    <string name="AuthenticatorSetupScreen__copy_the_code_thats_generated">Kopyahin ang generated code at bumalik dito para magpatuloy.</string>
+    <string name="TotpSetupScreen__copy_the_code_thats_generated">Kopyahin ang generated code at bumalik dito para magpatuloy.</string>
     <!-- Button that advances from the setup instructions to entering a code -->
-    <string name="AuthenticatorSetupScreen__continue">Magpatuloy</string>
+    <string name="TotpSetupScreen__continue">Magpatuloy</string>
 
     <!-- PasskeysScreen -->
     <!-- Title of the screen where the user sets up passkeys -->
@@ -140,60 +140,60 @@
     <!-- Menu option that removes a passkey -->
     <string name="PasskeysScreen__remove">Tanggalin</string>
 
-    <!-- AuthenticatorCodeEntryScreen -->
+    <!-- TotpCodeEntryScreen -->
     <!-- Title of the screen where the user enters the code from their authenticator app -->
-    <string name="AuthenticatorCodeEntryScreen__enter_your_code">Ilagay ang code mo</string>
+    <string name="TotpCodeEntryScreen__enter_your_code">Ilagay ang code mo</string>
     <!-- Instructions shown above the code entry field -->
-    <string name="AuthenticatorCodeEntryScreen__enter_the_6_digit_code">Ilagay ang 6-digit code mula sa authenticator app mo.</string>
+    <string name="TotpCodeEntryScreen__enter_the_6_digit_code">Ilagay ang 6-digit code mula sa authenticator app mo.</string>
     <!-- Label of the code entry field -->
-    <string name="AuthenticatorCodeEntryScreen__code">Code</string>
+    <string name="TotpCodeEntryScreen__code">Code</string>
     <!-- Button that submits the entered code -->
-    <string name="AuthenticatorCodeEntryScreen__done">Tapos na</string>
-    <!-- AuthenticatorAppsScreen -->
+    <string name="TotpCodeEntryScreen__done">Tapos na</string>
+    <!-- TotpAppListScreen -->
     <!-- Title of the screen listing the authenticator apps on the account -->
-    <string name="AuthenticatorAppsScreen__authenticator_app">Authenticator app</string>
+    <string name="TotpAppListScreen__authenticator_app">Authenticator app</string>
     <!-- Description of what an authenticator app is for, shown at the top of the screen -->
-    <string name="AuthenticatorAppsScreen__set_up_an_authenticator_app">Mag-set up ng authenticator app para makagawa ng one-time verification codes</string>
+    <string name="TotpAppListScreen__set_up_an_authenticator_app">Mag-set up ng authenticator app para makagawa ng one-time verification codes</string>
     <!-- Clickable text that takes the user to a support article -->
-    <string name="AuthenticatorAppsScreen__learn_more">Matuto pa</string>
+    <string name="TotpAppListScreen__learn_more">Matuto pa</string>
     <!-- Button that starts setting up another authenticator app -->
-    <string name="AuthenticatorAppsScreen__add_authenticator_app">Mag-add ng authenticator app</string>
+    <string name="TotpAppListScreen__add_authenticator_app">Mag-add ng authenticator app</string>
     <!-- Section header above the list of configured authenticator apps -->
-    <string name="AuthenticatorAppsScreen__authenticator_apps">Authenticator apps</string>
+    <string name="TotpAppListScreen__authenticator_apps">Authenticator apps</string>
     <!-- Shown in place of the list when no authenticator apps are configured -->
-    <string name="AuthenticatorAppsScreen__no_authenticator_apps">Walang authenticator app</string>
+    <string name="TotpAppListScreen__no_authenticator_apps">Walang authenticator app</string>
     <!-- Subtitle of an authenticator app row saying when it was configured. Placeholder is a date or time. -->
-    <string name="AuthenticatorAppsScreen__added_s">In-add ang \"%1$s\"</string>
+    <string name="TotpAppListScreen__added_s">In-add ang \"%1$s\"</string>
     <!-- Content description of the button that opens an authenticator app\'s options -->
-    <string name="AuthenticatorAppsScreen__open_authenticator_app_options">Buksan ang authenticator app options</string>
+    <string name="TotpAppListScreen__open_authenticator_app_options">Buksan ang authenticator app options</string>
     <!-- Menu option that renames an authenticator app -->
-    <string name="AuthenticatorAppsScreen__rename">I-rename</string>
+    <string name="TotpAppListScreen__rename">I-rename</string>
     <!-- Menu option that removes an authenticator app -->
-    <string name="AuthenticatorAppsScreen__remove">Tanggalin</string>
+    <string name="TotpAppListScreen__remove">Tanggalin</string>
     <!-- Title of the dialog confirming removal of an authenticator app -->
-    <string name="AuthenticatorAppsScreen__remove_authenticator_app">Tanggalin ang authenticator app?</string>
+    <string name="TotpAppListScreen__remove_authenticator_app">Tanggalin ang authenticator app?</string>
     <!-- Body of the dialog confirming removal of an authenticator app -->
-    <string name="AuthenticatorAppsScreen__to_remove_this_authentication_method">Para tanggalin ang authentication method na ito, kailangan ang 6-digit code mula sa iyong authenticator app.</string>
+    <string name="TotpAppListScreen__to_remove_this_authentication_method">Para tanggalin ang authentication method na ito, kailangan ang 6-digit code mula sa iyong authenticator app.</string>
     <!-- Title of the dialog shown when the account already has as many authenticator apps as it\'s allowed -->
-    <string name="AuthenticatorAppsScreen__cant_add_authenticator_app">Hindi makapag-add ang authenticator app</string>
+    <string name="TotpAppListScreen__cant_add_authenticator_app">Hindi makapag-add ang authenticator app</string>
     <!-- Body of the dialog shown when the account already has as many authenticator apps as it\'s allowed -->
-    <string name="AuthenticatorAppsScreen__you_cant_add_more_than_d">Hindi ka maaaring mag-add ng higit sa %1$d authenticator apps. Subukan munang magtanggal ng isa.</string>
+    <string name="TotpAppListScreen__you_cant_add_more_than_d">Hindi ka maaaring mag-add ng higit sa %1$d authenticator apps. Subukan munang magtanggal ng isa.</string>
     <!-- Toast shown after an authenticator app has been removed -->
-    <string name="AuthenticatorAppsScreen__authenticator_app_removed">Tinanggal ang authenticator app</string>
+    <string name="TotpAppListScreen__authenticator_app_removed">Tinanggal ang authenticator app</string>
 
-    <!-- AuthenticatorNameScreen -->
+    <!-- TotpNameEntryScreen -->
     <!-- Title of the screen where the user names an authenticator app -->
-    <string name="AuthenticatorNameScreen__choose_a_name">Pumil ng pangalan</string>
+    <string name="TotpNameEntryScreen__choose_a_name">Pumil ng pangalan</string>
     <!-- Instructions shown above the name field when renaming an authenticator app -->
-    <string name="AuthenticatorNameScreen__choose_a_unique_name">Pumili ng unique na pangalan para sa authenticator app na ito.</string>
+    <string name="TotpNameEntryScreen__choose_a_unique_name">Pumili ng unique na pangalan para sa authenticator app na ito.</string>
     <!-- Instructions shown above the name field when naming a newly configured authenticator app -->
-    <string name="AuthenticatorNameScreen__choose_a_unique_name_to_help_you_identify_it">Pumili ng unique na pangalan para sa authenticator app na ito para madali itong matukoy sa susunod.</string>
+    <string name="TotpNameEntryScreen__choose_a_unique_name_to_help_you_identify_it">Pumili ng unique na pangalan para sa authenticator app na ito para madali itong matukoy sa susunod.</string>
     <!-- Label of the name field -->
-    <string name="AuthenticatorNameScreen__name">Pangalan</string>
+    <string name="TotpNameEntryScreen__name">Pangalan</string>
     <!-- Button that submits the entered name -->
-    <string name="AuthenticatorNameScreen__next">Susunod</string>
+    <string name="TotpNameEntryScreen__next">Susunod</string>
     <!-- Toast shown after an authenticator app has been successfully set up -->
-    <string name="AuthenticatorNameScreen__authenticator_app_set_up">Na-set up ang authenticator app</string>
+    <string name="TotpNameEntryScreen__authenticator_app_set_up">Na-set up ang authenticator app</string>
     <!-- Toast shown after an authenticator app has been renamed -->
-    <string name="AuthenticatorNameScreen__authenticator_app_renamed">Ni-rename ang authenticator app</string>
+    <string name="TotpNameEntryScreen__authenticator_app_renamed">Ni-rename ang authenticator app</string>
 </resources>

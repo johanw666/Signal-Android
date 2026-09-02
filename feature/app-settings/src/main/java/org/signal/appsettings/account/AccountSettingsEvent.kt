@@ -46,7 +46,7 @@ sealed interface AccountSettingsEvent {
   data object RegistrationLockConfirmed : AccountSettingsEvent
 
   /** The user tapped the authenticator app row in the two-factor authentication section. */
-  data object AuthenticatorAppClicked : AccountSettingsEvent
+  data object TotpAppClicked : AccountSettingsEvent
 
   /** The user tapped the passkeys row in the two-factor authentication section. */
   data object PasskeysClicked : AccountSettingsEvent

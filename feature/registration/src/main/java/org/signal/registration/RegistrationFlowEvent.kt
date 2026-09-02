@@ -24,7 +24,7 @@ sealed interface RegistrationFlowEvent {
   /** Navigate back one screen. */
   data object NavigateBack : RegistrationFlowEvent
 
-  /** Pop the back stack back to an existing screen, removing everything above it. Replaces the current screen if the route isn't on the stack. */
+  /** Pop the back stack back to an existing screen (matched by route type), removing everything above it. Replaces the current screen if the route isn't on the stack. */
   data class NavigateBackToScreen(val route: RegistrationRoute) : RegistrationFlowEvent
 
   /** We've encountered some irrecoverable state where the best course of action is to completely reset registration. */

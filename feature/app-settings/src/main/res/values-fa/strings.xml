@@ -80,37 +80,37 @@
     <!-- Clickable text that takes the user to a support article -->
     <string name="AccountSettingsFragment__learn_more">اطلاعات بیشتر</string>
 
-    <!-- AuthenticatorSetupScreen -->
+    <!-- TotpSetupScreen -->
     <!-- Title of the screen that walks the user through setting up an authenticator app -->
-    <string name="AuthenticatorSetupScreen__set_up_your_authenticator_app">راه‌اندازی برنامه احراز هویت</string>
+    <string name="TotpSetupScreen__set_up_your_authenticator_app">راه‌اندازی برنامه احراز هویت</string>
     <!-- Instructions shown at the top of the authenticator app setup screen -->
-    <string name="AuthenticatorSetupScreen__follow_these_steps">برای راه‌اندازی برنامه احراز هویت خود، این مراحل را دنبال کنید.</string>
+    <string name="TotpSetupScreen__follow_these_steps">برای راه‌اندازی برنامه احراز هویت خود، این مراحل را دنبال کنید.</string>
     <!-- Clickable text that takes the user to a support article -->
-    <string name="AuthenticatorSetupScreen__learn_more">اطلاعات بیشتر</string>
+    <string name="TotpSetupScreen__learn_more">اطلاعات بیشتر</string>
     <!-- Header of the first step of authenticator app setup -->
-    <string name="AuthenticatorSetupScreen__step_1">مرحله ۱</string>
+    <string name="TotpSetupScreen__step_1">مرحله ۱</string>
     <!-- Body of the first step of authenticator app setup -->
-    <string name="AuthenticatorSetupScreen__install_a_trusted_authenticator_app">یک برنامه احراز هویت معتبر را روی دستگاهتان نصب کنید.</string>
+    <string name="TotpSetupScreen__install_a_trusted_authenticator_app">یک برنامه احراز هویت معتبر را روی دستگاهتان نصب کنید.</string>
     <!-- Header of the second step of authenticator app setup -->
-    <string name="AuthenticatorSetupScreen__step_2">مرحله ۲</string>
+    <string name="TotpSetupScreen__step_2">مرحله ۲</string>
     <!-- Body of the second step of authenticator app setup -->
-    <string name="AuthenticatorSetupScreen__open_your_authenticator_app">با ضربه زدن روی دکمه زیر، برنامه احراز هویت را باز کنید تا حساب سیگنال خود را اضافه کنید.</string>
+    <string name="TotpSetupScreen__open_your_authenticator_app">با ضربه زدن روی دکمه زیر، برنامه احراز هویت را باز کنید تا حساب سیگنال خود را اضافه کنید.</string>
     <!-- Button that opens the user\'s authenticator app -->
-    <string name="AuthenticatorSetupScreen__open">باز کردن</string>
+    <string name="TotpSetupScreen__open">باز کردن</string>
     <!-- Text above the setup key explaining that it can be entered by hand instead -->
-    <string name="AuthenticatorSetupScreen__or_you_can_copy_this_key">یا می‌توانید این رمز را کپی کنید تا آن را به‌صورت دستی راه‌اندازی کنید.</string>
+    <string name="TotpSetupScreen__or_you_can_copy_this_key">یا می‌توانید این رمز را کپی کنید تا آن را به‌صورت دستی راه‌اندازی کنید.</string>
     <!-- Button that copies the setup key to the clipboard -->
-    <string name="AuthenticatorSetupScreen__copy">کپی</string>
+    <string name="TotpSetupScreen__copy">کپی</string>
     <!-- Toast shown after the setup key has been copied to the clipboard -->
-    <string name="AuthenticatorSetupScreen__copied_to_clipboard">در کلیپ‌بورد کپی شد</string>
+    <string name="TotpSetupScreen__copied_to_clipboard">در کلیپ‌بورد کپی شد</string>
     <!-- Toast shown when there is no app installed that can handle the authenticator setup link -->
-    <string name="AuthenticatorSetupScreen__no_authenticator_app_found">هیچ برنامه احراز هویتی پیدا نشد</string>
+    <string name="TotpSetupScreen__no_authenticator_app_found">هیچ برنامه احراز هویتی پیدا نشد</string>
     <!-- Header of the third step of authenticator app setup -->
-    <string name="AuthenticatorSetupScreen__step_3">مرحله ۳</string>
+    <string name="TotpSetupScreen__step_3">مرحله ۳</string>
     <!-- Body of the third step of authenticator app setup -->
-    <string name="AuthenticatorSetupScreen__copy_the_code_thats_generated">کد تولیدشده را کپی کنید و برای ادامه به اینجا برگردید.</string>
+    <string name="TotpSetupScreen__copy_the_code_thats_generated">کد تولیدشده را کپی کنید و برای ادامه به اینجا برگردید.</string>
     <!-- Button that advances from the setup instructions to entering a code -->
-    <string name="AuthenticatorSetupScreen__continue">ادامه</string>
+    <string name="TotpSetupScreen__continue">ادامه</string>
 
     <!-- PasskeysScreen -->
     <!-- Title of the screen where the user sets up passkeys -->
@@ -140,60 +140,60 @@
     <!-- Menu option that removes a passkey -->
     <string name="PasskeysScreen__remove">حذف</string>
 
-    <!-- AuthenticatorCodeEntryScreen -->
+    <!-- TotpCodeEntryScreen -->
     <!-- Title of the screen where the user enters the code from their authenticator app -->
-    <string name="AuthenticatorCodeEntryScreen__enter_your_code">کد خود را وارد کنید</string>
+    <string name="TotpCodeEntryScreen__enter_your_code">کد خود را وارد کنید</string>
     <!-- Instructions shown above the code entry field -->
-    <string name="AuthenticatorCodeEntryScreen__enter_the_6_digit_code">کد ۶ رقمی را از برنامه احراز هویت خود وارد کنید.</string>
+    <string name="TotpCodeEntryScreen__enter_the_6_digit_code">کد ۶ رقمی را از برنامه احراز هویت خود وارد کنید.</string>
     <!-- Label of the code entry field -->
-    <string name="AuthenticatorCodeEntryScreen__code">کد</string>
+    <string name="TotpCodeEntryScreen__code">کد</string>
     <!-- Button that submits the entered code -->
-    <string name="AuthenticatorCodeEntryScreen__done">انجام شد</string>
-    <!-- AuthenticatorAppsScreen -->
+    <string name="TotpCodeEntryScreen__done">انجام شد</string>
+    <!-- TotpAppListScreen -->
     <!-- Title of the screen listing the authenticator apps on the account -->
-    <string name="AuthenticatorAppsScreen__authenticator_app">برنامه احراز هویت</string>
+    <string name="TotpAppListScreen__authenticator_app">برنامه احراز هویت</string>
     <!-- Description of what an authenticator app is for, shown at the top of the screen -->
-    <string name="AuthenticatorAppsScreen__set_up_an_authenticator_app">یک برنامه احراز هویت برای تولید کدهای تأیید یکبارمصرف راه‌اندازی کنید</string>
+    <string name="TotpAppListScreen__set_up_an_authenticator_app">یک برنامه احراز هویت برای تولید کدهای تأیید یکبارمصرف راه‌اندازی کنید</string>
     <!-- Clickable text that takes the user to a support article -->
-    <string name="AuthenticatorAppsScreen__learn_more">اطلاعات بیشتر</string>
+    <string name="TotpAppListScreen__learn_more">اطلاعات بیشتر</string>
     <!-- Button that starts setting up another authenticator app -->
-    <string name="AuthenticatorAppsScreen__add_authenticator_app">افزودن برنامه احراز هویت</string>
+    <string name="TotpAppListScreen__add_authenticator_app">افزودن برنامه احراز هویت</string>
     <!-- Section header above the list of configured authenticator apps -->
-    <string name="AuthenticatorAppsScreen__authenticator_apps">برنامه‌های احراز هویت</string>
+    <string name="TotpAppListScreen__authenticator_apps">برنامه‌های احراز هویت</string>
     <!-- Shown in place of the list when no authenticator apps are configured -->
-    <string name="AuthenticatorAppsScreen__no_authenticator_apps">هیچ برنامه احراز هویتی وجود ندارد</string>
+    <string name="TotpAppListScreen__no_authenticator_apps">هیچ برنامه احراز هویتی وجود ندارد</string>
     <!-- Subtitle of an authenticator app row saying when it was configured. Placeholder is a date or time. -->
-    <string name="AuthenticatorAppsScreen__added_s">«%1$s» اضافه شد</string>
+    <string name="TotpAppListScreen__added_s">«%1$s» اضافه شد</string>
     <!-- Content description of the button that opens an authenticator app\'s options -->
-    <string name="AuthenticatorAppsScreen__open_authenticator_app_options">باز کردن گزینه‌های برنامه احراز هویت</string>
+    <string name="TotpAppListScreen__open_authenticator_app_options">باز کردن گزینه‌های برنامه احراز هویت</string>
     <!-- Menu option that renames an authenticator app -->
-    <string name="AuthenticatorAppsScreen__rename">تغییر نام</string>
+    <string name="TotpAppListScreen__rename">تغییر نام</string>
     <!-- Menu option that removes an authenticator app -->
-    <string name="AuthenticatorAppsScreen__remove">حذف</string>
+    <string name="TotpAppListScreen__remove">حذف</string>
     <!-- Title of the dialog confirming removal of an authenticator app -->
-    <string name="AuthenticatorAppsScreen__remove_authenticator_app">برنامه احراز هویت حذف شود؟</string>
+    <string name="TotpAppListScreen__remove_authenticator_app">برنامه احراز هویت حذف شود؟</string>
     <!-- Body of the dialog confirming removal of an authenticator app -->
-    <string name="AuthenticatorAppsScreen__to_remove_this_authentication_method">برای حذف این روش احراز هویت، کد ۶ رقمی از برنامه احراز هویت شما مورد نیاز است.</string>
+    <string name="TotpAppListScreen__to_remove_this_authentication_method">برای حذف این روش احراز هویت، کد ۶ رقمی از برنامه احراز هویت شما مورد نیاز است.</string>
     <!-- Title of the dialog shown when the account already has as many authenticator apps as it\'s allowed -->
-    <string name="AuthenticatorAppsScreen__cant_add_authenticator_app">افزودن برنامه احراز هویت امکان‌پذیر نیست</string>
+    <string name="TotpAppListScreen__cant_add_authenticator_app">افزودن برنامه احراز هویت امکان‌پذیر نیست</string>
     <!-- Body of the dialog shown when the account already has as many authenticator apps as it\'s allowed -->
-    <string name="AuthenticatorAppsScreen__you_cant_add_more_than_d">نمی‌توانید بیش از %1$d برنامه احراز هویت اضافه کنید. ابتدا یکی را حذف کنید.</string>
+    <string name="TotpAppListScreen__you_cant_add_more_than_d">نمی‌توانید بیش از %1$d برنامه احراز هویت اضافه کنید. ابتدا یکی را حذف کنید.</string>
     <!-- Toast shown after an authenticator app has been removed -->
-    <string name="AuthenticatorAppsScreen__authenticator_app_removed">برنامه احراز هویت حذف شد</string>
+    <string name="TotpAppListScreen__authenticator_app_removed">برنامه احراز هویت حذف شد</string>
 
-    <!-- AuthenticatorNameScreen -->
+    <!-- TotpNameEntryScreen -->
     <!-- Title of the screen where the user names an authenticator app -->
-    <string name="AuthenticatorNameScreen__choose_a_name">انتخاب یک نام</string>
+    <string name="TotpNameEntryScreen__choose_a_name">انتخاب یک نام</string>
     <!-- Instructions shown above the name field when renaming an authenticator app -->
-    <string name="AuthenticatorNameScreen__choose_a_unique_name">یک نام منحصربه‌فرد برای این برنامه احراز هویت انتخاب کنید.</string>
+    <string name="TotpNameEntryScreen__choose_a_unique_name">یک نام منحصربه‌فرد برای این برنامه احراز هویت انتخاب کنید.</string>
     <!-- Instructions shown above the name field when naming a newly configured authenticator app -->
-    <string name="AuthenticatorNameScreen__choose_a_unique_name_to_help_you_identify_it">یک نام منحصربه‌فرد برای این برنامه احراز هویت انتخاب کنید تا بعداً بتوانید آن را شناسایی کنید.</string>
+    <string name="TotpNameEntryScreen__choose_a_unique_name_to_help_you_identify_it">یک نام منحصربه‌فرد برای این برنامه احراز هویت انتخاب کنید تا بعداً بتوانید آن را شناسایی کنید.</string>
     <!-- Label of the name field -->
-    <string name="AuthenticatorNameScreen__name">نام</string>
+    <string name="TotpNameEntryScreen__name">نام</string>
     <!-- Button that submits the entered name -->
-    <string name="AuthenticatorNameScreen__next">بعدی</string>
+    <string name="TotpNameEntryScreen__next">بعدی</string>
     <!-- Toast shown after an authenticator app has been successfully set up -->
-    <string name="AuthenticatorNameScreen__authenticator_app_set_up">راه‌اندازی برنامه احراز هویت</string>
+    <string name="TotpNameEntryScreen__authenticator_app_set_up">راه‌اندازی برنامه احراز هویت</string>
     <!-- Toast shown after an authenticator app has been renamed -->
-    <string name="AuthenticatorNameScreen__authenticator_app_renamed">برنامه احراز هویت تغییر نام داد</string>
+    <string name="TotpNameEntryScreen__authenticator_app_renamed">برنامه احراز هویت تغییر نام داد</string>
 </resources>

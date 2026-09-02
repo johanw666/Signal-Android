@@ -80,37 +80,37 @@
     <!-- Clickable text that takes the user to a support article -->
     <string name="AccountSettingsFragment__learn_more">Tudj meg többet</string>
 
-    <!-- AuthenticatorSetupScreen -->
+    <!-- TotpSetupScreen -->
     <!-- Title of the screen that walks the user through setting up an authenticator app -->
-    <string name="AuthenticatorSetupScreen__set_up_your_authenticator_app">Állítsd be a hitelesítő alkalmazásodat</string>
+    <string name="TotpSetupScreen__set_up_your_authenticator_app">Állítsd be a hitelesítő alkalmazásodat</string>
     <!-- Instructions shown at the top of the authenticator app setup screen -->
-    <string name="AuthenticatorSetupScreen__follow_these_steps">A hitelesítő alkalmazás beállításához kövesd az alábbi lépéseket.</string>
+    <string name="TotpSetupScreen__follow_these_steps">A hitelesítő alkalmazás beállításához kövesd az alábbi lépéseket.</string>
     <!-- Clickable text that takes the user to a support article -->
-    <string name="AuthenticatorSetupScreen__learn_more">Tudj meg többet</string>
+    <string name="TotpSetupScreen__learn_more">Tudj meg többet</string>
     <!-- Header of the first step of authenticator app setup -->
-    <string name="AuthenticatorSetupScreen__step_1">1. lépés</string>
+    <string name="TotpSetupScreen__step_1">1. lépés</string>
     <!-- Body of the first step of authenticator app setup -->
-    <string name="AuthenticatorSetupScreen__install_a_trusted_authenticator_app">Telepíts egy megbízható hitelesítő alkalmazást az eszközödre.</string>
+    <string name="TotpSetupScreen__install_a_trusted_authenticator_app">Telepíts egy megbízható hitelesítő alkalmazást az eszközödre.</string>
     <!-- Header of the second step of authenticator app setup -->
-    <string name="AuthenticatorSetupScreen__step_2">2. lépés</string>
+    <string name="TotpSetupScreen__step_2">2. lépés</string>
     <!-- Body of the second step of authenticator app setup -->
-    <string name="AuthenticatorSetupScreen__open_your_authenticator_app">A Signal fiókod hozzáadásához nyisd meg a hitelesítő alkalmazást az alábbi gombra koppintva.</string>
+    <string name="TotpSetupScreen__open_your_authenticator_app">A Signal fiókod hozzáadásához nyisd meg a hitelesítő alkalmazást az alábbi gombra koppintva.</string>
     <!-- Button that opens the user\'s authenticator app -->
-    <string name="AuthenticatorSetupScreen__open">Megnyitás</string>
+    <string name="TotpSetupScreen__open">Megnyitás</string>
     <!-- Text above the setup key explaining that it can be entered by hand instead -->
-    <string name="AuthenticatorSetupScreen__or_you_can_copy_this_key">Vagy másold ki ezt a kulcsot a manuális beállításhoz.</string>
+    <string name="TotpSetupScreen__or_you_can_copy_this_key">Vagy másold ki ezt a kulcsot a manuális beállításhoz.</string>
     <!-- Button that copies the setup key to the clipboard -->
-    <string name="AuthenticatorSetupScreen__copy">Másolás</string>
+    <string name="TotpSetupScreen__copy">Másolás</string>
     <!-- Toast shown after the setup key has been copied to the clipboard -->
-    <string name="AuthenticatorSetupScreen__copied_to_clipboard">Vágólapra másolva</string>
+    <string name="TotpSetupScreen__copied_to_clipboard">Vágólapra másolva</string>
     <!-- Toast shown when there is no app installed that can handle the authenticator setup link -->
-    <string name="AuthenticatorSetupScreen__no_authenticator_app_found">Nem található hitelesítő alkalmazás</string>
+    <string name="TotpSetupScreen__no_authenticator_app_found">Nem található hitelesítő alkalmazás</string>
     <!-- Header of the third step of authenticator app setup -->
-    <string name="AuthenticatorSetupScreen__step_3">3. lépés</string>
+    <string name="TotpSetupScreen__step_3">3. lépés</string>
     <!-- Body of the third step of authenticator app setup -->
-    <string name="AuthenticatorSetupScreen__copy_the_code_thats_generated">Másold ki a generált kódot, és térj vissza ide a folytatáshoz.</string>
+    <string name="TotpSetupScreen__copy_the_code_thats_generated">Másold ki a generált kódot, és térj vissza ide a folytatáshoz.</string>
     <!-- Button that advances from the setup instructions to entering a code -->
-    <string name="AuthenticatorSetupScreen__continue">Folytatás</string>
+    <string name="TotpSetupScreen__continue">Folytatás</string>
 
     <!-- PasskeysScreen -->
     <!-- Title of the screen where the user sets up passkeys -->
@@ -140,60 +140,60 @@
     <!-- Menu option that removes a passkey -->
     <string name="PasskeysScreen__remove">Eltávolítás</string>
 
-    <!-- AuthenticatorCodeEntryScreen -->
+    <!-- TotpCodeEntryScreen -->
     <!-- Title of the screen where the user enters the code from their authenticator app -->
-    <string name="AuthenticatorCodeEntryScreen__enter_your_code">Add meg a kódod</string>
+    <string name="TotpCodeEntryScreen__enter_your_code">Add meg a kódod</string>
     <!-- Instructions shown above the code entry field -->
-    <string name="AuthenticatorCodeEntryScreen__enter_the_6_digit_code">Add meg a 6 jegyű kódot a hitelesítő alkalmazásból.</string>
+    <string name="TotpCodeEntryScreen__enter_the_6_digit_code">Add meg a 6 jegyű kódot a hitelesítő alkalmazásból.</string>
     <!-- Label of the code entry field -->
-    <string name="AuthenticatorCodeEntryScreen__code">Kód</string>
+    <string name="TotpCodeEntryScreen__code">Kód</string>
     <!-- Button that submits the entered code -->
-    <string name="AuthenticatorCodeEntryScreen__done">Kész</string>
-    <!-- AuthenticatorAppsScreen -->
+    <string name="TotpCodeEntryScreen__done">Kész</string>
+    <!-- TotpAppListScreen -->
     <!-- Title of the screen listing the authenticator apps on the account -->
-    <string name="AuthenticatorAppsScreen__authenticator_app">Hitelesítő alkalmazás</string>
+    <string name="TotpAppListScreen__authenticator_app">Hitelesítő alkalmazás</string>
     <!-- Description of what an authenticator app is for, shown at the top of the screen -->
-    <string name="AuthenticatorAppsScreen__set_up_an_authenticator_app">Egyszer használatos ellenőrző kódok generálásához állíts be egy hitelesítő alkalmazást</string>
+    <string name="TotpAppListScreen__set_up_an_authenticator_app">Egyszer használatos ellenőrző kódok generálásához állíts be egy hitelesítő alkalmazást</string>
     <!-- Clickable text that takes the user to a support article -->
-    <string name="AuthenticatorAppsScreen__learn_more">Tudj meg többet</string>
+    <string name="TotpAppListScreen__learn_more">Tudj meg többet</string>
     <!-- Button that starts setting up another authenticator app -->
-    <string name="AuthenticatorAppsScreen__add_authenticator_app">Hitelesítő alkalmazás hozzáadása</string>
+    <string name="TotpAppListScreen__add_authenticator_app">Hitelesítő alkalmazás hozzáadása</string>
     <!-- Section header above the list of configured authenticator apps -->
-    <string name="AuthenticatorAppsScreen__authenticator_apps">Hitelesítő alkalmazások</string>
+    <string name="TotpAppListScreen__authenticator_apps">Hitelesítő alkalmazások</string>
     <!-- Shown in place of the list when no authenticator apps are configured -->
-    <string name="AuthenticatorAppsScreen__no_authenticator_apps">Nincs hitelesítő alkalmazás</string>
+    <string name="TotpAppListScreen__no_authenticator_apps">Nincs hitelesítő alkalmazás</string>
     <!-- Subtitle of an authenticator app row saying when it was configured. Placeholder is a date or time. -->
-    <string name="AuthenticatorAppsScreen__added_s">\"%1$s\" hozzáadva</string>
+    <string name="TotpAppListScreen__added_s">\"%1$s\" hozzáadva</string>
     <!-- Content description of the button that opens an authenticator app\'s options -->
-    <string name="AuthenticatorAppsScreen__open_authenticator_app_options">Hitelesítő alkalmazás opciók megnyitása</string>
+    <string name="TotpAppListScreen__open_authenticator_app_options">Hitelesítő alkalmazás opciók megnyitása</string>
     <!-- Menu option that renames an authenticator app -->
-    <string name="AuthenticatorAppsScreen__rename">Átnevezés</string>
+    <string name="TotpAppListScreen__rename">Átnevezés</string>
     <!-- Menu option that removes an authenticator app -->
-    <string name="AuthenticatorAppsScreen__remove">Eltávolítás</string>
+    <string name="TotpAppListScreen__remove">Eltávolítás</string>
     <!-- Title of the dialog confirming removal of an authenticator app -->
-    <string name="AuthenticatorAppsScreen__remove_authenticator_app">Hitelesítő alkalmazás eltávolítása?</string>
+    <string name="TotpAppListScreen__remove_authenticator_app">Hitelesítő alkalmazás eltávolítása?</string>
     <!-- Body of the dialog confirming removal of an authenticator app -->
-    <string name="AuthenticatorAppsScreen__to_remove_this_authentication_method">A hitelesítési módszer eltávolításához a hitelesítő alkalmazás 6 számjegyű kódjára van szükség.</string>
+    <string name="TotpAppListScreen__to_remove_this_authentication_method">A hitelesítési módszer eltávolításához a hitelesítő alkalmazás 6 számjegyű kódjára van szükség.</string>
     <!-- Title of the dialog shown when the account already has as many authenticator apps as it\'s allowed -->
-    <string name="AuthenticatorAppsScreen__cant_add_authenticator_app">Nem lehet hitelesítő alkalmazást hozzáadni</string>
+    <string name="TotpAppListScreen__cant_add_authenticator_app">Nem lehet hitelesítő alkalmazást hozzáadni</string>
     <!-- Body of the dialog shown when the account already has as many authenticator apps as it\'s allowed -->
-    <string name="AuthenticatorAppsScreen__you_cant_add_more_than_d">Legfeljebb %1$d hitelesítő alkalmazást adhatsz hozzá. Először próbálj egyet eltávolítani.</string>
+    <string name="TotpAppListScreen__you_cant_add_more_than_d">Legfeljebb %1$d hitelesítő alkalmazást adhatsz hozzá. Először próbálj egyet eltávolítani.</string>
     <!-- Toast shown after an authenticator app has been removed -->
-    <string name="AuthenticatorAppsScreen__authenticator_app_removed">Hitelesítő alkalmazás eltávolítva</string>
+    <string name="TotpAppListScreen__authenticator_app_removed">Hitelesítő alkalmazás eltávolítva</string>
 
-    <!-- AuthenticatorNameScreen -->
+    <!-- TotpNameEntryScreen -->
     <!-- Title of the screen where the user names an authenticator app -->
-    <string name="AuthenticatorNameScreen__choose_a_name">Válassz egy nevet</string>
+    <string name="TotpNameEntryScreen__choose_a_name">Válassz egy nevet</string>
     <!-- Instructions shown above the name field when renaming an authenticator app -->
-    <string name="AuthenticatorNameScreen__choose_a_unique_name">Válassz egy egyedi nevet ennek a hitelesítő alkalmazásnak.</string>
+    <string name="TotpNameEntryScreen__choose_a_unique_name">Válassz egy egyedi nevet ennek a hitelesítő alkalmazásnak.</string>
     <!-- Instructions shown above the name field when naming a newly configured authenticator app -->
-    <string name="AuthenticatorNameScreen__choose_a_unique_name_to_help_you_identify_it">Válassz egy egyedi nevet ennek a hitelesítő alkalmazásnak, hogy később könnyebben azonosíthasd.</string>
+    <string name="TotpNameEntryScreen__choose_a_unique_name_to_help_you_identify_it">Válassz egy egyedi nevet ennek a hitelesítő alkalmazásnak, hogy később könnyebben azonosíthasd.</string>
     <!-- Label of the name field -->
-    <string name="AuthenticatorNameScreen__name">Név</string>
+    <string name="TotpNameEntryScreen__name">Név</string>
     <!-- Button that submits the entered name -->
-    <string name="AuthenticatorNameScreen__next">Tovább</string>
+    <string name="TotpNameEntryScreen__next">Tovább</string>
     <!-- Toast shown after an authenticator app has been successfully set up -->
-    <string name="AuthenticatorNameScreen__authenticator_app_set_up">Hitelesítő alkalmazás beállítása</string>
+    <string name="TotpNameEntryScreen__authenticator_app_set_up">Hitelesítő alkalmazás beállítása</string>
     <!-- Toast shown after an authenticator app has been renamed -->
-    <string name="AuthenticatorNameScreen__authenticator_app_renamed">Hitelesítő alkalmazás átnevezve</string>
+    <string name="TotpNameEntryScreen__authenticator_app_renamed">Hitelesítő alkalmazás átnevezve</string>
 </resources>

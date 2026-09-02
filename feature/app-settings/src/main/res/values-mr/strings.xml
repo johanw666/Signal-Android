@@ -80,37 +80,37 @@
     <!-- Clickable text that takes the user to a support article -->
     <string name="AccountSettingsFragment__learn_more">अधिक जाणून घ्या</string>
 
-    <!-- AuthenticatorSetupScreen -->
+    <!-- TotpSetupScreen -->
     <!-- Title of the screen that walks the user through setting up an authenticator app -->
-    <string name="AuthenticatorSetupScreen__set_up_your_authenticator_app">तुमचे ऑथेंटिकेटर ॲप सेट अप करा</string>
+    <string name="TotpSetupScreen__set_up_your_authenticator_app">तुमचे ऑथेंटिकेटर ॲप सेट अप करा</string>
     <!-- Instructions shown at the top of the authenticator app setup screen -->
-    <string name="AuthenticatorSetupScreen__follow_these_steps">तुमचे ऑथेंटिकेटर ॲप सेट अप करण्यासाठी या पायऱ्या पाळा.</string>
+    <string name="TotpSetupScreen__follow_these_steps">तुमचे ऑथेंटिकेटर ॲप सेट अप करण्यासाठी या पायऱ्या पाळा.</string>
     <!-- Clickable text that takes the user to a support article -->
-    <string name="AuthenticatorSetupScreen__learn_more">अधिक जाणून घ्या</string>
+    <string name="TotpSetupScreen__learn_more">अधिक जाणून घ्या</string>
     <!-- Header of the first step of authenticator app setup -->
-    <string name="AuthenticatorSetupScreen__step_1">पायरी 1</string>
+    <string name="TotpSetupScreen__step_1">पायरी 1</string>
     <!-- Body of the first step of authenticator app setup -->
-    <string name="AuthenticatorSetupScreen__install_a_trusted_authenticator_app">तुमच्या डिव्हाईस वर एक विश्वासार्ह ऑथेंटिकेटर ॲप इन्स्टॉल करा.</string>
+    <string name="TotpSetupScreen__install_a_trusted_authenticator_app">तुमच्या डिव्हाईस वर एक विश्वासार्ह ऑथेंटिकेटर ॲप इन्स्टॉल करा.</string>
     <!-- Header of the second step of authenticator app setup -->
-    <string name="AuthenticatorSetupScreen__step_2">पायरी 2</string>
+    <string name="TotpSetupScreen__step_2">पायरी 2</string>
     <!-- Body of the second step of authenticator app setup -->
-    <string name="AuthenticatorSetupScreen__open_your_authenticator_app">तुमचे Signal खाते समाविष्ट करण्यासाठी खालचे बटण दाबून तुमचे ऑथेंटिकेटर ॲप उघडा.</string>
+    <string name="TotpSetupScreen__open_your_authenticator_app">तुमचे Signal खाते समाविष्ट करण्यासाठी खालचे बटण दाबून तुमचे ऑथेंटिकेटर ॲप उघडा.</string>
     <!-- Button that opens the user\'s authenticator app -->
-    <string name="AuthenticatorSetupScreen__open">उघडा</string>
+    <string name="TotpSetupScreen__open">उघडा</string>
     <!-- Text above the setup key explaining that it can be entered by hand instead -->
-    <string name="AuthenticatorSetupScreen__or_you_can_copy_this_key">किंवा तुम्ही स्वतःहून ते सेट करण्यासाठी ही की कॉपी करू शकता.</string>
+    <string name="TotpSetupScreen__or_you_can_copy_this_key">किंवा तुम्ही स्वतःहून ते सेट करण्यासाठी ही की कॉपी करू शकता.</string>
     <!-- Button that copies the setup key to the clipboard -->
-    <string name="AuthenticatorSetupScreen__copy">कॉपी करा</string>
+    <string name="TotpSetupScreen__copy">कॉपी करा</string>
     <!-- Toast shown after the setup key has been copied to the clipboard -->
-    <string name="AuthenticatorSetupScreen__copied_to_clipboard">क्लिपबोर्ड वर कॉपी केले</string>
+    <string name="TotpSetupScreen__copied_to_clipboard">क्लिपबोर्ड वर कॉपी केले</string>
     <!-- Toast shown when there is no app installed that can handle the authenticator setup link -->
-    <string name="AuthenticatorSetupScreen__no_authenticator_app_found">कोणतेही ऑथेंटिकेटर ॲप सापडले नाही</string>
+    <string name="TotpSetupScreen__no_authenticator_app_found">कोणतेही ऑथेंटिकेटर ॲप सापडले नाही</string>
     <!-- Header of the third step of authenticator app setup -->
-    <string name="AuthenticatorSetupScreen__step_3">पायरी 3</string>
+    <string name="TotpSetupScreen__step_3">पायरी 3</string>
     <!-- Body of the third step of authenticator app setup -->
-    <string name="AuthenticatorSetupScreen__copy_the_code_thats_generated">तयार झालेला कोड कॉपी करा आणि पुढे जात राहण्यासाठी इथे परत या.</string>
+    <string name="TotpSetupScreen__copy_the_code_thats_generated">तयार झालेला कोड कॉपी करा आणि पुढे जात राहण्यासाठी इथे परत या.</string>
     <!-- Button that advances from the setup instructions to entering a code -->
-    <string name="AuthenticatorSetupScreen__continue">सुरू ठेवा</string>
+    <string name="TotpSetupScreen__continue">सुरू ठेवा</string>
 
     <!-- PasskeysScreen -->
     <!-- Title of the screen where the user sets up passkeys -->
@@ -140,60 +140,60 @@
     <!-- Menu option that removes a passkey -->
     <string name="PasskeysScreen__remove">काढून टाका</string>
 
-    <!-- AuthenticatorCodeEntryScreen -->
+    <!-- TotpCodeEntryScreen -->
     <!-- Title of the screen where the user enters the code from their authenticator app -->
-    <string name="AuthenticatorCodeEntryScreen__enter_your_code">तुमचा कोड प्रविष्ट करा</string>
+    <string name="TotpCodeEntryScreen__enter_your_code">तुमचा कोड प्रविष्ट करा</string>
     <!-- Instructions shown above the code entry field -->
-    <string name="AuthenticatorCodeEntryScreen__enter_the_6_digit_code">तुमच्या ऑथेंटिकेटर ॲपमधील 6-अंकी कोड प्रविष्ट करा.</string>
+    <string name="TotpCodeEntryScreen__enter_the_6_digit_code">तुमच्या ऑथेंटिकेटर ॲपमधील 6-अंकी कोड प्रविष्ट करा.</string>
     <!-- Label of the code entry field -->
-    <string name="AuthenticatorCodeEntryScreen__code">कोड</string>
+    <string name="TotpCodeEntryScreen__code">कोड</string>
     <!-- Button that submits the entered code -->
-    <string name="AuthenticatorCodeEntryScreen__done">झाले</string>
-    <!-- AuthenticatorAppsScreen -->
+    <string name="TotpCodeEntryScreen__done">झाले</string>
+    <!-- TotpAppListScreen -->
     <!-- Title of the screen listing the authenticator apps on the account -->
-    <string name="AuthenticatorAppsScreen__authenticator_app">ऑथेंटिकेटर ॲप</string>
+    <string name="TotpAppListScreen__authenticator_app">ऑथेंटिकेटर ॲप</string>
     <!-- Description of what an authenticator app is for, shown at the top of the screen -->
-    <string name="AuthenticatorAppsScreen__set_up_an_authenticator_app">एकवेळचे पडताळणी कोड तयार करण्यासाठी ऑथेंटिकेटर ॲप सेट अप करा</string>
+    <string name="TotpAppListScreen__set_up_an_authenticator_app">एकवेळचे पडताळणी कोड तयार करण्यासाठी ऑथेंटिकेटर ॲप सेट अप करा</string>
     <!-- Clickable text that takes the user to a support article -->
-    <string name="AuthenticatorAppsScreen__learn_more">अधिक जाणून घ्या</string>
+    <string name="TotpAppListScreen__learn_more">अधिक जाणून घ्या</string>
     <!-- Button that starts setting up another authenticator app -->
-    <string name="AuthenticatorAppsScreen__add_authenticator_app">ऑथेंटिकेटर ॲप समाविष्ट करा</string>
+    <string name="TotpAppListScreen__add_authenticator_app">ऑथेंटिकेटर ॲप समाविष्ट करा</string>
     <!-- Section header above the list of configured authenticator apps -->
-    <string name="AuthenticatorAppsScreen__authenticator_apps">ऑथेंटिकेटर ॲप्स</string>
+    <string name="TotpAppListScreen__authenticator_apps">ऑथेंटिकेटर ॲप्स</string>
     <!-- Shown in place of the list when no authenticator apps are configured -->
-    <string name="AuthenticatorAppsScreen__no_authenticator_apps">कोणतेही ऑथेंटिकेटर ॲप नाही</string>
+    <string name="TotpAppListScreen__no_authenticator_apps">कोणतेही ऑथेंटिकेटर ॲप नाही</string>
     <!-- Subtitle of an authenticator app row saying when it was configured. Placeholder is a date or time. -->
-    <string name="AuthenticatorAppsScreen__added_s">\"%1$s\" ला जोडले</string>
+    <string name="TotpAppListScreen__added_s">\"%1$s\" ला जोडले</string>
     <!-- Content description of the button that opens an authenticator app\'s options -->
-    <string name="AuthenticatorAppsScreen__open_authenticator_app_options">ऑथेंटिकेटर ॲपमधील पर्याय उघडा</string>
+    <string name="TotpAppListScreen__open_authenticator_app_options">ऑथेंटिकेटर ॲपमधील पर्याय उघडा</string>
     <!-- Menu option that renames an authenticator app -->
-    <string name="AuthenticatorAppsScreen__rename">नाव बदला</string>
+    <string name="TotpAppListScreen__rename">नाव बदला</string>
     <!-- Menu option that removes an authenticator app -->
-    <string name="AuthenticatorAppsScreen__remove">काढून टाका</string>
+    <string name="TotpAppListScreen__remove">काढून टाका</string>
     <!-- Title of the dialog confirming removal of an authenticator app -->
-    <string name="AuthenticatorAppsScreen__remove_authenticator_app">ऑथेंटिकेटर ॲप हटवायचे का?</string>
+    <string name="TotpAppListScreen__remove_authenticator_app">ऑथेंटिकेटर ॲप हटवायचे का?</string>
     <!-- Body of the dialog confirming removal of an authenticator app -->
-    <string name="AuthenticatorAppsScreen__to_remove_this_authentication_method">अधिस्वीकृतीची ही पद्धत हटवण्यासाठी तुमच्या ऑथेंटिकेटर ॲपमधील 6 अंकी कोड आवश्यक आहे.</string>
+    <string name="TotpAppListScreen__to_remove_this_authentication_method">अधिस्वीकृतीची ही पद्धत हटवण्यासाठी तुमच्या ऑथेंटिकेटर ॲपमधील 6 अंकी कोड आवश्यक आहे.</string>
     <!-- Title of the dialog shown when the account already has as many authenticator apps as it\'s allowed -->
-    <string name="AuthenticatorAppsScreen__cant_add_authenticator_app">ऑथेंटिकेटर ॲप समाविष्ट करता येत नाही</string>
+    <string name="TotpAppListScreen__cant_add_authenticator_app">ऑथेंटिकेटर ॲप समाविष्ट करता येत नाही</string>
     <!-- Body of the dialog shown when the account already has as many authenticator apps as it\'s allowed -->
-    <string name="AuthenticatorAppsScreen__you_cant_add_more_than_d">तुम्ही %1$d पेक्षा अधिक ऑथेंटिकेटर ॲप्स समाविष्ट करू शकत नाही. आधी एक हटवून पाहा.</string>
+    <string name="TotpAppListScreen__you_cant_add_more_than_d">तुम्ही %1$d पेक्षा अधिक ऑथेंटिकेटर ॲप्स समाविष्ट करू शकत नाही. आधी एक हटवून पाहा.</string>
     <!-- Toast shown after an authenticator app has been removed -->
-    <string name="AuthenticatorAppsScreen__authenticator_app_removed">ऑथेंटिकेटर ॲप हटवून टाकले</string>
+    <string name="TotpAppListScreen__authenticator_app_removed">ऑथेंटिकेटर ॲप हटवून टाकले</string>
 
-    <!-- AuthenticatorNameScreen -->
+    <!-- TotpNameEntryScreen -->
     <!-- Title of the screen where the user names an authenticator app -->
-    <string name="AuthenticatorNameScreen__choose_a_name">एक नाव निवडा</string>
+    <string name="TotpNameEntryScreen__choose_a_name">एक नाव निवडा</string>
     <!-- Instructions shown above the name field when renaming an authenticator app -->
-    <string name="AuthenticatorNameScreen__choose_a_unique_name">या ऑथेंटिकेटर ॲपसाठी एक अनोखे नाव निवडा.</string>
+    <string name="TotpNameEntryScreen__choose_a_unique_name">या ऑथेंटिकेटर ॲपसाठी एक अनोखे नाव निवडा.</string>
     <!-- Instructions shown above the name field when naming a newly configured authenticator app -->
-    <string name="AuthenticatorNameScreen__choose_a_unique_name_to_help_you_identify_it">या ऑथेंटिकेटर ॲपसाठी एक अनोखा आकडा निवडा ज्यामुळे ते नंतर ओळखायला तुम्हाला मदत होईल.</string>
+    <string name="TotpNameEntryScreen__choose_a_unique_name_to_help_you_identify_it">या ऑथेंटिकेटर ॲपसाठी एक अनोखा आकडा निवडा ज्यामुळे ते नंतर ओळखायला तुम्हाला मदत होईल.</string>
     <!-- Label of the name field -->
-    <string name="AuthenticatorNameScreen__name">नाव</string>
+    <string name="TotpNameEntryScreen__name">नाव</string>
     <!-- Button that submits the entered name -->
-    <string name="AuthenticatorNameScreen__next">पुढे</string>
+    <string name="TotpNameEntryScreen__next">पुढे</string>
     <!-- Toast shown after an authenticator app has been successfully set up -->
-    <string name="AuthenticatorNameScreen__authenticator_app_set_up">ऑथेंटिकेटर ॲप सेट अप करा</string>
+    <string name="TotpNameEntryScreen__authenticator_app_set_up">ऑथेंटिकेटर ॲप सेट अप करा</string>
     <!-- Toast shown after an authenticator app has been renamed -->
-    <string name="AuthenticatorNameScreen__authenticator_app_renamed">ऑथेंटिकेटर ॲपचे नाव बदलले</string>
+    <string name="TotpNameEntryScreen__authenticator_app_renamed">ऑथेंटिकेटर ॲपचे नाव बदलले</string>
 </resources>

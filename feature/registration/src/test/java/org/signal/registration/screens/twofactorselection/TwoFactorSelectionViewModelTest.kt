@@ -7,6 +7,7 @@ package org.signal.registration.screens.twofactorselection
 
 import assertk.assertThat
 import assertk.assertions.containsExactly
+import assertk.assertions.isEmpty
 import assertk.assertions.isEqualTo
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
@@ -21,11 +22,15 @@ import kotlinx.coroutines.test.setMain
 import org.junit.After
 import org.junit.Before
 import org.junit.Test
+import org.signal.registration.RegistrationFlowEvent
+import org.signal.registration.RegistrationRoute
 
 @OptIn(ExperimentalCoroutinesApi::class)
 class TwoFactorSelectionViewModelTest {
 
   private val testDispatcher = UnconfinedTestDispatcher()
+
+  private val emittedParentEvents = mutableListOf<RegistrationFlowEvent>()
 
   @Before
   fun setUp() {
@@ -52,26 +57,25 @@ class TwoFactorSelectionViewModelTest {
     viewModel.onEvent(TwoFactorSelectionScreenEvents.MethodSelected(TwoFactorMethod.Passkey))
 
     assertThat(actions).containsExactly(TwoFactorSelectionAction.AuthenticateWithPasskey)
+    assertThat(emittedParentEvents).isEmpty()
   }
 
   @Test
   fun `selecting the authenticator app moves on to code entry`() = runTest(testDispatcher) {
     val viewModel = createViewModel()
-    val actions = collectActions(viewModel.actions)
 
     viewModel.onEvent(TwoFactorSelectionScreenEvents.MethodSelected(TwoFactorMethod.AuthenticatorApp))
 
-    assertThat(actions).containsExactly(TwoFactorSelectionAction.NavigateToTotpEntry)
+    assertThat(emittedParentEvents).containsExactly(RegistrationFlowEvent.NavigateToScreen(RegistrationRoute.TotpEntry))
   }
 
   @Test
   fun `CancelClicked navigates back`() = runTest(testDispatcher) {
     val viewModel = createViewModel()
-    val actions = collectActions(viewModel.actions)
 
     viewModel.onEvent(TwoFactorSelectionScreenEvents.CancelClicked)
 
-    assertThat(actions).containsExactly(TwoFactorSelectionAction.NavigateBack)
+    assertThat(emittedParentEvents).containsExactly(RegistrationFlowEvent.NavigateBack)
   }
 
   @Test
@@ -87,7 +91,7 @@ class TwoFactorSelectionViewModelTest {
   private fun createViewModel(
     methods: List<TwoFactorMethod> = listOf(TwoFactorMethod.Passkey, TwoFactorMethod.AuthenticatorApp)
   ): TwoFactorSelectionViewModel {
-    return TwoFactorSelectionViewModel(methods)
+    return TwoFactorSelectionViewModel(methods, parentEventEmitter = { emittedParentEvents.add(it) })
   }
 
   private fun TestScope.collectActions(actions: Flow<TwoFactorSelectionAction>): List<TwoFactorSelectionAction> {

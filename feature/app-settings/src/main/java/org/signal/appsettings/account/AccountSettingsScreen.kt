@@ -63,7 +63,7 @@ import org.signal.core.ui.R as CoreUiR
 object AccountSettingsTestTags {
   const val SCROLLER = "scroller"
   const val CARD_SIGNAL_LOGIN = "card-signal-login"
-  const val ROW_AUTHENTICATOR_APP = "row-authenticator-app"
+  const val ROW_TOTP_APP = "row-totp-app"
   const val ROW_PASSKEYS = "row-passkeys"
   const val ROW_MODIFY_PIN = "row-modify-pin"
   const val ROW_PIN_REMINDER = "row-pin-reminder"
@@ -126,16 +126,19 @@ fun AccountSettingsScreen(
         }
 
         item {
+          // A null count means we couldn't find out, which reads as the generic subtitle rather than as "none configured".
+          val totpAppCount = state.signalLogin.totpAppCount
+
           Rows.TextRow(
             icon = SignalIcons.DevicePhone.imageVector,
             text = stringResource(R.string.AccountSettingsFragment__authenticator_app),
-            label = if (state.signalLogin.authenticatorAppCount > 0) {
-              pluralStringResource(R.plurals.AccountSettingsFragment__d_configured, state.signalLogin.authenticatorAppCount, state.signalLogin.authenticatorAppCount)
+            label = if (totpAppCount != null && totpAppCount > 0) {
+              pluralStringResource(R.plurals.AccountSettingsFragment__d_configured, totpAppCount, totpAppCount)
             } else {
               stringResource(R.string.AccountSettingsFragment__one_time_verification_codes)
             },
-            onClick = { onEvent(AccountSettingsEvent.AuthenticatorAppClicked) },
-            modifier = Modifier.testTag(AccountSettingsTestTags.ROW_AUTHENTICATOR_APP)
+            onClick = { onEvent(AccountSettingsEvent.TotpAppClicked) },
+            modifier = Modifier.testTag(AccountSettingsTestTags.ROW_TOTP_APP)
           )
         }
 
@@ -565,7 +568,7 @@ private fun AccountSettingsScreenSignalLoginPreview() {
     AccountSettingsScreen(
       state = AccountSettingsState(
         isPhoneNumberless = true,
-        signalLogin = AccountSettingsState.SignalLogin(authenticatorAppCount = 2, passkeyCount = 8)
+        signalLogin = AccountSettingsState.SignalLogin(totpAppCount = 2, passkeyCount = 8)
       ),
       onEvent = {}
     )

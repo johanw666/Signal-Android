@@ -80,37 +80,37 @@
     <!-- Clickable text that takes the user to a support article -->
     <string name="AccountSettingsFragment__learn_more">Máis información</string>
 
-    <!-- AuthenticatorSetupScreen -->
+    <!-- TotpSetupScreen -->
     <!-- Title of the screen that walks the user through setting up an authenticator app -->
-    <string name="AuthenticatorSetupScreen__set_up_your_authenticator_app">Configura a aplicación de autenticación</string>
+    <string name="TotpSetupScreen__set_up_your_authenticator_app">Configura a aplicación de autenticación</string>
     <!-- Instructions shown at the top of the authenticator app setup screen -->
-    <string name="AuthenticatorSetupScreen__follow_these_steps">Sigue estes pasos para configurar a aplicación de autenticación.</string>
+    <string name="TotpSetupScreen__follow_these_steps">Sigue estes pasos para configurar a aplicación de autenticación.</string>
     <!-- Clickable text that takes the user to a support article -->
-    <string name="AuthenticatorSetupScreen__learn_more">Máis información</string>
+    <string name="TotpSetupScreen__learn_more">Máis información</string>
     <!-- Header of the first step of authenticator app setup -->
-    <string name="AuthenticatorSetupScreen__step_1">Primeiro paso</string>
+    <string name="TotpSetupScreen__step_1">Primeiro paso</string>
     <!-- Body of the first step of authenticator app setup -->
-    <string name="AuthenticatorSetupScreen__install_a_trusted_authenticator_app">Instala unha aplicación de autenticación de confianza no teu dispositivo.</string>
+    <string name="TotpSetupScreen__install_a_trusted_authenticator_app">Instala unha aplicación de autenticación de confianza no teu dispositivo.</string>
     <!-- Header of the second step of authenticator app setup -->
-    <string name="AuthenticatorSetupScreen__step_2">Segundo paso</string>
+    <string name="TotpSetupScreen__step_2">Segundo paso</string>
     <!-- Body of the second step of authenticator app setup -->
-    <string name="AuthenticatorSetupScreen__open_your_authenticator_app">Abre a aplicación de autenticación premendo o botón de máis abaixo para engadir a túa conta de Signal.</string>
+    <string name="TotpSetupScreen__open_your_authenticator_app">Abre a aplicación de autenticación premendo o botón de máis abaixo para engadir a túa conta de Signal.</string>
     <!-- Button that opens the user\'s authenticator app -->
-    <string name="AuthenticatorSetupScreen__open">Abrir</string>
+    <string name="TotpSetupScreen__open">Abrir</string>
     <!-- Text above the setup key explaining that it can be entered by hand instead -->
-    <string name="AuthenticatorSetupScreen__or_you_can_copy_this_key">Ou podes copiar esta clave para configurala de forma manual.</string>
+    <string name="TotpSetupScreen__or_you_can_copy_this_key">Ou podes copiar esta clave para configurala de forma manual.</string>
     <!-- Button that copies the setup key to the clipboard -->
-    <string name="AuthenticatorSetupScreen__copy">Copiar</string>
+    <string name="TotpSetupScreen__copy">Copiar</string>
     <!-- Toast shown after the setup key has been copied to the clipboard -->
-    <string name="AuthenticatorSetupScreen__copied_to_clipboard">Copiado no portapapeis</string>
+    <string name="TotpSetupScreen__copied_to_clipboard">Copiado no portapapeis</string>
     <!-- Toast shown when there is no app installed that can handle the authenticator setup link -->
-    <string name="AuthenticatorSetupScreen__no_authenticator_app_found">Non se atopou unha aplicación de autenticación</string>
+    <string name="TotpSetupScreen__no_authenticator_app_found">Non se atopou unha aplicación de autenticación</string>
     <!-- Header of the third step of authenticator app setup -->
-    <string name="AuthenticatorSetupScreen__step_3">Terceiro paso</string>
+    <string name="TotpSetupScreen__step_3">Terceiro paso</string>
     <!-- Body of the third step of authenticator app setup -->
-    <string name="AuthenticatorSetupScreen__copy_the_code_thats_generated">Copia o código que se xerou e volve aquí para continuar.</string>
+    <string name="TotpSetupScreen__copy_the_code_thats_generated">Copia o código que se xerou e volve aquí para continuar.</string>
     <!-- Button that advances from the setup instructions to entering a code -->
-    <string name="AuthenticatorSetupScreen__continue">Continuar</string>
+    <string name="TotpSetupScreen__continue">Continuar</string>
 
     <!-- PasskeysScreen -->
     <!-- Title of the screen where the user sets up passkeys -->
@@ -140,60 +140,60 @@
     <!-- Menu option that removes a passkey -->
     <string name="PasskeysScreen__remove">Eliminar</string>
 
-    <!-- AuthenticatorCodeEntryScreen -->
+    <!-- TotpCodeEntryScreen -->
     <!-- Title of the screen where the user enters the code from their authenticator app -->
-    <string name="AuthenticatorCodeEntryScreen__enter_your_code">Escribe o teu código</string>
+    <string name="TotpCodeEntryScreen__enter_your_code">Escribe o teu código</string>
     <!-- Instructions shown above the code entry field -->
-    <string name="AuthenticatorCodeEntryScreen__enter_the_6_digit_code">Introduce o código de 6 díxitos da aplicación de autenticación.</string>
+    <string name="TotpCodeEntryScreen__enter_the_6_digit_code">Introduce o código de 6 díxitos da aplicación de autenticación.</string>
     <!-- Label of the code entry field -->
-    <string name="AuthenticatorCodeEntryScreen__code">Código</string>
+    <string name="TotpCodeEntryScreen__code">Código</string>
     <!-- Button that submits the entered code -->
-    <string name="AuthenticatorCodeEntryScreen__done">Feito</string>
-    <!-- AuthenticatorAppsScreen -->
+    <string name="TotpCodeEntryScreen__done">Feito</string>
+    <!-- TotpAppListScreen -->
     <!-- Title of the screen listing the authenticator apps on the account -->
-    <string name="AuthenticatorAppsScreen__authenticator_app">Aplicación de autenticación</string>
+    <string name="TotpAppListScreen__authenticator_app">Aplicación de autenticación</string>
     <!-- Description of what an authenticator app is for, shown at the top of the screen -->
-    <string name="AuthenticatorAppsScreen__set_up_an_authenticator_app">Configura unha aplicación de autenticación para xerar códigos de verificación dun só uso</string>
+    <string name="TotpAppListScreen__set_up_an_authenticator_app">Configura unha aplicación de autenticación para xerar códigos de verificación dun só uso</string>
     <!-- Clickable text that takes the user to a support article -->
-    <string name="AuthenticatorAppsScreen__learn_more">Máis información</string>
+    <string name="TotpAppListScreen__learn_more">Máis información</string>
     <!-- Button that starts setting up another authenticator app -->
-    <string name="AuthenticatorAppsScreen__add_authenticator_app">Engadir aplicación de autenticación</string>
+    <string name="TotpAppListScreen__add_authenticator_app">Engadir aplicación de autenticación</string>
     <!-- Section header above the list of configured authenticator apps -->
-    <string name="AuthenticatorAppsScreen__authenticator_apps">Aplicacións de autenticación</string>
+    <string name="TotpAppListScreen__authenticator_apps">Aplicacións de autenticación</string>
     <!-- Shown in place of the list when no authenticator apps are configured -->
-    <string name="AuthenticatorAppsScreen__no_authenticator_apps">Non se atoparon aplicacións de autenticación</string>
+    <string name="TotpAppListScreen__no_authenticator_apps">Non se atoparon aplicacións de autenticación</string>
     <!-- Subtitle of an authenticator app row saying when it was configured. Placeholder is a date or time. -->
-    <string name="AuthenticatorAppsScreen__added_s">Engadido «%1$s»</string>
+    <string name="TotpAppListScreen__added_s">Engadido «%1$s»</string>
     <!-- Content description of the button that opens an authenticator app\'s options -->
-    <string name="AuthenticatorAppsScreen__open_authenticator_app_options">Abrir opcións da aplicación de autenticación</string>
+    <string name="TotpAppListScreen__open_authenticator_app_options">Abrir opcións da aplicación de autenticación</string>
     <!-- Menu option that renames an authenticator app -->
-    <string name="AuthenticatorAppsScreen__rename">Renomear</string>
+    <string name="TotpAppListScreen__rename">Renomear</string>
     <!-- Menu option that removes an authenticator app -->
-    <string name="AuthenticatorAppsScreen__remove">Eliminar</string>
+    <string name="TotpAppListScreen__remove">Eliminar</string>
     <!-- Title of the dialog confirming removal of an authenticator app -->
-    <string name="AuthenticatorAppsScreen__remove_authenticator_app">Eliminar aplicación de autenticación?</string>
+    <string name="TotpAppListScreen__remove_authenticator_app">Eliminar aplicación de autenticación?</string>
     <!-- Body of the dialog confirming removal of an authenticator app -->
-    <string name="AuthenticatorAppsScreen__to_remove_this_authentication_method">Para eliminar este método de autenticación necesitas o código de 6 díxitos da aplicación de autenticación.</string>
+    <string name="TotpAppListScreen__to_remove_this_authentication_method">Para eliminar este método de autenticación necesitas o código de 6 díxitos da aplicación de autenticación.</string>
     <!-- Title of the dialog shown when the account already has as many authenticator apps as it\'s allowed -->
-    <string name="AuthenticatorAppsScreen__cant_add_authenticator_app">Non se pode engadir a aplicación de autenticación</string>
+    <string name="TotpAppListScreen__cant_add_authenticator_app">Non se pode engadir a aplicación de autenticación</string>
     <!-- Body of the dialog shown when the account already has as many authenticator apps as it\'s allowed -->
-    <string name="AuthenticatorAppsScreen__you_cant_add_more_than_d">Non podes engadir máis de %1$d aplicacións de autenticación. Tes que eliminar antes unha.</string>
+    <string name="TotpAppListScreen__you_cant_add_more_than_d">Non podes engadir máis de %1$d aplicacións de autenticación. Tes que eliminar antes unha.</string>
     <!-- Toast shown after an authenticator app has been removed -->
-    <string name="AuthenticatorAppsScreen__authenticator_app_removed">Aplicación de autenticación eliminada</string>
+    <string name="TotpAppListScreen__authenticator_app_removed">Aplicación de autenticación eliminada</string>
 
-    <!-- AuthenticatorNameScreen -->
+    <!-- TotpNameEntryScreen -->
     <!-- Title of the screen where the user names an authenticator app -->
-    <string name="AuthenticatorNameScreen__choose_a_name">Escolle un nome</string>
+    <string name="TotpNameEntryScreen__choose_a_name">Escolle un nome</string>
     <!-- Instructions shown above the name field when renaming an authenticator app -->
-    <string name="AuthenticatorNameScreen__choose_a_unique_name">Ponlle un nome único a esta aplicación de autenticación.</string>
+    <string name="TotpNameEntryScreen__choose_a_unique_name">Ponlle un nome único a esta aplicación de autenticación.</string>
     <!-- Instructions shown above the name field when naming a newly configured authenticator app -->
-    <string name="AuthenticatorNameScreen__choose_a_unique_name_to_help_you_identify_it">Escolle un nome único para esta aplicación de autenticación que che axude a identificala máis adiante.</string>
+    <string name="TotpNameEntryScreen__choose_a_unique_name_to_help_you_identify_it">Escolle un nome único para esta aplicación de autenticación que che axude a identificala máis adiante.</string>
     <!-- Label of the name field -->
-    <string name="AuthenticatorNameScreen__name">Nome</string>
+    <string name="TotpNameEntryScreen__name">Nome</string>
     <!-- Button that submits the entered name -->
-    <string name="AuthenticatorNameScreen__next">Seguinte</string>
+    <string name="TotpNameEntryScreen__next">Seguinte</string>
     <!-- Toast shown after an authenticator app has been successfully set up -->
-    <string name="AuthenticatorNameScreen__authenticator_app_set_up">Configuración da aplicación de autenticación</string>
+    <string name="TotpNameEntryScreen__authenticator_app_set_up">Configuración da aplicación de autenticación</string>
     <!-- Toast shown after an authenticator app has been renamed -->
-    <string name="AuthenticatorNameScreen__authenticator_app_renamed">Cambiouse o nome da aplicación de autenticación</string>
+    <string name="TotpNameEntryScreen__authenticator_app_renamed">Cambiouse o nome da aplicación de autenticación</string>
 </resources>

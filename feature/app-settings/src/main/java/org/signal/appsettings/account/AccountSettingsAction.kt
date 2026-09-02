@@ -29,7 +29,7 @@ sealed interface AccountSettingsAction {
   data object NavigateToSignalLoginDetails : AccountSettingsAction
 
   /** Open the screen listing the account's authenticator apps. */
-  data object NavigateToAuthenticatorApps : AccountSettingsAction
+  data object NavigateToTotpAppList : AccountSettingsAction
 
   /** Open the passkeys screen. */
   data object NavigateToPasskeys : AccountSettingsAction

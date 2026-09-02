@@ -35,6 +35,11 @@ sealed class SignalLoginCredentialEntryScreenEvents {
   /** The user submitted the login, either with the next button or the keyboard's done action. */
   data object NextClicked : SignalLoginCredentialEntryScreenEvents()
 
+  /** The user completed the two-factor flow the login was bounced to. Carries the entered code. */
+  data class TwoFactorCodeEntered(val code: String) : SignalLoginCredentialEntryScreenEvents() {
+    override fun toString(): String = "TwoFactorCodeEntered(code=${code.censor()})"
+  }
+
   /** The user dismissed the login error dialog. */
   data object DismissError : SignalLoginCredentialEntryScreenEvents()
 }

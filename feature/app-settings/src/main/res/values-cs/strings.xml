@@ -86,37 +86,37 @@
     <!-- Clickable text that takes the user to a support article -->
     <string name="AccountSettingsFragment__learn_more">Zjistit více</string>
 
-    <!-- AuthenticatorSetupScreen -->
+    <!-- TotpSetupScreen -->
     <!-- Title of the screen that walks the user through setting up an authenticator app -->
-    <string name="AuthenticatorSetupScreen__set_up_your_authenticator_app">Nastavte si ověřovací aplikaci</string>
+    <string name="TotpSetupScreen__set_up_your_authenticator_app">Nastavte si ověřovací aplikaci</string>
     <!-- Instructions shown at the top of the authenticator app setup screen -->
-    <string name="AuthenticatorSetupScreen__follow_these_steps">Pro nastavení ověřovací aplikace postupujte takto:</string>
+    <string name="TotpSetupScreen__follow_these_steps">Pro nastavení ověřovací aplikace postupujte takto:</string>
     <!-- Clickable text that takes the user to a support article -->
-    <string name="AuthenticatorSetupScreen__learn_more">Zjistit více</string>
+    <string name="TotpSetupScreen__learn_more">Zjistit více</string>
     <!-- Header of the first step of authenticator app setup -->
-    <string name="AuthenticatorSetupScreen__step_1">Krok 1</string>
+    <string name="TotpSetupScreen__step_1">Krok 1</string>
     <!-- Body of the first step of authenticator app setup -->
-    <string name="AuthenticatorSetupScreen__install_a_trusted_authenticator_app">Nainstalujte si do zařízení důvěryhodnou ověřovací aplikaci.</string>
+    <string name="TotpSetupScreen__install_a_trusted_authenticator_app">Nainstalujte si do zařízení důvěryhodnou ověřovací aplikaci.</string>
     <!-- Header of the second step of authenticator app setup -->
-    <string name="AuthenticatorSetupScreen__step_2">Krok 2</string>
+    <string name="TotpSetupScreen__step_2">Krok 2</string>
     <!-- Body of the second step of authenticator app setup -->
-    <string name="AuthenticatorSetupScreen__open_your_authenticator_app">Klepnutím na tlačítko níže otevřete ověřovací aplikaci a přidejte svůj účet Signal.</string>
+    <string name="TotpSetupScreen__open_your_authenticator_app">Klepnutím na tlačítko níže otevřete ověřovací aplikaci a přidejte svůj účet Signal.</string>
     <!-- Button that opens the user\'s authenticator app -->
-    <string name="AuthenticatorSetupScreen__open">Otevřít</string>
+    <string name="TotpSetupScreen__open">Otevřít</string>
     <!-- Text above the setup key explaining that it can be entered by hand instead -->
-    <string name="AuthenticatorSetupScreen__or_you_can_copy_this_key">Případně můžete tento klíč zkopírovat a provést ruční nastavení.</string>
+    <string name="TotpSetupScreen__or_you_can_copy_this_key">Případně můžete tento klíč zkopírovat a provést ruční nastavení.</string>
     <!-- Button that copies the setup key to the clipboard -->
-    <string name="AuthenticatorSetupScreen__copy">Kopírovat</string>
+    <string name="TotpSetupScreen__copy">Kopírovat</string>
     <!-- Toast shown after the setup key has been copied to the clipboard -->
-    <string name="AuthenticatorSetupScreen__copied_to_clipboard">Zkopírováno do schránky</string>
+    <string name="TotpSetupScreen__copied_to_clipboard">Zkopírováno do schránky</string>
     <!-- Toast shown when there is no app installed that can handle the authenticator setup link -->
-    <string name="AuthenticatorSetupScreen__no_authenticator_app_found">Nebyla nalezena žádná ověřovací aplikace</string>
+    <string name="TotpSetupScreen__no_authenticator_app_found">Nebyla nalezena žádná ověřovací aplikace</string>
     <!-- Header of the third step of authenticator app setup -->
-    <string name="AuthenticatorSetupScreen__step_3">Krok 3</string>
+    <string name="TotpSetupScreen__step_3">Krok 3</string>
     <!-- Body of the third step of authenticator app setup -->
-    <string name="AuthenticatorSetupScreen__copy_the_code_thats_generated">Zkopírujte vygenerovaný kód a zadejte sem, abyste mohli pokračovat.</string>
+    <string name="TotpSetupScreen__copy_the_code_thats_generated">Zkopírujte vygenerovaný kód a zadejte sem, abyste mohli pokračovat.</string>
     <!-- Button that advances from the setup instructions to entering a code -->
-    <string name="AuthenticatorSetupScreen__continue">Pokračovat</string>
+    <string name="TotpSetupScreen__continue">Pokračovat</string>
 
     <!-- PasskeysScreen -->
     <!-- Title of the screen where the user sets up passkeys -->
@@ -146,60 +146,60 @@
     <!-- Menu option that removes a passkey -->
     <string name="PasskeysScreen__remove">Odstranit</string>
 
-    <!-- AuthenticatorCodeEntryScreen -->
+    <!-- TotpCodeEntryScreen -->
     <!-- Title of the screen where the user enters the code from their authenticator app -->
-    <string name="AuthenticatorCodeEntryScreen__enter_your_code">Zadejte kód</string>
+    <string name="TotpCodeEntryScreen__enter_your_code">Zadejte kód</string>
     <!-- Instructions shown above the code entry field -->
-    <string name="AuthenticatorCodeEntryScreen__enter_the_6_digit_code">Zadejte 6číselný kód ze své ověřovací aplikace.</string>
+    <string name="TotpCodeEntryScreen__enter_the_6_digit_code">Zadejte 6číselný kód ze své ověřovací aplikace.</string>
     <!-- Label of the code entry field -->
-    <string name="AuthenticatorCodeEntryScreen__code">Kód</string>
+    <string name="TotpCodeEntryScreen__code">Kód</string>
     <!-- Button that submits the entered code -->
-    <string name="AuthenticatorCodeEntryScreen__done">Hotovo</string>
-    <!-- AuthenticatorAppsScreen -->
+    <string name="TotpCodeEntryScreen__done">Hotovo</string>
+    <!-- TotpAppListScreen -->
     <!-- Title of the screen listing the authenticator apps on the account -->
-    <string name="AuthenticatorAppsScreen__authenticator_app">Ověřovací aplikace</string>
+    <string name="TotpAppListScreen__authenticator_app">Ověřovací aplikace</string>
     <!-- Description of what an authenticator app is for, shown at the top of the screen -->
-    <string name="AuthenticatorAppsScreen__set_up_an_authenticator_app">Nastavte si ověřovací aplikaci pro generování jednorázových ověřovacích kódů</string>
+    <string name="TotpAppListScreen__set_up_an_authenticator_app">Nastavte si ověřovací aplikaci pro generování jednorázových ověřovacích kódů</string>
     <!-- Clickable text that takes the user to a support article -->
-    <string name="AuthenticatorAppsScreen__learn_more">Zjistit více</string>
+    <string name="TotpAppListScreen__learn_more">Zjistit více</string>
     <!-- Button that starts setting up another authenticator app -->
-    <string name="AuthenticatorAppsScreen__add_authenticator_app">Přidat ověřovací aplikaci</string>
+    <string name="TotpAppListScreen__add_authenticator_app">Přidat ověřovací aplikaci</string>
     <!-- Section header above the list of configured authenticator apps -->
-    <string name="AuthenticatorAppsScreen__authenticator_apps">Ověřovací aplikace</string>
+    <string name="TotpAppListScreen__authenticator_apps">Ověřovací aplikace</string>
     <!-- Shown in place of the list when no authenticator apps are configured -->
-    <string name="AuthenticatorAppsScreen__no_authenticator_apps">Žádná ověřovací aplikace</string>
+    <string name="TotpAppListScreen__no_authenticator_apps">Žádná ověřovací aplikace</string>
     <!-- Subtitle of an authenticator app row saying when it was configured. Placeholder is a date or time. -->
-    <string name="AuthenticatorAppsScreen__added_s">Přidán %1$s</string>
+    <string name="TotpAppListScreen__added_s">Přidán %1$s</string>
     <!-- Content description of the button that opens an authenticator app\'s options -->
-    <string name="AuthenticatorAppsScreen__open_authenticator_app_options">Otevřít možnosti ověřovací aplikace</string>
+    <string name="TotpAppListScreen__open_authenticator_app_options">Otevřít možnosti ověřovací aplikace</string>
     <!-- Menu option that renames an authenticator app -->
-    <string name="AuthenticatorAppsScreen__rename">Přejmenovat</string>
+    <string name="TotpAppListScreen__rename">Přejmenovat</string>
     <!-- Menu option that removes an authenticator app -->
-    <string name="AuthenticatorAppsScreen__remove">Odstranit</string>
+    <string name="TotpAppListScreen__remove">Odstranit</string>
     <!-- Title of the dialog confirming removal of an authenticator app -->
-    <string name="AuthenticatorAppsScreen__remove_authenticator_app">Odstranit ověřovací aplikaci?</string>
+    <string name="TotpAppListScreen__remove_authenticator_app">Odstranit ověřovací aplikaci?</string>
     <!-- Body of the dialog confirming removal of an authenticator app -->
-    <string name="AuthenticatorAppsScreen__to_remove_this_authentication_method">K odstranění této ověřovací metody je potřeba 6místný kód z vaší ověřovací aplikace.</string>
+    <string name="TotpAppListScreen__to_remove_this_authentication_method">K odstranění této ověřovací metody je potřeba 6místný kód z vaší ověřovací aplikace.</string>
     <!-- Title of the dialog shown when the account already has as many authenticator apps as it\'s allowed -->
-    <string name="AuthenticatorAppsScreen__cant_add_authenticator_app">Ověřovací aplikaci nelze přidat</string>
+    <string name="TotpAppListScreen__cant_add_authenticator_app">Ověřovací aplikaci nelze přidat</string>
     <!-- Body of the dialog shown when the account already has as many authenticator apps as it\'s allowed -->
-    <string name="AuthenticatorAppsScreen__you_cant_add_more_than_d">Nelze přidat více než %1$d ověřovací aplikaci. Zkuste nejprve jednu odstranit.</string>
+    <string name="TotpAppListScreen__you_cant_add_more_than_d">Nelze přidat více než %1$d ověřovací aplikaci. Zkuste nejprve jednu odstranit.</string>
     <!-- Toast shown after an authenticator app has been removed -->
-    <string name="AuthenticatorAppsScreen__authenticator_app_removed">Ověřovací aplikace odstraněna</string>
+    <string name="TotpAppListScreen__authenticator_app_removed">Ověřovací aplikace odstraněna</string>
 
-    <!-- AuthenticatorNameScreen -->
+    <!-- TotpNameEntryScreen -->
     <!-- Title of the screen where the user names an authenticator app -->
-    <string name="AuthenticatorNameScreen__choose_a_name">Zvolte jméno</string>
+    <string name="TotpNameEntryScreen__choose_a_name">Zvolte jméno</string>
     <!-- Instructions shown above the name field when renaming an authenticator app -->
-    <string name="AuthenticatorNameScreen__choose_a_unique_name">Zvolte jedinečný název pro tuto ověřovací aplikaci.</string>
+    <string name="TotpNameEntryScreen__choose_a_unique_name">Zvolte jedinečný název pro tuto ověřovací aplikaci.</string>
     <!-- Instructions shown above the name field when naming a newly configured authenticator app -->
-    <string name="AuthenticatorNameScreen__choose_a_unique_name_to_help_you_identify_it">Zvolte jedinečný název pro tuto ověřovací aplikaci, abyste ji později snadno rozpoznali.</string>
+    <string name="TotpNameEntryScreen__choose_a_unique_name_to_help_you_identify_it">Zvolte jedinečný název pro tuto ověřovací aplikaci, abyste ji později snadno rozpoznali.</string>
     <!-- Label of the name field -->
-    <string name="AuthenticatorNameScreen__name">Název</string>
+    <string name="TotpNameEntryScreen__name">Název</string>
     <!-- Button that submits the entered name -->
-    <string name="AuthenticatorNameScreen__next">Další</string>
+    <string name="TotpNameEntryScreen__next">Další</string>
     <!-- Toast shown after an authenticator app has been successfully set up -->
-    <string name="AuthenticatorNameScreen__authenticator_app_set_up">Ověřovací aplikace nastavena</string>
+    <string name="TotpNameEntryScreen__authenticator_app_set_up">Ověřovací aplikace nastavena</string>
     <!-- Toast shown after an authenticator app has been renamed -->
-    <string name="AuthenticatorNameScreen__authenticator_app_renamed">Ověřovací aplikace přejmenována</string>
+    <string name="TotpNameEntryScreen__authenticator_app_renamed">Ověřovací aplikace přejmenována</string>
 </resources>

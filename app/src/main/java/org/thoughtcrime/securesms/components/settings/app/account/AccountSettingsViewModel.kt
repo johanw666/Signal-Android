@@ -5,6 +5,7 @@
 
 package org.thoughtcrime.securesms.components.settings.app.account
 
+import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -12,6 +13,7 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.receiveAsFlow
 import kotlinx.coroutines.flow.update
+import kotlinx.coroutines.launch
 import org.signal.appsettings.account.AccountSettingsAction
 import org.signal.appsettings.account.AccountSettingsEvent
 import org.signal.appsettings.account.AccountSettingsState
@@ -40,7 +42,7 @@ class AccountSettingsViewModel(
   val actions: Flow<AccountSettingsAction> = _actions.receiveAsFlow()
 
   init {
-    refresh()
+    viewModelScope.launch { refresh() }
   }
 
   override suspend fun processEvent(event: AccountSettingsEvent) {
@@ -104,8 +106,8 @@ class AccountSettingsViewModel(
       AccountSettingsEvent.AccountAndRecoveryClicked -> {
         _actions.send(AccountSettingsAction.NavigateToSignalLoginDetails)
       }
-      AccountSettingsEvent.AuthenticatorAppClicked -> {
-        _actions.send(AccountSettingsAction.NavigateToAuthenticatorApps)
+      AccountSettingsEvent.TotpAppClicked -> {
+        _actions.send(AccountSettingsAction.NavigateToTotpAppList)
       }
       AccountSettingsEvent.PasskeysClicked -> {
         _actions.send(AccountSettingsAction.NavigateToPasskeys)
@@ -147,8 +149,9 @@ class AccountSettingsViewModel(
     }
   }
 
-  private fun refresh() {
+  private suspend fun refresh() {
     val isPhoneNumberless = repository.isPhoneNumberless()
+    val totpAppCount = repository.getTotpAppCount()
 
     _state.update {
       it.copy(
@@ -161,7 +164,7 @@ class AccountSettingsViewModel(
         isPhoneNumberless = isPhoneNumberless,
         signalLogin = if (isPhoneNumberless) {
           AccountSettingsState.SignalLogin(
-            authenticatorAppCount = repository.getAuthenticatorAppCount(),
+            totpAppCount = totpAppCount,
             passkeyCount = repository.getPasskeyCount()
           )
         } else {

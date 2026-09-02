@@ -113,6 +113,7 @@ interface NetworkController {
    *   phone number, in which case the implementation generates a placeholder username the service ignores.
    * @param password The password for basic auth
    * @param aci The ACI of the existing numberless account to log back in to, used as the username for basic auth.
+   * @param totp A TOTP one-time password, required when recovering an account that has TOTP keys.
    */
   suspend fun registerAccount(
     e164: String?,
@@ -125,7 +126,8 @@ interface NetworkController {
     pniPreKeys: PreKeyCollection?,
     fcmToken: String?,
     skipDeviceTransfer: Boolean,
-    aci: ACI?
+    aci: ACI?,
+    totp: Int?
   ): RequestResult<RegisterAccountResponse, RegisterAccountError>
 
   /**

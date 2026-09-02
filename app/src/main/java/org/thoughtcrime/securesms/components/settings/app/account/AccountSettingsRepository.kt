@@ -8,7 +8,7 @@ package org.thoughtcrime.securesms.components.settings.app.account
 import kotlinx.coroutines.withContext
 import org.signal.core.util.concurrent.SignalDispatchers
 import org.signal.core.util.logging.Log
-import org.thoughtcrime.securesms.components.settings.app.account.authenticator.AuthenticatorRepository
+import org.thoughtcrime.securesms.components.settings.app.account.authenticator.TotpRepository
 import org.thoughtcrime.securesms.components.settings.app.account.passkeys.AppPasskeysRepository
 import org.thoughtcrime.securesms.dependencies.AppDependencies
 import org.thoughtcrime.securesms.keyvalue.SignalStore
@@ -27,7 +27,7 @@ class AccountSettingsRepository {
     private val TAG = Log.tag(AccountSettingsRepository::class)
   }
 
-  private val authenticatorRepository = AuthenticatorRepository()
+  private val totpRepository = TotpRepository()
   private val passkeysRepository = AppPasskeysRepository()
 
   fun hasPin(): Boolean = SignalStore.svr.hasPin() && !SignalStore.svr.hasOptedOut()
@@ -48,7 +48,12 @@ class AccountSettingsRepository {
 
   fun isPhoneNumberless(): Boolean = SignalStore.account.isPhoneNumberless
 
-  fun getAuthenticatorAppCount(): Int = authenticatorRepository.getAuthenticatorApps().size
+  /**
+   * How many authenticator apps are on the account, or null if we couldn't find out.
+   */
+  suspend fun getTotpAppCount(): Int? {
+    return (totpRepository.getTotpApps() as? TotpRepository.AppsResult.Success)?.apps?.size
+  }
 
   fun getPasskeyCount(): Int = passkeysRepository.getPasskeys().size
 
