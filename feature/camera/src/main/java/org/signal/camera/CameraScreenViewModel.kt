@@ -94,8 +94,11 @@ class CameraScreenViewModel : ViewModel() {
     /** Requested resolution for the QR analysis stream. */
     private val QR_ANALYSIS_RESOLUTION = Size(1280, 720)
 
+    /** Where a lens comes up after a bind, and so where the zoom goes back to on every bind. */
+    private const val DEFAULT_ZOOM_RATIO = 1f
+
     /** A single point, so a lens that has not reported its range yet reads as one that cannot zoom. */
-    private val DEFAULT_ZOOM_RANGE = 1f..1f
+    private val DEFAULT_ZOOM_RANGE = DEFAULT_ZOOM_RATIO..DEFAULT_ZOOM_RATIO
 
     /** How long a zoom animation to a level picked off the zoom bar runs for. */
     private const val ZOOM_ANIMATION_DURATION_MS = 250L
@@ -123,7 +126,7 @@ class CameraScreenViewModel : ViewModel() {
   private var brightnessWindow: WeakReference<Window>? = null
   private var deviceTargetRotation: Int = Surface.ROTATION_0
   private var surfaceProvider: Preview.SurfaceProvider? = null
-  private var recordingStartZoomRatio: Float = 1f
+  private var recordingStartZoomRatio: Float = DEFAULT_ZOOM_RATIO
 
   /** The in-flight animation to a level picked off the zoom bar. Anything else that moves the zoom cancels it. */
   private var zoomAnimation: Job? = null
@@ -134,12 +137,6 @@ class CameraScreenViewModel : ViewModel() {
    * the duration cap can stop the recording.
    */
   private var pendingRecordingLock: Boolean = false
-
-  /**
-   * Set when a lens is bound, so that the first zoom it reports is taken as the current ratio. A rebind comes up at the
-   * new lens's own zoom rather than carrying the previous one's over.
-   */
-  private var needsZoomResync: Boolean = false
 
   /** Null for a recording that finalizes without being asked to stop, such as one that hits the recorder's own limits. */
   private var recordingStopwatch: Stopwatch? = null
@@ -168,12 +165,7 @@ class CameraScreenViewModel : ViewModel() {
   private val zoomRangeObserver = Observer<ZoomState> { zoomState ->
     val zoomRange = zoomState.minZoomRatio..zoomState.maxZoomRatio
 
-    if (needsZoomResync) {
-      needsZoomResync = false
-      Log.d(TAG, "Bound lens reaches $zoomRange at ${zoomState.zoomRatio}x")
-      recordingStartZoomRatio = zoomState.zoomRatio
-      _state.value = _state.value.copy(zoomRange = zoomRange, zoomRatio = zoomState.zoomRatio)
-    } else if (zoomRange != _state.value.zoomRange) {
+    if (zoomRange != _state.value.zoomRange) {
       Log.d(TAG, "Bound lens reaches $zoomRange")
       _state.value = _state.value.copy(zoomRange = zoomRange)
     }
@@ -909,12 +901,18 @@ class CameraScreenViewModel : ViewModel() {
   }
 
   /**
-   * Observes what the bound lens can reach. A camera reports its zoom when it is ready rather than by the time it is
-   * bound, so this observes rather than taking a single reading — a lens whose range arrives late would otherwise look
-   * like one that cannot zoom.
+   * Puts the zoom back to [DEFAULT_ZOOM_RATIO] and observes what the bound lens can reach. A camera reports its range
+   * when it is ready rather than by the time it is bound, so this observes rather than taking a single reading — a lens
+   * whose range arrives late would otherwise look like one that cannot zoom.
    */
   private fun observeZoomRange() {
     val zoomState = camera?.cameraInfo?.zoomState
+
+    // Every bind here follows an unbind, which drops the lens back to its default zoom. The state follows it back down,
+    // and an in-flight travel to a level picked before the unbind is left with nowhere to land.
+    zoomAnimation?.cancel()
+    recordingStartZoomRatio = DEFAULT_ZOOM_RATIO
+    _state.value = _state.value.copy(zoomRatio = DEFAULT_ZOOM_RATIO)
 
     if (zoomState === observedZoomState) {
       return
@@ -922,7 +920,6 @@ class CameraScreenViewModel : ViewModel() {
 
     observedZoomState?.removeObserver(zoomRangeObserver)
     observedZoomState = zoomState
-    needsZoomResync = true
 
     if (zoomState != null) {
       zoomState.observeForever(zoomRangeObserver)
