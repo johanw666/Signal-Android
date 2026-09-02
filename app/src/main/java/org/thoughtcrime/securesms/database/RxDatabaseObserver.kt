@@ -37,7 +37,7 @@ object RxDatabaseObserver {
   @Suppress("RedundantUnitExpression")
   private fun notificationProfilesFlowable(): Flowable<Unit> {
     return Flowable.combineLatest(
-      Flowable.interval(0, 30, TimeUnit.SECONDS),
+      Flowable.interval(0, 30, TimeUnit.SECONDS).onBackpressureLatest(),
       databaseFlowable { AppDependencies.databaseObserver.registerNotificationProfileObserver(it) }
     ) { _, _ -> Unit }
   }
