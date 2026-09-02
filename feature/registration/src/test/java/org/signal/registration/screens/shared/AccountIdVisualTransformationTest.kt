@@ -3,7 +3,7 @@
  * SPDX-License-Identifier: AGPL-3.0-only
  */
 
-package org.signal.registration.screens.signallogincredentials
+package org.signal.registration.screens.shared
 
 import androidx.compose.ui.text.AnnotatedString
 import assertk.assertThat

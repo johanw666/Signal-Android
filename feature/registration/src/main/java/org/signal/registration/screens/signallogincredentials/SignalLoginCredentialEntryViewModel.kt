@@ -29,6 +29,8 @@ import org.signal.registration.RegistrationRepository
 import org.signal.registration.RegistrationRoute
 import org.signal.registration.RestoreDecision
 import org.signal.registration.screens.aepentry.AepInput
+import org.signal.registration.screens.shared.AccountIdError
+import org.signal.registration.screens.shared.AccountIdFormat
 import org.signal.registration.screens.util.navigateBack
 import org.signal.registration.screens.util.navigateTo
 
@@ -38,19 +40,15 @@ import org.signal.registration.screens.util.navigateTo
  */
 class SignalLoginCredentialEntryViewModel(
   private val repository: RegistrationRepository,
-  private val parentEventEmitter: (RegistrationFlowEvent) -> Unit
+  private val parentEventEmitter: (RegistrationFlowEvent) -> Unit,
+  prefilledAccountId: String? = null
 ) : EventDrivenViewModel<SignalLoginCredentialEntryScreenEvents>(TAG) {
 
   companion object {
     private val TAG = Log.tag(SignalLoginCredentialEntryViewModel::class)
-
-    /** Formatting the user may have pasted along with the account ID, which we accept and discard. */
-    private val FORMATTING_CHARACTERS = Regex("""[\s-]""")
-
-    private fun Char.isAccountIdCharacter(): Boolean = this in '0'..'9' || this in 'a'..'f'
   }
 
-  private val _state = MutableStateFlow(SignalLoginCredentialEntryState())
+  private val _state = MutableStateFlow(SignalLoginCredentialEntryState(accountId = prefilledAccountId ?: ""))
   val state: StateFlow<SignalLoginCredentialEntryState> = _state.asStateFlow()
 
   private val _actions = Channel<SignalLoginCredentialEntryScreenActions>(Channel.BUFFERED)
@@ -79,8 +77,8 @@ class SignalLoginCredentialEntryViewModel(
       }
 
       is SignalLoginCredentialEntryScreenEvents.AccountIdChanged -> {
-        val accountId = event.value.replace(FORMATTING_CHARACTERS, "").lowercase()
-        stateEmitter(state.copy(accountId = accountId, accountIdError = validateAccountId(accountId), areCredentialsIncorrect = false))
+        val accountId = AccountIdFormat.normalize(event.value)
+        stateEmitter(state.copy(accountId = accountId, accountIdError = AccountIdFormat.validate(accountId), areCredentialsIncorrect = false))
       }
 
       is SignalLoginCredentialEntryScreenEvents.RecoveryKeyChanged -> {
@@ -119,10 +117,10 @@ class SignalLoginCredentialEntryViewModel(
     parentEventEmitter: (RegistrationFlowEvent) -> Unit,
     stateEmitter: (SignalLoginCredentialEntryState) -> Unit
   ) {
-    val accountId = event.accountId.replace(FORMATTING_CHARACTERS, "").lowercase()
+    val accountId = AccountIdFormat.normalize(event.accountId)
     val filledState = state.copy(
       accountId = accountId,
-      accountIdError = validateAccountId(accountId),
+      accountIdError = AccountIdFormat.validate(accountId),
       recoveryKey = AepInput.from(event.recoveryKey),
       areCredentialsIncorrect = false
     )
@@ -265,21 +263,14 @@ class SignalLoginCredentialEntryViewModel(
     }
   }
 
-  private fun validateAccountId(accountId: String): AccountIdError? {
-    return when {
-      accountId.length > SignalLoginCredentialEntryState.ACCOUNT_ID_LENGTH -> AccountIdError.TooLong(accountId.length)
-      accountId.any { !it.isAccountIdCharacter() } -> AccountIdError.Invalid
-      else -> null
-    }
-  }
-
   class Factory(
     private val repository: RegistrationRepository,
-    private val parentEventEmitter: (RegistrationFlowEvent) -> Unit
+    private val parentEventEmitter: (RegistrationFlowEvent) -> Unit,
+    private val prefilledAccountId: String? = null
   ) : ViewModelProvider.Factory {
     @Suppress("UNCHECKED_CAST")
     override fun <T : ViewModel> create(modelClass: Class<T>): T {
-      return SignalLoginCredentialEntryViewModel(repository, parentEventEmitter) as T
+      return SignalLoginCredentialEntryViewModel(repository, parentEventEmitter, prefilledAccountId) as T
     }
   }
 }

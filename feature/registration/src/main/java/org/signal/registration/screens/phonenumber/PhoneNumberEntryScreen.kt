@@ -19,12 +19,14 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.layout.widthIn
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardActions
@@ -61,10 +63,11 @@ import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.text.TextRange
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.ImeAction
+import androidx.compose.ui.text.input.KeyboardCapitalization
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.TextFieldValue
+import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
 import androidx.core.content.ContextCompat
 import com.google.android.gms.auth.api.identity.GetPhoneNumberHintIntentRequest
 import com.google.android.gms.auth.api.identity.Identity
@@ -76,6 +79,7 @@ import org.signal.core.ui.compose.DropdownMenus
 import org.signal.core.ui.compose.IconButtons.IconButton
 import org.signal.core.ui.compose.Previews
 import org.signal.core.ui.compose.Scaffolds
+import org.signal.core.ui.compose.SignalIcons
 import org.signal.core.util.Util
 import org.signal.core.util.logging.Log
 import org.signal.registration.R
@@ -84,6 +88,9 @@ import org.signal.registration.screens.OnePaneRegistrationScaffold
 import org.signal.registration.screens.RegistrationScaffold
 import org.signal.registration.screens.TwoPaneRegistrationScaffold
 import org.signal.registration.screens.attachDebugLogHelper
+import org.signal.registration.screens.shared.AccountIdErrorText
+import org.signal.registration.screens.shared.AccountIdVisualTransformation
+import org.signal.registration.screens.shared.accountIdTextStyle
 import org.signal.registration.test.TestTags
 import org.signal.core.ui.R as CoreR
 
@@ -231,9 +238,6 @@ private fun OnePaneLayout(
   state: PhoneNumberEntryState,
   onEvent: (PhoneNumberEntryScreenEvents) -> Unit
 ) {
-  val selectedCountry = state.countryName
-  val selectedCountryEmoji = state.countryEmoji
-
   val scrollState = rememberScrollState()
   val topBarScrollBehavior = RegistrationScaffold.rememberTopBarScrollBehavior()
 
@@ -251,17 +255,6 @@ private fun OnePaneLayout(
         Description()
 
         Spacer(modifier = Modifier.height(36.dp))
-
-        CountryPicker(
-          emoji = selectedCountryEmoji,
-          country = selectedCountry,
-          onClick = { onEvent(PhoneNumberEntryScreenEvents.CountryPicker) },
-          modifier = Modifier
-            .fillMaxWidth()
-            .testTag(TestTags.PHONE_NUMBER_COUNTRY_PICKER)
-        )
-
-        Spacer(modifier = Modifier.height(16.dp))
 
         PhoneNumberInputFields(
           state = state,
@@ -287,9 +280,6 @@ private fun TwoPaneLayout(
   state: PhoneNumberEntryState,
   onEvent: (PhoneNumberEntryScreenEvents) -> Unit
 ) {
-  val selectedCountry = state.countryName
-  val selectedCountryEmoji = state.countryEmoji
-
   val firstPaneScrollState = rememberScrollState()
   val secondPaneScrollState = rememberScrollState()
   val topBarScrollBehavior = RegistrationScaffold.rememberTopBarScrollBehavior()
@@ -316,17 +306,6 @@ private fun TwoPaneLayout(
           .verticalScroll(secondPaneScrollState)
           .padding(paddingValues)
       ) {
-        CountryPicker(
-          emoji = selectedCountryEmoji,
-          country = selectedCountry,
-          onClick = { onEvent(PhoneNumberEntryScreenEvents.CountryPicker) },
-          modifier = Modifier
-            .fillMaxWidth()
-            .testTag(TestTags.PHONE_NUMBER_COUNTRY_PICKER)
-        )
-
-        Spacer(modifier = Modifier.height(16.dp))
-
         PhoneNumberInputFields(
           state = state,
           onEvent = onEvent,
@@ -442,7 +421,7 @@ private fun NextButton(
 
     Buttons.LargeTonal(
       onClick = { onEvent(PhoneNumberEntryScreenEvents.NextClicked) },
-      enabled = !state.showSpinner && state.isNumberPossible,
+      enabled = state.isNextEnabled,
       modifier = Modifier.testTag(TestTags.PHONE_NUMBER_NEXT_BUTTON)
     ) {
       if (state.showSpinner) {
@@ -458,50 +437,57 @@ private fun NextButton(
   }
 }
 
+/**
+ * The compact control to the left of the phone number field. It shows the selected calling code and opens the country
+ * picker; in account ID mode there is no country to pick, so it shows a key and does nothing when tapped.
+ */
 @Composable
-private fun CountryPicker(
-  emoji: String,
-  country: String,
+private fun CountryCodeButton(
+  countryCode: String,
+  isAccountId: Boolean,
   onClick: () -> Unit,
   modifier: Modifier = Modifier
 ) {
   Box(
     modifier = modifier
+      .widthIn(min = 69.dp)
+      .height(56.dp)
       .clip(RoundedCornerShape(topStart = 8.dp, topEnd = 8.dp))
       .background(MaterialTheme.colorScheme.outline)
       .padding(bottom = 1.dp)
       .background(
         color = MaterialTheme.colorScheme.surfaceVariant,
-        shape = RoundedCornerShape(topStart = 4.dp, topEnd = 4.dp)
+        shape = RoundedCornerShape(topStart = 8.dp, topEnd = 8.dp)
       )
-      .clickable(onClick = onClick)
-      .height(56.dp)
+      .clickable(enabled = !isAccountId, onClick = onClick)
   ) {
     Row(
       modifier = Modifier
-        .fillMaxSize()
-        .padding(start = 16.dp, end = 12.dp),
+        .fillMaxHeight()
+        .padding(start = 14.dp, end = 2.dp),
       verticalAlignment = Alignment.CenterVertically
     ) {
-      if (emoji.isNotEmpty()) {
-        Text(
-          text = emoji,
-          fontSize = 24.sp
+      if (isAccountId) {
+        Icon(
+          imageVector = SignalIcons.Key.imageVector,
+          contentDescription = stringResource(R.string.RegistrationActivity_account_id),
+          tint = MaterialTheme.colorScheme.onSurfaceVariant,
+          modifier = Modifier.size(24.dp)
         )
-
-        Spacer(modifier = Modifier.width(16.dp))
+      } else {
+        Text(
+          text = "+$countryCode",
+          style = MaterialTheme.typography.bodyLarge,
+          color = MaterialTheme.colorScheme.onSurfaceVariant,
+          maxLines = 1
+        )
       }
 
-      Text(
-        text = country.takeIf { country.isNotEmpty() } ?: stringResource(R.string.RegistrationActivity_select_a_country),
-        style = MaterialTheme.typography.bodyLarge,
-        color = MaterialTheme.colorScheme.onSurfaceVariant,
-        modifier = Modifier.weight(1f)
-      )
+      Spacer(modifier = Modifier.width(4.dp))
 
       Icon(
-        imageVector = ImageVector.vectorResource(id = R.drawable.symbol_drop_down_24),
-        contentDescription = null,
+        imageVector = SignalIcons.ArrowDropDown.imageVector,
+        contentDescription = if (isAccountId) null else stringResource(R.string.RegistrationActivity_select_a_country),
         tint = MaterialTheme.colorScheme.onSurfaceVariant,
         modifier = Modifier.size(24.dp)
       )
@@ -521,31 +507,52 @@ private fun PhoneNumberInputFields(
   var phoneNumberTextFieldValue by remember { mutableStateOf(TextFieldValue(state.formattedNumber)) }
   val focusRequester = remember { FocusRequester() }
   val hasValidCountry = state.countryName.isNotEmpty()
-  val canSubmit = !state.showSpinner && state.isNumberPossible
+  val isAccountId = state.enteredAccountId != null
+  val label = if (isAccountId) R.string.RegistrationActivity_account_id else R.string.RegistrationActivity_phone_number_description
+  val accountIdError = state.accountIdError.takeIf { isAccountId }
+  val supportingText: (@Composable () -> Unit)? = when {
+    accountIdError != null -> {
+      { AccountIdErrorText(accountIdError) }
+    }
+    state.isNumberInvalid -> {
+      { Text(stringResource(R.string.RegistrationActivity_not_a_valid_phone_number)) }
+    }
+    else -> null
+  }
 
   LaunchedEffect(state.formattedNumber) {
-    if (phoneNumberTextFieldValue.text != state.formattedNumber) {
-      val oldText = phoneNumberTextFieldValue.text
-      val oldCursorPos = phoneNumberTextFieldValue.selection.end
-      val digitsBeforeCursor = oldText.take(oldCursorPos).count { it.isDigit() }
+    if (phoneNumberTextFieldValue.text == state.formattedNumber) {
+      return@LaunchedEffect
+    }
 
-      var digitCount = 0
-      var newCursorPos = state.formattedNumber.length
-      for (i in state.formattedNumber.indices) {
-        if (state.formattedNumber[i].isDigit()) {
-          digitCount++
-        }
-        if (digitCount >= digitsBeforeCursor) {
-          newCursorPos = i + 1
-          break
-        }
-      }
-
+    if (isAccountId) {
       phoneNumberTextFieldValue = TextFieldValue(
         text = state.formattedNumber,
-        selection = TextRange(newCursorPos)
+        selection = TextRange(state.formattedNumber.length)
       )
+      return@LaunchedEffect
     }
+
+    val oldText = phoneNumberTextFieldValue.text
+    val oldCursorPos = phoneNumberTextFieldValue.selection.end
+    val digitsBeforeCursor = oldText.take(oldCursorPos).count { it.isDigit() }
+
+    var digitCount = 0
+    var newCursorPos = state.formattedNumber.length
+    for (i in state.formattedNumber.indices) {
+      if (state.formattedNumber[i].isDigit()) {
+        digitCount++
+      }
+      if (digitCount >= digitsBeforeCursor) {
+        newCursorPos = i + 1
+        break
+      }
+    }
+
+    phoneNumberTextFieldValue = TextFieldValue(
+      text = state.formattedNumber,
+      selection = TextRange(newCursorPos)
+    )
   }
 
   LaunchedEffect(hasValidCountry) {
@@ -559,31 +566,11 @@ private fun PhoneNumberInputFields(
     horizontalArrangement = Arrangement.Start,
     verticalAlignment = Alignment.Top
   ) {
-    TextField(
-      value = state.countryCode,
-      onValueChange = { onEvent(PhoneNumberEntryScreenEvents.CountryCodeChanged(it)) },
-      modifier = Modifier
-        .width(76.dp)
-        .testTag(TestTags.PHONE_NUMBER_COUNTRY_CODE_FIELD),
-      prefix = {
-        Text(
-          text = "+",
-          style = MaterialTheme.typography.bodyLarge,
-          color = MaterialTheme.colorScheme.onSurfaceVariant.copy(alpha = 0.6f)
-        )
-      },
-      keyboardOptions = KeyboardOptions(
-        keyboardType = KeyboardType.Number,
-        imeAction = ImeAction.Done
-      ),
-      singleLine = true,
-      textStyle = MaterialTheme.typography.bodyLarge.copy(
-        color = MaterialTheme.colorScheme.onSurfaceVariant
-      ),
-      colors = TextFieldDefaults.colors(
-        unfocusedContainerColor = MaterialTheme.colorScheme.surfaceVariant,
-        focusedContainerColor = MaterialTheme.colorScheme.surfaceVariant
-      )
+    CountryCodeButton(
+      countryCode = state.countryCode,
+      isAccountId = isAccountId,
+      onClick = { onEvent(PhoneNumberEntryScreenEvents.CountryPicker) },
+      modifier = Modifier.testTag(TestTags.PHONE_NUMBER_COUNTRY_CODE_FIELD)
     )
 
     Spacer(modifier = Modifier.width(20.dp))
@@ -598,30 +585,36 @@ private fun PhoneNumberInputFields(
         .weight(1f)
         .focusRequester(focusRequester)
         .testTag(TestTags.PHONE_NUMBER_PHONE_FIELD),
-      label = {
-        Text(stringResource(R.string.RegistrationActivity_phone_number_description))
-      },
-      isError = state.isNumberInvalid,
-      supportingText = if (state.isNumberInvalid) {
-        { Text(stringResource(R.string.RegistrationActivity_not_a_valid_phone_number)) }
+      label = { Text(stringResource(label)) },
+      isError = state.isNumberInvalid || state.accountIdError != null,
+      supportingText = supportingText,
+      keyboardOptions = if (isAccountId) {
+        KeyboardOptions(
+          keyboardType = KeyboardType.Ascii,
+          capitalization = KeyboardCapitalization.None,
+          autoCorrectEnabled = false,
+          imeAction = ImeAction.Done
+        )
       } else {
-        null
+        KeyboardOptions(
+          keyboardType = KeyboardType.Phone,
+          imeAction = ImeAction.Done
+        )
       },
-      keyboardOptions = KeyboardOptions(
-        keyboardType = KeyboardType.Phone,
-        imeAction = ImeAction.Done
-      ),
       keyboardActions = KeyboardActions(
         onDone = {
-          if (canSubmit) {
+          if (state.isNextEnabled) {
             onEvent(PhoneNumberEntryScreenEvents.NextClicked)
           }
         }
       ),
       singleLine = true,
-      textStyle = MaterialTheme.typography.bodyLarge.copy(
-        color = MaterialTheme.colorScheme.onSurface
-      ),
+      visualTransformation = if (isAccountId) AccountIdVisualTransformation else VisualTransformation.None,
+      textStyle = if (isAccountId) {
+        accountIdTextStyle().copy(color = MaterialTheme.colorScheme.onSurface)
+      } else {
+        MaterialTheme.typography.bodyLarge.copy(color = MaterialTheme.colorScheme.onSurface)
+      },
       colors = TextFieldDefaults.colors(
         unfocusedContainerColor = MaterialTheme.colorScheme.surfaceVariant,
         focusedContainerColor = MaterialTheme.colorScheme.surfaceVariant,
@@ -648,6 +641,21 @@ private fun PhoneNumberScreenRegisterWithoutNumberPreview() {
   Previews.Preview {
     PhoneNumberScreen(
       state = PhoneNumberEntryState(isPhoneNumberlessRegistrationAvailable = true),
+      onEvent = {}
+    )
+  }
+}
+
+@AllDevicePreviews
+@Composable
+private fun PhoneNumberScreenAccountIdPreview() {
+  Previews.Preview {
+    PhoneNumberScreen(
+      state = PhoneNumberEntryState(
+        accountId = "a6b284822e3283d07f2391360a4c2b91",
+        formattedNumber = "a6b284822e3283d07f2391360a4c2b91",
+        isPhoneNumberlessRegistrationAvailable = true
+      ),
       onEvent = {}
     )
   }

@@ -159,7 +159,7 @@ class PersistedFlowStateTest {
     val state = PersistedFlowState(
       backStack = listOf(
         RegistrationRoute.Welcome,
-        RegistrationRoute.SignalLoginCredentialEntry
+        RegistrationRoute.SignalLoginCredentialEntry("a6b284822e3283d07f2391360a4c2b91")
       ),
       sessionMetadata = null,
       sessionE164 = null,

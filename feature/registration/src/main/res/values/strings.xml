@@ -44,6 +44,8 @@
     <!-- Hint text to select a country -->
     <string name="RegistrationActivity_select_a_country">Select a country</string>
     <string name="RegistrationActivity_phone_number_description">Phone number</string>
+    <!-- Label the phone number field takes on when what has been typed reads as an account ID rather than a number -->
+    <string name="RegistrationActivity_account_id">Account ID</string>
     <!-- Error shown beneath the phone number field when the entered number is not valid -->
     <string name="RegistrationActivity_not_a_valid_phone_number">Not a valid phone number</string>
     <!-- Dialog title shown when the entered phone number is rejected as invalid -->
@@ -658,6 +660,12 @@
     <!-- Error shown when the Signal Login could not be stored in the password manager. -->
     <string name="SignalLoginInfoScreen__your_signal_login_could_not_be_saved">Your Signal Login could not be saved. Please save it manually instead.</string>
 
+    <!-- Errors shown beneath an account ID text field, wherever one is offered -->
+    <!-- Error shown when too many characters were entered in an account ID field. First placeholder is how many were entered, second is the maximum. -->
+    <string name="AccountIdField__too_long">Too long. %1$d/%2$d characters.</string>
+    <!-- Error shown when the entered account ID contains characters that can\'t appear in one. -->
+    <string name="AccountIdField__invalid_account_id">Invalid account ID</string>
+
     <!-- Signal Login credential entry screen -->
     <!-- Title of the screen where a user with an existing Signal Login types it in to log back in. -->
     <string name="SignalLoginCredentialEntryScreen__signal_login">Signal Login</string>
@@ -675,10 +683,6 @@
     <string name="SignalLoginCredentialEntryScreen__need_help">Need help?</string>
     <!-- Action button that submits the entered Signal Login. -->
     <string name="SignalLoginCredentialEntryScreen__next">Next</string>
-    <!-- Error shown when too many characters were entered in the account ID field. First placeholder is how many were entered, second is the maximum. -->
-    <string name="SignalLoginCredentialEntryScreen__too_long">Too long. %1$d/%2$d characters.</string>
-    <!-- Error shown when the entered account ID contains characters that can\'t appear in one. -->
-    <string name="SignalLoginCredentialEntryScreen__invalid_account_id">Invalid account ID</string>
     <!-- Error shown when the service rejects the entered login, which means one of the two halves is wrong. -->
     <string name="SignalLoginCredentialEntryScreen__incorrect_account_id_or_recovery_key">Incorrect account ID or recovery key</string>
 

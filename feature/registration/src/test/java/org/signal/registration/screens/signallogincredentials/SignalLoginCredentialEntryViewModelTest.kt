@@ -48,6 +48,7 @@ import org.signal.registration.RestoreDecision
 import org.signal.registration.screens.aepentry.AepInput
 import org.signal.registration.screens.restoreselection.ArchiveRestoreOption
 import org.signal.registration.screens.restoreselection.RegisteredState
+import org.signal.registration.screens.shared.AccountIdError
 import java.io.IOException
 import java.util.UUID
 import kotlin.time.Duration
@@ -84,6 +85,13 @@ class SignalLoginCredentialEntryViewModelTest {
   @After
   fun tearDown() {
     Dispatchers.resetMain()
+  }
+
+  @Test
+  fun `a prefilled account ID starts the screen with the ID already in the field`() = runTest(testDispatcher) {
+    val prefilled = SignalLoginCredentialEntryViewModel(repository = mockRepository, parentEventEmitter = parentEventEmitter, prefilledAccountId = VALID_ACCOUNT_ID)
+
+    assertThat(prefilled.state.value.accountId).isEqualTo(VALID_ACCOUNT_ID)
   }
 
   @Test

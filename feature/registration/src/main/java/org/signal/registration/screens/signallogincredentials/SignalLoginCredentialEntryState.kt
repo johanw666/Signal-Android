@@ -7,6 +7,8 @@ package org.signal.registration.screens.signallogincredentials
 
 import org.signal.core.util.censor
 import org.signal.registration.screens.aepentry.AepInput
+import org.signal.registration.screens.shared.AccountIdError
+import org.signal.registration.screens.shared.AccountIdFormat
 
 /**
  * State for the screen where a user who already owns a Signal Login types both halves of it in: the account ID and the
@@ -29,7 +31,7 @@ data class SignalLoginCredentialEntryState(
 
   /** Whether both halves of the login are complete and well-formed enough to attempt. */
   val isNextEnabled: Boolean
-    get() = accountId.length == ACCOUNT_ID_LENGTH &&
+    get() = accountId.length == AccountIdFormat.ACCOUNT_ID_LENGTH &&
       accountIdError == null &&
       recoveryKey.isValid &&
       recoveryKey.error == null &&
@@ -37,20 +39,6 @@ data class SignalLoginCredentialEntryState(
       !isLoggingIn
 
   override fun toString(): String = "SignalLoginCredentialEntryState(accountId=${accountId.censor()}, accountIdError=$accountIdError, recoveryKey=$recoveryKey, isRecoveryKeyRevealed=$isRecoveryKeyRevealed, areCredentialsIncorrect=$areCredentialsIncorrect, isLoggingIn=$isLoggingIn, loginError=$loginError)"
-
-  companion object {
-    /** An account ID is an ACI with its dashes removed, so it is always this many hex characters. */
-    const val ACCOUNT_ID_LENGTH = 32
-  }
-}
-
-/** Why the entered account ID can't be submitted. Shown beneath the text field rather than in a dialog. */
-sealed interface AccountIdError {
-  /** More than [SignalLoginCredentialEntryState.ACCOUNT_ID_LENGTH] characters were entered. */
-  data class TooLong(val count: Int) : AccountIdError
-
-  /** The entered text contains characters that can't appear in an account ID. */
-  data object Invalid : AccountIdError
 }
 
 /** A login failure that the text fields can't express, so it gets a dialog instead. */

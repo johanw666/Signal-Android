@@ -39,6 +39,7 @@ import org.signal.registration.RegistrationRoute
 import org.signal.registration.screens.countrycode.Country
 import org.signal.registration.screens.countrycode.CountryUtils
 import org.signal.registration.screens.localbackuprestore.LocalBackupRestoreResult
+import org.signal.registration.screens.shared.AccountIdFormat
 import org.signal.registration.screens.util.navigateTo
 import kotlin.time.Duration.Companion.milliseconds
 import kotlin.time.Duration.Companion.seconds
@@ -122,8 +123,13 @@ class PhoneNumberEntryViewModel(
         stateEmitter(applyPhoneNumberChanged(state, event.oldValue, event.newValue))
       }
       is PhoneNumberEntryScreenEvents.NextClicked -> {
-        val normalized = state.withNormalizedNationalNumber()
-        stateEmitter(normalized.copy(dialogs = normalized.dialogs.copy(confirmNumber = true)))
+        val accountId = state.enteredAccountId
+        if (accountId != null) {
+          parentEventEmitter.navigateTo(RegistrationRoute.SignalLoginCredentialEntry(accountId))
+        } else {
+          val normalized = state.withNormalizedNationalNumber()
+          stateEmitter(normalized.copy(dialogs = normalized.dialogs.copy(confirmNumber = true)))
+        }
       }
       is PhoneNumberEntryScreenEvents.PhoneNumberCancelled -> {
         stateEmitter(state.copy(dialogs = state.dialogs.copy(confirmNumber = false)))
@@ -234,7 +240,8 @@ class PhoneNumberEntryViewModel(
 
   @VisibleForTesting
   fun applyFullPhoneNumberEntered(state: PhoneNumberEntryState, e164: String): PhoneNumberEntryState {
-    return redistributeFullPhoneNumber(state, e164) ?: state
+    val numberState = state.withoutAccountId()
+    return redistributeFullPhoneNumber(numberState, e164) ?: numberState
   }
 
   private fun applyCountryCodeChanged(state: PhoneNumberEntryState, countryCode: String): PhoneNumberEntryState {
@@ -259,22 +266,37 @@ class PhoneNumberEntryViewModel(
   }
 
   private fun applyPhoneNumberChanged(state: PhoneNumberEntryState, oldValue: String, newValue: String): PhoneNumberEntryState {
+    if (state.isPhoneNumberlessRegistrationAvailable) {
+      AccountIdFormat.asAccountIdOrNull(newValue)?.let { accountId ->
+        return state.copy(
+          accountId = accountId,
+          accountIdError = AccountIdFormat.validate(accountId),
+          nationalNumber = "",
+          formattedNumber = accountId,
+          isNumberPossible = false,
+          isNumberInvalid = false
+        )
+      }
+    }
+
     // Extract only digits from the input
     val digitsOnly = newValue.filter { it.isDigit() }
-    if (digitsOnly == state.nationalNumber) return state
+    if (state.enteredAccountId == null && digitsOnly == state.nationalNumber) return state
+
+    val numberState = state.withoutAccountId()
 
     // Only attempt to split out a country code / trunk prefix on a bulk entry (paste or autofill)
     if (insertedCharCount(oldValue, newValue) > 1) {
       if (newValue.trimStart().startsWith("+")) {
-        redistributeFullPhoneNumber(state, "+$digitsOnly")?.let { return it }
+        redistributeFullPhoneNumber(numberState, "+$digitsOnly")?.let { return it }
       } else {
-        reinterpretNationalNumber(state, digitsOnly)?.let { return it }
+        reinterpretNationalNumber(numberState, digitsOnly)?.let { return it }
       }
     }
 
     val formattedNumber = formatNumber(digitsOnly)
 
-    return state.copy(
+    return numberState.copy(
       nationalNumber = digitsOnly,
       formattedNumber = formattedNumber
     ).withNumberValidity()
@@ -939,6 +961,10 @@ class PhoneNumberEntryViewModel(
       nationalNumber = significantNumber,
       formattedNumber = formatNumber(significantNumber)
     ).withNumberValidity()
+  }
+
+  private fun PhoneNumberEntryState.withoutAccountId(): PhoneNumberEntryState {
+    return copy(accountId = null, accountIdError = null)
   }
 
   /**

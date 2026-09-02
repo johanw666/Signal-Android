@@ -50,15 +50,11 @@ import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.text.AnnotatedString
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardCapitalization
 import androidx.compose.ui.text.input.KeyboardType
-import androidx.compose.ui.text.input.OffsetMapping
 import androidx.compose.ui.text.input.PasswordVisualTransformation
-import androidx.compose.ui.text.input.TransformedText
-import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -80,7 +76,10 @@ import org.signal.registration.screens.aepentry.AepInput
 import org.signal.registration.screens.aepentry.AepValidationError
 import org.signal.registration.screens.aepentry.AepVisualTransformation
 import org.signal.registration.screens.attachDebugLogHelper
+import org.signal.registration.screens.shared.AccountIdErrorText
+import org.signal.registration.screens.shared.AccountIdVisualTransformation
 import org.signal.registration.screens.shared.BackTopAppBar
+import org.signal.registration.screens.shared.accountIdTextStyle
 import org.signal.registration.test.TestTags
 
 /** How the recovery key is grouped when it is spelled out rather than masked. */
@@ -290,11 +289,7 @@ private fun AccountIdTextField(
     onValueChange = { onEvent(SignalLoginCredentialEntryScreenEvents.AccountIdChanged(it)) },
     label = { Text(stringResource(R.string.SignalLoginCredentialEntryScreen__account_id)) },
     singleLine = true,
-    textStyle = MaterialTheme.typography.bodyLarge.copy(
-      fontFamily = MonoTypeface.fontFamily(),
-      fontSize = 18.sp,
-      letterSpacing = 1.44.sp
-    ),
+    textStyle = accountIdTextStyle(),
     colors = TextFieldDefaults.colors(
       unfocusedContainerColor = MaterialTheme.colorScheme.surfaceVariant,
       focusedContainerColor = MaterialTheme.colorScheme.surfaceVariant,
@@ -307,11 +302,7 @@ private fun AccountIdTextField(
       autoCorrectEnabled = false
     ),
     supportingText = {
-      when (val error = state.accountIdError) {
-        is AccountIdError.TooLong -> Text(stringResource(R.string.SignalLoginCredentialEntryScreen__too_long, error.count, SignalLoginCredentialEntryState.ACCOUNT_ID_LENGTH))
-        is AccountIdError.Invalid -> Text(stringResource(R.string.SignalLoginCredentialEntryScreen__invalid_account_id))
-        null -> {}
-      }
+      state.accountIdError?.let { AccountIdErrorText(it) }
     },
     isError = state.accountIdError != null || state.areCredentialsIncorrect,
     visualTransformation = AccountIdVisualTransformation,
@@ -459,26 +450,6 @@ private fun NextButton(state: SignalLoginCredentialEntryState, onEvent: (SignalL
     } else {
       Text(text = stringResource(R.string.SignalLoginCredentialEntryScreen__next))
     }
-  }
-}
-
-/**
- * Renders an account ID the way an ACI is normally written: uppercased and split into 8-4-4-4-12 groups by dashes.
- * The dashes are display-only, so what the view model sees is always the unformatted ID.
- */
-internal object AccountIdVisualTransformation : VisualTransformation {
-
-  override fun filter(text: AnnotatedString): TransformedText {
-    return TransformedText(
-      text = AnnotatedString(AccountIdFormat.dashed(text.text)),
-      offsetMapping = AccountIdOffsetMapping(text.length)
-    )
-  }
-
-  private class AccountIdOffsetMapping(private val inputLength: Int) : OffsetMapping {
-    override fun originalToTransformed(offset: Int): Int = offset + AccountIdFormat.dashesBeforeRawOffset(offset, inputLength)
-
-    override fun transformedToOriginal(offset: Int): Int = offset - AccountIdFormat.dashesBeforeDashedOffset(offset, inputLength)
   }
 }
 

@@ -89,7 +89,7 @@ class SignalLoginPaymentViewModel(
           localState = applyManualReceiptCredentialSubmitted(localState, parentEventEmitter)
           stateEmitter(localState.copy(showSpinner = false))
         } else if (state.selectedOption == SignalLoginPaymentState.Option.ExistingLogin) {
-          parentEventEmitter.navigateTo(RegistrationRoute.SignalLoginCredentialEntry)
+          parentEventEmitter.navigateTo(RegistrationRoute.SignalLoginCredentialEntry())
         } else {
           // TODO [phonenumberless] Launch the purchase flow.
           Log.i(TAG, "Continue clicked for ${state.selectedOption}, but the purchase flow isn't implemented yet.")

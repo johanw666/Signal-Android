@@ -6,10 +6,15 @@
 package org.signal.registration.screens.phonenumber
 
 import android.app.Application
+import android.content.Context
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.test.assertIsEnabled
 import androidx.compose.ui.test.assertIsNotEnabled
 import androidx.compose.ui.test.junit4.createComposeRule
 import androidx.compose.ui.test.onNodeWithTag
+import androidx.compose.ui.test.onNodeWithText
 import androidx.compose.ui.test.performClick
 import androidx.compose.ui.test.performImeAction
 import androidx.test.core.app.ApplicationProvider
@@ -20,6 +25,8 @@ import org.robolectric.RobolectricTestRunner
 import org.robolectric.annotation.Config
 import org.signal.core.ui.CoreUiDependenciesRule
 import org.signal.core.ui.compose.theme.SignalTheme
+import org.signal.registration.R
+import org.signal.registration.screens.shared.AccountIdError
 import org.signal.registration.test.TestTags
 
 /**
@@ -34,6 +41,8 @@ class PhoneNumberScreenTest {
 
   @get:Rule
   val coreUiDependenciesRule = CoreUiDependenciesRule(ApplicationProvider.getApplicationContext())
+
+  private val context: Context = ApplicationProvider.getApplicationContext()
 
   @Test
   fun `Next button is disabled when fields are empty`() {
@@ -178,11 +187,148 @@ class PhoneNumberScreenTest {
     }
 
     // When
-    composeTestRule.onNodeWithTag(TestTags.PHONE_NUMBER_COUNTRY_PICKER).performClick()
+    composeTestRule.onNodeWithTag(TestTags.PHONE_NUMBER_COUNTRY_CODE_FIELD).performClick()
 
     // Then
     assert(emittedEvent is PhoneNumberEntryScreenEvents.CountryPicker) {
       "Expected CountryPicker event but got $emittedEvent"
     }
   }
+
+  @Test
+  fun `account ID entry shows the account ID label and swaps the country code for a key`() {
+    // Given
+    composeTestRule.setContent {
+      SignalTheme {
+        PhoneNumberScreen(
+          state = accountIdState(),
+          onEvent = {}
+        )
+      }
+    }
+
+    // Then
+    composeTestRule.onNodeWithText(context.getString(R.string.RegistrationActivity_account_id)).assertExists()
+    composeTestRule.onNodeWithTag(TestTags.PHONE_NUMBER_COUNTRY_CODE_FIELD).assertExists()
+  }
+
+  @Test
+  fun `account ID entry renders the ID with the dashes an ACI is normally written with`() {
+    // Given
+    composeTestRule.setContent {
+      SignalTheme {
+        PhoneNumberScreen(
+          state = accountIdState(),
+          onEvent = {}
+        )
+      }
+    }
+
+    // Then
+    composeTestRule.onNodeWithText("A6B28482-2E32-83D0-7F23-91360A4C2B91").assertExists()
+  }
+
+  @Test
+  fun `Next button is enabled for a complete account ID and disabled for a partial one`() {
+    // Given
+    var accountId by mutableStateOf("a6b284822e3283d07f2391360a4c2b91")
+
+    composeTestRule.setContent {
+      SignalTheme {
+        PhoneNumberScreen(
+          state = accountIdState(accountId),
+          onEvent = {}
+        )
+      }
+    }
+
+    // Then
+    composeTestRule.onNodeWithTag(TestTags.PHONE_NUMBER_NEXT_BUTTON).assertIsEnabled()
+
+    // When
+    accountId = "a6b28482"
+
+    // Then
+    composeTestRule.onNodeWithTag(TestTags.PHONE_NUMBER_NEXT_BUTTON).assertIsNotEnabled()
+  }
+
+  @Test
+  fun `an over-long account ID says why it can't be submitted`() {
+    // Given
+    composeTestRule.setContent {
+      SignalTheme {
+        PhoneNumberScreen(
+          state = accountIdState().copy(accountIdError = AccountIdError.TooLong(34)),
+          onEvent = {}
+        )
+      }
+    }
+
+    // Then
+    composeTestRule.onNodeWithText(context.getString(R.string.AccountIdField__too_long, 34, 32)).assertExists()
+  }
+
+  @Test
+  fun `an account ID stays a plain phone number field when numberless registration is unavailable`() {
+    // Given
+    composeTestRule.setContent {
+      SignalTheme {
+        PhoneNumberScreen(
+          state = accountIdState().copy(isPhoneNumberlessRegistrationAvailable = false),
+          onEvent = {}
+        )
+      }
+    }
+
+    // Then
+    composeTestRule.onNodeWithText("a6b284822e3283d07f2391360a4c2b91").assertExists()
+    composeTestRule.onNodeWithText("A6B28482-2E32-83D0-7F23-91360A4C2B91").assertDoesNotExist()
+    composeTestRule.onNodeWithText(context.getString(R.string.RegistrationActivity_account_id)).assertDoesNotExist()
+    composeTestRule.onNodeWithTag(TestTags.PHONE_NUMBER_COUNTRY_CODE_FIELD).assertExists()
+  }
+
+  @Test
+  fun `the country code control shows the selected calling code`() {
+    // Given
+    composeTestRule.setContent {
+      SignalTheme {
+        PhoneNumberScreen(
+          state = PhoneNumberEntryState(countryCode = "44", countryName = "United Kingdom"),
+          onEvent = {}
+        )
+      }
+    }
+
+    // Then
+    composeTestRule.onNodeWithText("+44").assertExists()
+  }
+
+  @Test
+  fun `the country code control does not open the picker in account ID mode`() {
+    // Given
+    var emittedEvent: PhoneNumberEntryScreenEvents? = null
+
+    composeTestRule.setContent {
+      SignalTheme {
+        PhoneNumberScreen(
+          state = accountIdState(),
+          onEvent = { event -> emittedEvent = event }
+        )
+      }
+    }
+
+    // When
+    composeTestRule.onNodeWithTag(TestTags.PHONE_NUMBER_COUNTRY_CODE_FIELD).performClick()
+
+    // Then
+    assert(emittedEvent == null) {
+      "Expected no event when tapping the country code in account ID mode but got $emittedEvent"
+    }
+  }
+
+  private fun accountIdState(accountId: String = "a6b284822e3283d07f2391360a4c2b91") = PhoneNumberEntryState(
+    accountId = accountId,
+    formattedNumber = accountId,
+    isPhoneNumberlessRegistrationAvailable = true
+  )
 }

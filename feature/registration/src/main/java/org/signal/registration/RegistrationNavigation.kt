@@ -49,6 +49,7 @@ import org.signal.core.ui.navigation.TransitionSpecs
 import org.signal.core.util.LinkActions
 import org.signal.core.util.LinkActions.OpenUrlError
 import org.signal.core.util.Result
+import org.signal.core.util.censor
 import org.signal.core.util.serialization.AccountEntropyPoolSerializer
 import org.signal.network.api.RegistrationApiV2.SessionMetadata
 import org.signal.network.api.RegistrationApiV2.SvrCredentials
@@ -180,9 +181,15 @@ sealed interface RegistrationRoute : NavKey, Parcelable {
   @Serializable
   data object SignalLoginViewDetails : RegistrationRoute
 
-  /** Logging in with a Signal Login the user already owns: the account ID and the recovery key that pairs with it. */
+  /**
+   * Logging in with a Signal Login the user already owns: the account ID and the recovery key that pairs with it.
+   *
+   * [prefilledAccountId] is the raw account ID the user already typed on an earlier screen, if any.
+   */
   @Serializable
-  data object SignalLoginCredentialEntry : RegistrationRoute
+  data class SignalLoginCredentialEntry(val prefilledAccountId: String? = null) : RegistrationRoute {
+    override fun toString(): String = "SignalLoginCredentialEntry(prefilledAccountId=${prefilledAccountId?.censor()})"
+  }
 
   /** Optional username selection for a phone-numberless account. */
   @Serializable
@@ -754,11 +761,12 @@ private fun EntryProviderScope<NavKey>.navigationEntries(
   }
 
   // -- Signal Login Credential Entry Screen
-  entry<RegistrationRoute.SignalLoginCredentialEntry> {
+  entry<RegistrationRoute.SignalLoginCredentialEntry> { key ->
     val viewModel: SignalLoginCredentialEntryViewModel = viewModel(
       factory = SignalLoginCredentialEntryViewModel.Factory(
         repository = registrationRepository,
-        parentEventEmitter = registrationViewModel::onEvent
+        parentEventEmitter = registrationViewModel::onEvent,
+        prefilledAccountId = key.prefilledAccountId
       )
     )
     val state by viewModel.state.collectAsStateWithLifecycle()

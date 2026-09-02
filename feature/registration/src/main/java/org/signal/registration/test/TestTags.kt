@@ -43,7 +43,6 @@ object TestTags {
 
   // Phone Number Screen
   const val PHONE_NUMBER_SCREEN = "phone_number_screen"
-  const val PHONE_NUMBER_COUNTRY_PICKER = "phone_number_country_picker"
   const val PHONE_NUMBER_COUNTRY_CODE_FIELD = "phone_number_country_code_field"
   const val PHONE_NUMBER_PHONE_FIELD = "phone_number_phone_field"
   const val PHONE_NUMBER_NEXT_BUTTON = "phone_number_next_button"

@@ -36,6 +36,7 @@ import org.signal.core.ui.compose.theme.SignalTheme
 import org.signal.passwordmanager.SignalCredentialManager
 import org.signal.passwordmanager.UsernamePasswordCredential
 import org.signal.registration.screens.aepentry.AepInput
+import org.signal.registration.screens.shared.AccountIdError
 import org.signal.registration.test.TestTags
 
 @RunWith(RobolectricTestRunner::class)
