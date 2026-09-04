@@ -739,12 +739,6 @@ class ConversationViewModel(
     }
   }
 
-  fun setIsMediaKeyboardShowing(isMediaKeyboardShowing: Boolean) {
-    internalBackPressedState.update {
-      it.copy(isMediaKeyboardShowing = isMediaKeyboardShowing)
-    }
-  }
-
   fun resetBackPressedState() {
     internalBackPressedState.value = BackPressedState()
   }
@@ -846,12 +840,12 @@ class ConversationViewModel(
     data object Cancelled : PlaintextExportState
   }
 
+  /** A media keyboard is absent by design: MediaKeyboardScaffold registers its own back handler. */
   data class BackPressedState(
     val isReactionDelegateShowing: Boolean = false,
     val isSearchRequested: Boolean = false,
-    val isInActionMode: Boolean = false,
-    val isMediaKeyboardShowing: Boolean = false
+    val isInActionMode: Boolean = false
   ) {
-    fun shouldHandleBackPressed() = isSearchRequested || isReactionDelegateShowing || isInActionMode || isMediaKeyboardShowing
+    fun shouldHandleBackPressed() = isSearchRequested || isReactionDelegateShowing || isInActionMode
   }
 }

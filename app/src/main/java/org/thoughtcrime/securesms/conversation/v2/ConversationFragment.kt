@@ -32,6 +32,7 @@ import android.provider.Settings
 import android.text.Editable
 import android.text.TextWatcher
 import android.view.KeyEvent
+import android.view.LayoutInflater
 import android.view.Menu
 import android.view.MenuItem
 import android.view.MotionEvent
@@ -52,6 +53,9 @@ import androidx.annotation.MainThread
 import androidx.annotation.StringRes
 import androidx.appcompat.content.res.AppCompatResources
 import androidx.appcompat.widget.SearchView
+import androidx.compose.runtime.getValue
+import androidx.compose.ui.platform.ComposeView
+import androidx.compose.ui.platform.ViewCompositionStrategy
 import androidx.constraintlayout.widget.ConstraintSet
 import androidx.core.app.ActivityOptionsCompat
 import androidx.core.content.ContextCompat
@@ -64,7 +68,6 @@ import androidx.core.view.isInvisible
 import androidx.core.view.isVisible
 import androidx.core.view.updatePadding
 import androidx.fragment.app.DialogFragment
-import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentResultListener
 import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.commit
@@ -113,11 +116,11 @@ import org.signal.core.models.database.StickerRecord
 import org.signal.core.models.media.Media
 import org.signal.core.models.media.TransformProperties
 import org.signal.core.ui.BottomSheetUtil
+import org.signal.core.ui.compose.theme.SignalTheme
 import org.signal.core.ui.getWindowSizeClass
 import org.signal.core.ui.isSplitPane
 import org.signal.core.ui.logging.LoggingFragment
 import org.signal.core.ui.permissions.Permissions
-import org.signal.core.ui.util.ThemeUtil
 import org.signal.core.ui.view.Stub
 import org.signal.core.util.ByteLimitInputFilter
 import org.signal.core.util.Debouncer
@@ -156,9 +159,7 @@ import org.thoughtcrime.securesms.components.AnimatingToggle
 import org.thoughtcrime.securesms.components.ComposeText
 import org.thoughtcrime.securesms.components.ConversationSearchBottomBar
 import org.thoughtcrime.securesms.components.HidingLinearLayout
-import org.thoughtcrime.securesms.components.InputAwareConstraintLayout
 import org.thoughtcrime.securesms.components.InputPanel
-import org.thoughtcrime.securesms.components.InsetAwareConstraintLayout
 import org.thoughtcrime.securesms.components.ProgressCardDialogFragment
 import org.thoughtcrime.securesms.components.RotatedTiledDrawable
 import org.thoughtcrime.securesms.components.ScrollToPositionDelegate
@@ -166,6 +167,9 @@ import org.thoughtcrime.securesms.components.SendButton
 import org.thoughtcrime.securesms.components.SignalProgressDialog
 import org.thoughtcrime.securesms.components.ViewBinderDelegate
 import org.thoughtcrime.securesms.components.compose.ActionModeTopBarView
+import org.thoughtcrime.securesms.components.compose.mediakeyboard.MediaKeyboardController
+import org.thoughtcrime.securesms.components.compose.mediakeyboard.MediaKeyboardEvents
+import org.thoughtcrime.securesms.components.compose.mediakeyboard.MediaKeyboardKey
 import org.thoughtcrime.securesms.components.emoji.MediaKeyboard
 import org.thoughtcrime.securesms.components.emoji.RecentEmojiPageModel
 import org.thoughtcrime.securesms.components.location.SignalPlace
@@ -259,6 +263,7 @@ import org.thoughtcrime.securesms.database.model.MessageRecord
 import org.thoughtcrime.securesms.database.model.MmsMessageRecord
 import org.thoughtcrime.securesms.database.model.Quote
 import org.thoughtcrime.securesms.database.model.databaseprotos.BodyRangeList
+import org.thoughtcrime.securesms.databinding.V2ConversationBackgroundBinding
 import org.thoughtcrime.securesms.databinding.V2ConversationFragmentBinding
 import org.thoughtcrime.securesms.dependencies.AppDependencies
 import org.thoughtcrime.securesms.events.GroupCallPeekEvent
@@ -284,7 +289,6 @@ import org.thoughtcrime.securesms.invites.InviteActions
 import org.thoughtcrime.securesms.jobs.AttachmentBackfill
 import org.thoughtcrime.securesms.jobs.ServiceOutageDetectionJob
 import org.thoughtcrime.securesms.keyboard.KeyboardPage
-import org.thoughtcrime.securesms.keyboard.KeyboardPagerFragment
 import org.thoughtcrime.securesms.keyboard.KeyboardPagerViewModel
 import org.thoughtcrime.securesms.keyboard.KeyboardUtil
 import org.thoughtcrime.securesms.keyboard.emoji.EmojiKeyboardPageFragment
@@ -405,7 +409,7 @@ import org.signal.core.ui.R as CoreUiR
  * A single unified fragment for Conversations.
  */
 class ConversationFragment :
-  LoggingFragment(R.layout.v2_conversation_fragment),
+  LoggingFragment(),
   ReactWithAnyEmojiBottomSheetDialogFragment.Callback,
   ReactionsBottomSheetDialogFragment.Callback,
   EmojiKeyboardPageFragment.Callback,
@@ -438,9 +442,6 @@ class ConversationFragment :
     private const val SCROLL_HEADER_CLOSE_DELAY: Long = SCROLL_HEADER_ANIMATION_DURATION * 4
     private const val IS_SCROLLED_TO_BOTTOM_THRESHOLD: Int = 2
 
-    private const val ATTACHMENT_KEYBOARD_FRAGMENT_CREATOR_ID = 1
-    private const val MEDIA_KEYBOARD_FRAGMENT_CREATOR_ID = 2
-
     private val RECEIVE_CONTENT_MIME_TYPES = arrayOf(
       "image/jpeg",
       "image/png",
@@ -469,7 +470,8 @@ class ConversationFragment :
   }
 
   private val disposables = LifecycleDisposable()
-  private val binding by ViewBinderDelegate(bindingFactory = V2ConversationFragmentBinding::bind, onBindingWillBeDestroyed = { _binding ->
+  private val backgroundBinding by ViewBinderDelegate(bindingFactory = { V2ConversationBackgroundBinding.bind(conversationBackground) })
+  private val binding by ViewBinderDelegate(bindingFactory = { V2ConversationFragmentBinding.bind(conversationContent) }, onBindingWillBeDestroyed = { _binding ->
     _binding.conversationInputPanel.embeddedTextEditor.apply {
       setOnEditorActionListener(null)
       setCursorPositionChangedListener(null)
@@ -549,7 +551,7 @@ class ConversationFragment :
       args.threadId,
       inlineQueryViewModel,
       inputPanel,
-      (requireView() as ViewGroup),
+      (conversationContent as ViewGroup),
       composeText
     )
   }
@@ -620,8 +622,30 @@ class ConversationFragment :
 
   private val motionEventRelay: MotionEventRelay by viewModels(ownerProducer = { requireActivity() })
 
-  private val container: InputAwareConstraintLayout
-    get() = requireView() as InputAwareConstraintLayout
+  /** The conversation's view hierarchy, hosted inside the ComposeView returned by [onCreateView]. */
+  private lateinit var conversationContent: View
+
+  /** The wallpaper, drawn behind [conversationContent]. */
+  private lateinit var conversationBackground: View
+
+  private val chatScreenViewModel: ChatScreenViewModel by viewModels()
+
+  /** Stable across recomposition, so view code can ask for a keyboard from a click listener. */
+  private val mediaKeyboardController: MediaKeyboardController by lazy(LazyThreadSafetyMode.NONE) {
+    MediaKeyboardController(
+      initialKeyboardHeightPx = chatScreenViewModel.getStoredKeyboardHeight(
+        isLandscape = isLandscape(),
+        minimumPx = resources.getDimensionPixelSize(R.dimen.default_custom_keyboard_size)
+      )
+    )
+  }
+
+  /** Colours for the scrims ChatScreen paints. */
+  private val chatScrims = ChatScrimState()
+
+  private val container: ChatInputController by lazy(LazyThreadSafetyMode.NONE) {
+    ChatInputController(requireContext(), mediaKeyboardController)
+  }
 
   private val inputPanel: InputPanel
     get() = binding.conversationInputPanel.root
@@ -672,20 +696,45 @@ class ConversationFragment :
     registerForResults()
   }
 
-  override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-    viewModel.resetBackPressedState()
-    binding.toolbar.isBackInvokedCallbackEnabled = false
-    binding.root.setUseWindowTypes(args.conversationScreenType == ConversationScreenType.NORMAL && !resources.isSplitPane())
-    if (args.conversationScreenType == ConversationScreenType.BUBBLE) {
-      binding.root.setNavigationBarInsetOverride(0)
-      view.post {
-        if (isAdded && this@ConversationFragment.view != null) {
-          ViewCompat.requestApplyInsets(binding.root)
-          binding.root.requestLayout()
+  override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
+    conversationBackground = inflater.inflate(R.layout.v2_conversation_background, container, false)
+    conversationContent = inflater.inflate(R.layout.v2_conversation_fragment, container, false)
+
+    return ComposeView(requireContext()).apply {
+      setViewCompositionStrategy(ViewCompositionStrategy.DisposeOnViewTreeLifecycleDestroyed)
+      setContent {
+        SignalTheme {
+          ChatScreen(
+            controller = mediaKeyboardController,
+            onEvent = ::onMediaKeyboardEvent,
+            scrims = chatScrims,
+            isBubble = args.conversationScreenType == ConversationScreenType.BUBBLE,
+            backgroundView = conversationBackground,
+            contentView = conversationContent
+          )
         }
       }
     }
+  }
 
+  private fun onMediaKeyboardEvent(event: MediaKeyboardEvents) {
+    when (event) {
+      is MediaKeyboardEvents.SystemKeyboardVisibilityChanged -> container.onKeyboardVisibilityChanged(event.visible)
+      MediaKeyboardEvents.SystemKeyboardAnimationEnded -> container.onKeyboardAnimationEnded()
+      is MediaKeyboardEvents.SystemKeyboardHeightMeasured -> chatScreenViewModel.setKeyboardHeight(isLandscape(), event.heightPx)
+      is MediaKeyboardEvents.KeyboardShown -> container.onInputShown(event.key)
+      MediaKeyboardEvents.KeyboardHidden -> container.onInputHidden()
+      MediaKeyboardEvents.DismissedByBack -> Unit
+    }
+  }
+
+  private fun isLandscape(): Boolean {
+    return resources.configuration.orientation == Configuration.ORIENTATION_LANDSCAPE
+  }
+
+  override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+    viewModel.resetBackPressedState()
+    binding.toolbar.isBackInvokedCallbackEnabled = false
     disposables.bindTo(viewLifecycleOwner)
 
     if (requireActivity() is ConversationActivity) {
@@ -695,13 +744,14 @@ class ConversationFragment :
     markReadHelper = MarkReadHelper(ConversationId.forConversation(args.threadId), requireContext(), viewLifecycleOwner, args.isIncognito)
     markReadHelper.ignoreViewReveals()
 
-    attachmentManager = AttachmentManager(requireContext(), requireView(), AttachmentManagerListener())
+    attachmentManager = AttachmentManager(requireContext(), conversationContent, AttachmentManagerListener())
 
     initializeConversationThreadUi()
 
     val conversationToolbarOnScrollHelper = ConversationToolbarOnScrollHelper(
       requireActivity(),
-      binding.toolbarBackground,
+      listOf(binding.toolbarBackground),
+      { color -> chatScrims.statusBarColor = color },
       viewModel::wallpaperSnapshot,
       { viewModel.recipientSnapshot?.isReleaseNotes == true },
       viewLifecycleOwner,
@@ -725,8 +775,6 @@ class ConversationFragment :
         onNext = this::presentInputReadyState
       )
       .addTo(disposables)
-
-    container.fragmentManager = childFragmentManager
 
     childFragmentManager.setFragmentResultListener(MemberLabelEducationSheet.RESULT_EDIT_MEMBER_LABEL, viewLifecycleOwner) { _, bundle ->
       val groupId = bundle.requireParcelableCompat(MemberLabelEducationSheet.KEY_GROUP_ID, GroupId.V2::class.java)
@@ -881,6 +929,9 @@ class ConversationFragment :
       container.removeKeyboardStateListener(it)
     }
     keyboardEvents = null
+
+    // Fragment-scoped, so anything still waiting on a hide would outlive the binding.
+    container.clearListeners()
 
     if (!requireActivity().isChangingConfigurations) {
       (requireActivity().supportFragmentManager.findFragmentByTag(MESSAGE_DETAILS_TAG) as? DialogFragment)?.dismissAllowingStateLoss()
@@ -1102,15 +1153,6 @@ class ConversationFragment :
 
       state.isInActionMode -> finishActionMode()
 
-      state.isMediaKeyboardShowing -> {
-        if (container.isInputShowing) {
-          container.hideInput()
-        } else {
-          Log.d(TAG, "handleBackPressed() - media keyboard state was stale, clearing")
-          viewModel.setIsMediaKeyboardShowing(false)
-        }
-      }
-
       else -> {
         // State has changed since the back handler was enabled. Let the back press proceed
         // to the next handler by triggering onBackPressed again after setting a skip flag
@@ -1322,7 +1364,7 @@ class ConversationFragment :
     sendEditButton.setOnClickListener { handleSendEditMessage() }
 
     val attachListener = { _: View ->
-      container.toggleInput(AttachmentKeyboardFragmentCreator, composeText)
+      container.toggleInput(ChatKeyboards.Attachment, composeText)
     }
     binding.conversationInputPanel.attachButton.setOnClickListener(attachListener)
     binding.conversationInputPanel.inlineAttachmentButton.setOnClickListener(attachListener)
@@ -1621,7 +1663,7 @@ class ConversationFragment :
     inputPanel.setHideForMessageRequestState(inputDisabled)
 
     if (inputDisabled && !isReleaseNotes) {
-      binding.navBar.setBackgroundColor(disabledInputView.color)
+      chatScrims.navigationBarColor = disabledInputView.color
     } else if (!inputDisabled) {
       disabledInputView.clear()
     }
@@ -1642,7 +1684,7 @@ class ConversationFragment :
 
     val navBarInset = ViewCompat.getRootWindowInsets(binding.root)?.getInsets(WindowInsetsCompat.Type.navigationBars())?.bottom ?: 0
     binding.conversationItemRecycler.updatePadding(bottom = ViewUtil.dpToPx(72) + navBarInset)
-    binding.navBar.setBackgroundColor(Color.TRANSPARENT)
+    chatScrims.navigationBarColor = Color.TRANSPARENT
 
     ConstraintSet().apply {
       clone(binding.root)
@@ -1833,7 +1875,7 @@ class ConversationFragment :
       )
       binding.toolbar.setNavigationContentDescription(R.string.ConversationFragment__content_description_back_button)
       binding.toolbar.setNavigationOnClickListener {
-        binding.root.hideKeyboard(composeText)
+        container.hideKeyboard(composeText)
         requireActivity().onBackPressedDispatcher.onBackPressed()
       }
       binding.toolbar.setContentInsetsRelative(
@@ -1925,7 +1967,7 @@ class ConversationFragment :
     binding.toolbar.setActionItemTint(toolbarTint)
     binding.toolbar.navigationIcon?.setTint(toolbarTint)
 
-    binding.conversationWallpaper.visible = wallpaperEnabled
+    backgroundBinding.conversationWallpaper.visible = wallpaperEnabled
     binding.scrollToBottom.setWallpaperEnabled(wallpaperEnabled)
     binding.scrollToMention.setWallpaperEnabled(wallpaperEnabled)
     binding.conversationDisabledInput.setWallpaperEnabled(wallpaperEnabled)
@@ -1966,18 +2008,18 @@ class ConversationFragment :
     )
     val bitmap = DrawableUtil.toBitmap(tinted, tinted.intrinsicWidth, tinted.intrinsicHeight)
 
-    binding.conversationWallpaper.scaleType = ImageView.ScaleType.MATRIX
-    binding.conversationWallpaper.setBackgroundColor(ContextCompat.getColor(requireContext(), R.color.release_notes_background))
-    binding.conversationWallpaper.setImageDrawable(RotatedTiledDrawable(bitmap, -45f))
-    binding.conversationWallpaperDim.visible = false
+    backgroundBinding.conversationWallpaper.scaleType = ImageView.ScaleType.MATRIX
+    backgroundBinding.conversationWallpaper.setBackgroundColor(ContextCompat.getColor(requireContext(), R.color.release_notes_background))
+    backgroundBinding.conversationWallpaper.setImageDrawable(RotatedTiledDrawable(bitmap, -45f))
+    backgroundBinding.conversationWallpaperDim.visible = false
   }
 
   private fun applyChatWallpaper(chatWallpaper: ChatWallpaper?) {
     if (chatWallpaper != null) {
-      chatWallpaper.loadInto(binding.conversationWallpaper)
-      ChatWallpaperDimLevelUtil.applyDimLevelForNightMode(binding.conversationWallpaperDim, chatWallpaper)
+      chatWallpaper.loadInto(backgroundBinding.conversationWallpaper)
+      ChatWallpaperDimLevelUtil.applyDimLevelForNightMode(backgroundBinding.conversationWallpaperDim, chatWallpaper)
     } else {
-      binding.conversationWallpaperDim.visible = false
+      backgroundBinding.conversationWallpaperDim.visible = false
     }
   }
 
@@ -1988,7 +2030,13 @@ class ConversationFragment :
       CoreUiR.color.signal_colorBackground
     }
 
-    binding.navBar.setBackgroundColor(ContextCompat.getColor(requireContext(), navColor))
+    chatScrims.navigationBarColor = ContextCompat.getColor(requireContext(), navColor)
+    chatScrims.attachmentKeyboardColor = androidx.compose.ui.graphics.Color(
+      ContextCompat.getColor(
+        requireContext(),
+        if (hasWallpaper) R.color.wallpaper_compose_background else R.color.signal_background_primary
+      )
+    )
   }
 
   private fun presentChatColors(chatColors: ChatColors) {
@@ -4128,7 +4176,7 @@ class ConversationFragment :
             ViewUtil.fadeOut(target.quotedIndicatorView!!, 150, View.INVISIBLE)
           }
 
-          container.hideKeyboard(composeText, keepHeightOverride = true)
+          container.hideKeyboard(composeText)
 
           viewModel.setHideScrollButtonsForReactionOverlay(true)
 
@@ -4872,7 +4920,7 @@ class ConversationFragment :
         inputPanel.onSaveRecordDraft()
       }
 
-      ScheduleMessageContextMenu.show(sendButton, (requireView() as ViewGroup)) { time ->
+      ScheduleMessageContextMenu.show(sendButton, (conversationContent as ViewGroup)) { time ->
         if (time == -1L) {
           showSchedule(childFragmentManager)
         } else {
@@ -5041,7 +5089,7 @@ class ConversationFragment :
     }
 
     override fun onEmojiToggle() {
-      container.toggleInput(MediaKeyboardFragmentCreator, composeText, showSoftKeyOnHide = true)
+      container.toggleInput(ChatKeyboards.Media, composeText, showSoftKeyOnHide = true)
     }
 
     override fun onLinkPreviewCanceled() {
@@ -5156,11 +5204,6 @@ class ConversationFragment :
     }
   }
 
-  private object AttachmentKeyboardFragmentCreator : InputAwareConstraintLayout.FragmentCreator {
-    override val id: Int = ATTACHMENT_KEYBOARD_FRAGMENT_CREATOR_ID
-    override fun create(): Fragment = AttachmentKeyboardFragment()
-  }
-
   private inner class AttachmentKeyboardFragmentListener : FragmentResultListener {
     @Suppress("DEPRECATION")
     override fun onFragmentResult(requestKey: String, result: Bundle) {
@@ -5199,40 +5242,19 @@ class ConversationFragment :
     }
   }
 
-  private object MediaKeyboardFragmentCreator : InputAwareConstraintLayout.FragmentCreator {
-    override val id: Int = MEDIA_KEYBOARD_FRAGMENT_CREATOR_ID
-    override fun create(): Fragment = KeyboardPagerFragment()
-  }
-
   private inner class KeyboardEvents :
-    InputAwareConstraintLayout.Listener,
-    InsetAwareConstraintLayout.KeyboardStateListener {
+    ChatInputController.Listener,
+    ChatInputController.KeyboardStateListener {
 
-    override fun onInputShown(fragmentCreatorId: Int) {
-      when (fragmentCreatorId) {
-        ATTACHMENT_KEYBOARD_FRAGMENT_CREATOR_ID -> {
-          if (viewModel.recipientSnapshot?.wallpaper != null) {
-            binding.navBar.setBackgroundColor(ContextCompat.getColor(requireContext(), R.color.wallpaper_compose_background))
-          } else {
-            binding.navBar.setBackgroundColor(ContextCompat.getColor(requireContext(), R.color.signal_background_primary))
-          }
-        }
-
-        MEDIA_KEYBOARD_FRAGMENT_CREATOR_ID -> {
-          binding.navBar.setBackgroundColor(ThemeUtil.getThemedColor(requireContext(), R.attr.mediaKeyboardBottomBarBackgroundColor))
-        }
-
-        else -> {
-          Log.w(TAG, "Not setting navbar coloring for unknown creator id $fragmentCreatorId")
-        }
+    override fun onInputShown(key: MediaKeyboardKey) {
+      if (key == ChatKeyboards.Media) {
+        onShown()
       }
-
-      viewModel.setIsMediaKeyboardShowing(true)
     }
 
     override fun onInputHidden() {
       setNavBarBackgroundColor(viewModel.wallpaperSnapshot != null || viewModel.recipientSnapshot?.isReleaseNotes == true)
-      viewModel.setIsMediaKeyboardShowing(false)
+      onHidden()
     }
 
     override fun onKeyboardShown() {
