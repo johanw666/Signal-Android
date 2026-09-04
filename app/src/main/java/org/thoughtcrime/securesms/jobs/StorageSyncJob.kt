@@ -257,7 +257,7 @@ class StorageSyncJob private constructor(parameters: Parameters, private var loc
   @Throws(IOException::class, RetryLaterException::class, InvalidKeyException::class)
   private fun performSync(storageServiceKey: StorageKey): Boolean {
     val stopwatch = Stopwatch("StorageSync")
-    val db = SignalDatabase.rawDatabase
+    val db = SignalDatabase.writableDatabase
     val repository = StorageServiceService(SignalNetwork.storageService)
 
     val localManifest = SignalStore.storageService.manifest
