@@ -245,7 +245,7 @@
     <!-- Confirm button label for the restore to new account dialog -->
     <string name="EnterAepScreen__restore">Aischuir</string>
     <!-- Title of the dialog shown when the entered recovery key is correct, but the account has no Signal Backup to restore -->
-    <string name="EnterAepScreen__no_backup_found">No backup found</string>
+    <string name="EnterAepScreen__no_backup_found">Níor aimsíodh cúltaca</string>
     <!-- Body of the dialog shown when the entered recovery key is correct, but the account has no Signal Backup to restore -->
     <string name="EnterAepScreen__no_backup_found_body">Your recovery key is correct, but there\'s no Signal Backup for this account. Go back to choose another way to restore, or continue without restoring.</string>
     <!-- Text shown while preparing the restore -->
@@ -668,7 +668,7 @@
 
     <!-- Errors shown beneath an account ID text field, wherever one is offered -->
     <!-- Error shown when too many characters were entered in an account ID field. First placeholder is how many were entered, second is the maximum. -->
-    <string name="AccountIdField__too_long">Too long. %1$d/%2$d characters.</string>
+    <string name="AccountIdField__too_long">Rófhada. Carachtair: %1$d/%2$d.</string>
     <!-- Error shown when the entered account ID contains characters that can\'t appear in one. -->
     <string name="AccountIdField__invalid_account_id">Invalid account ID</string>
 
@@ -680,15 +680,15 @@
     <!-- Label of the text field the account ID is typed into. -->
     <string name="SignalLoginCredentialEntryScreen__account_id">Account ID</string>
     <!-- Label of the text field the recovery key is typed into. -->
-    <string name="SignalLoginCredentialEntryScreen__recovery_key">Recovery key</string>
+    <string name="SignalLoginCredentialEntryScreen__recovery_key">Eochair athshlánaithe</string>
     <!-- Description of the button that spells out the typed recovery key instead of masking it. -->
     <string name="SignalLoginCredentialEntryScreen__show_recovery_key">Show recovery key</string>
     <!-- Description of the button that masks the typed recovery key. -->
     <string name="SignalLoginCredentialEntryScreen__hide_recovery_key">Hide recovery key</string>
     <!-- Button that opens a support article for users who can\'t find their Signal Login. -->
-    <string name="SignalLoginCredentialEntryScreen__need_help">Need help?</string>
+    <string name="SignalLoginCredentialEntryScreen__need_help">An bhfuil cabhair uait?</string>
     <!-- Action button that submits the entered Signal Login. -->
-    <string name="SignalLoginCredentialEntryScreen__next">Next</string>
+    <string name="SignalLoginCredentialEntryScreen__next">Ar aghaidh</string>
     <!-- Error shown when the service rejects the entered login, which means one of the two halves is wrong. -->
     <string name="SignalLoginCredentialEntryScreen__incorrect_account_id_or_recovery_key">Incorrect account ID or recovery key</string>
 
@@ -706,9 +706,9 @@
     <!-- Link in the helper text that opens an explanation of the digits paired with a username. -->
     <string name="AddUsernameScreen__learn_more">Tuilleadh faisnéise</string>
     <!-- Title of the dialog explaining the digits paired with a username. -->
-    <string name="AddUsernameScreen__what_is_this_number">What is this number?</string>
+    <string name="AddUsernameScreen__what_is_this_number">Cad í an uimhir seo?</string>
     <!-- Body of the dialog explaining the digits paired with a username. -->
-    <string name="AddUsernameScreen__these_digits_help_keep">These digits help keep your username private so you can avoid unwanted messages. Share your username with only the people and groups you\'d like to chat with. If you change usernames you\'ll get a new set of digits.</string>
+    <string name="AddUsernameScreen__these_digits_help_keep">Cabhraíonn na digití seo le d\'ainm úsáideora a choimeád príobháideach agus teachtaireachtaí gan iarraidh a sheachaint. Ná comhroinn d\'ainm úsáideora ach le daoine agus le grúpaí ar mhaith leat comhrá a dhéanamh leo. Má athraíonn tú d\'ainm úsáideora gheobhaidh tú tacar nua digití.</string>
     <!-- Button that skips choosing a username. -->
     <string name="AddUsernameScreen__skip">Scipeáil</string>
     <!-- Button that submits the chosen username. -->
@@ -726,17 +726,17 @@
     <!-- Error shown when the user\'s temporary hold on a username expired before they submitted it. -->
     <string name="AddUsernameScreen__your_username_reservation_expired">Tá áirithint d\'ainm úsáideora as feidhm. Triail arís.</string>
     <!-- Error shown when the username formed by the entered name and the user\'s chosen number is already taken. -->
-    <string name="AddUsernameScreen__this_username_is_not_available_try_another_number">This username is not available, try another number.</string>
+    <string name="AddUsernameScreen__this_username_is_not_available_try_another_number">Níl an t-ainm úsáideora seo ar fáil, triail uimhir eile.</string>
     <!-- Validation error shown when the number the user entered after their username has too few digits. -->
-    <string name="AddUsernameScreen__enter_a_minimum_of_d_digits">Invalid username, enter a minimum of %1$d digits.</string>
+    <string name="AddUsernameScreen__enter_a_minimum_of_d_digits">Ainm úsáideora neamhbhailí, cuir isteach íoslíon de %1$d dhigit.</string>
     <!-- Validation error shown when the number the user entered after their username has too many digits. -->
-    <string name="AddUsernameScreen__enter_a_maximum_of_d_digits">Invalid username, enter a maximum of %1$d digits.</string>
+    <string name="AddUsernameScreen__enter_a_maximum_of_d_digits">Ainm úsáideora neamhbhailí, cuir isteach uaslíon de %1$d dhigit.</string>
     <!-- Validation error shown when the number the user entered after their username contains something other than digits. -->
     <string name="AddUsernameScreen__numbers_can_only_contain_digits">Invalid username, numbers can only contain digits.</string>
     <!-- Validation error shown when the number the user entered after their username is 00. -->
-    <string name="AddUsernameScreen__this_number_cant_be_00">This number can\'t be 00. Enter a digit between 1–9</string>
+    <string name="AddUsernameScreen__this_number_cant_be_00">Ní féidir 00 a bheith san uimhir seo. Cuir isteach digit idir 1 agus 9</string>
     <!-- Validation error shown when the number the user entered after their username has a leading zero. -->
-    <string name="AddUsernameScreen__this_number_cant_start_with_0">Numbers with more than 2 digits can\'t start with 0</string>
+    <string name="AddUsernameScreen__this_number_cant_start_with_0">Ní féidir le huimhreacha a bhfuil níos mó ná 2 dhigit iontu tosú le 0</string>
 
     <!-- ContactSupportDialog -->
     <!-- Title of the dialog asking the user whether they want to attach a debug log to their support request -->
@@ -750,15 +750,15 @@
 
     <!-- TotpEntryScreen -->
     <!-- Title of the two-factor authentication code entry screen -->
-    <string name="TotpEntryScreen__two_factor_authentication">Two-factor authentication</string>
+    <string name="TotpEntryScreen__two_factor_authentication">Fíordheimhniú dhá fhachtóir</string>
     <!-- Subtitle explaining where to find the code -->
     <string name="TotpEntryScreen__to_continue_enter_the_code">To continue enter the 6-digit code from your authenticator app.</string>
     <!-- Button text to cancel entering a code -->
-    <string name="TotpEntryScreen__cancel">Cancel</string>
+    <string name="TotpEntryScreen__cancel">Cuir ar ceal</string>
 
     <!-- TwoFactorSelectionScreen -->
     <!-- Title of the two-factor authentication method selection screen -->
-    <string name="TwoFactorSelectionScreen__two_factor_authentication">Two-factor authentication</string>
+    <string name="TwoFactorSelectionScreen__two_factor_authentication">Fíordheimhniú dhá fhachtóir</string>
     <!-- Subtitle telling the user to pick one of the methods listed below -->
     <string name="TwoFactorSelectionScreen__choose_a_method_below">Choose a method below to verify your account.</string>
     <!-- Title of the card for verifying with a passkey -->
@@ -766,9 +766,9 @@
     <!-- Description of the card for verifying with a passkey -->
     <string name="TwoFactorSelectionScreen__tap_to_use_your_device_biometrics">Tap to use your device biometrics or FIDO2 passkey</string>
     <!-- Title of the card for verifying with a code from an authenticator app -->
-    <string name="TwoFactorSelectionScreen__authenticator_app">Authenticator app</string>
+    <string name="TwoFactorSelectionScreen__authenticator_app">Aip fíordheimhnitheora</string>
     <!-- Description of the card for verifying with a code from an authenticator app -->
     <string name="TwoFactorSelectionScreen__enter_a_one_time_code">Enter a one-time code generated by your authenticator app.</string>
     <!-- Button text to cancel two-factor authentication -->
-    <string name="TwoFactorSelectionScreen__cancel">Cancel</string>
+    <string name="TwoFactorSelectionScreen__cancel">Cuir ar ceal</string>
 </resources>

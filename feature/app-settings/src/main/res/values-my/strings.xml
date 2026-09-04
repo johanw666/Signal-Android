@@ -75,37 +75,37 @@
 
     <!-- TotpSetupScreen -->
     <!-- Title of the screen that walks the user through setting up an authenticator app -->
-    <string name="TotpSetupScreen__set_up_your_authenticator_app">Set up your authenticator app</string>
+    <string name="TotpSetupScreen__set_up_your_authenticator_app">သင့်အတည်ပြုကုဒ်ထုတ်ပေးသည့် အက်ပ်ကို သတ်မှတ်ပါ</string>
     <!-- Instructions shown at the top of the authenticator app setup screen -->
-    <string name="TotpSetupScreen__follow_these_steps">Follow these steps to set up your authenticator app.</string>
+    <string name="TotpSetupScreen__follow_these_steps">သင့် အတည်ပြုကုဒ်ထုတ်ပေးသည့် အက်ပ်ကို စတင်အသုံးပြုရန် အောက်ပါအဆင့်များအတိုင်း လုပ်ဆောင်ပါ။</string>
     <!-- Clickable text that takes the user to a support article -->
-    <string name="TotpSetupScreen__learn_more">Learn more</string>
+    <string name="TotpSetupScreen__learn_more">ပိုမိုလေ့လာရန်</string>
     <!-- Header of the first step of authenticator app setup -->
-    <string name="TotpSetupScreen__step_1">Step 1</string>
+    <string name="TotpSetupScreen__step_1">အဆင့် ၁</string>
     <!-- Body of the first step of authenticator app setup -->
-    <string name="TotpSetupScreen__install_a_trusted_authenticator_app">Install a trusted authenticator app on your device.</string>
+    <string name="TotpSetupScreen__install_a_trusted_authenticator_app">သင့်စက်တွင် ယုံကြည်စိတ်ချရသော အတည်ပြုကုဒ်ထုတ်ပေးသည့် အက်ပ်ကို ထည့်သွင်းပါ။</string>
     <!-- Header of the second step of authenticator app setup -->
-    <string name="TotpSetupScreen__step_2">Step 2</string>
+    <string name="TotpSetupScreen__step_2">အဆင့် ၂</string>
     <!-- Body of the second step of authenticator app setup -->
-    <string name="TotpSetupScreen__open_your_authenticator_app">Open your authenticator app by tapping the button below to add your Signal account.</string>
+    <string name="TotpSetupScreen__open_your_authenticator_app">သင့် Signal အကောင့်ကို ထည့်သွင်းရန် အောက်ပါခလုတ်ကို နှိပ်ပြီး သင့် အတည်ပြုကုဒ်ထုတ်ပေးသည့် အက်ပ်ကို ဖွင့်ပါ။</string>
     <!-- Button that opens the user\'s authenticator app -->
-    <string name="TotpSetupScreen__open">Open</string>
+    <string name="TotpSetupScreen__open">ဖွင့်ရန်</string>
     <!-- Text above the setup key explaining that it can be entered by hand instead -->
-    <string name="TotpSetupScreen__or_you_can_copy_this_key">Or you can copy this key to manually set it up.</string>
+    <string name="TotpSetupScreen__or_you_can_copy_this_key">သို့မဟုတ် ဤကီးကို ကူးယူပြီး ကိုယ်တိုင် ထည့်သွင်းနိုင်ပါသည်။</string>
     <!-- Button that copies the setup key to the clipboard -->
-    <string name="TotpSetupScreen__copy">Copy</string>
+    <string name="TotpSetupScreen__copy">ကူးယူမည်</string>
     <!-- Toast shown after the setup key has been copied to the clipboard -->
-    <string name="TotpSetupScreen__copied_to_clipboard">Copied to clipboard</string>
+    <string name="TotpSetupScreen__copied_to_clipboard">ကလစ်ဘုတ်သို့ ကူးယူပြီး</string>
     <!-- Toast shown when there is no app installed that can handle the authenticator setup link -->
-    <string name="TotpSetupScreen__no_authenticator_app_found">No authenticator app found</string>
+    <string name="TotpSetupScreen__no_authenticator_app_found">အတည်ပြုကုဒ်ထုတ်ပေးသည့် အက်ပ်ကို မတွေ့ပါ</string>
     <!-- Dialog message shown when we couldn\'t reach the service to start setting up an authenticator app -->
     <string name="TotpSetupScreen__couldnt_reach_signal">Couldn\'t reach Signal. Check your connection and try again.</string>
     <!-- Header of the third step of authenticator app setup -->
-    <string name="TotpSetupScreen__step_3">Step 3</string>
+    <string name="TotpSetupScreen__step_3">အဆင့် ၃</string>
     <!-- Body of the third step of authenticator app setup -->
-    <string name="TotpSetupScreen__copy_the_code_thats_generated">Copy the code that\'s generated and return here to continue.</string>
+    <string name="TotpSetupScreen__copy_the_code_thats_generated">ထုတ်ပေးထားသော ကုဒ်ကို ကူးယူပြီး ဆက်လက်လုပ်ဆောင်ရန် ဤနေရာသို့ ပြန်လာပါ။</string>
     <!-- Button that advances from the setup instructions to entering a code -->
-    <string name="TotpSetupScreen__continue">Continue</string>
+    <string name="TotpSetupScreen__continue">ဆက်လုပ်ရန်</string>
 
     <!-- PasskeysScreen -->
     <!-- Title of the screen where the user sets up passkeys -->
@@ -137,68 +137,68 @@
 
     <!-- TotpCodeEntryScreen -->
     <!-- Title of the screen where the user enters the code from their authenticator app -->
-    <string name="TotpCodeEntryScreen__enter_your_code">Enter your code</string>
+    <string name="TotpCodeEntryScreen__enter_your_code">သင့်ကုဒ်ကို ထည့်ပါ</string>
     <!-- Instructions shown above the code entry field -->
-    <string name="TotpCodeEntryScreen__enter_the_6_digit_code">Enter the 6-digit code from your authenticator app.</string>
+    <string name="TotpCodeEntryScreen__enter_the_6_digit_code">သင့် အတည်ပြုကုဒ်ထုတ်ပေးသည့် အက်ပ်မှ ရရှိသော ဂဏန်း 6 လုံးပါ ကုဒ်ကို ထည့်ပါ။</string>
     <!-- Label of the code entry field -->
-    <string name="TotpCodeEntryScreen__code">Code</string>
+    <string name="TotpCodeEntryScreen__code">ကုဒ်</string>
     <!-- Button that submits the entered code -->
-    <string name="TotpCodeEntryScreen__done">Done</string>
+    <string name="TotpCodeEntryScreen__done">ပြီးပါပြီ</string>
     <!-- Error shown under the code field when the code the user entered was rejected -->
     <string name="TotpCodeEntryScreen__incorrect_code">Incorrect code. Enter the code showing in your authenticator app now.</string>
     <!-- Error shown under the code field when we couldn\'t reach the service to check the code -->
     <string name="TotpCodeEntryScreen__couldnt_reach_signal">Couldn\'t reach Signal. Check your connection and try again.</string>
     <!-- TotpAppListScreen -->
     <!-- Title of the screen listing the authenticator apps on the account -->
-    <string name="TotpAppListScreen__authenticator_app">Authenticator app</string>
+    <string name="TotpAppListScreen__authenticator_app">အတည်ပြုကုဒ်ထုတ်ပေးသည့် အက်ပ်</string>
     <!-- Description of what an authenticator app is for, shown at the top of the screen -->
-    <string name="TotpAppListScreen__set_up_an_authenticator_app">Set up an authenticator app to generate one-time verification codes</string>
+    <string name="TotpAppListScreen__set_up_an_authenticator_app">တစ်ကြိမ်သာ အသုံးပြုနိုင်သော အတည်ပြုကုဒ်များကို ထုတ်ပေးရန် အတည်ပြုကုဒ်ထုတ်ပေးသည့် အက်ပ်ကို အသုံးပြုပါ</string>
     <!-- Clickable text that takes the user to a support article -->
-    <string name="TotpAppListScreen__learn_more">Learn more</string>
+    <string name="TotpAppListScreen__learn_more">ပိုမိုလေ့လာရန်</string>
     <!-- Button that starts setting up another authenticator app -->
-    <string name="TotpAppListScreen__add_authenticator_app">Add authenticator app</string>
+    <string name="TotpAppListScreen__add_authenticator_app">အတည်ပြုကုဒ်ထုတ်ပေးသည့် အက်ပ် ထည့်ပါ</string>
     <!-- Section header above the list of configured authenticator apps -->
-    <string name="TotpAppListScreen__authenticator_apps">Authenticator apps</string>
+    <string name="TotpAppListScreen__authenticator_apps">အတည်ပြုကုဒ်ထုတ်ပေးသည့် အက်ပ်များ</string>
     <!-- Shown in place of the list when no authenticator apps are configured -->
-    <string name="TotpAppListScreen__no_authenticator_apps">No authenticator apps</string>
+    <string name="TotpAppListScreen__no_authenticator_apps">အတည်ပြုကုဒ်ထုတ်ပေးသည့် အက်ပ်မရှိပါ</string>
     <!-- Subtitle of an authenticator app row saying when it was configured. Placeholder is a date or time. -->
-    <string name="TotpAppListScreen__added_s">Added %1$s</string>
+    <string name="TotpAppListScreen__added_s">\"%1$s\" ကို ပေါင်းထည့်ပြီး</string>
     <!-- Content description of the button that opens an authenticator app\'s options -->
-    <string name="TotpAppListScreen__open_authenticator_app_options">Open authenticator app options</string>
+    <string name="TotpAppListScreen__open_authenticator_app_options">အတည်ပြုကုဒ်ထုတ်ပေးသည့် အက်ပ် ရွေးချယ်စရာများကို ဖွင့်ရန်</string>
     <!-- Menu option that renames an authenticator app -->
-    <string name="TotpAppListScreen__rename">Rename</string>
+    <string name="TotpAppListScreen__rename">အမည်ပြောင်းရန်</string>
     <!-- Menu option that removes an authenticator app -->
-    <string name="TotpAppListScreen__remove">Remove</string>
+    <string name="TotpAppListScreen__remove">ဖယ်ရှားရန်</string>
     <!-- Title of the dialog confirming removal of an authenticator app -->
-    <string name="TotpAppListScreen__remove_authenticator_app">Remove authenticator app?</string>
+    <string name="TotpAppListScreen__remove_authenticator_app">အတည်ပြုကုဒ်ထုတ်ပေးသည့် အက်ပ်ကို ဖယ်ရှားမလား။</string>
     <!-- Body of the dialog confirming removal of an authenticator app -->
     <string name="TotpAppListScreen__you_wont_be_able_to_use_this_app">You won\'t be able to use this app for one-time verification codes when you sign in.</string>
     <!-- Title of the dialog shown when the account already has as many authenticator apps as it\'s allowed -->
-    <string name="TotpAppListScreen__cant_add_authenticator_app">Can\'t add authenticator app</string>
+    <string name="TotpAppListScreen__cant_add_authenticator_app">အတည်ပြုကုဒ်ထုတ်ပေးသည့် အက်ပ်ကို ထည့်၍မရပါ</string>
     <!-- Body of the dialog shown when the account already has as many authenticator apps as it\'s allowed -->
-    <string name="TotpAppListScreen__you_cant_add_more_than_d">You can\'t add more than %1$d authenticator apps. Try removing one first.</string>
+    <string name="TotpAppListScreen__you_cant_add_more_than_d">အတည်ပြုကုဒ်ထုတ်ပေးသည့် အက်ပ် %1$d ခုထက်ပို၍ ထည့်၍မရပါ။ တစ်ခုကို အရင်ဆုံး ဖယ်ရှားကြည့်ပါ။</string>
     <!-- Dialog message shown when we couldn\'t work out which authenticator apps are on the account -->
     <string name="TotpAppListScreen__couldnt_load_authenticator_apps">Couldn\'t load your authenticator apps. Check your connection and try again.</string>
     <!-- Toast shown after an authenticator app has been removed -->
-    <string name="TotpAppListScreen__authenticator_app_removed">Authenticator app removed</string>
+    <string name="TotpAppListScreen__authenticator_app_removed">အတည်ပြုကုဒ်ထုတ်ပေးသည့် အက်ပ်ကို ဖယ်ရှားပြီးပါပြီ</string>
     <!-- Toast shown when an authenticator app couldn\'t be removed -->
     <string name="TotpAppListScreen__couldnt_remove_authenticator_app">Couldn\'t remove authenticator app. Check your connection and try again.</string>
 
     <!-- TotpNameEntryScreen -->
     <!-- Title of the screen where the user names an authenticator app -->
-    <string name="TotpNameEntryScreen__choose_a_name">Choose a name</string>
+    <string name="TotpNameEntryScreen__choose_a_name">အမည်တစ်ခုကို ရွေးပါ</string>
     <!-- Instructions shown above the name field when renaming an authenticator app -->
-    <string name="TotpNameEntryScreen__choose_a_unique_name">Choose a unique name for this authenticator app.</string>
+    <string name="TotpNameEntryScreen__choose_a_unique_name">ဤအတည်ပြုကုဒ်ထုတ်ပေးသည့် အက်ပ်အတွက် ထူးခြားသောအမည်တစ်ခုကို ရွေးပါ။</string>
     <!-- Instructions shown above the name field when naming a newly configured authenticator app -->
-    <string name="TotpNameEntryScreen__choose_a_unique_name_to_help_you_identify_it">Choose a unique name for this authenticator app to help you identify it later.</string>
+    <string name="TotpNameEntryScreen__choose_a_unique_name_to_help_you_identify_it">ဤအတည်ပြုကုဒ်ထုတ်ပေးသည့် အက်ပ်ကို နောက်ပိုင်းတွင် ခွဲခြားသိရှိနိုင်ရန် ထူးခြားသောအမည်တစ်ခုကို ရွေးပါ။</string>
     <!-- Label of the name field -->
-    <string name="TotpNameEntryScreen__name">Name</string>
+    <string name="TotpNameEntryScreen__name">အမည်</string>
     <!-- Button that submits the entered name -->
-    <string name="TotpNameEntryScreen__next">Next</string>
+    <string name="TotpNameEntryScreen__next">ဆက်သွားမည်</string>
     <!-- Toast shown after an authenticator app has been successfully set up -->
-    <string name="TotpNameEntryScreen__authenticator_app_set_up">Authenticator app set up</string>
+    <string name="TotpNameEntryScreen__authenticator_app_set_up">အတည်ပြုကုဒ်ထုတ်ပေးသည့် အက်ပ်ကို သတ်မှတ်ရန်</string>
     <!-- Toast shown after an authenticator app has been renamed -->
-    <string name="TotpNameEntryScreen__authenticator_app_renamed">Authenticator app renamed</string>
+    <string name="TotpNameEntryScreen__authenticator_app_renamed">အတည်ပြုကုဒ်ထုတ်ပေးသည့် အက်ပ်ကို အမည်ပြောင်းပြီးပါပြီ</string>
     <!-- Toast shown when we couldn\'t reach the service to save the name -->
     <string name="TotpNameEntryScreen__couldnt_save_name">Couldn\'t save name. Check your connection and try again.</string>
 </resources>

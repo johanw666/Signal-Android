@@ -245,7 +245,7 @@
     <!-- Confirm button label for the restore to new account dialog -->
     <string name="EnterAepScreen__restore">மீட்க</string>
     <!-- Title of the dialog shown when the entered recovery key is correct, but the account has no Signal Backup to restore -->
-    <string name="EnterAepScreen__no_backup_found">No backup found</string>
+    <string name="EnterAepScreen__no_backup_found">காப்புப்பிரதி கிடைக்கவில்லை</string>
     <!-- Body of the dialog shown when the entered recovery key is correct, but the account has no Signal Backup to restore -->
     <string name="EnterAepScreen__no_backup_found_body">Your recovery key is correct, but there\'s no Signal Backup for this account. Go back to choose another way to restore, or continue without restoring.</string>
     <!-- Text shown while preparing the restore -->
@@ -662,7 +662,7 @@
 
     <!-- Errors shown beneath an account ID text field, wherever one is offered -->
     <!-- Error shown when too many characters were entered in an account ID field. First placeholder is how many were entered, second is the maximum. -->
-    <string name="AccountIdField__too_long">Too long. %1$d/%2$d characters.</string>
+    <string name="AccountIdField__too_long">மிக நீளமாக உள்ளது. %1$d/%2$d எழுத்துக்கள்.</string>
     <!-- Error shown when the entered account ID contains characters that can\'t appear in one. -->
     <string name="AccountIdField__invalid_account_id">Invalid account ID</string>
 
@@ -674,15 +674,15 @@
     <!-- Label of the text field the account ID is typed into. -->
     <string name="SignalLoginCredentialEntryScreen__account_id">Account ID</string>
     <!-- Label of the text field the recovery key is typed into. -->
-    <string name="SignalLoginCredentialEntryScreen__recovery_key">Recovery key</string>
+    <string name="SignalLoginCredentialEntryScreen__recovery_key">மீட்புக் குறியீடு</string>
     <!-- Description of the button that spells out the typed recovery key instead of masking it. -->
     <string name="SignalLoginCredentialEntryScreen__show_recovery_key">Show recovery key</string>
     <!-- Description of the button that masks the typed recovery key. -->
     <string name="SignalLoginCredentialEntryScreen__hide_recovery_key">Hide recovery key</string>
     <!-- Button that opens a support article for users who can\'t find their Signal Login. -->
-    <string name="SignalLoginCredentialEntryScreen__need_help">Need help?</string>
+    <string name="SignalLoginCredentialEntryScreen__need_help">உங்களுக்கு உதவி வேண்டுமா?</string>
     <!-- Action button that submits the entered Signal Login. -->
-    <string name="SignalLoginCredentialEntryScreen__next">Next</string>
+    <string name="SignalLoginCredentialEntryScreen__next">அடுத்தது</string>
     <!-- Error shown when the service rejects the entered login, which means one of the two halves is wrong. -->
     <string name="SignalLoginCredentialEntryScreen__incorrect_account_id_or_recovery_key">Incorrect account ID or recovery key</string>
 
@@ -700,9 +700,9 @@
     <!-- Link in the helper text that opens an explanation of the digits paired with a username. -->
     <string name="AddUsernameScreen__learn_more">மேலும் அறிக</string>
     <!-- Title of the dialog explaining the digits paired with a username. -->
-    <string name="AddUsernameScreen__what_is_this_number">What is this number?</string>
+    <string name="AddUsernameScreen__what_is_this_number">இந்த எண் என்ன?</string>
     <!-- Body of the dialog explaining the digits paired with a username. -->
-    <string name="AddUsernameScreen__these_digits_help_keep">These digits help keep your username private so you can avoid unwanted messages. Share your username with only the people and groups you\'d like to chat with. If you change usernames you\'ll get a new set of digits.</string>
+    <string name="AddUsernameScreen__these_digits_help_keep">இந்த இலக்கங்கள் உங்கள் பயனர் பெயரைத் தனிப்பட்டதாக வைத்திருக்க உதவுவதால் நீங்கள் தேவையற்ற செய்திகளைத் தவிர்க்கலாம். நீங்கள் சாட் செய்ய விரும்பும் நபர்கள் மற்றும் குழுக்களுடன் மட்டும் உங்கள் பயனர் பெயரைப் பகிரவும். நீங்கள் பயனர் பெயர்களை மாற்றினால், புதிய இலக்கங்களின் ஒரு தொகுப்பைப் பெறுவீர்கள்.</string>
     <!-- Button that skips choosing a username. -->
     <string name="AddUsernameScreen__skip">தவிர்</string>
     <!-- Button that submits the chosen username. -->
@@ -720,17 +720,17 @@
     <!-- Error shown when the user\'s temporary hold on a username expired before they submitted it. -->
     <string name="AddUsernameScreen__your_username_reservation_expired">உங்கள் பயனர்பெயர் முன்பதிவு காலாவதியாகிவிட்டது. மீண்டும் முயலுங்கள்.</string>
     <!-- Error shown when the username formed by the entered name and the user\'s chosen number is already taken. -->
-    <string name="AddUsernameScreen__this_username_is_not_available_try_another_number">This username is not available, try another number.</string>
+    <string name="AddUsernameScreen__this_username_is_not_available_try_another_number">இந்த பயனர் பெயர் கிடைக்கப்பெறவில்லை, வேறு எண்ணை முயலவும்.</string>
     <!-- Validation error shown when the number the user entered after their username has too few digits. -->
-    <string name="AddUsernameScreen__enter_a_minimum_of_d_digits">Invalid username, enter a minimum of %1$d digits.</string>
+    <string name="AddUsernameScreen__enter_a_minimum_of_d_digits">தவறான பயனர் பெயர், குறைந்தபட்சம் %1$d இலக்கங்களை உள்ளிடவும்.</string>
     <!-- Validation error shown when the number the user entered after their username has too many digits. -->
-    <string name="AddUsernameScreen__enter_a_maximum_of_d_digits">Invalid username, enter a maximum of %1$d digits.</string>
+    <string name="AddUsernameScreen__enter_a_maximum_of_d_digits">தவறான பயனர் பெயர், அதிகபட்சம் %1$d இலக்கங்களை உள்ளிடவும்.</string>
     <!-- Validation error shown when the number the user entered after their username contains something other than digits. -->
     <string name="AddUsernameScreen__numbers_can_only_contain_digits">Invalid username, numbers can only contain digits.</string>
     <!-- Validation error shown when the number the user entered after their username is 00. -->
-    <string name="AddUsernameScreen__this_number_cant_be_00">This number can\'t be 00. Enter a digit between 1–9</string>
+    <string name="AddUsernameScreen__this_number_cant_be_00">இந்த எண் 00 ஆக இருக்கக் கூடாது. 1–9 க்கு இடையேயுள்ள ஒரு எண்ணை உள்ளிடவும்</string>
     <!-- Validation error shown when the number the user entered after their username has a leading zero. -->
-    <string name="AddUsernameScreen__this_number_cant_start_with_0">Numbers with more than 2 digits can\'t start with 0</string>
+    <string name="AddUsernameScreen__this_number_cant_start_with_0">2 இலக்கங்களுக்கு மேல் உள்ள எண்கள் 0 இல் தொடங்கக் கூடாது</string>
 
     <!-- ContactSupportDialog -->
     <!-- Title of the dialog asking the user whether they want to attach a debug log to their support request -->
@@ -744,15 +744,15 @@
 
     <!-- TotpEntryScreen -->
     <!-- Title of the two-factor authentication code entry screen -->
-    <string name="TotpEntryScreen__two_factor_authentication">Two-factor authentication</string>
+    <string name="TotpEntryScreen__two_factor_authentication">இரு படிநிலை அங்கீகரிப்பு</string>
     <!-- Subtitle explaining where to find the code -->
     <string name="TotpEntryScreen__to_continue_enter_the_code">To continue enter the 6-digit code from your authenticator app.</string>
     <!-- Button text to cancel entering a code -->
-    <string name="TotpEntryScreen__cancel">Cancel</string>
+    <string name="TotpEntryScreen__cancel">ரத்துசெய்</string>
 
     <!-- TwoFactorSelectionScreen -->
     <!-- Title of the two-factor authentication method selection screen -->
-    <string name="TwoFactorSelectionScreen__two_factor_authentication">Two-factor authentication</string>
+    <string name="TwoFactorSelectionScreen__two_factor_authentication">இரு படிநிலை அங்கீகரிப்பு</string>
     <!-- Subtitle telling the user to pick one of the methods listed below -->
     <string name="TwoFactorSelectionScreen__choose_a_method_below">Choose a method below to verify your account.</string>
     <!-- Title of the card for verifying with a passkey -->
@@ -760,9 +760,9 @@
     <!-- Description of the card for verifying with a passkey -->
     <string name="TwoFactorSelectionScreen__tap_to_use_your_device_biometrics">Tap to use your device biometrics or FIDO2 passkey</string>
     <!-- Title of the card for verifying with a code from an authenticator app -->
-    <string name="TwoFactorSelectionScreen__authenticator_app">Authenticator app</string>
+    <string name="TwoFactorSelectionScreen__authenticator_app">அங்கீகரிப்புச் செயலி</string>
     <!-- Description of the card for verifying with a code from an authenticator app -->
     <string name="TwoFactorSelectionScreen__enter_a_one_time_code">Enter a one-time code generated by your authenticator app.</string>
     <!-- Button text to cancel two-factor authentication -->
-    <string name="TwoFactorSelectionScreen__cancel">Cancel</string>
+    <string name="TwoFactorSelectionScreen__cancel">ரத்துசெய்</string>
 </resources>

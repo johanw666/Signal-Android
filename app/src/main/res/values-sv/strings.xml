@@ -3389,7 +3389,7 @@
     <!-- Notification channel name for notifications sent when a device has been linked -->
     <string name="NotificationChannel_new_linked_device">Ny länkad enhet</string>
     <!-- Notification channel name for unread reminder notifications -->
-    <string name="NotificationChannel_unread_reminders">Unread reminders</string>
+    <string name="NotificationChannel_unread_reminders">Påminnelser om olästa</string>
 
     <!-- QuickResponseService -->
     <string name="QuickResponseService_quick_response_unavailable_when_Signal_is_locked">Snabbsvar är otillgängligt när Signal är låst!</string>
@@ -6191,7 +6191,7 @@
     <string name="ConversationSettingsFragment__conversation_muted_until_s">Chatt tystad till %1$s</string>
     <string name="ConversationSettingsFragment__conversation_muted_forever">Chatt tystad för alltid</string>
     <!-- Subtitle when conversation is muted forever -->
-    <string name="ConversationSettingsFragment__conversation_muted_always">Always</string>
+    <string name="ConversationSettingsFragment__conversation_muted_always">Alltid</string>
     <string name="ConversationSettingsFragment__copied_phone_number_to_clipboard">Kopierat telefonnummer till urklipp.</string>
     <string name="ConversationSettingsFragment__phone_number">Telefonnummer</string>
     <string name="ConversationSettingsFragment__get_badges">Få märken för din profil genom att stöda Signal. Tryck på ett märke för att läsa mer.</string>
@@ -6247,7 +6247,7 @@
     <!-- Label for the setting to configure custom notification sounds and vibration for a conversation -->
     <string name="SoundsAndNotificationsSettingsFragment__custom_notifications">Anpassade aviseringar</string>
     <!-- Section header for settings that control which notifications still come through when a conversation is muted -->
-    <string name="SoundsAndNotificationsSettingsFragment__when_muted">While muted</string>
+    <string name="SoundsAndNotificationsSettingsFragment__when_muted">Vid tystad</string>
     <!-- Label for the calls notification setting in conversation sounds and notifications -->
     <string name="SoundsAndNotificationsSettingsFragment__calls">Samtal</string>
     <!-- Explanatory text shown in the calls notification setting dialog describing what the setting controls -->
@@ -9977,13 +9977,13 @@
     </plurals>
     <!-- Notification placeholder for unread messages -->
     <plurals name="UnreadReminderJob__messages">
-        <item quantity="one">%1$d unread message</item>
-        <item quantity="other">%1$d unread messages</item>
+        <item quantity="one">%1$d oläst meddelande</item>
+        <item quantity="other">%1$d olästa meddelanden</item>
     </plurals>
     <!-- Notification placeholder for a single recipient who sent unread messages -->
     <string name="UnreadReminderJob__authors_one">%1$s</string>
     <!-- Notification placeholder for two recipients who sent unread messages -->
-    <string name="UnreadReminderJob__authors_two">%1$s and %2$s</string>
+    <string name="UnreadReminderJob__authors_two">%1$s och %2$s</string>
     <!-- Notification placeholder for three or more recipients who sent unread messages -->
     <string name="UnreadReminderJob__authors_many">%1$s and others</string>
     <!-- Notification placeholder that sums up a single unread mention. Placeholder is the name of the person who sent the message -->
@@ -10012,49 +10012,49 @@
     </plurals>
 
     <!-- Title of the screen where the user chooses which parts of a contact to share -->
-    <string name="ShareContactScreen__share_contact">Share contact</string>
+    <string name="ShareContactScreen__share_contact">Dela kontakt</string>
 
     <!-- Label beneath the company name of the contact being shared -->
     <string name="ShareContactScreen__company">Company</string>
     <!-- Label beneath a shared nickname value -->
-    <string name="ShareContactScreen__nickname">Nickname</string>
+    <string name="ShareContactScreen__nickname">Smeknamn</string>
     <!-- Label beneath a shared note value -->
-    <string name="ShareContactScreen__notes">Notes</string>
+    <string name="ShareContactScreen__notes">Anteckningar</string>
     <!-- Title of the sheet where the user picks which photo to share -->
     <string name="ShareContactScreen__select_a_photo_to_share">Select a photo to share</string>
     <!-- Button that confirms the chosen photo and closes the photo picker sheet -->
-    <string name="ShareContactScreen__done">Done</string>
+    <string name="ShareContactScreen__done">Klar</string>
     <!-- Accessibility label for the button that sends the contact card -->
-    <string name="ShareContactScreen__send">Send</string>
+    <string name="ShareContactScreen__send">Skicka</string>
     <!-- Accessibility label for the button that opens the photo picker -->
-    <string name="ShareContactScreen__change_photo">Change photo</string>
+    <string name="ShareContactScreen__change_photo">Ändra foto</string>
     <!-- Accessibility label for the button that opens the name editor -->
-    <string name="ShareContactScreen__edit_name">Edit name</string>
+    <string name="ShareContactScreen__edit_name">Redigera namn</string>
     <!-- Title of the screen where the user edits the name on a shared contact card -->
-    <string name="EditContactNameScreen__edit_name">Edit name</string>
+    <string name="EditContactNameScreen__edit_name">Redigera namn</string>
     <!-- Button that saves the edited name and returns to the share contact screen -->
-    <string name="EditContactNameScreen__done">Done</string>
+    <string name="EditContactNameScreen__done">Klar</string>
 
     <!-- Button that opens a chat with a shared contact -->
-    <string name="SharedContactDetailsScreen__message">Message</string>
+    <string name="SharedContactDetailsScreen__message">Meddelande</string>
     <!-- Button that starts a video call with a shared contact -->
     <string name="SharedContactDetailsScreen__video">Video</string>
     <!-- Button that starts an audio call with a shared contact -->
-    <string name="SharedContactDetailsScreen__audio">Audio</string>
+    <string name="SharedContactDetailsScreen__audio">Ljud</string>
     <!-- Context menu entry that starts a video call -->
-    <string name="SharedContactDetailsScreen__video_call">Video call</string>
+    <string name="SharedContactDetailsScreen__video_call">Videosamtal</string>
     <!-- Context menu entry that starts an audio call -->
-    <string name="SharedContactDetailsScreen__audio_call">Audio call</string>
+    <string name="SharedContactDetailsScreen__audio_call">Ljudsamtal</string>
     <!-- Context menu entry that opens a shared postal address in a map app -->
-    <string name="SharedContactDetailsScreen__open_in_maps">Open in Maps</string>
+    <string name="SharedContactDetailsScreen__open_in_maps">Öppna i Kartor</string>
     <!-- Context menu entry that copies a shared contact detail to the clipboard -->
-    <string name="SharedContactDetailsScreen__copy">Copy</string>
+    <string name="SharedContactDetailsScreen__copy">Kopiera</string>
     <!-- Row that invites a shared contact who is not yet on Signal -->
-    <string name="SharedContactDetailsScreen__invite_to_signal">Invite to Signal</string>
+    <string name="SharedContactDetailsScreen__invite_to_signal">Bjud in till Signal</string>
     <!-- Row that saves a shared contact into the device address book -->
-    <string name="SharedContactDetailsScreen__add_to_phone_contacts">Add to phone contacts</string>
+    <string name="SharedContactDetailsScreen__add_to_phone_contacts">Lägg till i telefonkontakter</string>
     <!-- Row that adds a shared contact to a Signal group -->
-    <string name="SharedContactDetailsScreen__add_to_a_group">Add to a group</string>
+    <string name="SharedContactDetailsScreen__add_to_a_group">Lägg till i en grupp</string>
     <!-- Toast shown after copying a shared contact detail -->
     <string name="SharedContactDetailsScreen__copied">Copied</string>
     <!-- Toast shown when there is no contacts app to save a shared contact into -->

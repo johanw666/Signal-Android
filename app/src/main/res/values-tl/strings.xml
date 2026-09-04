@@ -6247,7 +6247,7 @@
     <!-- Label for the setting to configure custom notification sounds and vibration for a conversation -->
     <string name="SoundsAndNotificationsSettingsFragment__custom_notifications">Custom na mga notipikasyon</string>
     <!-- Section header for settings that control which notifications still come through when a conversation is muted -->
-    <string name="SoundsAndNotificationsSettingsFragment__when_muted">While muted</string>
+    <string name="SoundsAndNotificationsSettingsFragment__when_muted">Habang naka-mute</string>
     <!-- Label for the calls notification setting in conversation sounds and notifications -->
     <string name="SoundsAndNotificationsSettingsFragment__calls">Calls</string>
     <!-- Explanatory text shown in the calls notification setting dialog describing what the setting controls -->
@@ -9977,13 +9977,13 @@
     </plurals>
     <!-- Notification placeholder for unread messages -->
     <plurals name="UnreadReminderJob__messages">
-        <item quantity="one">%1$d unread message</item>
-        <item quantity="other">%1$d unread messages</item>
+        <item quantity="one">%1$d hindi pa nabasang mensahe</item>
+        <item quantity="other">%1$d hindi pa nabasang mensahe</item>
     </plurals>
     <!-- Notification placeholder for a single recipient who sent unread messages -->
     <string name="UnreadReminderJob__authors_one">%1$s</string>
     <!-- Notification placeholder for two recipients who sent unread messages -->
-    <string name="UnreadReminderJob__authors_two">%1$s and %2$s</string>
+    <string name="UnreadReminderJob__authors_two">%1$s at %2$s</string>
     <!-- Notification placeholder for three or more recipients who sent unread messages -->
     <string name="UnreadReminderJob__authors_many">%1$s and others</string>
     <!-- Notification placeholder that sums up a single unread mention. Placeholder is the name of the person who sent the message -->
@@ -10023,20 +10023,20 @@
     <!-- Title of the sheet where the user picks which photo to share -->
     <string name="ShareContactScreen__select_a_photo_to_share">Select a photo to share</string>
     <!-- Button that confirms the chosen photo and closes the photo picker sheet -->
-    <string name="ShareContactScreen__done">Done</string>
+    <string name="ShareContactScreen__done">Tapos na</string>
     <!-- Accessibility label for the button that sends the contact card -->
-    <string name="ShareContactScreen__send">Send</string>
+    <string name="ShareContactScreen__send">I-send</string>
     <!-- Accessibility label for the button that opens the photo picker -->
-    <string name="ShareContactScreen__change_photo">Change photo</string>
+    <string name="ShareContactScreen__change_photo">Palitan ang photo</string>
     <!-- Accessibility label for the button that opens the name editor -->
-    <string name="ShareContactScreen__edit_name">Edit name</string>
+    <string name="ShareContactScreen__edit_name">I-edit ang pangalan</string>
     <!-- Title of the screen where the user edits the name on a shared contact card -->
-    <string name="EditContactNameScreen__edit_name">Edit name</string>
+    <string name="EditContactNameScreen__edit_name">I-edit ang pangalan</string>
     <!-- Button that saves the edited name and returns to the share contact screen -->
-    <string name="EditContactNameScreen__done">Done</string>
+    <string name="EditContactNameScreen__done">Tapos na</string>
 
     <!-- Button that opens a chat with a shared contact -->
-    <string name="SharedContactDetailsScreen__message">Message</string>
+    <string name="SharedContactDetailsScreen__message">Mensahe</string>
     <!-- Button that starts a video call with a shared contact -->
     <string name="SharedContactDetailsScreen__video">Video</string>
     <!-- Button that starts an audio call with a shared contact -->
@@ -10048,13 +10048,13 @@
     <!-- Context menu entry that opens a shared postal address in a map app -->
     <string name="SharedContactDetailsScreen__open_in_maps">Open in Maps</string>
     <!-- Context menu entry that copies a shared contact detail to the clipboard -->
-    <string name="SharedContactDetailsScreen__copy">Copy</string>
+    <string name="SharedContactDetailsScreen__copy">Kopyahin</string>
     <!-- Row that invites a shared contact who is not yet on Signal -->
-    <string name="SharedContactDetailsScreen__invite_to_signal">Invite to Signal</string>
+    <string name="SharedContactDetailsScreen__invite_to_signal">Imbitahan sa Signal</string>
     <!-- Row that saves a shared contact into the device address book -->
     <string name="SharedContactDetailsScreen__add_to_phone_contacts">Add to phone contacts</string>
     <!-- Row that adds a shared contact to a Signal group -->
-    <string name="SharedContactDetailsScreen__add_to_a_group">Add to a group</string>
+    <string name="SharedContactDetailsScreen__add_to_a_group">I-add sa isang group</string>
     <!-- Toast shown after copying a shared contact detail -->
     <string name="SharedContactDetailsScreen__copied">Copied</string>
     <!-- Toast shown when there is no contacts app to save a shared contact into -->

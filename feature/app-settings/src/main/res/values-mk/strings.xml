@@ -77,37 +77,37 @@
 
     <!-- TotpSetupScreen -->
     <!-- Title of the screen that walks the user through setting up an authenticator app -->
-    <string name="TotpSetupScreen__set_up_your_authenticator_app">Set up your authenticator app</string>
+    <string name="TotpSetupScreen__set_up_your_authenticator_app">Поставeте ја вашата апликација за автентикација</string>
     <!-- Instructions shown at the top of the authenticator app setup screen -->
-    <string name="TotpSetupScreen__follow_these_steps">Follow these steps to set up your authenticator app.</string>
+    <string name="TotpSetupScreen__follow_these_steps">Следете ги овие чекори за да ја поставите вашата апликација за автентикација.</string>
     <!-- Clickable text that takes the user to a support article -->
-    <string name="TotpSetupScreen__learn_more">Learn more</string>
+    <string name="TotpSetupScreen__learn_more">Дознајте повеќе</string>
     <!-- Header of the first step of authenticator app setup -->
-    <string name="TotpSetupScreen__step_1">Step 1</string>
+    <string name="TotpSetupScreen__step_1">Прв чекор</string>
     <!-- Body of the first step of authenticator app setup -->
-    <string name="TotpSetupScreen__install_a_trusted_authenticator_app">Install a trusted authenticator app on your device.</string>
+    <string name="TotpSetupScreen__install_a_trusted_authenticator_app">На вашиот уред инсталирајте апликација за автентикација од доверлив извор.</string>
     <!-- Header of the second step of authenticator app setup -->
-    <string name="TotpSetupScreen__step_2">Step 2</string>
+    <string name="TotpSetupScreen__step_2">Втор чекор</string>
     <!-- Body of the second step of authenticator app setup -->
-    <string name="TotpSetupScreen__open_your_authenticator_app">Open your authenticator app by tapping the button below to add your Signal account.</string>
+    <string name="TotpSetupScreen__open_your_authenticator_app">Отворете ја апликацијата за автентикација со допирање на копчето подолу за да ја додадете вашата корисничка сметка на Signal.</string>
     <!-- Button that opens the user\'s authenticator app -->
-    <string name="TotpSetupScreen__open">Open</string>
+    <string name="TotpSetupScreen__open">Отворете</string>
     <!-- Text above the setup key explaining that it can be entered by hand instead -->
-    <string name="TotpSetupScreen__or_you_can_copy_this_key">Or you can copy this key to manually set it up.</string>
+    <string name="TotpSetupScreen__or_you_can_copy_this_key">Или можете да го ископирате овој клуч за да ја поставите рачно.</string>
     <!-- Button that copies the setup key to the clipboard -->
-    <string name="TotpSetupScreen__copy">Copy</string>
+    <string name="TotpSetupScreen__copy">Копирај</string>
     <!-- Toast shown after the setup key has been copied to the clipboard -->
-    <string name="TotpSetupScreen__copied_to_clipboard">Copied to clipboard</string>
+    <string name="TotpSetupScreen__copied_to_clipboard">Копирано на таблата со исечоци</string>
     <!-- Toast shown when there is no app installed that can handle the authenticator setup link -->
-    <string name="TotpSetupScreen__no_authenticator_app_found">No authenticator app found</string>
+    <string name="TotpSetupScreen__no_authenticator_app_found">Не е пронајдена апликација за автентикација</string>
     <!-- Dialog message shown when we couldn\'t reach the service to start setting up an authenticator app -->
     <string name="TotpSetupScreen__couldnt_reach_signal">Couldn\'t reach Signal. Check your connection and try again.</string>
     <!-- Header of the third step of authenticator app setup -->
-    <string name="TotpSetupScreen__step_3">Step 3</string>
+    <string name="TotpSetupScreen__step_3">Трет чекор</string>
     <!-- Body of the third step of authenticator app setup -->
-    <string name="TotpSetupScreen__copy_the_code_thats_generated">Copy the code that\'s generated and return here to continue.</string>
+    <string name="TotpSetupScreen__copy_the_code_thats_generated">Ископирајте го кодот којшто е генериран и вратете се овде за да продолжите.</string>
     <!-- Button that advances from the setup instructions to entering a code -->
-    <string name="TotpSetupScreen__continue">Continue</string>
+    <string name="TotpSetupScreen__continue">Продолжи</string>
 
     <!-- PasskeysScreen -->
     <!-- Title of the screen where the user sets up passkeys -->
@@ -139,68 +139,68 @@
 
     <!-- TotpCodeEntryScreen -->
     <!-- Title of the screen where the user enters the code from their authenticator app -->
-    <string name="TotpCodeEntryScreen__enter_your_code">Enter your code</string>
+    <string name="TotpCodeEntryScreen__enter_your_code">Внесете го вашиот код</string>
     <!-- Instructions shown above the code entry field -->
-    <string name="TotpCodeEntryScreen__enter_the_6_digit_code">Enter the 6-digit code from your authenticator app.</string>
+    <string name="TotpCodeEntryScreen__enter_the_6_digit_code">Внесете го кодот од 6 цифри од вашата апликација за автентикација.</string>
     <!-- Label of the code entry field -->
-    <string name="TotpCodeEntryScreen__code">Code</string>
+    <string name="TotpCodeEntryScreen__code">Код</string>
     <!-- Button that submits the entered code -->
-    <string name="TotpCodeEntryScreen__done">Done</string>
+    <string name="TotpCodeEntryScreen__done">Готово</string>
     <!-- Error shown under the code field when the code the user entered was rejected -->
     <string name="TotpCodeEntryScreen__incorrect_code">Incorrect code. Enter the code showing in your authenticator app now.</string>
     <!-- Error shown under the code field when we couldn\'t reach the service to check the code -->
     <string name="TotpCodeEntryScreen__couldnt_reach_signal">Couldn\'t reach Signal. Check your connection and try again.</string>
     <!-- TotpAppListScreen -->
     <!-- Title of the screen listing the authenticator apps on the account -->
-    <string name="TotpAppListScreen__authenticator_app">Authenticator app</string>
+    <string name="TotpAppListScreen__authenticator_app">Апликација за автентикација</string>
     <!-- Description of what an authenticator app is for, shown at the top of the screen -->
-    <string name="TotpAppListScreen__set_up_an_authenticator_app">Set up an authenticator app to generate one-time verification codes</string>
+    <string name="TotpAppListScreen__set_up_an_authenticator_app">Користете апликација за автентикација за да генерирате еднократни кодови за верификација</string>
     <!-- Clickable text that takes the user to a support article -->
-    <string name="TotpAppListScreen__learn_more">Learn more</string>
+    <string name="TotpAppListScreen__learn_more">Дознајте повеќе</string>
     <!-- Button that starts setting up another authenticator app -->
-    <string name="TotpAppListScreen__add_authenticator_app">Add authenticator app</string>
+    <string name="TotpAppListScreen__add_authenticator_app">Додајте апликација за автентикација</string>
     <!-- Section header above the list of configured authenticator apps -->
-    <string name="TotpAppListScreen__authenticator_apps">Authenticator apps</string>
+    <string name="TotpAppListScreen__authenticator_apps">Апликациии за автентикација</string>
     <!-- Shown in place of the list when no authenticator apps are configured -->
-    <string name="TotpAppListScreen__no_authenticator_apps">No authenticator apps</string>
+    <string name="TotpAppListScreen__no_authenticator_apps">Нема апликации за автентикација</string>
     <!-- Subtitle of an authenticator app row saying when it was configured. Placeholder is a date or time. -->
-    <string name="TotpAppListScreen__added_s">Added %1$s</string>
+    <string name="TotpAppListScreen__added_s">„%1$s“ е додаден/а</string>
     <!-- Content description of the button that opens an authenticator app\'s options -->
-    <string name="TotpAppListScreen__open_authenticator_app_options">Open authenticator app options</string>
+    <string name="TotpAppListScreen__open_authenticator_app_options">Се отвораат опциите за апликацијата за автентикација</string>
     <!-- Menu option that renames an authenticator app -->
-    <string name="TotpAppListScreen__rename">Rename</string>
+    <string name="TotpAppListScreen__rename">Сменете име</string>
     <!-- Menu option that removes an authenticator app -->
-    <string name="TotpAppListScreen__remove">Remove</string>
+    <string name="TotpAppListScreen__remove">Отстрани</string>
     <!-- Title of the dialog confirming removal of an authenticator app -->
-    <string name="TotpAppListScreen__remove_authenticator_app">Remove authenticator app?</string>
+    <string name="TotpAppListScreen__remove_authenticator_app">Да се отстрани апликацијата за автентикација?</string>
     <!-- Body of the dialog confirming removal of an authenticator app -->
     <string name="TotpAppListScreen__you_wont_be_able_to_use_this_app">You won\'t be able to use this app for one-time verification codes when you sign in.</string>
     <!-- Title of the dialog shown when the account already has as many authenticator apps as it\'s allowed -->
-    <string name="TotpAppListScreen__cant_add_authenticator_app">Can\'t add authenticator app</string>
+    <string name="TotpAppListScreen__cant_add_authenticator_app">Не може да се додаде апликација за автентикација</string>
     <!-- Body of the dialog shown when the account already has as many authenticator apps as it\'s allowed -->
-    <string name="TotpAppListScreen__you_cant_add_more_than_d">You can\'t add more than %1$d authenticator apps. Try removing one first.</string>
+    <string name="TotpAppListScreen__you_cant_add_more_than_d">Не може да додадете повеќе од %1$d апликации за автентикација. Прво обидете се да отстраните една.</string>
     <!-- Dialog message shown when we couldn\'t work out which authenticator apps are on the account -->
     <string name="TotpAppListScreen__couldnt_load_authenticator_apps">Couldn\'t load your authenticator apps. Check your connection and try again.</string>
     <!-- Toast shown after an authenticator app has been removed -->
-    <string name="TotpAppListScreen__authenticator_app_removed">Authenticator app removed</string>
+    <string name="TotpAppListScreen__authenticator_app_removed">Отстранета е апликацијата за автентикација</string>
     <!-- Toast shown when an authenticator app couldn\'t be removed -->
     <string name="TotpAppListScreen__couldnt_remove_authenticator_app">Couldn\'t remove authenticator app. Check your connection and try again.</string>
 
     <!-- TotpNameEntryScreen -->
     <!-- Title of the screen where the user names an authenticator app -->
-    <string name="TotpNameEntryScreen__choose_a_name">Choose a name</string>
+    <string name="TotpNameEntryScreen__choose_a_name">Изберете име</string>
     <!-- Instructions shown above the name field when renaming an authenticator app -->
-    <string name="TotpNameEntryScreen__choose_a_unique_name">Choose a unique name for this authenticator app.</string>
+    <string name="TotpNameEntryScreen__choose_a_unique_name">Изберете уникатно име за оваа апликација за автентикација.</string>
     <!-- Instructions shown above the name field when naming a newly configured authenticator app -->
-    <string name="TotpNameEntryScreen__choose_a_unique_name_to_help_you_identify_it">Choose a unique name for this authenticator app to help you identify it later.</string>
+    <string name="TotpNameEntryScreen__choose_a_unique_name_to_help_you_identify_it">Изберете уникатно име за оваа апликација за автентикација за подоцна полесно да ја препознаете.</string>
     <!-- Label of the name field -->
     <string name="TotpNameEntryScreen__name">Name</string>
     <!-- Button that submits the entered name -->
-    <string name="TotpNameEntryScreen__next">Next</string>
+    <string name="TotpNameEntryScreen__next">Следно</string>
     <!-- Toast shown after an authenticator app has been successfully set up -->
-    <string name="TotpNameEntryScreen__authenticator_app_set_up">Authenticator app set up</string>
+    <string name="TotpNameEntryScreen__authenticator_app_set_up">Поставена е апликација за автентикација</string>
     <!-- Toast shown after an authenticator app has been renamed -->
-    <string name="TotpNameEntryScreen__authenticator_app_renamed">Authenticator app renamed</string>
+    <string name="TotpNameEntryScreen__authenticator_app_renamed">Сменето е името на апликацијата за автентикација</string>
     <!-- Toast shown when we couldn\'t reach the service to save the name -->
     <string name="TotpNameEntryScreen__couldnt_save_name">Couldn\'t save name. Check your connection and try again.</string>
 </resources>
