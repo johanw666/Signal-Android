@@ -42,6 +42,8 @@ dependencies {
   api(libs.androidx.window.window)
   api(libs.accompanist.permissions)
 
+  implementation("com.annimon:stream:1.1.8") // JW
+
   testImplementation(testLibs.junit.junit)
   testImplementation(testLibs.kotlinx.coroutines.test)
   testImplementation(testLibs.robolectric.robolectric)
