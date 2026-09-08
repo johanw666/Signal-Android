@@ -19,7 +19,7 @@
     <string name="preferences_app_protection__turn_off">关闭</string>
     <string name="preferences_app_protection__confirm_pin">确认 PIN 码</string>
     <string name="preferences_app_protection__confirm_your_signal_pin">请确认您的 Signal PIN 码</string>
-    <string name="preferences_app_protection__make_sure_you_memorize_or_securely_store_your_pin">请确保你能牢记或安全保存好你的 PIN 码，因为它不能被找回。如果你忘记了 PIN 码，你可能会在重新注册 Signal 账号时丢失一些数据。</string>
+    <string name="preferences_app_protection__make_sure_you_memorize_or_securely_store_your_pin">请确保你能牢记或安全保存好你的 PIN 码，因为它不能被找回。如果你忘记了 PIN 码，你可能会在重新注册 Signal 账户时丢失一些数据。</string>
     <string name="preferences_app_protection__incorrect_pin_try_again">PIN 码不正确。请重试。</string>
     <string name="preferences_app_protection__registration_lock">注册锁定</string>
     <!-- Option in settings that will take use to re-register if they are no longer registered -->
@@ -99,7 +99,7 @@
     <!-- Toast shown when there is no app installed that can handle the authenticator setup link -->
     <string name="TotpSetupScreen__no_authenticator_app_found">未找到身份验证器应用</string>
     <!-- Dialog message shown when we couldn\'t reach the service to start setting up an authenticator app -->
-    <string name="TotpSetupScreen__couldnt_reach_signal">Couldn\'t reach Signal. Check your connection and try again.</string>
+    <string name="TotpSetupScreen__couldnt_reach_signal">无法连接 Signal。请检查您的网络连接并重试。</string>
     <!-- Header of the third step of authenticator app setup -->
     <string name="TotpSetupScreen__step_3">第 3 步</string>
     <!-- Body of the third step of authenticator app setup -->
@@ -145,9 +145,9 @@
     <!-- Button that submits the entered code -->
     <string name="TotpCodeEntryScreen__done">完成</string>
     <!-- Error shown under the code field when the code the user entered was rejected -->
-    <string name="TotpCodeEntryScreen__incorrect_code">Incorrect code. Enter the code showing in your authenticator app now.</string>
+    <string name="TotpCodeEntryScreen__incorrect_code">验证码不正确。请输入您的身份验证器应用当前显示的验证码。</string>
     <!-- Error shown under the code field when we couldn\'t reach the service to check the code -->
-    <string name="TotpCodeEntryScreen__couldnt_reach_signal">Couldn\'t reach Signal. Check your connection and try again.</string>
+    <string name="TotpCodeEntryScreen__couldnt_reach_signal">无法连接 Signal。请检查您的网络连接并重试。</string>
     <!-- TotpAppListScreen -->
     <!-- Title of the screen listing the authenticator apps on the account -->
     <string name="TotpAppListScreen__authenticator_app">身份验证器应用</string>
@@ -172,17 +172,17 @@
     <!-- Title of the dialog confirming removal of an authenticator app -->
     <string name="TotpAppListScreen__remove_authenticator_app">要移除身份验证器应用吗？</string>
     <!-- Body of the dialog confirming removal of an authenticator app -->
-    <string name="TotpAppListScreen__you_wont_be_able_to_use_this_app">You won\'t be able to use this app for one-time verification codes when you sign in.</string>
+    <string name="TotpAppListScreen__you_wont_be_able_to_use_this_app">当您登录时，您将无法使用此应用获取一次性验证码。</string>
     <!-- Title of the dialog shown when the account already has as many authenticator apps as it\'s allowed -->
     <string name="TotpAppListScreen__cant_add_authenticator_app">无法添加身份验证器应用</string>
     <!-- Body of the dialog shown when the account already has as many authenticator apps as it\'s allowed -->
     <string name="TotpAppListScreen__you_cant_add_more_than_d">您最多只能添加 %1$d 个身份验证器应用。请先移除其他应用。</string>
     <!-- Dialog message shown when we couldn\'t work out which authenticator apps are on the account -->
-    <string name="TotpAppListScreen__couldnt_load_authenticator_apps">Couldn\'t load your authenticator apps. Check your connection and try again.</string>
+    <string name="TotpAppListScreen__couldnt_load_authenticator_apps">无法加载您的身份验证器应用。请检查您的网络连接并重试。</string>
     <!-- Toast shown after an authenticator app has been removed -->
     <string name="TotpAppListScreen__authenticator_app_removed">身份验证器应用已移除</string>
     <!-- Toast shown when an authenticator app couldn\'t be removed -->
-    <string name="TotpAppListScreen__couldnt_remove_authenticator_app">Couldn\'t remove authenticator app. Check your connection and try again.</string>
+    <string name="TotpAppListScreen__couldnt_remove_authenticator_app">无法移除身份验证器应用。请检查您的网络连接并重试。</string>
 
     <!-- TotpNameEntryScreen -->
     <!-- Title of the screen where the user names an authenticator app -->
@@ -200,5 +200,5 @@
     <!-- Toast shown after an authenticator app has been renamed -->
     <string name="TotpNameEntryScreen__authenticator_app_renamed">身份验证器应用已重命名</string>
     <!-- Toast shown when we couldn\'t reach the service to save the name -->
-    <string name="TotpNameEntryScreen__couldnt_save_name">Couldn\'t save name. Check your connection and try again.</string>
+    <string name="TotpNameEntryScreen__couldnt_save_name">无法保存名称。请检查您的网络连接并重试。</string>
 </resources>

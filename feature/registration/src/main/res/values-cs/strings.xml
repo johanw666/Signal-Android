@@ -45,7 +45,7 @@
     <string name="RegistrationActivity_select_a_country">Zvolte zemi</string>
     <string name="RegistrationActivity_phone_number_description">Telefonní číslo</string>
     <!-- Label the phone number field takes on when what has been typed reads as an account ID rather than a number -->
-    <string name="RegistrationActivity_account_id">Account ID</string>
+    <string name="RegistrationActivity_account_id">ID účtu</string>
     <!-- Error shown beneath the phone number field when the entered number is not valid -->
     <string name="RegistrationActivity_not_a_valid_phone_number">Neplatné telefonní číslo</string>
     <!-- Dialog title shown when the entered phone number is rejected as invalid -->
@@ -247,7 +247,7 @@
     <!-- Title of the dialog shown when the entered recovery key is correct, but the account has no Signal Backup to restore -->
     <string name="EnterAepScreen__no_backup_found">Nebyla nalezena žádná záloha</string>
     <!-- Body of the dialog shown when the entered recovery key is correct, but the account has no Signal Backup to restore -->
-    <string name="EnterAepScreen__no_backup_found_body">Your recovery key is correct, but there\'s no Signal Backup for this account. Go back to choose another way to restore, or continue without restoring.</string>
+    <string name="EnterAepScreen__no_backup_found_body">Váš klíč pro obnovení je správný, ale pro tento účet neexistuje žádná záloha Signal. Vraťte se a vyberte jiný způsob obnovení, nebo pokračujte bez obnovení.</string>
     <!-- Text shown while preparing the restore -->
     <string name="LocalBackupRestoreScreen__preparing_restore">Příprava obnovení…</string>
     <!-- Title shown while restore is in progress -->
@@ -618,9 +618,9 @@
 
     <!-- Signal Login purchase screen -->
     <!-- Title of the screen where the user buys a Signal Login to register without a phone number. -->
-    <string name="SignalLoginPaymentScreen__signal_login">Přihlašovací údaje pro Signal</string>
+    <string name="SignalLoginPaymentScreen__signal_login">Signal Login</string>
     <!-- Description of what a Signal Login is. Followed by a "learn more" link. -->
-    <string name="SignalLoginPaymentScreen__register_without_a_phone_number">Registrujte se bez telefonního čísla pomocí přihlašovacích údajů pro Signal. Po jednorázovém nákupu obdržíte klíč k účtu, který vám umožní začít.</string>
+    <string name="SignalLoginPaymentScreen__register_without_a_phone_number">Zaregistrujte se bez telefonního čísla pomocí Signal Login. Po jednorázovém nákupu obdržíte klíč k účtu, který vám umožní začít.</string>
     <!-- Link at the end of the description that opens a support article about Signal Login. -->
     <string name="SignalLoginPaymentScreen__learn_more">Zjistit více</string>
     <!-- Subtitle of the purchase option, clarifying the price is not a subscription. -->
@@ -632,7 +632,7 @@
     <!-- Selling point of the purchase option: the purchase supports Signal. -->
     <string name="SignalLoginPaymentScreen__signal_is_a_non_profit">Signal je nezisková organizace – váš nákup nám pomáhá plnit naše poslání</string>
     <!-- Title of the option for users who already bought a Signal Login. -->
-    <string name="SignalLoginPaymentScreen__i_have_a_signal_login">Mám přihlašovací údaje pro Signal</string>
+    <string name="SignalLoginPaymentScreen__i_have_a_signal_login">Mám Signal Login</string>
     <!-- Subtitle of the existing-login option. -->
     <string name="SignalLoginPaymentScreen__use_your_existing_account_key">Použít stávající klíč k účtu</string>
     <!-- Selling point of the existing-login option: the account can be restored. -->
@@ -654,41 +654,41 @@
 
     <!-- Signal Login details screen -->
     <!-- Title of the screen that shows the user their newly purchased Signal Login. -->
-    <string name="SignalLoginInfoScreen__your_signal_login">Vaše přihlašovací údaje pro Signal</string>
+    <string name="SignalLoginInfoScreen__your_signal_login">Váš Signal Login</string>
     <!-- Description warning the user that a lost Signal Login cannot be recovered. -->
-    <string name="SignalLoginInfoScreen__thanks_for_your_purchase">Děkujeme za nákup. Použijte své přihlašovací údaje pro Signal k registraci a obnovení účtu. Pokud svůj klíč zapomenete, nebude možné účet obnovit.</string>
+    <string name="SignalLoginInfoScreen__thanks_for_your_purchase">Děkujeme za nákup. Pomocí svého Signal Login se můžete zaregistrovat a obnovit svůj účet. Pokud svůj klíč zapomenete, nebude možné účet obnovit.</string>
     <!-- Action button that stores the Signal Login in the device password manager. -->
     <string name="SignalLoginInfoScreen__save_to_password_manager">Uložit do správce hesel</string>
     <!-- Action button for users who would rather write the Signal Login down themselves. -->
     <string name="SignalLoginInfoScreen__save_manually">Uložit ručně</string>
     <!-- Error shown when the Signal Login could not be stored in the password manager. -->
-    <string name="SignalLoginInfoScreen__your_signal_login_could_not_be_saved">Vaše přihlašovací údaje pro Signal se nepodařilo uložit. Uložte je prosím ručně.</string>
+    <string name="SignalLoginInfoScreen__your_signal_login_could_not_be_saved">Váš Signal Login se nepodařilo uložit. Uložte jej prosím ručně.</string>
 
     <!-- Errors shown beneath an account ID text field, wherever one is offered -->
     <!-- Error shown when too many characters were entered in an account ID field. First placeholder is how many were entered, second is the maximum. -->
     <string name="AccountIdField__too_long">Příliš dlouhé. %1$d/%2$d znaků.</string>
     <!-- Error shown when the entered account ID contains characters that can\'t appear in one. -->
-    <string name="AccountIdField__invalid_account_id">Invalid account ID</string>
+    <string name="AccountIdField__invalid_account_id">Neplatné ID účtu</string>
 
     <!-- Signal Login credential entry screen -->
     <!-- Title of the screen where a user with an existing Signal Login types it in to log back in. -->
     <string name="SignalLoginCredentialEntryScreen__signal_login">Signal Login</string>
     <!-- Description telling the user what to enter to log in. -->
-    <string name="SignalLoginCredentialEntryScreen__enter_your_account_id_followed_by_your_recovery_key">Enter your account ID followed by your recovery key to restore your account.</string>
+    <string name="SignalLoginCredentialEntryScreen__enter_your_account_id_followed_by_your_recovery_key">Zadejte ID účtu a následně klíč pro obnovení, abyste mohli obnovit svůj účet.</string>
     <!-- Label of the text field the account ID is typed into. -->
-    <string name="SignalLoginCredentialEntryScreen__account_id">Account ID</string>
+    <string name="SignalLoginCredentialEntryScreen__account_id">ID účtu</string>
     <!-- Label of the text field the recovery key is typed into. -->
     <string name="SignalLoginCredentialEntryScreen__recovery_key">Klíč pro obnovení</string>
     <!-- Description of the button that spells out the typed recovery key instead of masking it. -->
-    <string name="SignalLoginCredentialEntryScreen__show_recovery_key">Show recovery key</string>
+    <string name="SignalLoginCredentialEntryScreen__show_recovery_key">Zobrazit klíč pro obnovení</string>
     <!-- Description of the button that masks the typed recovery key. -->
-    <string name="SignalLoginCredentialEntryScreen__hide_recovery_key">Hide recovery key</string>
+    <string name="SignalLoginCredentialEntryScreen__hide_recovery_key">Skrýt klíč pro obnovení</string>
     <!-- Button that opens a support article for users who can\'t find their Signal Login. -->
     <string name="SignalLoginCredentialEntryScreen__need_help">Potřebujete pomoc?</string>
     <!-- Action button that submits the entered Signal Login. -->
     <string name="SignalLoginCredentialEntryScreen__next">Další</string>
     <!-- Error shown when the service rejects the entered login, which means one of the two halves is wrong. -->
-    <string name="SignalLoginCredentialEntryScreen__incorrect_account_id_or_recovery_key">Incorrect account ID or recovery key</string>
+    <string name="SignalLoginCredentialEntryScreen__incorrect_account_id_or_recovery_key">Nesprávné ID účtu nebo klíč pro obnovení</string>
 
     <!-- Add username screen -->
     <!-- Title of the screen offering the user an optional username. -->
@@ -726,11 +726,11 @@
     <!-- Error shown when the username formed by the entered name and the user\'s chosen number is already taken. -->
     <string name="AddUsernameScreen__this_username_is_not_available_try_another_number">Toto uživatelské jméno není dostupné, zkuste jiné číslo.</string>
     <!-- Validation error shown when the number the user entered after their username has too few digits. -->
-    <string name="AddUsernameScreen__enter_a_minimum_of_d_digits">Neplatné uživatelské jméno – zadejte alespoň %1$d číslice.</string>
+    <string name="AddUsernameScreen__enter_a_minimum_of_d_digits">Neplatné uživatelské jméno – zadejte alespoň %1$d číslic.</string>
     <!-- Validation error shown when the number the user entered after their username has too many digits. -->
-    <string name="AddUsernameScreen__enter_a_maximum_of_d_digits">Neplatné uživatelské jméno – zadejte alespoň %1$d číslic.</string>
+    <string name="AddUsernameScreen__enter_a_maximum_of_d_digits">Neplatné uživatelské jméno – zadejte nejvýše %1$d číslic.</string>
     <!-- Validation error shown when the number the user entered after their username contains something other than digits. -->
-    <string name="AddUsernameScreen__numbers_can_only_contain_digits">Invalid username, numbers can only contain digits.</string>
+    <string name="AddUsernameScreen__numbers_can_only_contain_digits">Neplatné uživatelské jméno, čísla musí obsahovat pouze číslice.</string>
     <!-- Validation error shown when the number the user entered after their username is 00. -->
     <string name="AddUsernameScreen__this_number_cant_be_00">Toto číslo nesmí být 00. Zadejte číslici od 1 do 9</string>
     <!-- Validation error shown when the number the user entered after their username has a leading zero. -->
@@ -750,7 +750,7 @@
     <!-- Title of the two-factor authentication code entry screen -->
     <string name="TotpEntryScreen__two_factor_authentication">Dvoufázové ověření</string>
     <!-- Subtitle explaining where to find the code -->
-    <string name="TotpEntryScreen__to_continue_enter_the_code">To continue enter the 6-digit code from your authenticator app.</string>
+    <string name="TotpEntryScreen__to_continue_enter_the_code">Abyste mohli pokračovat, zadejte 6číselný kód ze své ověřovací aplikace.</string>
     <!-- Button text to cancel entering a code -->
     <string name="TotpEntryScreen__cancel">Zrušit</string>
 
@@ -758,15 +758,15 @@
     <!-- Title of the two-factor authentication method selection screen -->
     <string name="TwoFactorSelectionScreen__two_factor_authentication">Dvoufázové ověření</string>
     <!-- Subtitle telling the user to pick one of the methods listed below -->
-    <string name="TwoFactorSelectionScreen__choose_a_method_below">Choose a method below to verify your account.</string>
+    <string name="TwoFactorSelectionScreen__choose_a_method_below">Vyberte jeden z níže uvedených způsobů ověření účtu.</string>
     <!-- Title of the card for verifying with a passkey -->
-    <string name="TwoFactorSelectionScreen__passkey">Passkey</string>
+    <string name="TwoFactorSelectionScreen__passkey">Přístupový klíč</string>
     <!-- Description of the card for verifying with a passkey -->
-    <string name="TwoFactorSelectionScreen__tap_to_use_your_device_biometrics">Tap to use your device biometrics or FIDO2 passkey</string>
+    <string name="TwoFactorSelectionScreen__tap_to_use_your_device_biometrics">Klepněte a použijte biometriku ve vašem zařízení nebo přístupový klíč FIDO2</string>
     <!-- Title of the card for verifying with a code from an authenticator app -->
     <string name="TwoFactorSelectionScreen__authenticator_app">Ověřovací aplikace</string>
     <!-- Description of the card for verifying with a code from an authenticator app -->
-    <string name="TwoFactorSelectionScreen__enter_a_one_time_code">Enter a one-time code generated by your authenticator app.</string>
+    <string name="TwoFactorSelectionScreen__enter_a_one_time_code">Zadejte jednorázový kód vygenerovaný vaší ověřovací aplikací.</string>
     <!-- Button text to cancel two-factor authentication -->
     <string name="TwoFactorSelectionScreen__cancel">Zrušit</string>
 </resources>

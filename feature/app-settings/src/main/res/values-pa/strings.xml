@@ -45,11 +45,11 @@
     <!-- Account setting that allows user to request and export their signal account data -->
     <string name="AccountSettingsFragment__request_account_data">ਤੁਹਾਡੇ ਖਾਤੇ ਦਾ ਡਾਟਾ</string>
     <!-- Section header for the Signal Login section of account settings -->
-    <string name="AccountSettingsFragment__signal_login">Signal ਲੌਗਇਨ</string>
+    <string name="AccountSettingsFragment__signal_login">Signal Login</string>
     <!-- Title of the card that opens the user\'s Signal Login account and recovery keys -->
     <string name="AccountSettingsFragment__account_and_recovery">ਖਾਤਾ ਅਤੇ ਰਿਕਵਰੀ</string>
     <!-- Description of what a Signal Login is, shown below the Signal Login card -->
-    <string name="AccountSettingsFragment__your_signal_login_is_used_to_recover">ਤੁਹਾਡੇ ਖਾਤੇ ਨੂੰ ਰਿਕਵਰ ਅਤੇ ਰੀਸਟੋਰ ਕਰਨ ਲਈ ਤੁਹਾਡੇ Signal ਲੌਗਇਨ ਦੀ ਵਰਤੋਂ ਕੀਤੀ ਜਾਂਦੀ ਹੈ। ਇਹਨਾਂ ਕੁੰਜੀਆਂ ਨੂੰ ਆਪਣੇ ਭਰੋਸੇਯੋਗ ਪਾਸਵਰਡ ਮੈਨੇਜਰ ਵਿੱਚ ਸੁਰੱਖਿਅਤ ਢੰਗ ਨਾਲ ਸਟੋਰ ਕਰਕੇ ਰੱਖੋ।</string>
+    <string name="AccountSettingsFragment__your_signal_login_is_used_to_recover">ਤੁਹਾਡੇ ਖਾਤੇ ਨੂੰ ਰਿਕਵਰ ਅਤੇ ਰੀਸਟੋਰ ਕਰਨ ਲਈ ਤੁਹਾਡੇ Signal Login ਦੀ ਵਰਤੋਂ ਕੀਤੀ ਜਾਂਦੀ ਹੈ। ਇਹਨਾਂ ਕੁੰਜੀਆਂ ਨੂੰ ਆਪਣੇ ਭਰੋਸੇਯੋਗ ਪਾਸਵਰਡ ਮੈਨੇਜਰ ਵਿੱਚ ਸੁਰੱਖਿਅਤ ਢੰਗ ਨਾਲ ਸਟੋਰ ਕਰਕੇ ਰੱਖੋ।</string>
     <!-- Section header for the two-factor authentication section of account settings -->
     <string name="AccountSettingsFragment__two_factor_authentication">ਦੋ-ਕਾਰਕ ਪ੍ਰਮਾਣੀਕਰਨ</string>
     <!-- Account setting that takes the user to the authenticator app setup flow -->
@@ -71,7 +71,7 @@
         <item quantity="other">%1$d ਪਾਸਕੀ</item>
     </plurals>
     <!-- Description of two-factor authentication, shown below the two-factor authentication rows -->
-    <string name="AccountSettingsFragment__use_a_second_form_of_authentication">ਇੱਕ ਨਵੇਂ ਡਿਵਾਈਸ \'ਤੇ ਆਪਣੇ Signal ਲੌਗਇਨ ਦੀ ਵਰਤੋਂ ਕਰਦੇ ਸਮੇਂ ਆਪਣੇ ਖਾਤੇ ਦੀ ਸੁਰੱਖਿਆ ਲਈ ਪ੍ਰਮਾਣੀਕਰਨ ਦੇ ਦੂਜੇ ਰੂਪ ਦੀ ਵਰਤੋਂ ਕਰੋ।</string>
+    <string name="AccountSettingsFragment__use_a_second_form_of_authentication">ਇੱਕ ਨਵੇਂ ਡਿਵਾਈਸ \'ਤੇ ਆਪਣੇ Signal Login ਦੀ ਵਰਤੋਂ ਕਰਦੇ ਸਮੇਂ ਆਪਣੇ ਖਾਤੇ ਦੀ ਸੁਰੱਖਿਆ ਲਈ ਪ੍ਰਮਾਣੀਕਰਨ ਦੇ ਦੂਜੇ ਰੂਪ ਦੀ ਵਰਤੋਂ ਕਰੋ।</string>
     <!-- Clickable text that takes the user to a support article -->
     <string name="AccountSettingsFragment__learn_more">ਹੋਰ ਜਾਣੋ</string>
 
@@ -85,7 +85,7 @@
     <!-- Header of the first step of authenticator app setup -->
     <string name="TotpSetupScreen__step_1">ਕਦਮ 1</string>
     <!-- Body of the first step of authenticator app setup -->
-    <string name="TotpSetupScreen__install_a_trusted_authenticator_app">ਆਪਣੇ ਡਿਵਾਈਸ ਉੱਤੇ ਭਰੋਸੇਯੋਗ ਪ੍ਰਮਾਣੀਕਰਨ ਐਪ ਇੰਸਟਾਲ ਕਰੋ।</string>
+    <string name="TotpSetupScreen__install_a_trusted_authenticator_app">ਆਪਣੇ ਡਿਵਾਈਸ ਉੱਤੇ ਇੱਕ ਭਰੋਸੇਯੋਗ ਪ੍ਰਮਾਣੀਕਰਨ ਐਪ ਇੰਸਟਾਲ ਕਰੋ।</string>
     <!-- Header of the second step of authenticator app setup -->
     <string name="TotpSetupScreen__step_2">ਕਦਮ 2</string>
     <!-- Body of the second step of authenticator app setup -->
@@ -101,7 +101,7 @@
     <!-- Toast shown when there is no app installed that can handle the authenticator setup link -->
     <string name="TotpSetupScreen__no_authenticator_app_found">ਕੋਈ ਵੀ ਪ੍ਰਮਾਣੀਕਰਨ ਐਪ ਨਹੀਂ ਲੱਭੀ</string>
     <!-- Dialog message shown when we couldn\'t reach the service to start setting up an authenticator app -->
-    <string name="TotpSetupScreen__couldnt_reach_signal">Couldn\'t reach Signal. Check your connection and try again.</string>
+    <string name="TotpSetupScreen__couldnt_reach_signal">Signal ਤੱਕ ਪਹੁੰਚ ਨਹੀਂ ਸਕੇ। ਆਪਣੇ ਕਨੈਕਸ਼ਨ ਦੀ ਜਾਂਚ ਕਰੋ ਅਤੇ ਦੁਬਾਰਾ ਕੋਸ਼ਿਸ਼ ਕਰੋ।</string>
     <!-- Header of the third step of authenticator app setup -->
     <string name="TotpSetupScreen__step_3">ਕਦਮ 3</string>
     <!-- Body of the third step of authenticator app setup -->
@@ -147,9 +147,9 @@
     <!-- Button that submits the entered code -->
     <string name="TotpCodeEntryScreen__done">ਮੁਕੰਮਲ</string>
     <!-- Error shown under the code field when the code the user entered was rejected -->
-    <string name="TotpCodeEntryScreen__incorrect_code">Incorrect code. Enter the code showing in your authenticator app now.</string>
+    <string name="TotpCodeEntryScreen__incorrect_code">ਕੋਡ ਗਲਤ ਹੈ। ਤੁਹਾਡੀ ਪ੍ਰਮਾਣੀਕਰਨ ਐਪ ਵਿੱਚ ਇਸ ਵੇਲੇ ਦਿਖ ਰਿਹਾ ਕੋਡ ਦਰਜ ਕਰੋ।</string>
     <!-- Error shown under the code field when we couldn\'t reach the service to check the code -->
-    <string name="TotpCodeEntryScreen__couldnt_reach_signal">Couldn\'t reach Signal. Check your connection and try again.</string>
+    <string name="TotpCodeEntryScreen__couldnt_reach_signal">Signal ਤੱਕ ਪਹੁੰਚ ਨਹੀਂ ਸਕੇ। ਆਪਣੇ ਕਨੈਕਸ਼ਨ ਦੀ ਜਾਂਚ ਕਰੋ ਅਤੇ ਦੁਬਾਰਾ ਕੋਸ਼ਿਸ਼ ਕਰੋ।</string>
     <!-- TotpAppListScreen -->
     <!-- Title of the screen listing the authenticator apps on the account -->
     <string name="TotpAppListScreen__authenticator_app">ਪ੍ਰਮਾਣੀਕਰਨ ਐਪ</string>
@@ -168,31 +168,31 @@
     <!-- Content description of the button that opens an authenticator app\'s options -->
     <string name="TotpAppListScreen__open_authenticator_app_options">ਪ੍ਰਮਾਣੀਕਰਨ ਐਪ ਦੇ ਵਿਕਲਪ ਖੋਲ੍ਹੋ</string>
     <!-- Menu option that renames an authenticator app -->
-    <string name="TotpAppListScreen__rename">ਨਾਮ ਬਦਲੋ</string>
+    <string name="TotpAppListScreen__rename">ਨਾਂ ਬਦਲੋ</string>
     <!-- Menu option that removes an authenticator app -->
     <string name="TotpAppListScreen__remove">ਹਟਾਓ</string>
     <!-- Title of the dialog confirming removal of an authenticator app -->
     <string name="TotpAppListScreen__remove_authenticator_app">ਕੀ ਪ੍ਰਮਾਣੀਕਰਨ ਐਪ ਨੂੰ ਹਟਾਉਣਾ ਹੈ?</string>
     <!-- Body of the dialog confirming removal of an authenticator app -->
-    <string name="TotpAppListScreen__you_wont_be_able_to_use_this_app">You won\'t be able to use this app for one-time verification codes when you sign in.</string>
+    <string name="TotpAppListScreen__you_wont_be_able_to_use_this_app">ਜਦੋਂ ਤੁਸੀਂ ਸਾਈਨ ਇਨ ਕਰੋਗੇ ਤਾਂ ਤੁਸੀਂ ਇਸ ਐਪ ਨੂੰ ਇੱਕ-ਵਾਰੀ ਵਰਤਣ ਵਾਲੇ ਤਸਦੀਕ ਕੋਡ ਲਈ ਵਰਤ ਨਹੀਂ ਸਕੋਗੇ।</string>
     <!-- Title of the dialog shown when the account already has as many authenticator apps as it\'s allowed -->
     <string name="TotpAppListScreen__cant_add_authenticator_app">ਪ੍ਰਮਾਣੀਕਰਨ ਐਪ ਸ਼ਾਮਲ ਨਹੀਂ ਕੀਤੀ ਜਾ ਸਕਦੀ</string>
     <!-- Body of the dialog shown when the account already has as many authenticator apps as it\'s allowed -->
     <string name="TotpAppListScreen__you_cant_add_more_than_d">ਤੁਸੀਂ %1$d ਤੋਂ ਵੱਧ ਪ੍ਰਮਾਣੀਕਰਨ ਐਪਾਂ ਸ਼ਾਮਲ ਨਹੀਂ ਕਰ ਸਕਦੇ। ਪਹਿਲਾਂ ਇੱਕ ਐਪ ਨੂੰ ਹਟਾਉਣ ਦੀ ਕੋਸ਼ਿਸ਼ ਕਰੋ।</string>
     <!-- Dialog message shown when we couldn\'t work out which authenticator apps are on the account -->
-    <string name="TotpAppListScreen__couldnt_load_authenticator_apps">Couldn\'t load your authenticator apps. Check your connection and try again.</string>
+    <string name="TotpAppListScreen__couldnt_load_authenticator_apps">ਤੁਹਾਡੀਆਂ ਪ੍ਰਮਾਣੀਕਰਨ ਐਪਾਂ ਨੂੰ ਲੋਡ ਨਹੀਂ ਕਰ ਸਕੇ। ਆਪਣੇ ਕਨੈਕਸ਼ਨ ਦੀ ਜਾਂਚ ਕਰੋ ਅਤੇ ਦੁਬਾਰਾ ਕੋਸ਼ਿਸ਼ ਕਰੋ।</string>
     <!-- Toast shown after an authenticator app has been removed -->
     <string name="TotpAppListScreen__authenticator_app_removed">ਪ੍ਰਮਾਣੀਕਰਨ ਐਪ ਹਟਾਈ ਗਈ</string>
     <!-- Toast shown when an authenticator app couldn\'t be removed -->
-    <string name="TotpAppListScreen__couldnt_remove_authenticator_app">Couldn\'t remove authenticator app. Check your connection and try again.</string>
+    <string name="TotpAppListScreen__couldnt_remove_authenticator_app">ਪ੍ਰਮਾਣੀਕਰਨ ਐਪ ਨੂੰ ਹਟਾ ਨਹੀਂ ਸਕੇ। ਆਪਣੇ ਕਨੈਕਸ਼ਨ ਦੀ ਜਾਂਚ ਕਰੋ ਅਤੇ ਦੁਬਾਰਾ ਕੋਸ਼ਿਸ਼ ਕਰੋ।</string>
 
     <!-- TotpNameEntryScreen -->
     <!-- Title of the screen where the user names an authenticator app -->
-    <string name="TotpNameEntryScreen__choose_a_name">ਇੱਕ ਨਾਮ ਚੁਣੋ</string>
+    <string name="TotpNameEntryScreen__choose_a_name">ਇੱਕ ਨਾਂ ਚੁਣੋ</string>
     <!-- Instructions shown above the name field when renaming an authenticator app -->
-    <string name="TotpNameEntryScreen__choose_a_unique_name">ਇਸ ਪ੍ਰਮਾਣੀਕਰਨ ਐਪ ਲਈ ਇੱਕ ਵਿਲੱਖਣ ਨਾਮ ਚੁਣੋ।</string>
+    <string name="TotpNameEntryScreen__choose_a_unique_name">ਇਸ ਪ੍ਰਮਾਣੀਕਰਨ ਐਪ ਲਈ ਇੱਕ ਵਿਲੱਖਣ ਨਾਂ ਚੁਣੋ।</string>
     <!-- Instructions shown above the name field when naming a newly configured authenticator app -->
-    <string name="TotpNameEntryScreen__choose_a_unique_name_to_help_you_identify_it">ਇਸ ਪ੍ਰਮਾਣੀਕਰਣ ਐਪ ਲਈ ਇੱਕ ਵਿਲੱਖਣ ਨਾਮ ਚੁਣੋ ਤਾਂ ਜੋ ਤੁਸੀਂ ਇਸਨੂੰ ਬਾਅਦ ਵਿੱਚ ਪਛਾਣ ਸਕੋ।</string>
+    <string name="TotpNameEntryScreen__choose_a_unique_name_to_help_you_identify_it">ਇਸ ਪ੍ਰਮਾਣੀਕਰਣ ਐਪ ਲਈ ਇੱਕ ਵਿਲੱਖਣ ਨਾਂ ਚੁਣੋ ਤਾਂ ਜੋ ਤੁਸੀਂ ਇਸਨੂੰ ਬਾਅਦ ਵਿੱਚ ਪਛਾਣ ਸਕੋ।</string>
     <!-- Label of the name field -->
     <string name="TotpNameEntryScreen__name">ਨਾਂ</string>
     <!-- Button that submits the entered name -->
@@ -200,7 +200,7 @@
     <!-- Toast shown after an authenticator app has been successfully set up -->
     <string name="TotpNameEntryScreen__authenticator_app_set_up">ਪ੍ਰਮਾਣੀਕਰਨ ਐਪ ਸੈੱਟ ਅੱਪ</string>
     <!-- Toast shown after an authenticator app has been renamed -->
-    <string name="TotpNameEntryScreen__authenticator_app_renamed">ਪ੍ਰਮਾਣੀਕਰਨ ਐਪ ਦਾ ਨਾਮ ਬਦਲਿਆ ਗਿਆ</string>
+    <string name="TotpNameEntryScreen__authenticator_app_renamed">ਪ੍ਰਮਾਣੀਕਰਨ ਐਪ ਦਾ ਨਾਂ ਬਦਲਿਆ ਗਿਆ</string>
     <!-- Toast shown when we couldn\'t reach the service to save the name -->
-    <string name="TotpNameEntryScreen__couldnt_save_name">Couldn\'t save name. Check your connection and try again.</string>
+    <string name="TotpNameEntryScreen__couldnt_save_name">ਨਾਂ ਸੇਵ ਨਹੀਂ ਕਰ ਸਕੇ। ਆਪਣੇ ਕਨੈਕਸ਼ਨ ਦੀ ਜਾਂਚ ਕਰੋ ਅਤੇ ਦੁਬਾਰਾ ਕੋਸ਼ਿਸ਼ ਕਰੋ।</string>
 </resources>

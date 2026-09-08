@@ -45,7 +45,7 @@
     <string name="RegistrationActivity_select_a_country">દેશ પસંદ કરો</string>
     <string name="RegistrationActivity_phone_number_description">ફોન નંબર</string>
     <!-- Label the phone number field takes on when what has been typed reads as an account ID rather than a number -->
-    <string name="RegistrationActivity_account_id">Account ID</string>
+    <string name="RegistrationActivity_account_id">એકાઉન્ટ ID</string>
     <!-- Error shown beneath the phone number field when the entered number is not valid -->
     <string name="RegistrationActivity_not_a_valid_phone_number">માન્ય ફોન નંબર નથી</string>
     <!-- Dialog title shown when the entered phone number is rejected as invalid -->
@@ -247,7 +247,7 @@
     <!-- Title of the dialog shown when the entered recovery key is correct, but the account has no Signal Backup to restore -->
     <string name="EnterAepScreen__no_backup_found">કોઈ બેકઅપ મળ્યું નથી</string>
     <!-- Body of the dialog shown when the entered recovery key is correct, but the account has no Signal Backup to restore -->
-    <string name="EnterAepScreen__no_backup_found_body">Your recovery key is correct, but there\'s no Signal Backup for this account. Go back to choose another way to restore, or continue without restoring.</string>
+    <string name="EnterAepScreen__no_backup_found_body">તમારી રિકવરી કી સાચી છે, પરંતુ આ એકાઉન્ટ માટે કોઈ Signal બેકઅપ નથી. રિસ્ટોર કરવાની બીજી રીત પસંદ કરવા માટે પાછા જાઓ અથવા રિસ્ટોર કર્યા વિના ચાલુ રાખો.</string>
     <!-- Text shown while preparing the restore -->
     <string name="LocalBackupRestoreScreen__preparing_restore">રિસ્ટોર તૈયાર થાય છે…</string>
     <!-- Title shown while restore is in progress -->
@@ -614,9 +614,9 @@
 
     <!-- Signal Login purchase screen -->
     <!-- Title of the screen where the user buys a Signal Login to register without a phone number. -->
-    <string name="SignalLoginPaymentScreen__signal_login">Signal લૉગ ઇન</string>
+    <string name="SignalLoginPaymentScreen__signal_login">Signal Login</string>
     <!-- Description of what a Signal Login is. Followed by a "learn more" link. -->
-    <string name="SignalLoginPaymentScreen__register_without_a_phone_number">Signal લૉગ ઇનનો ઉપયોગ કરીને ફોન નંબર વગર રજીસ્ટર કરો. એક-વખતની ખરીદી સાથે, શરૂઆત કરવા માટે તમે એક એકાઉન્ટ કી મેળવશો.</string>
+    <string name="SignalLoginPaymentScreen__register_without_a_phone_number">Signal Loginનો ઉપયોગ કરીને ફોન નંબર વગર રજિસ્ટર કરો. એક-વખતની ખરીદી સાથે, શરૂઆત કરવા માટે તમે એક એકાઉન્ટ કી મેળવશો.</string>
     <!-- Link at the end of the description that opens a support article about Signal Login. -->
     <string name="SignalLoginPaymentScreen__learn_more">વધુ જાણો</string>
     <!-- Subtitle of the purchase option, clarifying the price is not a subscription. -->
@@ -628,7 +628,7 @@
     <!-- Selling point of the purchase option: the purchase supports Signal. -->
     <string name="SignalLoginPaymentScreen__signal_is_a_non_profit">Signal એક બિન-લાભકારી છે— તમારી ખરીદી અમારા મિશનને સપોર્ટ કરવામાં મદદ કરે છે</string>
     <!-- Title of the option for users who already bought a Signal Login. -->
-    <string name="SignalLoginPaymentScreen__i_have_a_signal_login">મારી પાસે Signal લૉગ ઇન છે</string>
+    <string name="SignalLoginPaymentScreen__i_have_a_signal_login">મારી પાસે Signal Login છે</string>
     <!-- Subtitle of the existing-login option. -->
     <string name="SignalLoginPaymentScreen__use_your_existing_account_key">તમારી અસ્તિત્વમાં રહેલી એકાઉન્ટ કી વાપરો</string>
     <!-- Selling point of the existing-login option: the account can be restored. -->
@@ -650,41 +650,41 @@
 
     <!-- Signal Login details screen -->
     <!-- Title of the screen that shows the user their newly purchased Signal Login. -->
-    <string name="SignalLoginInfoScreen__your_signal_login">તમારું Signal લૉગ ઇન</string>
+    <string name="SignalLoginInfoScreen__your_signal_login">તમારું Signal Login</string>
     <!-- Description warning the user that a lost Signal Login cannot be recovered. -->
-    <string name="SignalLoginInfoScreen__thanks_for_your_purchase">તમારી ખરીદી બદલ આભાર. તમારા એકાઉન્ટને રજીસ્ટર અને રિસ્ટોર કરવા તમારા Signal લૉગ ઇનનો ઉપયોગ કરો. જો તમે તમારી કી ભૂલી જાઓ, તો તમે તમારા એકાઉન્ટને રિકવર કરી શકશો નહીં.</string>
+    <string name="SignalLoginInfoScreen__thanks_for_your_purchase">તમારી ખરીદી બદલ આભાર. તમારા એકાઉન્ટને રજિસ્ટર અને રિસ્ટોર કરવા તમારા Signal Loginનો ઉપયોગ કરો. જો તમે તમારી કી ભૂલી જાઓ, તો તમે તમારા એકાઉન્ટને રિકવર કરી શકશો નહીં.</string>
     <!-- Action button that stores the Signal Login in the device password manager. -->
     <string name="SignalLoginInfoScreen__save_to_password_manager">પાસવર્ડ મેનેજરમાં સેવ કરો</string>
     <!-- Action button for users who would rather write the Signal Login down themselves. -->
     <string name="SignalLoginInfoScreen__save_manually">જાતે સેવ કરો</string>
     <!-- Error shown when the Signal Login could not be stored in the password manager. -->
-    <string name="SignalLoginInfoScreen__your_signal_login_could_not_be_saved">તમારું Signal લૉગ ઇન સેવ ન થઈ શક્યું. તેના બદલે તેને જાતે સેવ કરો.</string>
+    <string name="SignalLoginInfoScreen__your_signal_login_could_not_be_saved">તમારું Signal Login સેવ ન થઈ શક્યું. તેના બદલે તેને જાતે સેવ કરો.</string>
 
     <!-- Errors shown beneath an account ID text field, wherever one is offered -->
     <!-- Error shown when too many characters were entered in an account ID field. First placeholder is how many were entered, second is the maximum. -->
     <string name="AccountIdField__too_long">બહુ લાંબી છે. %1$d/%2$d અક્ષર.</string>
     <!-- Error shown when the entered account ID contains characters that can\'t appear in one. -->
-    <string name="AccountIdField__invalid_account_id">Invalid account ID</string>
+    <string name="AccountIdField__invalid_account_id">અમાન્ય એકાઉન્ટ ID</string>
 
     <!-- Signal Login credential entry screen -->
     <!-- Title of the screen where a user with an existing Signal Login types it in to log back in. -->
     <string name="SignalLoginCredentialEntryScreen__signal_login">Signal Login</string>
     <!-- Description telling the user what to enter to log in. -->
-    <string name="SignalLoginCredentialEntryScreen__enter_your_account_id_followed_by_your_recovery_key">Enter your account ID followed by your recovery key to restore your account.</string>
+    <string name="SignalLoginCredentialEntryScreen__enter_your_account_id_followed_by_your_recovery_key">તમારા એકાઉન્ટને રિસ્ટોર કરવા માટે તમારા એકાઉન્ટ ID અને પછી તમારી રિકવરી કી દાખલ કરો.</string>
     <!-- Label of the text field the account ID is typed into. -->
-    <string name="SignalLoginCredentialEntryScreen__account_id">Account ID</string>
+    <string name="SignalLoginCredentialEntryScreen__account_id">એકાઉન્ટ ID</string>
     <!-- Label of the text field the recovery key is typed into. -->
     <string name="SignalLoginCredentialEntryScreen__recovery_key">રિકવરી કી</string>
     <!-- Description of the button that spells out the typed recovery key instead of masking it. -->
-    <string name="SignalLoginCredentialEntryScreen__show_recovery_key">Show recovery key</string>
+    <string name="SignalLoginCredentialEntryScreen__show_recovery_key">રિકવરી કી બતાવો</string>
     <!-- Description of the button that masks the typed recovery key. -->
-    <string name="SignalLoginCredentialEntryScreen__hide_recovery_key">Hide recovery key</string>
+    <string name="SignalLoginCredentialEntryScreen__hide_recovery_key">રિકવરી કી છુપાવો</string>
     <!-- Button that opens a support article for users who can\'t find their Signal Login. -->
     <string name="SignalLoginCredentialEntryScreen__need_help">મદદ જોઈએ છે?</string>
     <!-- Action button that submits the entered Signal Login. -->
     <string name="SignalLoginCredentialEntryScreen__next">આગળ</string>
     <!-- Error shown when the service rejects the entered login, which means one of the two halves is wrong. -->
-    <string name="SignalLoginCredentialEntryScreen__incorrect_account_id_or_recovery_key">Incorrect account ID or recovery key</string>
+    <string name="SignalLoginCredentialEntryScreen__incorrect_account_id_or_recovery_key">ખોટી એકાઉન્ટ ID અથવા રિકવરી કી</string>
 
     <!-- Add username screen -->
     <!-- Title of the screen offering the user an optional username. -->
@@ -726,7 +726,7 @@
     <!-- Validation error shown when the number the user entered after their username has too many digits. -->
     <string name="AddUsernameScreen__enter_a_maximum_of_d_digits">અમાન્ય યુઝરનેમ, વધુમાં વધુ %1$d અંકો દાખલ કરો.</string>
     <!-- Validation error shown when the number the user entered after their username contains something other than digits. -->
-    <string name="AddUsernameScreen__numbers_can_only_contain_digits">Invalid username, numbers can only contain digits.</string>
+    <string name="AddUsernameScreen__numbers_can_only_contain_digits">અમાન્ય યુઝરનેમ, સંખ્યામાં ફક્ત અંક જ હોવા જોઈએ.</string>
     <!-- Validation error shown when the number the user entered after their username is 00. -->
     <string name="AddUsernameScreen__this_number_cant_be_00">આ નંબર 00 ન હોઈ શકે. 1-9ની વચ્ચેનો અંક દાખલ કરો</string>
     <!-- Validation error shown when the number the user entered after their username has a leading zero. -->
@@ -744,25 +744,25 @@
 
     <!-- TotpEntryScreen -->
     <!-- Title of the two-factor authentication code entry screen -->
-    <string name="TotpEntryScreen__two_factor_authentication">બે-પરિમાણીય પ્રમાણીકરણ</string>
+    <string name="TotpEntryScreen__two_factor_authentication">બે-પગલાંની ખાતરી</string>
     <!-- Subtitle explaining where to find the code -->
-    <string name="TotpEntryScreen__to_continue_enter_the_code">To continue enter the 6-digit code from your authenticator app.</string>
+    <string name="TotpEntryScreen__to_continue_enter_the_code">ચાલુ રાખવા માટે તમારી પ્રમાણીકરણ ઍપમાંથી 6-અંકનો કોડ દાખલ કરો.</string>
     <!-- Button text to cancel entering a code -->
     <string name="TotpEntryScreen__cancel">રદ કરો</string>
 
     <!-- TwoFactorSelectionScreen -->
     <!-- Title of the two-factor authentication method selection screen -->
-    <string name="TwoFactorSelectionScreen__two_factor_authentication">બે-પરિમાણીય પ્રમાણીકરણ</string>
+    <string name="TwoFactorSelectionScreen__two_factor_authentication">બે-પગલાંની ખાતરી</string>
     <!-- Subtitle telling the user to pick one of the methods listed below -->
-    <string name="TwoFactorSelectionScreen__choose_a_method_below">Choose a method below to verify your account.</string>
+    <string name="TwoFactorSelectionScreen__choose_a_method_below">તમારા એકાઉન્ટને વેરિફાય કરવા માટે નીચે એક પદ્ધતિ પસંદ કરો.</string>
     <!-- Title of the card for verifying with a passkey -->
-    <string name="TwoFactorSelectionScreen__passkey">Passkey</string>
+    <string name="TwoFactorSelectionScreen__passkey">પાસકી</string>
     <!-- Description of the card for verifying with a passkey -->
-    <string name="TwoFactorSelectionScreen__tap_to_use_your_device_biometrics">Tap to use your device biometrics or FIDO2 passkey</string>
+    <string name="TwoFactorSelectionScreen__tap_to_use_your_device_biometrics">તમારા ડિવાઇસના બાયોમેટ્રિક્સ કે FIDO2 પાસકીનો ઉપયોગ કરવા ટેપ કરો</string>
     <!-- Title of the card for verifying with a code from an authenticator app -->
     <string name="TwoFactorSelectionScreen__authenticator_app">પ્રમાણીકરણ ઍપ</string>
     <!-- Description of the card for verifying with a code from an authenticator app -->
-    <string name="TwoFactorSelectionScreen__enter_a_one_time_code">Enter a one-time code generated by your authenticator app.</string>
+    <string name="TwoFactorSelectionScreen__enter_a_one_time_code">તમારી પ્રમાણીકરણ ઍપમાંથી જનરેટ થયેલ એક-વખતનો કોડ દાખલ કરો.</string>
     <!-- Button text to cancel two-factor authentication -->
     <string name="TwoFactorSelectionScreen__cancel">રદ કરો</string>
 </resources>

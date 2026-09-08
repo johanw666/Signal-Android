@@ -49,7 +49,7 @@
     <!-- Title of the card that opens the user\'s Signal Login account and recovery keys -->
     <string name="AccountSettingsFragment__account_and_recovery">Račun in obnovitev</string>
     <!-- Description of what a Signal Login is, shown below the Signal Login card -->
-    <string name="AccountSettingsFragment__your_signal_login_is_used_to_recover">Vaša prijava v Signal se uporablja za obnovitev in ponovno vzpostavitev vašega računa. Te ključe varno shranite v zaupanja vrednem upravitelju gesel.</string>
+    <string name="AccountSettingsFragment__your_signal_login_is_used_to_recover">Vaš Signal Login se uporablja za obnovitev in ponovno vzpostavitev vašega računa. Te ključe varno shranite v zaupanja vrednem upravitelju gesel.</string>
     <!-- Section header for the two-factor authentication section of account settings -->
     <string name="AccountSettingsFragment__two_factor_authentication">Dvostopenjsko preverjanje pristnosti</string>
     <!-- Account setting that takes the user to the authenticator app setup flow -->
@@ -105,7 +105,7 @@
     <!-- Toast shown when there is no app installed that can handle the authenticator setup link -->
     <string name="TotpSetupScreen__no_authenticator_app_found">Aplikacije za preverjanje pristnosti ni bilo mogoče najti</string>
     <!-- Dialog message shown when we couldn\'t reach the service to start setting up an authenticator app -->
-    <string name="TotpSetupScreen__couldnt_reach_signal">Couldn\'t reach Signal. Check your connection and try again.</string>
+    <string name="TotpSetupScreen__couldnt_reach_signal">Signala ni bilo mogoče doseči. Preverite povezavo in poskusite znova.</string>
     <!-- Header of the third step of authenticator app setup -->
     <string name="TotpSetupScreen__step_3">3. korak</string>
     <!-- Body of the third step of authenticator app setup -->
@@ -151,9 +151,9 @@
     <!-- Button that submits the entered code -->
     <string name="TotpCodeEntryScreen__done">OK</string>
     <!-- Error shown under the code field when the code the user entered was rejected -->
-    <string name="TotpCodeEntryScreen__incorrect_code">Incorrect code. Enter the code showing in your authenticator app now.</string>
+    <string name="TotpCodeEntryScreen__incorrect_code">Napačna koda. Vnesite kodo, prikazano v vaši aplikaciji za preverjanje pristnosti.</string>
     <!-- Error shown under the code field when we couldn\'t reach the service to check the code -->
-    <string name="TotpCodeEntryScreen__couldnt_reach_signal">Couldn\'t reach Signal. Check your connection and try again.</string>
+    <string name="TotpCodeEntryScreen__couldnt_reach_signal">Signala ni bilo mogoče doseči. Preverite povezavo in poskusite znova.</string>
     <!-- TotpAppListScreen -->
     <!-- Title of the screen listing the authenticator apps on the account -->
     <string name="TotpAppListScreen__authenticator_app">Aplikacija za preverjanje pristnosti</string>
@@ -178,17 +178,17 @@
     <!-- Title of the dialog confirming removal of an authenticator app -->
     <string name="TotpAppListScreen__remove_authenticator_app">Želite odstraniti aplikacijo za preverjanje pristnosti?</string>
     <!-- Body of the dialog confirming removal of an authenticator app -->
-    <string name="TotpAppListScreen__you_wont_be_able_to_use_this_app">You won\'t be able to use this app for one-time verification codes when you sign in.</string>
+    <string name="TotpAppListScreen__you_wont_be_able_to_use_this_app">Ko se prijavite, te aplikacije ne boste mogli uporabljati za enkratne potrditvene kode.</string>
     <!-- Title of the dialog shown when the account already has as many authenticator apps as it\'s allowed -->
     <string name="TotpAppListScreen__cant_add_authenticator_app">Aplikacije za preverjanje pristnosti ni mogoče dodati</string>
     <!-- Body of the dialog shown when the account already has as many authenticator apps as it\'s allowed -->
     <string name="TotpAppListScreen__you_cant_add_more_than_d">Ne morete dodati več kot toliko aplikacij za preverjanje pristnosti: %1$d. Najprej jo poskusite odstraniti.</string>
     <!-- Dialog message shown when we couldn\'t work out which authenticator apps are on the account -->
-    <string name="TotpAppListScreen__couldnt_load_authenticator_apps">Couldn\'t load your authenticator apps. Check your connection and try again.</string>
+    <string name="TotpAppListScreen__couldnt_load_authenticator_apps">Vaših aplikacij za preverjanje pristnosti nismo mogli naložiti. Preverite povezavo in poskusite znova.</string>
     <!-- Toast shown after an authenticator app has been removed -->
     <string name="TotpAppListScreen__authenticator_app_removed">Aplikacija za preverjanje pristnosti je odstranjena</string>
     <!-- Toast shown when an authenticator app couldn\'t be removed -->
-    <string name="TotpAppListScreen__couldnt_remove_authenticator_app">Couldn\'t remove authenticator app. Check your connection and try again.</string>
+    <string name="TotpAppListScreen__couldnt_remove_authenticator_app">Aplikacije za preverjanje pristnosti nismo mogli odstraniti. Preverite povezavo in poskusite znova.</string>
 
     <!-- TotpNameEntryScreen -->
     <!-- Title of the screen where the user names an authenticator app -->
@@ -206,5 +206,5 @@
     <!-- Toast shown after an authenticator app has been renamed -->
     <string name="TotpNameEntryScreen__authenticator_app_renamed">Aplikacija za preverjanje pristnosti je preimenovana</string>
     <!-- Toast shown when we couldn\'t reach the service to save the name -->
-    <string name="TotpNameEntryScreen__couldnt_save_name">Couldn\'t save name. Check your connection and try again.</string>
+    <string name="TotpNameEntryScreen__couldnt_save_name">Ni bilo mogoče shraniti imena. Preverite povezavo in poskusite znova.</string>
 </resources>

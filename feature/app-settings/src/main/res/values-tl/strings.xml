@@ -49,7 +49,7 @@
     <!-- Title of the card that opens the user\'s Signal Login account and recovery keys -->
     <string name="AccountSettingsFragment__account_and_recovery">Account at recovery</string>
     <!-- Description of what a Signal Login is, shown below the Signal Login card -->
-    <string name="AccountSettingsFragment__your_signal_login_is_used_to_recover">Ginagamit ang Signal Login mo para i-recover at i-restore ang iyong account. Ingatan ang keys na ito sa password manager na pinagkakatiwalaan mo.</string>
+    <string name="AccountSettingsFragment__your_signal_login_is_used_to_recover">Ginagamit ang Signal Login mo para i-recover at i-restore ang iyong account. Ingatan ang keys na ito sa isang password manager na pinagkakatiwalaan mo.</string>
     <!-- Section header for the two-factor authentication section of account settings -->
     <string name="AccountSettingsFragment__two_factor_authentication">Two-factor authentication</string>
     <!-- Account setting that takes the user to the authenticator app setup flow -->
@@ -85,7 +85,7 @@
     <!-- Header of the first step of authenticator app setup -->
     <string name="TotpSetupScreen__step_1">Step 1</string>
     <!-- Body of the first step of authenticator app setup -->
-    <string name="TotpSetupScreen__install_a_trusted_authenticator_app">Mag-install ng trusted authenticator app sa device mo.</string>
+    <string name="TotpSetupScreen__install_a_trusted_authenticator_app">Mag-install ng pinagkakatiwalaang authenticator app sa device mo.</string>
     <!-- Header of the second step of authenticator app setup -->
     <string name="TotpSetupScreen__step_2">Step 2</string>
     <!-- Body of the second step of authenticator app setup -->
@@ -101,7 +101,7 @@
     <!-- Toast shown when there is no app installed that can handle the authenticator setup link -->
     <string name="TotpSetupScreen__no_authenticator_app_found">Walang nahanap na authenticator app</string>
     <!-- Dialog message shown when we couldn\'t reach the service to start setting up an authenticator app -->
-    <string name="TotpSetupScreen__couldnt_reach_signal">Couldn\'t reach Signal. Check your connection and try again.</string>
+    <string name="TotpSetupScreen__couldnt_reach_signal">Hindi ma-reach ang Signal. I-check ang iyong connection at subukan ulit.</string>
     <!-- Header of the third step of authenticator app setup -->
     <string name="TotpSetupScreen__step_3">Step 3</string>
     <!-- Body of the third step of authenticator app setup -->
@@ -147,14 +147,14 @@
     <!-- Button that submits the entered code -->
     <string name="TotpCodeEntryScreen__done">Tapos na</string>
     <!-- Error shown under the code field when the code the user entered was rejected -->
-    <string name="TotpCodeEntryScreen__incorrect_code">Incorrect code. Enter the code showing in your authenticator app now.</string>
+    <string name="TotpCodeEntryScreen__incorrect_code">Maling code. Ilagay ang code na nakikita mo sa authenticator app ngayon.</string>
     <!-- Error shown under the code field when we couldn\'t reach the service to check the code -->
-    <string name="TotpCodeEntryScreen__couldnt_reach_signal">Couldn\'t reach Signal. Check your connection and try again.</string>
+    <string name="TotpCodeEntryScreen__couldnt_reach_signal">Hindi ma-reach ang Signal. I-check ang iyong connection at subukan ulit.</string>
     <!-- TotpAppListScreen -->
     <!-- Title of the screen listing the authenticator apps on the account -->
     <string name="TotpAppListScreen__authenticator_app">Authenticator app</string>
     <!-- Description of what an authenticator app is for, shown at the top of the screen -->
-    <string name="TotpAppListScreen__set_up_an_authenticator_app">Mag-set up ng authenticator app para makagawa ng one-time verification codes</string>
+    <string name="TotpAppListScreen__set_up_an_authenticator_app">Mag-set up ng authenticator app para makagawa ng one-time verification code</string>
     <!-- Clickable text that takes the user to a support article -->
     <string name="TotpAppListScreen__learn_more">Matuto pa</string>
     <!-- Button that starts setting up another authenticator app -->
@@ -164,7 +164,7 @@
     <!-- Shown in place of the list when no authenticator apps are configured -->
     <string name="TotpAppListScreen__no_authenticator_apps">Walang authenticator app</string>
     <!-- Subtitle of an authenticator app row saying when it was configured. Placeholder is a date or time. -->
-    <string name="TotpAppListScreen__added_s">In-add ang \"%1$s\"</string>
+    <string name="TotpAppListScreen__added_s">In-add ang %1$s</string>
     <!-- Content description of the button that opens an authenticator app\'s options -->
     <string name="TotpAppListScreen__open_authenticator_app_options">Buksan ang authenticator app options</string>
     <!-- Menu option that renames an authenticator app -->
@@ -174,17 +174,17 @@
     <!-- Title of the dialog confirming removal of an authenticator app -->
     <string name="TotpAppListScreen__remove_authenticator_app">Tanggalin ang authenticator app?</string>
     <!-- Body of the dialog confirming removal of an authenticator app -->
-    <string name="TotpAppListScreen__you_wont_be_able_to_use_this_app">You won\'t be able to use this app for one-time verification codes when you sign in.</string>
+    <string name="TotpAppListScreen__you_wont_be_able_to_use_this_app">Hindi mo na magagamit ang app na ito para sa one-time verification codes kapag nag-sign in ka.</string>
     <!-- Title of the dialog shown when the account already has as many authenticator apps as it\'s allowed -->
     <string name="TotpAppListScreen__cant_add_authenticator_app">Hindi makapag-add ang authenticator app</string>
     <!-- Body of the dialog shown when the account already has as many authenticator apps as it\'s allowed -->
     <string name="TotpAppListScreen__you_cant_add_more_than_d">Hindi ka maaaring mag-add ng higit sa %1$d authenticator apps. Subukan munang magtanggal ng isa.</string>
     <!-- Dialog message shown when we couldn\'t work out which authenticator apps are on the account -->
-    <string name="TotpAppListScreen__couldnt_load_authenticator_apps">Couldn\'t load your authenticator apps. Check your connection and try again.</string>
+    <string name="TotpAppListScreen__couldnt_load_authenticator_apps">Hindi nag-load ang authenticator apps mo. I-check ang iyong connection at subukan ulit.</string>
     <!-- Toast shown after an authenticator app has been removed -->
     <string name="TotpAppListScreen__authenticator_app_removed">Tinanggal ang authenticator app</string>
     <!-- Toast shown when an authenticator app couldn\'t be removed -->
-    <string name="TotpAppListScreen__couldnt_remove_authenticator_app">Couldn\'t remove authenticator app. Check your connection and try again.</string>
+    <string name="TotpAppListScreen__couldnt_remove_authenticator_app">Hindi matanggal ang authenticator app mo. I-check ang iyong connection at subukan ulit.</string>
 
     <!-- TotpNameEntryScreen -->
     <!-- Title of the screen where the user names an authenticator app -->
@@ -202,5 +202,5 @@
     <!-- Toast shown after an authenticator app has been renamed -->
     <string name="TotpNameEntryScreen__authenticator_app_renamed">Ni-rename ang authenticator app</string>
     <!-- Toast shown when we couldn\'t reach the service to save the name -->
-    <string name="TotpNameEntryScreen__couldnt_save_name">Couldn\'t save name. Check your connection and try again.</string>
+    <string name="TotpNameEntryScreen__couldnt_save_name">Hindi ma-save ang pangalan. I-check ang iyong connection at subukan ulit.</string>
 </resources>

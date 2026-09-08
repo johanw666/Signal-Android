@@ -45,11 +45,11 @@
     <!-- Account setting that allows user to request and export their signal account data -->
     <string name="AccountSettingsFragment__request_account_data">Údaje o vašem účtu</string>
     <!-- Section header for the Signal Login section of account settings -->
-    <string name="AccountSettingsFragment__signal_login">Přihlašovací údaje pro Signal</string>
+    <string name="AccountSettingsFragment__signal_login">Signal Login</string>
     <!-- Title of the card that opens the user\'s Signal Login account and recovery keys -->
     <string name="AccountSettingsFragment__account_and_recovery">Účet a obnovení</string>
     <!-- Description of what a Signal Login is, shown below the Signal Login card -->
-    <string name="AccountSettingsFragment__your_signal_login_is_used_to_recover">Vaše přihlašovací údaje pro Signal slouží k obnovení vašeho účtu. Tyto klíče si bezpečně uložte do důvěryhodného správce hesel.</string>
+    <string name="AccountSettingsFragment__your_signal_login_is_used_to_recover">Váš Signal Login slouží k obnovení vašeho účtu. Tyto klíče si bezpečně uložte do důvěryhodného správce hesel.</string>
     <!-- Section header for the two-factor authentication section of account settings -->
     <string name="AccountSettingsFragment__two_factor_authentication">Dvoufázové ověření</string>
     <!-- Account setting that takes the user to the authenticator app setup flow -->
@@ -75,7 +75,7 @@
         <item quantity="other">%1$d přístupových klíčů</item>
     </plurals>
     <!-- Description of two-factor authentication, shown below the two-factor authentication rows -->
-    <string name="AccountSettingsFragment__use_a_second_form_of_authentication">Při přihlašování do účtu Signal použijte na novém zařízení druhou formu ověření pro ochranu svého účtu.</string>
+    <string name="AccountSettingsFragment__use_a_second_form_of_authentication">Chraňte svůj účet pomocí druhé fáze ověření při použití Signal Login na novém zařízení.</string>
     <!-- Clickable text that takes the user to a support article -->
     <string name="AccountSettingsFragment__learn_more">Zjistit více</string>
 
@@ -105,11 +105,11 @@
     <!-- Toast shown when there is no app installed that can handle the authenticator setup link -->
     <string name="TotpSetupScreen__no_authenticator_app_found">Nebyla nalezena žádná ověřovací aplikace</string>
     <!-- Dialog message shown when we couldn\'t reach the service to start setting up an authenticator app -->
-    <string name="TotpSetupScreen__couldnt_reach_signal">Couldn\'t reach Signal. Check your connection and try again.</string>
+    <string name="TotpSetupScreen__couldnt_reach_signal">K aplikaci Signal se nelze připojit. Zkontrolujte připojení a zkuste to znovu.</string>
     <!-- Header of the third step of authenticator app setup -->
     <string name="TotpSetupScreen__step_3">Krok 3</string>
     <!-- Body of the third step of authenticator app setup -->
-    <string name="TotpSetupScreen__copy_the_code_thats_generated">Zkopírujte vygenerovaný kód a zadejte sem, abyste mohli pokračovat.</string>
+    <string name="TotpSetupScreen__copy_the_code_thats_generated">Zkopírujte vygenerovaný kód a vraťte se sem k dokončení.</string>
     <!-- Button that advances from the setup instructions to entering a code -->
     <string name="TotpSetupScreen__continue">Pokračovat</string>
 
@@ -151,9 +151,9 @@
     <!-- Button that submits the entered code -->
     <string name="TotpCodeEntryScreen__done">Hotovo</string>
     <!-- Error shown under the code field when the code the user entered was rejected -->
-    <string name="TotpCodeEntryScreen__incorrect_code">Incorrect code. Enter the code showing in your authenticator app now.</string>
+    <string name="TotpCodeEntryScreen__incorrect_code">Nesprávný kód. Zadejte kód, který se právě zobrazuje ve vaší ověřovací aplikaci.</string>
     <!-- Error shown under the code field when we couldn\'t reach the service to check the code -->
-    <string name="TotpCodeEntryScreen__couldnt_reach_signal">Couldn\'t reach Signal. Check your connection and try again.</string>
+    <string name="TotpCodeEntryScreen__couldnt_reach_signal">K aplikaci Signal se nelze připojit. Zkontrolujte připojení a zkuste to znovu.</string>
     <!-- TotpAppListScreen -->
     <!-- Title of the screen listing the authenticator apps on the account -->
     <string name="TotpAppListScreen__authenticator_app">Ověřovací aplikace</string>
@@ -178,21 +178,21 @@
     <!-- Title of the dialog confirming removal of an authenticator app -->
     <string name="TotpAppListScreen__remove_authenticator_app">Odstranit ověřovací aplikaci?</string>
     <!-- Body of the dialog confirming removal of an authenticator app -->
-    <string name="TotpAppListScreen__you_wont_be_able_to_use_this_app">You won\'t be able to use this app for one-time verification codes when you sign in.</string>
+    <string name="TotpAppListScreen__you_wont_be_able_to_use_this_app">Tuto aplikaci nebudete moci při přihlašování používat pro jednorázové ověřovací kódy.</string>
     <!-- Title of the dialog shown when the account already has as many authenticator apps as it\'s allowed -->
     <string name="TotpAppListScreen__cant_add_authenticator_app">Ověřovací aplikaci nelze přidat</string>
     <!-- Body of the dialog shown when the account already has as many authenticator apps as it\'s allowed -->
-    <string name="TotpAppListScreen__you_cant_add_more_than_d">Nelze přidat více než %1$d ověřovací aplikaci. Zkuste nejprve jednu odstranit.</string>
+    <string name="TotpAppListScreen__you_cant_add_more_than_d">Nelze přidat více než %1$d ověřovací aplikace. Zkuste nejprve jednu odstranit.</string>
     <!-- Dialog message shown when we couldn\'t work out which authenticator apps are on the account -->
-    <string name="TotpAppListScreen__couldnt_load_authenticator_apps">Couldn\'t load your authenticator apps. Check your connection and try again.</string>
+    <string name="TotpAppListScreen__couldnt_load_authenticator_apps">Nelze načíst vaši ověřovací aplikaci. Zkontrolujte připojení a zkuste to znovu.</string>
     <!-- Toast shown after an authenticator app has been removed -->
     <string name="TotpAppListScreen__authenticator_app_removed">Ověřovací aplikace odstraněna</string>
     <!-- Toast shown when an authenticator app couldn\'t be removed -->
-    <string name="TotpAppListScreen__couldnt_remove_authenticator_app">Couldn\'t remove authenticator app. Check your connection and try again.</string>
+    <string name="TotpAppListScreen__couldnt_remove_authenticator_app">Ověřovací aplikaci se nepodařilo odebrat. Zkontrolujte připojení a zkuste to znovu.</string>
 
     <!-- TotpNameEntryScreen -->
     <!-- Title of the screen where the user names an authenticator app -->
-    <string name="TotpNameEntryScreen__choose_a_name">Zvolte jméno</string>
+    <string name="TotpNameEntryScreen__choose_a_name">Zvolte název</string>
     <!-- Instructions shown above the name field when renaming an authenticator app -->
     <string name="TotpNameEntryScreen__choose_a_unique_name">Zvolte jedinečný název pro tuto ověřovací aplikaci.</string>
     <!-- Instructions shown above the name field when naming a newly configured authenticator app -->
@@ -206,5 +206,5 @@
     <!-- Toast shown after an authenticator app has been renamed -->
     <string name="TotpNameEntryScreen__authenticator_app_renamed">Ověřovací aplikace přejmenována</string>
     <!-- Toast shown when we couldn\'t reach the service to save the name -->
-    <string name="TotpNameEntryScreen__couldnt_save_name">Couldn\'t save name. Check your connection and try again.</string>
+    <string name="TotpNameEntryScreen__couldnt_save_name">Jméno se nepodařilo uložit. Zkontrolujte připojení a zkuste to znovu.</string>
 </resources>

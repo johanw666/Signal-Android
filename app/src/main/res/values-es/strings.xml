@@ -9954,27 +9954,14 @@
     <!-- Button declining to paste the recovery key -->
     <string name="RecoveryKeyWarningDialog__dont_share">No compartir</string>
 
-    <!-- Notification body for unread reminders. First two placeholders are the number of unread messages and calls, last two are the summaries for mentions and replies -->
-    <string name="UnreadReminderJob__calls_and_unread_full_summary">You have %1$s and %2$s including %3$s and %4$s.</string>
-    <!-- Notification body for unread reminders. First two placeholders are the number of unread messages and calls, third is a summary of mentions or replies -->
-    <string name="UnreadReminderJob__calls_and_unread_summary">You have %1$s and %2$s including %3$s.</string>
-    <!-- Notification body for unread reminders. First two placeholders are the number of unread messages and calls, third is a list of recipients who sent them -->
-    <string name="UnreadReminderJob__calls_and_unread_author">You have %1$s and %2$s from %3$s.</string>
     <!-- Notification body for unread reminders. First placeholder is unread messages, second is a summary of unread mentions or replies -->
     <string name="UnreadReminderJob__unread_one_summary">You have %1$s, including %2$s.</string>
     <!-- Notification body for unread reminders. First placeholder is unread messages, second is a summary of unread mentions, third replies -->
     <string name="UnreadReminderJob__unread_both_summary">You have %1$s, including %2$s and %3$s.</string>
     <!-- Notification body for unread reminders. First placeholder is unread messages, second is a list of people who sent them -->
     <string name="UnreadReminderJob__calls_or_unread_author">You have %1$s from %2$s.</string>
-    <!-- Notification body for unread reminders. First placeholder is unread messages or unread calls -->
+    <!-- Notification body for unread reminders. First placeholder is unread messages -->
     <string name="UnreadReminderJob__calls_or_unread">You have %1$s.</string>
-    <!-- Notification body for unread reminders. First placeholder is unread messages, second is unread calls. -->
-    <string name="UnreadReminderJob__calls_and_unread">You have %1$s and %2$s.</string>
-    <!-- Notification placeholder for unread calls -->
-    <plurals name="UnreadReminderJob__calls">
-        <item quantity="one">%1$d missed call</item>
-        <item quantity="other">%1$d missed calls</item>
-    </plurals>
     <!-- Notification placeholder for unread messages -->
     <plurals name="UnreadReminderJob__messages">
         <item quantity="one">%1$d mensaje no leído</item>

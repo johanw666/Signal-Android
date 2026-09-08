@@ -45,11 +45,11 @@
     <!-- Account setting that allows user to request and export their signal account data -->
     <string name="AccountSettingsFragment__request_account_data">بيانات حسابك</string>
     <!-- Section header for the Signal Login section of account settings -->
-    <string name="AccountSettingsFragment__signal_login">معلومات تسجيل الدخول لسيجنال</string>
+    <string name="AccountSettingsFragment__signal_login">Signal Login</string>
     <!-- Title of the card that opens the user\'s Signal Login account and recovery keys -->
     <string name="AccountSettingsFragment__account_and_recovery">الحساب والاستعادة</string>
     <!-- Description of what a Signal Login is, shown below the Signal Login card -->
-    <string name="AccountSettingsFragment__your_signal_login_is_used_to_recover">تُستخدَم معلومات تسجيل الدخول لحسابك على سيجنال لاسترداد حسابك واستعادته. احتفظ بهذه المفاتيح مُخزَّنة بأمان في مدير كلمات المرور الذي تثق به.</string>
+    <string name="AccountSettingsFragment__your_signal_login_is_used_to_recover">تُستخدَم بيانات Signal Login الخاصة بك لاسترداد حسابك واستعادته. احتفِظ بهذه المفاتيح مُخزَّنة بأمان في مدير كلمات المرور الذي تثق به.</string>
     <!-- Section header for the two-factor authentication section of account settings -->
     <string name="AccountSettingsFragment__two_factor_authentication">المصادقة الثنائية</string>
     <!-- Account setting that takes the user to the authenticator app setup flow -->
@@ -79,7 +79,7 @@
         <item quantity="other">%1$d مفتاح مرور</item>
     </plurals>
     <!-- Description of two-factor authentication, shown below the two-factor authentication rows -->
-    <string name="AccountSettingsFragment__use_a_second_form_of_authentication">استخدِم وسيلة مصادقة ثانية لحماية حسابك عند استخدام بيانات تسجيل الدخول لحسابك في سيجنال على جهاز جديد.</string>
+    <string name="AccountSettingsFragment__use_a_second_form_of_authentication">استخدِم وسيلة مصادقة ثانية لحماية حسابك عند استخدام Signal Login الخاص بك على جهاز جديد.</string>
     <!-- Clickable text that takes the user to a support article -->
     <string name="AccountSettingsFragment__learn_more">اعرف المزيد</string>
 
@@ -109,11 +109,11 @@
     <!-- Toast shown when there is no app installed that can handle the authenticator setup link -->
     <string name="TotpSetupScreen__no_authenticator_app_found">لم يتم العثور على أي تطبيق مصادقة</string>
     <!-- Dialog message shown when we couldn\'t reach the service to start setting up an authenticator app -->
-    <string name="TotpSetupScreen__couldnt_reach_signal">Couldn\'t reach Signal. Check your connection and try again.</string>
+    <string name="TotpSetupScreen__couldnt_reach_signal">تعذَّر الوصول إلى سيجنال. تحقَّق من اتصالك بالشبكة ثم حاوِل مُجدَّدًا.</string>
     <!-- Header of the third step of authenticator app setup -->
     <string name="TotpSetupScreen__step_3">الخطوة 3</string>
     <!-- Body of the third step of authenticator app setup -->
-    <string name="TotpSetupScreen__copy_the_code_thats_generated">انسخ الرمز الذي تمَّ إنشاؤه وعُد إلى هنا للمواصلة.</string>
+    <string name="TotpSetupScreen__copy_the_code_thats_generated">انسخ الكود الذي تمَّ إنشاؤه وعُد إلى هنا للمواصلة.</string>
     <!-- Button that advances from the setup instructions to entering a code -->
     <string name="TotpSetupScreen__continue">متابعة</string>
 
@@ -155,9 +155,9 @@
     <!-- Button that submits the entered code -->
     <string name="TotpCodeEntryScreen__done">تم</string>
     <!-- Error shown under the code field when the code the user entered was rejected -->
-    <string name="TotpCodeEntryScreen__incorrect_code">Incorrect code. Enter the code showing in your authenticator app now.</string>
+    <string name="TotpCodeEntryScreen__incorrect_code">كود غير صحيح. أدخِل الكود الذي يظهر في تطبيق المصادقة الآن.</string>
     <!-- Error shown under the code field when we couldn\'t reach the service to check the code -->
-    <string name="TotpCodeEntryScreen__couldnt_reach_signal">Couldn\'t reach Signal. Check your connection and try again.</string>
+    <string name="TotpCodeEntryScreen__couldnt_reach_signal">تعذَّر الوصول إلى سيجنال. تحقَّق من اتصالك بالشبكة ثم حاوِل مُجدَّدًا.</string>
     <!-- TotpAppListScreen -->
     <!-- Title of the screen listing the authenticator apps on the account -->
     <string name="TotpAppListScreen__authenticator_app">تطبيق المصادقة</string>
@@ -182,17 +182,17 @@
     <!-- Title of the dialog confirming removal of an authenticator app -->
     <string name="TotpAppListScreen__remove_authenticator_app">هل تريد إزالة تطبيق المصادقة؟</string>
     <!-- Body of the dialog confirming removal of an authenticator app -->
-    <string name="TotpAppListScreen__you_wont_be_able_to_use_this_app">You won\'t be able to use this app for one-time verification codes when you sign in.</string>
+    <string name="TotpAppListScreen__you_wont_be_able_to_use_this_app">لن تتمكَّن من استخدام هذا التطبيق لرموز التحقُّق أحادية الاستخدام عند تسجيل الدخول.</string>
     <!-- Title of the dialog shown when the account already has as many authenticator apps as it\'s allowed -->
     <string name="TotpAppListScreen__cant_add_authenticator_app">تعذَّرت إضافة تطبيق المصادقة</string>
     <!-- Body of the dialog shown when the account already has as many authenticator apps as it\'s allowed -->
     <string name="TotpAppListScreen__you_cant_add_more_than_d">لا يمكنك إضافة أكثر من %1$d من تطبيقات المصادقة. احذف أحد التطبيقات أولًا.</string>
     <!-- Dialog message shown when we couldn\'t work out which authenticator apps are on the account -->
-    <string name="TotpAppListScreen__couldnt_load_authenticator_apps">Couldn\'t load your authenticator apps. Check your connection and try again.</string>
+    <string name="TotpAppListScreen__couldnt_load_authenticator_apps">تعذَّر تحميل تطبيقات المصادقة الخاصة بك. تحقَّق من اتصالك بالشبكة ثم حاوِل مُجدَّدًا.</string>
     <!-- Toast shown after an authenticator app has been removed -->
     <string name="TotpAppListScreen__authenticator_app_removed">تمَّت إزالة تطبيق المصادقة</string>
     <!-- Toast shown when an authenticator app couldn\'t be removed -->
-    <string name="TotpAppListScreen__couldnt_remove_authenticator_app">Couldn\'t remove authenticator app. Check your connection and try again.</string>
+    <string name="TotpAppListScreen__couldnt_remove_authenticator_app">تعذَّر حذف تطبيق المصادقة. تحقَّق من اتصالك بالشبكة ثم حاوِل مُجدَّدًا.</string>
 
     <!-- TotpNameEntryScreen -->
     <!-- Title of the screen where the user names an authenticator app -->
@@ -210,5 +210,5 @@
     <!-- Toast shown after an authenticator app has been renamed -->
     <string name="TotpNameEntryScreen__authenticator_app_renamed">تمَّ تغيير اسم تطبيق المصادقة</string>
     <!-- Toast shown when we couldn\'t reach the service to save the name -->
-    <string name="TotpNameEntryScreen__couldnt_save_name">Couldn\'t save name. Check your connection and try again.</string>
+    <string name="TotpNameEntryScreen__couldnt_save_name">تعذَّر حفظ الاسم. تحقَّق من اتصالك بالشبكة ثم حاوِل مُجدَّدًا.</string>
 </resources>

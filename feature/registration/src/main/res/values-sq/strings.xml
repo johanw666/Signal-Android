@@ -45,7 +45,7 @@
     <string name="RegistrationActivity_select_a_country">Zgjidh shtetin</string>
     <string name="RegistrationActivity_phone_number_description">Numër telefoni</string>
     <!-- Label the phone number field takes on when what has been typed reads as an account ID rather than a number -->
-    <string name="RegistrationActivity_account_id">Account ID</string>
+    <string name="RegistrationActivity_account_id">ID-ja e llogarisë</string>
     <!-- Error shown beneath the phone number field when the entered number is not valid -->
     <string name="RegistrationActivity_not_a_valid_phone_number">Numri i telefonit nuk është i vlefshëm</string>
     <!-- Dialog title shown when the entered phone number is rejected as invalid -->
@@ -247,7 +247,7 @@
     <!-- Title of the dialog shown when the entered recovery key is correct, but the account has no Signal Backup to restore -->
     <string name="EnterAepScreen__no_backup_found">Nuk u gjet asnjë kopjeruajtje</string>
     <!-- Body of the dialog shown when the entered recovery key is correct, but the account has no Signal Backup to restore -->
-    <string name="EnterAepScreen__no_backup_found_body">Your recovery key is correct, but there\'s no Signal Backup for this account. Go back to choose another way to restore, or continue without restoring.</string>
+    <string name="EnterAepScreen__no_backup_found_body">Kodi i rikthimit është i saktë, por nuk ka asnjë kopjeruajtje të Signal për këtë llogari. Kthehu për të zgjedhur një mënyrë tjetër rikthimi ose vazhdo pa e rikthyer.</string>
     <!-- Text shown while preparing the restore -->
     <string name="LocalBackupRestoreScreen__preparing_restore">Po përgatitet rikthimi…</string>
     <!-- Title shown while restore is in progress -->
@@ -614,9 +614,9 @@
 
     <!-- Signal Login purchase screen -->
     <!-- Title of the screen where the user buys a Signal Login to register without a phone number. -->
-    <string name="SignalLoginPaymentScreen__signal_login">Hyrja në Signal</string>
+    <string name="SignalLoginPaymentScreen__signal_login">Signal Login</string>
     <!-- Description of what a Signal Login is. Followed by a "learn more" link. -->
-    <string name="SignalLoginPaymentScreen__register_without_a_phone_number">Regjistrohu pa numër telefoni duke përdorur Hyrjen në Signal. Me një blerje të vetëm një here, do të marrësh një kod llogarie për të filluar.</string>
+    <string name="SignalLoginPaymentScreen__register_without_a_phone_number">Regjistrohu pa numër telefoni duke përdorur Signal Login. Me një blerje të vetëm një here, do të marrësh një kod llogarie për të filluar.</string>
     <!-- Link at the end of the description that opens a support article about Signal Login. -->
     <string name="SignalLoginPaymentScreen__learn_more">Mëso më shumë</string>
     <!-- Subtitle of the purchase option, clarifying the price is not a subscription. -->
@@ -628,7 +628,7 @@
     <!-- Selling point of the purchase option: the purchase supports Signal. -->
     <string name="SignalLoginPaymentScreen__signal_is_a_non_profit">Signal është një organizatë jofitimprurëse — blerja ndihmon në mbështetjen e misionit tonë</string>
     <!-- Title of the option for users who already bought a Signal Login. -->
-    <string name="SignalLoginPaymentScreen__i_have_a_signal_login">Unë kam Hyrje në Signal</string>
+    <string name="SignalLoginPaymentScreen__i_have_a_signal_login">Unë kam Signal Login</string>
     <!-- Subtitle of the existing-login option. -->
     <string name="SignalLoginPaymentScreen__use_your_existing_account_key">Përdor kodin ekzistues të llogarisë</string>
     <!-- Selling point of the existing-login option: the account can be restored. -->
@@ -650,41 +650,41 @@
 
     <!-- Signal Login details screen -->
     <!-- Title of the screen that shows the user their newly purchased Signal Login. -->
-    <string name="SignalLoginInfoScreen__your_signal_login">Hyrja në Signal</string>
+    <string name="SignalLoginInfoScreen__your_signal_login">Signal Login</string>
     <!-- Description warning the user that a lost Signal Login cannot be recovered. -->
-    <string name="SignalLoginInfoScreen__thanks_for_your_purchase">Faleminderit për blerjen. Përdor Hyrjen në Signal për t’u regjistruar dhe për të rikthyer llogarinë. Nëse e harron kodin e rikthimit, pasi nuk do të mund ta rikthesh llogarinë.</string>
+    <string name="SignalLoginInfoScreen__thanks_for_your_purchase">Faleminderit për blerjen. Përdor Signal Login për t’u regjistruar dhe për të rikthyer llogarinë. Nëse harron kodet, nuk do të mund ta rikthesh llogarinë.</string>
     <!-- Action button that stores the Signal Login in the device password manager. -->
     <string name="SignalLoginInfoScreen__save_to_password_manager">Ruaj te menaxheri i fjalëkalimeve</string>
     <!-- Action button for users who would rather write the Signal Login down themselves. -->
     <string name="SignalLoginInfoScreen__save_manually">Ruaj manualisht</string>
     <!-- Error shown when the Signal Login could not be stored in the password manager. -->
-    <string name="SignalLoginInfoScreen__your_signal_login_could_not_be_saved">Hyrja në Signal nuk mund të ruhej. Ruaje manualisht.</string>
+    <string name="SignalLoginInfoScreen__your_signal_login_could_not_be_saved">Signal Login nuk mund të ruhej. Ruaj manualisht.</string>
 
     <!-- Errors shown beneath an account ID text field, wherever one is offered -->
     <!-- Error shown when too many characters were entered in an account ID field. First placeholder is how many were entered, second is the maximum. -->
     <string name="AccountIdField__too_long">Shumë e gjatë. %1$d/%2$d karaktere.</string>
     <!-- Error shown when the entered account ID contains characters that can\'t appear in one. -->
-    <string name="AccountIdField__invalid_account_id">Invalid account ID</string>
+    <string name="AccountIdField__invalid_account_id">ID-ja e llogarisë e pavlefshme</string>
 
     <!-- Signal Login credential entry screen -->
     <!-- Title of the screen where a user with an existing Signal Login types it in to log back in. -->
     <string name="SignalLoginCredentialEntryScreen__signal_login">Signal Login</string>
     <!-- Description telling the user what to enter to log in. -->
-    <string name="SignalLoginCredentialEntryScreen__enter_your_account_id_followed_by_your_recovery_key">Enter your account ID followed by your recovery key to restore your account.</string>
+    <string name="SignalLoginCredentialEntryScreen__enter_your_account_id_followed_by_your_recovery_key">Vendos ID-në e llogarisë, e ndjekur nga kodi i rikthimit, për të rikthyer llogarinë.</string>
     <!-- Label of the text field the account ID is typed into. -->
-    <string name="SignalLoginCredentialEntryScreen__account_id">Account ID</string>
+    <string name="SignalLoginCredentialEntryScreen__account_id">ID-ja e llogarisë</string>
     <!-- Label of the text field the recovery key is typed into. -->
     <string name="SignalLoginCredentialEntryScreen__recovery_key">Kodi i rikthimit</string>
     <!-- Description of the button that spells out the typed recovery key instead of masking it. -->
-    <string name="SignalLoginCredentialEntryScreen__show_recovery_key">Show recovery key</string>
+    <string name="SignalLoginCredentialEntryScreen__show_recovery_key">Shfaq kodin e rikthimit</string>
     <!-- Description of the button that masks the typed recovery key. -->
-    <string name="SignalLoginCredentialEntryScreen__hide_recovery_key">Hide recovery key</string>
+    <string name="SignalLoginCredentialEntryScreen__hide_recovery_key">Fshih kodin e rikthimit</string>
     <!-- Button that opens a support article for users who can\'t find their Signal Login. -->
     <string name="SignalLoginCredentialEntryScreen__need_help">Ju duhet ndihmë?</string>
     <!-- Action button that submits the entered Signal Login. -->
     <string name="SignalLoginCredentialEntryScreen__next">Tjetër</string>
     <!-- Error shown when the service rejects the entered login, which means one of the two halves is wrong. -->
-    <string name="SignalLoginCredentialEntryScreen__incorrect_account_id_or_recovery_key">Incorrect account ID or recovery key</string>
+    <string name="SignalLoginCredentialEntryScreen__incorrect_account_id_or_recovery_key">ID-ja e llogarisë ose kodi i rikthimit është i pasaktë</string>
 
     <!-- Add username screen -->
     <!-- Title of the screen offering the user an optional username. -->
@@ -726,7 +726,7 @@
     <!-- Validation error shown when the number the user entered after their username has too many digits. -->
     <string name="AddUsernameScreen__enter_a_maximum_of_d_digits">Emri i pavlefshëm përdoruesi, vendos miksimumi %1$d shifra.</string>
     <!-- Validation error shown when the number the user entered after their username contains something other than digits. -->
-    <string name="AddUsernameScreen__numbers_can_only_contain_digits">Invalid username, numbers can only contain digits.</string>
+    <string name="AddUsernameScreen__numbers_can_only_contain_digits">Emri i përdoruesit është i pavlefshëm; numrat mund të përmbajnë vetëm shifra.</string>
     <!-- Validation error shown when the number the user entered after their username is 00. -->
     <string name="AddUsernameScreen__this_number_cant_be_00">Numri nuk mund të jetë 00. Vendos një shifër nga 1-9</string>
     <!-- Validation error shown when the number the user entered after their username has a leading zero. -->
@@ -746,7 +746,7 @@
     <!-- Title of the two-factor authentication code entry screen -->
     <string name="TotpEntryScreen__two_factor_authentication">Autentifikimi me dy faktorë</string>
     <!-- Subtitle explaining where to find the code -->
-    <string name="TotpEntryScreen__to_continue_enter_the_code">To continue enter the 6-digit code from your authenticator app.</string>
+    <string name="TotpEntryScreen__to_continue_enter_the_code">Për të vazhduar, vendos kodin 6-shifror nga aplikacioni i autentifikimit.</string>
     <!-- Button text to cancel entering a code -->
     <string name="TotpEntryScreen__cancel">Anulo</string>
 
@@ -754,15 +754,15 @@
     <!-- Title of the two-factor authentication method selection screen -->
     <string name="TwoFactorSelectionScreen__two_factor_authentication">Autentifikimi me dy faktorë</string>
     <!-- Subtitle telling the user to pick one of the methods listed below -->
-    <string name="TwoFactorSelectionScreen__choose_a_method_below">Choose a method below to verify your account.</string>
+    <string name="TwoFactorSelectionScreen__choose_a_method_below">Zgjidh një nga metodat më poshtë për të verifikuar llogarinë.</string>
     <!-- Title of the card for verifying with a passkey -->
-    <string name="TwoFactorSelectionScreen__passkey">Passkey</string>
+    <string name="TwoFactorSelectionScreen__passkey">Çelës kalimi</string>
     <!-- Description of the card for verifying with a passkey -->
-    <string name="TwoFactorSelectionScreen__tap_to_use_your_device_biometrics">Tap to use your device biometrics or FIDO2 passkey</string>
+    <string name="TwoFactorSelectionScreen__tap_to_use_your_device_biometrics">Prek për të përdorur biometrinë e pajisjes ose çelësin e sigurisë FIDO2</string>
     <!-- Title of the card for verifying with a code from an authenticator app -->
     <string name="TwoFactorSelectionScreen__authenticator_app">Aplikacioni i autentifikimit</string>
     <!-- Description of the card for verifying with a code from an authenticator app -->
-    <string name="TwoFactorSelectionScreen__enter_a_one_time_code">Enter a one-time code generated by your authenticator app.</string>
+    <string name="TwoFactorSelectionScreen__enter_a_one_time_code">Vendos kodin njëpërdorimësh të gjeneruar nga aplikacioni i autentifikimit.</string>
     <!-- Button text to cancel two-factor authentication -->
     <string name="TwoFactorSelectionScreen__cancel">Anulo</string>
 </resources>

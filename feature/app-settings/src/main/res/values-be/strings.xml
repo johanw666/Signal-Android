@@ -105,7 +105,7 @@
     <!-- Toast shown when there is no app installed that can handle the authenticator setup link -->
     <string name="TotpSetupScreen__no_authenticator_app_found">Праграма аўтэнтыфікацыі не знойдзена</string>
     <!-- Dialog message shown when we couldn\'t reach the service to start setting up an authenticator app -->
-    <string name="TotpSetupScreen__couldnt_reach_signal">Couldn\'t reach Signal. Check your connection and try again.</string>
+    <string name="TotpSetupScreen__couldnt_reach_signal">Не атрымалася звязацца з Signal. Праверце падключэнне і паўтарыце спробу.</string>
     <!-- Header of the third step of authenticator app setup -->
     <string name="TotpSetupScreen__step_3">Крок 3</string>
     <!-- Body of the third step of authenticator app setup -->
@@ -151,9 +151,9 @@
     <!-- Button that submits the entered code -->
     <string name="TotpCodeEntryScreen__done">Гатова</string>
     <!-- Error shown under the code field when the code the user entered was rejected -->
-    <string name="TotpCodeEntryScreen__incorrect_code">Incorrect code. Enter the code showing in your authenticator app now.</string>
+    <string name="TotpCodeEntryScreen__incorrect_code">Няправільны код. Увядзіце код, што зараз паказаны ў праграме аўтэнтыфікацы.</string>
     <!-- Error shown under the code field when we couldn\'t reach the service to check the code -->
-    <string name="TotpCodeEntryScreen__couldnt_reach_signal">Couldn\'t reach Signal. Check your connection and try again.</string>
+    <string name="TotpCodeEntryScreen__couldnt_reach_signal">Не атрымалася звязацца з Signal. Праверце падключэнне і паўтарыце спробу.</string>
     <!-- TotpAppListScreen -->
     <!-- Title of the screen listing the authenticator apps on the account -->
     <string name="TotpAppListScreen__authenticator_app">Праграма аўтэнтыфікацыі</string>
@@ -178,21 +178,21 @@
     <!-- Title of the dialog confirming removal of an authenticator app -->
     <string name="TotpAppListScreen__remove_authenticator_app">Выдаліць праграму аўтэнтыфікацыі?</string>
     <!-- Body of the dialog confirming removal of an authenticator app -->
-    <string name="TotpAppListScreen__you_wont_be_able_to_use_this_app">You won\'t be able to use this app for one-time verification codes when you sign in.</string>
+    <string name="TotpAppListScreen__you_wont_be_able_to_use_this_app">Вы не зможаце выкарыстоўваць гэту праграму для аднаразовых праверачных кодаў пры ўваходзе ў сістэму.</string>
     <!-- Title of the dialog shown when the account already has as many authenticator apps as it\'s allowed -->
     <string name="TotpAppListScreen__cant_add_authenticator_app">Немагчыма дадаць праграму аўтэнтыфікацыі</string>
     <!-- Body of the dialog shown when the account already has as many authenticator apps as it\'s allowed -->
     <string name="TotpAppListScreen__you_cant_add_more_than_d">Вы не можаце дадаць больш за %1$d праграм аўтэнтыфікацыі. Паспрабуйце спачатку выдаліць адну.</string>
     <!-- Dialog message shown when we couldn\'t work out which authenticator apps are on the account -->
-    <string name="TotpAppListScreen__couldnt_load_authenticator_apps">Couldn\'t load your authenticator apps. Check your connection and try again.</string>
+    <string name="TotpAppListScreen__couldnt_load_authenticator_apps">Не атрымалася загрузіць вашыя праграмы аўтэнтыфікацыі. Праверце падключэнне і паўтарыце спробу.</string>
     <!-- Toast shown after an authenticator app has been removed -->
     <string name="TotpAppListScreen__authenticator_app_removed">Праграма аўтэнтыфікацыі выдалена</string>
     <!-- Toast shown when an authenticator app couldn\'t be removed -->
-    <string name="TotpAppListScreen__couldnt_remove_authenticator_app">Couldn\'t remove authenticator app. Check your connection and try again.</string>
+    <string name="TotpAppListScreen__couldnt_remove_authenticator_app">Не атрымалася выдаліць праграму аўтэнтыфікацыі. Праверце падключэнне і паўтарыце спробу.</string>
 
     <!-- TotpNameEntryScreen -->
     <!-- Title of the screen where the user names an authenticator app -->
-    <string name="TotpNameEntryScreen__choose_a_name">Выбраць назву</string>
+    <string name="TotpNameEntryScreen__choose_a_name">Выберыце назву</string>
     <!-- Instructions shown above the name field when renaming an authenticator app -->
     <string name="TotpNameEntryScreen__choose_a_unique_name">Выберыце ўнікальную назву для гэтай праграмы аўтэнтыфікацыі.</string>
     <!-- Instructions shown above the name field when naming a newly configured authenticator app -->
@@ -206,5 +206,5 @@
     <!-- Toast shown after an authenticator app has been renamed -->
     <string name="TotpNameEntryScreen__authenticator_app_renamed">Праграма аўтэнтыфікацыі перайменавана</string>
     <!-- Toast shown when we couldn\'t reach the service to save the name -->
-    <string name="TotpNameEntryScreen__couldnt_save_name">Couldn\'t save name. Check your connection and try again.</string>
+    <string name="TotpNameEntryScreen__couldnt_save_name">Не атрымалася захаваць імя. Праверце падключэнне і паўтарыце спробу.</string>
 </resources>

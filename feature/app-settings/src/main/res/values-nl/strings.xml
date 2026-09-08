@@ -49,7 +49,7 @@
     <!-- Title of the card that opens the user\'s Signal Login account and recovery keys -->
     <string name="AccountSettingsFragment__account_and_recovery">Account en herstel</string>
     <!-- Description of what a Signal Login is, shown below the Signal Login card -->
-    <string name="AccountSettingsFragment__your_signal_login_is_used_to_recover">Je Signal Login wordt gebruikt om je account te idenfiticeren en te herstellen. Bewaar deze sleutels veilig in een wachtwoordmanager die je vertrouwt.</string>
+    <string name="AccountSettingsFragment__your_signal_login_is_used_to_recover">Je Signal Login wordt gebruikt om je account te identificeren en te herstellen. Bewaar deze sleutels veilig in een wachtwoordmanager die je vertrouwt.</string>
     <!-- Section header for the two-factor authentication section of account settings -->
     <string name="AccountSettingsFragment__two_factor_authentication">Tweefactorauthenticatie</string>
     <!-- Account setting that takes the user to the authenticator app setup flow -->
@@ -101,7 +101,7 @@
     <!-- Toast shown when there is no app installed that can handle the authenticator setup link -->
     <string name="TotpSetupScreen__no_authenticator_app_found">Geen authenticatie-app gevonden</string>
     <!-- Dialog message shown when we couldn\'t reach the service to start setting up an authenticator app -->
-    <string name="TotpSetupScreen__couldnt_reach_signal">Couldn\'t reach Signal. Check your connection and try again.</string>
+    <string name="TotpSetupScreen__couldnt_reach_signal">Kan geen verbinding maken met Signal. Controleer je internetverbinding en probeer het opnieuw.</string>
     <!-- Header of the third step of authenticator app setup -->
     <string name="TotpSetupScreen__step_3">Stap 3</string>
     <!-- Body of the third step of authenticator app setup -->
@@ -147,9 +147,9 @@
     <!-- Button that submits the entered code -->
     <string name="TotpCodeEntryScreen__done">Klaar</string>
     <!-- Error shown under the code field when the code the user entered was rejected -->
-    <string name="TotpCodeEntryScreen__incorrect_code">Incorrect code. Enter the code showing in your authenticator app now.</string>
+    <string name="TotpCodeEntryScreen__incorrect_code">Onjuiste code. Voer de code in die nu in je authenticatie-app wordt weergegeven.</string>
     <!-- Error shown under the code field when we couldn\'t reach the service to check the code -->
-    <string name="TotpCodeEntryScreen__couldnt_reach_signal">Couldn\'t reach Signal. Check your connection and try again.</string>
+    <string name="TotpCodeEntryScreen__couldnt_reach_signal">Kan geen verbinding maken met Signal. Controleer je internetverbinding en probeer het opnieuw.</string>
     <!-- TotpAppListScreen -->
     <!-- Title of the screen listing the authenticator apps on the account -->
     <string name="TotpAppListScreen__authenticator_app">Authenticatie-app</string>
@@ -174,17 +174,17 @@
     <!-- Title of the dialog confirming removal of an authenticator app -->
     <string name="TotpAppListScreen__remove_authenticator_app">Authenticatie-app verwijderen?</string>
     <!-- Body of the dialog confirming removal of an authenticator app -->
-    <string name="TotpAppListScreen__you_wont_be_able_to_use_this_app">You won\'t be able to use this app for one-time verification codes when you sign in.</string>
+    <string name="TotpAppListScreen__you_wont_be_able_to_use_this_app">Je kunt deze app niet langer gebruiken voor eenmalige verificatiecodes wanneer je inlogt.</string>
     <!-- Title of the dialog shown when the account already has as many authenticator apps as it\'s allowed -->
     <string name="TotpAppListScreen__cant_add_authenticator_app">Authenticatie-app kan niet worden toegevoegd</string>
     <!-- Body of the dialog shown when the account already has as many authenticator apps as it\'s allowed -->
     <string name="TotpAppListScreen__you_cant_add_more_than_d">Je kunt niet meer dan %1$d authenticatie-apps toevoegen. Probeer eerst een app te verwijderen.</string>
     <!-- Dialog message shown when we couldn\'t work out which authenticator apps are on the account -->
-    <string name="TotpAppListScreen__couldnt_load_authenticator_apps">Couldn\'t load your authenticator apps. Check your connection and try again.</string>
+    <string name="TotpAppListScreen__couldnt_load_authenticator_apps">Je authenticatie-apps konden niet worden geladen. Controleer je internetverbinding en probeer het opnieuw.</string>
     <!-- Toast shown after an authenticator app has been removed -->
     <string name="TotpAppListScreen__authenticator_app_removed">Authenticatie-app verwijderd</string>
     <!-- Toast shown when an authenticator app couldn\'t be removed -->
-    <string name="TotpAppListScreen__couldnt_remove_authenticator_app">Couldn\'t remove authenticator app. Check your connection and try again.</string>
+    <string name="TotpAppListScreen__couldnt_remove_authenticator_app">Je authenticatie-app kon niet worden verwijderd. Controleer je internetverbinding en probeer het opnieuw.</string>
 
     <!-- TotpNameEntryScreen -->
     <!-- Title of the screen where the user names an authenticator app -->
@@ -194,7 +194,7 @@
     <!-- Instructions shown above the name field when naming a newly configured authenticator app -->
     <string name="TotpNameEntryScreen__choose_a_unique_name_to_help_you_identify_it">Geef de authenticatie-app een unieke naam, zodat je deze gemakkelijk kunt herkennen.</string>
     <!-- Label of the name field -->
-    <string name="TotpNameEntryScreen__name">Profielnaam</string>
+    <string name="TotpNameEntryScreen__name">Naam</string>
     <!-- Button that submits the entered name -->
     <string name="TotpNameEntryScreen__next">Volgende</string>
     <!-- Toast shown after an authenticator app has been successfully set up -->
@@ -202,5 +202,5 @@
     <!-- Toast shown after an authenticator app has been renamed -->
     <string name="TotpNameEntryScreen__authenticator_app_renamed">Naam authenticatie-app gewijzigd</string>
     <!-- Toast shown when we couldn\'t reach the service to save the name -->
-    <string name="TotpNameEntryScreen__couldnt_save_name">Couldn\'t save name. Check your connection and try again.</string>
+    <string name="TotpNameEntryScreen__couldnt_save_name">Naam kon niet worden opgeslagen. Controleer je internetverbinding en probeer het opnieuw.</string>
 </resources>

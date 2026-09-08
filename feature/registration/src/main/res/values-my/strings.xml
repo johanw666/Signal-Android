@@ -45,7 +45,7 @@
     <string name="RegistrationActivity_select_a_country">နိုင်ငံတစ်ခုကို ရွေးပါ</string>
     <string name="RegistrationActivity_phone_number_description">ဖုန်းနံပါတ်</string>
     <!-- Label the phone number field takes on when what has been typed reads as an account ID rather than a number -->
-    <string name="RegistrationActivity_account_id">Account ID</string>
+    <string name="RegistrationActivity_account_id">အကောင့် ID</string>
     <!-- Error shown beneath the phone number field when the entered number is not valid -->
     <string name="RegistrationActivity_not_a_valid_phone_number">ဖုန်းနံပါတ် မမှန်ကန်ပါ</string>
     <!-- Dialog title shown when the entered phone number is rejected as invalid -->
@@ -247,7 +247,7 @@
     <!-- Title of the dialog shown when the entered recovery key is correct, but the account has no Signal Backup to restore -->
     <string name="EnterAepScreen__no_backup_found">ဘက်ခ်အပ်မတွေ့ပါ</string>
     <!-- Body of the dialog shown when the entered recovery key is correct, but the account has no Signal Backup to restore -->
-    <string name="EnterAepScreen__no_backup_found_body">Your recovery key is correct, but there\'s no Signal Backup for this account. Go back to choose another way to restore, or continue without restoring.</string>
+    <string name="EnterAepScreen__no_backup_found_body">သင့် ပြန်လည်ရယူရေးကီး မှန်ကန်ပါသည် သို့သော် ဤအကောင့်အတွက် Signal ဘက်ခ်အပ်မရှိပါ။ ပြန်လည်ရယူရန် အခြားနည်းလမ်းတစ်ခုကို ရွေးချယ်ရန် နောက်သို့ပြန်သွားပါ သို့မဟုတ် ပြန်လည်ရယူခြင်းမပြုဘဲ ဆက်လက်လုပ်ဆောင်ပါ။</string>
     <!-- Text shown while preparing the restore -->
     <string name="LocalBackupRestoreScreen__preparing_restore">ပြန်လည်ရယူရန် ပြင်ဆင်နေသည်…</string>
     <!-- Title shown while restore is in progress -->
@@ -612,9 +612,9 @@
 
     <!-- Signal Login purchase screen -->
     <!-- Title of the screen where the user buys a Signal Login to register without a phone number. -->
-    <string name="SignalLoginPaymentScreen__signal_login">Signal လော့ဂ်အင်</string>
+    <string name="SignalLoginPaymentScreen__signal_login">Signal Login</string>
     <!-- Description of what a Signal Login is. Followed by a "learn more" link. -->
-    <string name="SignalLoginPaymentScreen__register_without_a_phone_number">Signal လော့ဂ်အင်ကို အသုံးပြု၍ ဖုန်းနံပါတ်မပါဘဲ မှတ်ပုံတင်ပါ။ တစ်ကြိမ်သာ ဝယ်ယူပြီးသည်နှင့် စတင်အသုံးပြုရန် အကောင့်ကီးတစ်ခု ရရှိပါမည်။</string>
+    <string name="SignalLoginPaymentScreen__register_without_a_phone_number">Signal Login ကို အသုံးပြု၍ ဖုန်းနံပါတ်မပါဘဲ မှတ်ပုံတင်ပါ။ တစ်ကြိမ်စာ ဝယ်ယူပြီးသည်နှင့် စတင်အသုံးပြုရန် အကောင့်ကီးတစ်ခု ရရှိပါမည်။</string>
     <!-- Link at the end of the description that opens a support article about Signal Login. -->
     <string name="SignalLoginPaymentScreen__learn_more">ပိုမိုလေ့လာရန်</string>
     <!-- Subtitle of the purchase option, clarifying the price is not a subscription. -->
@@ -626,7 +626,7 @@
     <!-- Selling point of the purchase option: the purchase supports Signal. -->
     <string name="SignalLoginPaymentScreen__signal_is_a_non_profit">Signal သည် အကျိုးအမြတ်မယူသည့် အဖွဲ့အစည်းဖြစ်သည်— သင့်ဝယ်ယူမှုသည် ကျွန်ုပ်တို့၏ ရည်မှန်းချက်ကို အထောက်အကူပြုပါသည်</string>
     <!-- Title of the option for users who already bought a Signal Login. -->
-    <string name="SignalLoginPaymentScreen__i_have_a_signal_login">ကျွန်ုပ်တွင် Signal လော့ဂ်အင်ရှိပါသည်</string>
+    <string name="SignalLoginPaymentScreen__i_have_a_signal_login">ကျွန်ုပ်တွင် Signal Login ရှိပါသည်</string>
     <!-- Subtitle of the existing-login option. -->
     <string name="SignalLoginPaymentScreen__use_your_existing_account_key">ရှိပြီးသား အကောင့်ကီးကို အသုံးပြုရန်</string>
     <!-- Selling point of the existing-login option: the account can be restored. -->
@@ -648,41 +648,41 @@
 
     <!-- Signal Login details screen -->
     <!-- Title of the screen that shows the user their newly purchased Signal Login. -->
-    <string name="SignalLoginInfoScreen__your_signal_login">သင့် Signal လော့ဂ်အင်</string>
+    <string name="SignalLoginInfoScreen__your_signal_login">သင့် Signal Login</string>
     <!-- Description warning the user that a lost Signal Login cannot be recovered. -->
-    <string name="SignalLoginInfoScreen__thanks_for_your_purchase">ဝယ်ယူပေးသည့်အတွက် ကျေးဇူးတင်ပါသည်။ သင့် Signal လော့ဂ်အင်ကို အသုံးပြု၍ အကောင့်ကို မှတ်ပုံတင်ပြီး ပြန်လည်ရယူပါ။ သင့်ကီးကို မေ့သွားပါက သင့်အကောင့်ကို ပြန်လည်ရယူနိုင်မည်မဟုတ်ပါ။</string>
+    <string name="SignalLoginInfoScreen__thanks_for_your_purchase">ဝယ်ယူသည့်အတွက် ကျေးဇူးတင်ပါသည်။ သင့် Signal Login ကို အသုံးပြု၍ အကောင့်ကို မှတ်ပုံတင်ပြီး ပြန်လည်ရယူပါ။ သင့်ကီးကို မေ့သွားပါက သင့်အကောင့်ကို ပြန်လည်ရယူနိုင်မည်မဟုတ်ပါ။</string>
     <!-- Action button that stores the Signal Login in the device password manager. -->
     <string name="SignalLoginInfoScreen__save_to_password_manager">စကားဝှက်စီမံရေးတွင် သိမ်းဆည်းပါ</string>
     <!-- Action button for users who would rather write the Signal Login down themselves. -->
     <string name="SignalLoginInfoScreen__save_manually">ကိုယ်တိုင် သိမ်းဆည်းပါ</string>
     <!-- Error shown when the Signal Login could not be stored in the password manager. -->
-    <string name="SignalLoginInfoScreen__your_signal_login_could_not_be_saved">သင့် Signal လော့ဂ်အင်ကို သိမ်းဆည်း၍ မရပါ။ ထိုအစား ကိုယ်တိုင် သိမ်းဆည်းပါ။</string>
+    <string name="SignalLoginInfoScreen__your_signal_login_could_not_be_saved">သင့် Signal Login ကို သိမ်းဆည်း၍ မရပါ။ ကိုယ်တိုင် သိမ်းဆည်းပါ။</string>
 
     <!-- Errors shown beneath an account ID text field, wherever one is offered -->
     <!-- Error shown when too many characters were entered in an account ID field. First placeholder is how many were entered, second is the maximum. -->
     <string name="AccountIdField__too_long">ရှည်လွန်းပါသည်။ အက္ခရာ %1$d/%2$d လုံး။</string>
     <!-- Error shown when the entered account ID contains characters that can\'t appear in one. -->
-    <string name="AccountIdField__invalid_account_id">Invalid account ID</string>
+    <string name="AccountIdField__invalid_account_id">အကောင့် ID မမှန်ကန်ပါ</string>
 
     <!-- Signal Login credential entry screen -->
     <!-- Title of the screen where a user with an existing Signal Login types it in to log back in. -->
     <string name="SignalLoginCredentialEntryScreen__signal_login">Signal Login</string>
     <!-- Description telling the user what to enter to log in. -->
-    <string name="SignalLoginCredentialEntryScreen__enter_your_account_id_followed_by_your_recovery_key">Enter your account ID followed by your recovery key to restore your account.</string>
+    <string name="SignalLoginCredentialEntryScreen__enter_your_account_id_followed_by_your_recovery_key">သင့်အကောင့်ကို ပြန်လည်ရယူရန် သင့်အကောင့် ID ကိုထည့်သွင်းပြီး ယင်းနောက်တွင် ပြန်လည်ရယူရေးကီးကို ထည့်ပါ။</string>
     <!-- Label of the text field the account ID is typed into. -->
-    <string name="SignalLoginCredentialEntryScreen__account_id">Account ID</string>
+    <string name="SignalLoginCredentialEntryScreen__account_id">အကောင့် ID</string>
     <!-- Label of the text field the recovery key is typed into. -->
     <string name="SignalLoginCredentialEntryScreen__recovery_key">ပြန်လည်ရယူရေးကီး</string>
     <!-- Description of the button that spells out the typed recovery key instead of masking it. -->
-    <string name="SignalLoginCredentialEntryScreen__show_recovery_key">Show recovery key</string>
+    <string name="SignalLoginCredentialEntryScreen__show_recovery_key">ပြန်လည်ရယူရေးကီးကို ပြရန်</string>
     <!-- Description of the button that masks the typed recovery key. -->
-    <string name="SignalLoginCredentialEntryScreen__hide_recovery_key">Hide recovery key</string>
+    <string name="SignalLoginCredentialEntryScreen__hide_recovery_key">ပြန်လည်ရယူရေးကီးကို ဖျောက်ရန်</string>
     <!-- Button that opens a support article for users who can\'t find their Signal Login. -->
     <string name="SignalLoginCredentialEntryScreen__need_help">အကူအညီ လိုအပ်ပါသလား?</string>
     <!-- Action button that submits the entered Signal Login. -->
     <string name="SignalLoginCredentialEntryScreen__next">ဆက်သွားမည်</string>
     <!-- Error shown when the service rejects the entered login, which means one of the two halves is wrong. -->
-    <string name="SignalLoginCredentialEntryScreen__incorrect_account_id_or_recovery_key">Incorrect account ID or recovery key</string>
+    <string name="SignalLoginCredentialEntryScreen__incorrect_account_id_or_recovery_key">အကောင့် ID သို့မဟုတ် ပြန်လည်ရယူရေးကီး မှားယွင်းနေပါသည်</string>
 
     <!-- Add username screen -->
     <!-- Title of the screen offering the user an optional username. -->
@@ -724,9 +724,9 @@
     <!-- Validation error shown when the number the user entered after their username has too many digits. -->
     <string name="AddUsernameScreen__enter_a_maximum_of_d_digits">သုံးစွဲသူအမည် မမှန်ကန်ပါ၊ အများဆုံး ဂဏန်း %1$d လုံး ရိုက်ထည့်ပါ။</string>
     <!-- Validation error shown when the number the user entered after their username contains something other than digits. -->
-    <string name="AddUsernameScreen__numbers_can_only_contain_digits">Invalid username, numbers can only contain digits.</string>
+    <string name="AddUsernameScreen__numbers_can_only_contain_digits">အသုံးပြုသူအမည် မမှန်ကန်ပါ၊ နံပါတ်များတွင် ဂဏန်းများသာ ထည့်နိုင်ပါသည်။</string>
     <!-- Validation error shown when the number the user entered after their username is 00. -->
-    <string name="AddUsernameScreen__this_number_cant_be_00">ဤနံပါတ်သည် 00 ဖြစ်၍မရပါ။ 1–9 အကြား ကိန်းဂဏန်းတစ်ခု ရိုက်ထည့်ပါ</string>
+    <string name="AddUsernameScreen__this_number_cant_be_00">ဤနံပါတ်သည် 00 ဖြစ်၍မရပါ။ 1–9 ကြား ကိန်းဂဏန်းတစ်ခု ရိုက်ထည့်ပါ</string>
     <!-- Validation error shown when the number the user entered after their username has a leading zero. -->
     <string name="AddUsernameScreen__this_number_cant_start_with_0">ဂဏန်း 2 လုံးအထက် ကိန်းဂဏန်းများသည် 0 ဖြင့် စ၍မရပါ</string>
 
@@ -744,7 +744,7 @@
     <!-- Title of the two-factor authentication code entry screen -->
     <string name="TotpEntryScreen__two_factor_authentication">နှစ်ဆင့် အတည်ပြုခြင်း</string>
     <!-- Subtitle explaining where to find the code -->
-    <string name="TotpEntryScreen__to_continue_enter_the_code">To continue enter the 6-digit code from your authenticator app.</string>
+    <string name="TotpEntryScreen__to_continue_enter_the_code">ဆက်လက်လုပ်ဆောင်ရန် သင့်အတည်ပြုကုဒ်ထုတ်ပေးသည့် အက်ပ်မှ ဂဏန်း 6 လုံးပါ ကုဒ်ကို ထည့်ပါ။</string>
     <!-- Button text to cancel entering a code -->
     <string name="TotpEntryScreen__cancel">မလုပ်တော့ပါ</string>
 
@@ -752,15 +752,15 @@
     <!-- Title of the two-factor authentication method selection screen -->
     <string name="TwoFactorSelectionScreen__two_factor_authentication">နှစ်ဆင့် အတည်ပြုခြင်း</string>
     <!-- Subtitle telling the user to pick one of the methods listed below -->
-    <string name="TwoFactorSelectionScreen__choose_a_method_below">Choose a method below to verify your account.</string>
+    <string name="TwoFactorSelectionScreen__choose_a_method_below">အောက်ပါနည်းလမ်းများထဲမှ တစ်ခုကို ရွေးပြီး သင့်အကောင့်ကို အတည်ပြုပါ။</string>
     <!-- Title of the card for verifying with a passkey -->
     <string name="TwoFactorSelectionScreen__passkey">Passkey</string>
     <!-- Description of the card for verifying with a passkey -->
-    <string name="TwoFactorSelectionScreen__tap_to_use_your_device_biometrics">Tap to use your device biometrics or FIDO2 passkey</string>
+    <string name="TwoFactorSelectionScreen__tap_to_use_your_device_biometrics">သင့်စက်၏ ဇီဝအထောက်အထားစိစစ်မှု သို့မဟုတ် FIDO2 Passkey ကို အသုံးပြုရန် နှိပ်ပါ</string>
     <!-- Title of the card for verifying with a code from an authenticator app -->
     <string name="TwoFactorSelectionScreen__authenticator_app">အတည်ပြုကုဒ်ထုတ်ပေးသည့် အက်ပ်</string>
     <!-- Description of the card for verifying with a code from an authenticator app -->
-    <string name="TwoFactorSelectionScreen__enter_a_one_time_code">Enter a one-time code generated by your authenticator app.</string>
+    <string name="TwoFactorSelectionScreen__enter_a_one_time_code">သင့်အတည်ပြုကုဒ်ထုတ်ပေးသည့် အက်ပ်မှ ထုတ်ပေးသော တစ်ကြိမ်သုံးကုဒ်ကို ထည့်ပါ။</string>
     <!-- Button text to cancel two-factor authentication -->
     <string name="TwoFactorSelectionScreen__cancel">မလုပ်တော့ပါ</string>
 </resources>

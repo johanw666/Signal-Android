@@ -3167,7 +3167,7 @@
     <!-- Subtitle in a dialog that describes the timezone the user is picking times in. The first placeholder is a UTC offset, and the second placeholder is a user-friendly name for the timezone, e.g. "All times in (GMT-05:00) Eastern Standard Time" -->
     <string name="MuteUntilTimePickerBottomSheet__timezone_disclaimer">ពេលវេលាទាំងអស់ជា (%1$s) %2$s</string>
     <!-- Toast shown when choosing an invalid date to mute until (eg a date in the past) -->
-    <string name="MuteUntilTimePickerBottomSheet__invalid">Invalid time</string>
+    <string name="MuteUntilTimePickerBottomSheet__invalid">ពេលវេលាមិនត្រឹមត្រូវ</string>
 
     <!-- KeyCachingService -->
     <string name="KeyCachingService_signal_passphrase_cached">ចុច ដើម្បីបើក។</string>
@@ -5780,7 +5780,7 @@
     <string name="NotificationsSettingsFragment__calls">ការហៅ</string>
     <!-- Notification header for sounds -->
     <string name="NotificationsSettingsFragment__sounds">សំឡេង</string>
-    <string name="NotificationsSettingsFragment__contact_joins_signal">លេខទំនាក់ទំនងដែលបានចូលរួមជាមួយ Signal</string>
+    <string name="NotificationsSettingsFragment__contact_joins_signal">ទំនាក់ទំនងបានចូលរួមជាមួយ Signal</string>
     <!-- Notification body to get notified when someone joins Signal -->
     <string name="NotificationsSettingsFragment__notify_contact">បង្ហាញការជូនដំណឹងនៅពេលដែលទំនាក់ទំនងតាមទូរសព្ទចូលរួមប្រើ Signal</string>
     <!-- Option to reset their notification settings -->
@@ -9750,26 +9750,14 @@
     <!-- Button declining to paste the recovery key -->
     <string name="RecoveryKeyWarningDialog__dont_share">កុំចែករំលែក</string>
 
-    <!-- Notification body for unread reminders. First two placeholders are the number of unread messages and calls, last two are the summaries for mentions and replies -->
-    <string name="UnreadReminderJob__calls_and_unread_full_summary">You have %1$s and %2$s including %3$s and %4$s.</string>
-    <!-- Notification body for unread reminders. First two placeholders are the number of unread messages and calls, third is a summary of mentions or replies -->
-    <string name="UnreadReminderJob__calls_and_unread_summary">You have %1$s and %2$s including %3$s.</string>
-    <!-- Notification body for unread reminders. First two placeholders are the number of unread messages and calls, third is a list of recipients who sent them -->
-    <string name="UnreadReminderJob__calls_and_unread_author">You have %1$s and %2$s from %3$s.</string>
     <!-- Notification body for unread reminders. First placeholder is unread messages, second is a summary of unread mentions or replies -->
-    <string name="UnreadReminderJob__unread_one_summary">You have %1$s, including %2$s.</string>
+    <string name="UnreadReminderJob__unread_one_summary">អ្នកមាន %1$s រួមទាំង %2$s។</string>
     <!-- Notification body for unread reminders. First placeholder is unread messages, second is a summary of unread mentions, third replies -->
-    <string name="UnreadReminderJob__unread_both_summary">You have %1$s, including %2$s and %3$s.</string>
+    <string name="UnreadReminderJob__unread_both_summary">អ្នកមាន %1$s រួមទាំង %2$s និង %3$s។</string>
     <!-- Notification body for unread reminders. First placeholder is unread messages, second is a list of people who sent them -->
-    <string name="UnreadReminderJob__calls_or_unread_author">You have %1$s from %2$s.</string>
-    <!-- Notification body for unread reminders. First placeholder is unread messages or unread calls -->
-    <string name="UnreadReminderJob__calls_or_unread">You have %1$s.</string>
-    <!-- Notification body for unread reminders. First placeholder is unread messages, second is unread calls. -->
-    <string name="UnreadReminderJob__calls_and_unread">You have %1$s and %2$s.</string>
-    <!-- Notification placeholder for unread calls -->
-    <plurals name="UnreadReminderJob__calls">
-        <item quantity="other">%1$d missed calls</item>
-    </plurals>
+    <string name="UnreadReminderJob__calls_or_unread_author">អ្នកមាន %1$s ពី %2$s។</string>
+    <!-- Notification body for unread reminders. First placeholder is unread messages -->
+    <string name="UnreadReminderJob__calls_or_unread">អ្នកមាន %1$s។</string>
     <!-- Notification placeholder for unread messages -->
     <plurals name="UnreadReminderJob__messages">
         <item quantity="other">%1$d សារមិនទាន់អាន</item>
@@ -9779,39 +9767,39 @@
     <!-- Notification placeholder for two recipients who sent unread messages -->
     <string name="UnreadReminderJob__authors_two">%1$s និង %2$s</string>
     <!-- Notification placeholder for three or more recipients who sent unread messages -->
-    <string name="UnreadReminderJob__authors_many">%1$s and others</string>
+    <string name="UnreadReminderJob__authors_many">%1$s និងអ្នកផ្សេងទៀត</string>
     <!-- Notification placeholder that sums up a single unread mention. Placeholder is the name of the person who sent the message -->
-    <string name="UnreadReminderJob__mentions_one">a mention of you by %1$s</string>
+    <string name="UnreadReminderJob__mentions_one">មានការលើកឡើងអំពីអ្នកដោយ %1$s</string>
     <!-- Notification placeholder that sums up unread mentions from two people. First placeholder is the number of mentions, second and third are the names of the people who sent them -->
     <plurals name="UnreadReminderJob__mentions_two">
-        <item quantity="other">%1$d mentions of you by %2$s and %3$s</item>
+        <item quantity="other">មានការលើកឡើងអំពីអ្នក %1$d ដងដោយ %2$s និង %3$s</item>
     </plurals>
     <!-- Notification placeholder that sums up unread mentions from three or more people. First placeholder is the number of mentions, second is the name of one person who sent them -->
     <plurals name="UnreadReminderJob__mentions_many">
-        <item quantity="other">%1$d mentions of you by %2$s and others</item>
+        <item quantity="other">មានការលើកឡើងអំពីអ្នក %1$d ដងដោយ %2$s និងអ្នកផ្សេងទៀត</item>
     </plurals>
     <!-- Notification placeholder that sums up a single unread reply. Placeholder is the name of the person who sent the message -->
-    <string name="UnreadReminderJob__replies_one">a reply from %1$s</string>
+    <string name="UnreadReminderJob__replies_one">ការឆ្លើយតបមួយពី %1$s</string>
     <!-- Notification placeholder that sums up unread replies from two people. First placeholder is the number of replies, second and third are the names of the people who sent them -->
     <plurals name="UnreadReminderJob__replies_two">
-        <item quantity="other">%1$d replies from %2$s and %3$s</item>
+        <item quantity="other">ការឆ្លើយតប %1$d ពី %2$s និង %3$s</item>
     </plurals>
     <!-- Notification placeholder that sums up unread replies from three or more people. First placeholder is the number of replies, second is the name of one person who sent them -->
     <plurals name="UnreadReminderJob__replies_many">
-        <item quantity="other">%1$d replies from %2$s and others</item>
+        <item quantity="other">ការឆ្លើយតប %1$d ពី %2$s និងអ្នកផ្សេងទៀត</item>
     </plurals>
 
     <!-- Title of the screen where the user chooses which parts of a contact to share -->
-    <string name="ShareContactScreen__share_contact">Share contact</string>
+    <string name="ShareContactScreen__share_contact">ចែករំលែកទំនាក់ទំនង</string>
 
     <!-- Label beneath the company name of the contact being shared -->
-    <string name="ShareContactScreen__company">Company</string>
+    <string name="ShareContactScreen__company">ក្រុមហ៊ុន</string>
     <!-- Label beneath a shared nickname value -->
     <string name="ShareContactScreen__nickname">ឈ្មោះហៅក្រៅ</string>
     <!-- Label beneath a shared note value -->
     <string name="ShareContactScreen__notes">កំណត់ចំណាំ</string>
     <!-- Title of the sheet where the user picks which photo to share -->
-    <string name="ShareContactScreen__select_a_photo_to_share">Select a photo to share</string>
+    <string name="ShareContactScreen__select_a_photo_to_share">ជ្រើសរើសរូបថតដើម្បីចែករំលែក</string>
     <!-- Button that confirms the chosen photo and closes the photo picker sheet -->
     <string name="ShareContactScreen__done">រួចរាល់</string>
     <!-- Accessibility label for the button that sends the contact card -->
@@ -9836,23 +9824,23 @@
     <!-- Context menu entry that starts an audio call -->
     <string name="SharedContactDetailsScreen__audio_call">ការហៅជាសំឡេង</string>
     <!-- Context menu entry that opens a shared postal address in a map app -->
-    <string name="SharedContactDetailsScreen__open_in_maps">Open in Maps</string>
+    <string name="SharedContactDetailsScreen__open_in_maps">បើកនៅក្នុងផែនទី</string>
     <!-- Context menu entry that copies a shared contact detail to the clipboard -->
     <string name="SharedContactDetailsScreen__copy">ចម្លង</string>
     <!-- Row that invites a shared contact who is not yet on Signal -->
     <string name="SharedContactDetailsScreen__invite_to_signal">អញ្ជើញចូលប្រើSignal</string>
     <!-- Row that saves a shared contact into the device address book -->
-    <string name="SharedContactDetailsScreen__add_to_phone_contacts">Add to phone contacts</string>
+    <string name="SharedContactDetailsScreen__add_to_phone_contacts">បញ្ចូលទៅក្នុងបញ្ជីទំនាក់ទំនងទូរសព្ទ</string>
     <!-- Row that adds a shared contact to a Signal group -->
     <string name="SharedContactDetailsScreen__add_to_a_group">បន្ថែមទៅក្រុមមួយ</string>
     <!-- Toast shown after copying a shared contact detail -->
-    <string name="SharedContactDetailsScreen__copied">Copied</string>
+    <string name="SharedContactDetailsScreen__copied">បានចម្លង</string>
     <!-- Toast shown when there is no contacts app to save a shared contact into -->
-    <string name="SharedContactDetailsScreen__couldnt_open_contacts">Couldn\'t open Contacts</string>
+    <string name="SharedContactDetailsScreen__couldnt_open_contacts">មិនអាចបើកទំនាក់ទំនងបានទេ</string>
     <!-- Toast shown when there is no map app to open a shared address in -->
-    <string name="SharedContactDetailsScreen__couldnt_open_maps">Couldn\'t open maps</string>
+    <string name="SharedContactDetailsScreen__couldnt_open_maps">មិនអាចបើកផែនទីបានទេ</string>
     <!-- Subject line of an email invitation to Signal -->
-    <string name="SharedContactDetailsScreen__join_me_on_signal">Join me on Signal</string>
+    <string name="SharedContactDetailsScreen__join_me_on_signal">ចូលរួមជាមួយខ្ញុំនៅលើ Signal</string>
 
     <!-- EOF -->
 </resources>

@@ -45,7 +45,7 @@
     <string name="RegistrationActivity_select_a_country">ជ្រើសរើសប្រទេសមួយ</string>
     <string name="RegistrationActivity_phone_number_description">លេខទូរសព្ទ</string>
     <!-- Label the phone number field takes on when what has been typed reads as an account ID rather than a number -->
-    <string name="RegistrationActivity_account_id">Account ID</string>
+    <string name="RegistrationActivity_account_id">លេខសម្គាល់គណនី</string>
     <!-- Error shown beneath the phone number field when the entered number is not valid -->
     <string name="RegistrationActivity_not_a_valid_phone_number">មិនមែនជាលេខទូរសព្ទដែលត្រឹមត្រូវទេ</string>
     <!-- Dialog title shown when the entered phone number is rejected as invalid -->
@@ -247,7 +247,7 @@
     <!-- Title of the dialog shown when the entered recovery key is correct, but the account has no Signal Backup to restore -->
     <string name="EnterAepScreen__no_backup_found">រកមិនឃើញការបម្រុងទុកទេ</string>
     <!-- Body of the dialog shown when the entered recovery key is correct, but the account has no Signal Backup to restore -->
-    <string name="EnterAepScreen__no_backup_found_body">Your recovery key is correct, but there\'s no Signal Backup for this account. Go back to choose another way to restore, or continue without restoring.</string>
+    <string name="EnterAepScreen__no_backup_found_body">សោស្តាររបស់អ្នកត្រឹមត្រូវ ប៉ុន្តែមិនមានការបម្រុងទុក Signal សម្រាប់គណនីនេះទេ។ ត្រឡប់ក្រោយដើម្បីជ្រើសរើសវិធីផ្សេងទៀតដើម្បីស្ដារមកវិញ ឬបន្តដោយមិនចាំបាច់ស្ដារមកវិញ។</string>
     <!-- Text shown while preparing the restore -->
     <string name="LocalBackupRestoreScreen__preparing_restore">កំពុងរៀបចំការស្ដារ…</string>
     <!-- Title shown while restore is in progress -->
@@ -612,9 +612,9 @@
 
     <!-- Signal Login purchase screen -->
     <!-- Title of the screen where the user buys a Signal Login to register without a phone number. -->
-    <string name="SignalLoginPaymentScreen__signal_login">ព័ត៌មានចូល Signal</string>
+    <string name="SignalLoginPaymentScreen__signal_login">Signal Login</string>
     <!-- Description of what a Signal Login is. Followed by a "learn more" link. -->
-    <string name="SignalLoginPaymentScreen__register_without_a_phone_number">ចុះឈ្មោះដោយគ្មានលេខទូរសព្ទដោយប្រើព័ត៌មានចូល Signal។ ជាមួយនឹងការទិញម្តង អ្នកនឹងទទួលបានសោគណនីដើម្បីចាប់ផ្តើម។</string>
+    <string name="SignalLoginPaymentScreen__register_without_a_phone_number">ចុះឈ្មោះដោយគ្មានលេខទូរសព្ទដោយប្រើ Signal Login។ ជាមួយនឹងការទិញម្តង អ្នកនឹងទទួលបានសោគណនីដើម្បីចាប់ផ្តើម។</string>
     <!-- Link at the end of the description that opens a support article about Signal Login. -->
     <string name="SignalLoginPaymentScreen__learn_more">ស្វែងយល់បន្ថែម</string>
     <!-- Subtitle of the purchase option, clarifying the price is not a subscription. -->
@@ -626,7 +626,7 @@
     <!-- Selling point of the purchase option: the purchase supports Signal. -->
     <string name="SignalLoginPaymentScreen__signal_is_a_non_profit">Signal គឺជាអង្គការមិនស្វែងរកប្រាក់ចំណេញ — ការទិញរបស់អ្នកជួយគាំទ្រដល់បេសកកម្មរបស់យើង</string>
     <!-- Title of the option for users who already bought a Signal Login. -->
-    <string name="SignalLoginPaymentScreen__i_have_a_signal_login">ខ្ញុំមានព័ត៌មានចូល Signal</string>
+    <string name="SignalLoginPaymentScreen__i_have_a_signal_login">ខ្ញុំមាន Signal Login</string>
     <!-- Subtitle of the existing-login option. -->
     <string name="SignalLoginPaymentScreen__use_your_existing_account_key">ប្រើសោគណនីដែលមានស្រាប់របស់អ្នក</string>
     <!-- Selling point of the existing-login option: the account can be restored. -->
@@ -648,41 +648,41 @@
 
     <!-- Signal Login details screen -->
     <!-- Title of the screen that shows the user their newly purchased Signal Login. -->
-    <string name="SignalLoginInfoScreen__your_signal_login">ព័ត៌មានចូល Signal របស់អ្នក</string>
+    <string name="SignalLoginInfoScreen__your_signal_login">Signal Login របស់អ្នក</string>
     <!-- Description warning the user that a lost Signal Login cannot be recovered. -->
-    <string name="SignalLoginInfoScreen__thanks_for_your_purchase">សូមអរគុណចំពោះការទិញរបស់អ្នក។ សូមប្រើព័ត៌មានចូល Signal របស់អ្នក ដើម្បីចុះឈ្មោះ និងស្ដារគណនីរបស់អ្នក។ ប្រសិនបើអ្នកភ្លេចសោរបស់អ្នក អ្នកនឹងមិនអាចស្តារគណនីរបស់អ្នកបានទេ។</string>
+    <string name="SignalLoginInfoScreen__thanks_for_your_purchase">សូមអរគុណចំពោះការទិញរបស់អ្នក។ សូមប្រើ Signal Login របស់អ្នក ដើម្បីចុះឈ្មោះ និងស្ដារគណនីរបស់អ្នក។ ប្រសិនបើអ្នកភ្លេចសោរបស់អ្នក អ្នកនឹងមិនអាចស្តារគណនីរបស់អ្នកបានទេ។</string>
     <!-- Action button that stores the Signal Login in the device password manager. -->
     <string name="SignalLoginInfoScreen__save_to_password_manager">រក្សាទុកក្នុងមុខងារគ្រប់គ្រងពាក្យសម្ងាត់</string>
     <!-- Action button for users who would rather write the Signal Login down themselves. -->
     <string name="SignalLoginInfoScreen__save_manually">រក្សាទុកដោយផ្ទាល់ដៃ</string>
     <!-- Error shown when the Signal Login could not be stored in the password manager. -->
-    <string name="SignalLoginInfoScreen__your_signal_login_could_not_be_saved">ព័ត៌មានចូល Signal របស់អ្នកមិនអាចរក្សាទុកបានទេ។ សូមរក្សាទុកវាដោយផ្ទាល់ដៃវិញ។</string>
+    <string name="SignalLoginInfoScreen__your_signal_login_could_not_be_saved">Signal Login របស់អ្នកមិនអាចរក្សាទុកបានទេ។ សូមរក្សាទុកវាដោយផ្ទាល់ដៃវិញ។</string>
 
     <!-- Errors shown beneath an account ID text field, wherever one is offered -->
     <!-- Error shown when too many characters were entered in an account ID field. First placeholder is how many were entered, second is the maximum. -->
     <string name="AccountIdField__too_long">វែងពេក។ %1$d/%2$d តួអក្សរ។</string>
     <!-- Error shown when the entered account ID contains characters that can\'t appear in one. -->
-    <string name="AccountIdField__invalid_account_id">Invalid account ID</string>
+    <string name="AccountIdField__invalid_account_id">លេខសម្គាល់គណនីមិនត្រឹមត្រូវ</string>
 
     <!-- Signal Login credential entry screen -->
     <!-- Title of the screen where a user with an existing Signal Login types it in to log back in. -->
     <string name="SignalLoginCredentialEntryScreen__signal_login">Signal Login</string>
     <!-- Description telling the user what to enter to log in. -->
-    <string name="SignalLoginCredentialEntryScreen__enter_your_account_id_followed_by_your_recovery_key">Enter your account ID followed by your recovery key to restore your account.</string>
+    <string name="SignalLoginCredentialEntryScreen__enter_your_account_id_followed_by_your_recovery_key">បញ្ចូលលេខសម្គាល់គណនីរបស់អ្នក បន្ទាប់មកសោស្តាររបស់អ្នក ដើម្បីស្ដារគណនីរបស់អ្នកមកវិញ។</string>
     <!-- Label of the text field the account ID is typed into. -->
-    <string name="SignalLoginCredentialEntryScreen__account_id">Account ID</string>
+    <string name="SignalLoginCredentialEntryScreen__account_id">លេខសម្គាល់គណនី</string>
     <!-- Label of the text field the recovery key is typed into. -->
     <string name="SignalLoginCredentialEntryScreen__recovery_key">សោស្តារ</string>
     <!-- Description of the button that spells out the typed recovery key instead of masking it. -->
-    <string name="SignalLoginCredentialEntryScreen__show_recovery_key">Show recovery key</string>
+    <string name="SignalLoginCredentialEntryScreen__show_recovery_key">បង្ហាញសោស្តារ</string>
     <!-- Description of the button that masks the typed recovery key. -->
-    <string name="SignalLoginCredentialEntryScreen__hide_recovery_key">Hide recovery key</string>
+    <string name="SignalLoginCredentialEntryScreen__hide_recovery_key">លាក់សោស្តារ</string>
     <!-- Button that opens a support article for users who can\'t find their Signal Login. -->
     <string name="SignalLoginCredentialEntryScreen__need_help">ត្រូវការជំនួយ?</string>
     <!-- Action button that submits the entered Signal Login. -->
     <string name="SignalLoginCredentialEntryScreen__next">បន្ទាប់</string>
     <!-- Error shown when the service rejects the entered login, which means one of the two halves is wrong. -->
-    <string name="SignalLoginCredentialEntryScreen__incorrect_account_id_or_recovery_key">Incorrect account ID or recovery key</string>
+    <string name="SignalLoginCredentialEntryScreen__incorrect_account_id_or_recovery_key">លេខសម្គាល់គណនី ឬសោស្តារមិនត្រឹមត្រូវ</string>
 
     <!-- Add username screen -->
     <!-- Title of the screen offering the user an optional username. -->
@@ -700,7 +700,7 @@
     <!-- Title of the dialog explaining the digits paired with a username. -->
     <string name="AddUsernameScreen__what_is_this_number">តើលេខនេះគឺជាអ្វីទៅ?</string>
     <!-- Body of the dialog explaining the digits paired with a username. -->
-    <string name="AddUsernameScreen__these_digits_help_keep">លេខទាំងនេះជួយរក្សាឈ្មោះអ្នកប្រើរបស់អ្នកជាឯកជន ដើម្បីឲ្យអ្នកអាចជៀសវាងសារ​ដែលមិនចង់បាន។ សូមចែករំលែកឈ្មោះអ្នកប្រើរបស់អ្នកតែជាមួយមនុស្ស និងក្រុមដែល​អ្នកចង់ជជែកជាមួយប៉ុណ្ណោះ។ ប្រសិនបើអ្នកប្តូរឈ្មោះអ្នកប្រើ អ្នកនឹងទទួលបានសំណុំលេខថ្មី។</string>
+    <string name="AddUsernameScreen__these_digits_help_keep">លេខទាំងនេះជួយរក្សាឈ្មោះអ្នកប្រើរបស់អ្នកជាលក្ខណៈឯកជន ដើម្បីឱ្យអ្នកអាចជៀសវាងពីសារដែលមិនចង់បាន។ សូមចែករំលែកឈ្មោះអ្នកប្រើរបស់អ្នកតែជាមួយមនុស្ស និងក្រុមដែលអ្នកចង់ជជែកជាមួយប៉ុណ្ណោះ។ ប្រសិនបើអ្នកប្តូរឈ្មោះអ្នកប្រើ អ្នកនឹងទទួលបានសំណុំលេខថ្មី។</string>
     <!-- Button that skips choosing a username. -->
     <string name="AddUsernameScreen__skip">រំលង</string>
     <!-- Button that submits the chosen username. -->
@@ -724,7 +724,7 @@
     <!-- Validation error shown when the number the user entered after their username has too many digits. -->
     <string name="AddUsernameScreen__enter_a_maximum_of_d_digits">ឈ្មោះអ្នកប្រើមិនត្រឹមត្រូវ។ សូមបញ្ចូលលេខយ៉ាងច្រើនបំផុត %1$d ខ្ទង់។</string>
     <!-- Validation error shown when the number the user entered after their username contains something other than digits. -->
-    <string name="AddUsernameScreen__numbers_can_only_contain_digits">Invalid username, numbers can only contain digits.</string>
+    <string name="AddUsernameScreen__numbers_can_only_contain_digits">ឈ្មោះអ្នកប្រើមិនត្រឹមត្រូវ សម្រាប់លេខអាចវាយបញ្ចូលបានតែលេខប៉ុណ្ណោះ។</string>
     <!-- Validation error shown when the number the user entered after their username is 00. -->
     <string name="AddUsernameScreen__this_number_cant_be_00">លេខនេះមិនអាចជា 00 ទេ។ បញ្ចូលលេខមួយខ្ទង់ចន្លោះពី 1–9</string>
     <!-- Validation error shown when the number the user entered after their username has a leading zero. -->
@@ -744,7 +744,7 @@
     <!-- Title of the two-factor authentication code entry screen -->
     <string name="TotpEntryScreen__two_factor_authentication">ការផ្ទៀងផ្ទាត់ពីរជំហាន</string>
     <!-- Subtitle explaining where to find the code -->
-    <string name="TotpEntryScreen__to_continue_enter_the_code">To continue enter the 6-digit code from your authenticator app.</string>
+    <string name="TotpEntryScreen__to_continue_enter_the_code">ដើម្បីបន្ត សូមបញ្ចូលលេខកូដ 6 ខ្ទង់ពីកម្មវិធីផ្ទៀងផ្ទាត់របស់អ្នក។</string>
     <!-- Button text to cancel entering a code -->
     <string name="TotpEntryScreen__cancel">បោះបង់</string>
 
@@ -752,15 +752,15 @@
     <!-- Title of the two-factor authentication method selection screen -->
     <string name="TwoFactorSelectionScreen__two_factor_authentication">ការផ្ទៀងផ្ទាត់ពីរជំហាន</string>
     <!-- Subtitle telling the user to pick one of the methods listed below -->
-    <string name="TwoFactorSelectionScreen__choose_a_method_below">Choose a method below to verify your account.</string>
+    <string name="TwoFactorSelectionScreen__choose_a_method_below">សូមជ្រើសរើសវិធីខាងក្រោម ដើម្បីផ្ទៀងផ្ទាត់គណនីរបស់អ្នក។</string>
     <!-- Title of the card for verifying with a passkey -->
-    <string name="TwoFactorSelectionScreen__passkey">Passkey</string>
+    <string name="TwoFactorSelectionScreen__passkey">សោសម្ងាត់</string>
     <!-- Description of the card for verifying with a passkey -->
-    <string name="TwoFactorSelectionScreen__tap_to_use_your_device_biometrics">Tap to use your device biometrics or FIDO2 passkey</string>
+    <string name="TwoFactorSelectionScreen__tap_to_use_your_device_biometrics">ចុចដើម្បីប្រើជីវមាត្រឧបករណ៍របស់អ្នក ឬសោសម្ងាត់ FIDO2</string>
     <!-- Title of the card for verifying with a code from an authenticator app -->
     <string name="TwoFactorSelectionScreen__authenticator_app">កម្មវិធីផ្ទៀងផ្ទាត់</string>
     <!-- Description of the card for verifying with a code from an authenticator app -->
-    <string name="TwoFactorSelectionScreen__enter_a_one_time_code">Enter a one-time code generated by your authenticator app.</string>
+    <string name="TwoFactorSelectionScreen__enter_a_one_time_code">បញ្ចូលលេខកូដដែលប្រើតែម្តង ដែលបង្កើតដោយកម្មវិធីផ្ទៀងផ្ទាត់របស់អ្នក។</string>
     <!-- Button text to cancel two-factor authentication -->
     <string name="TwoFactorSelectionScreen__cancel">បោះបង់</string>
 </resources>

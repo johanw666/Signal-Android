@@ -247,7 +247,7 @@
     <!-- Title of the dialog shown when the entered recovery key is correct, but the account has no Signal Backup to restore -->
     <string name="EnterAepScreen__no_backup_found">Walang mahanap na backup</string>
     <!-- Body of the dialog shown when the entered recovery key is correct, but the account has no Signal Backup to restore -->
-    <string name="EnterAepScreen__no_backup_found_body">Your recovery key is correct, but there\'s no Signal Backup for this account. Go back to choose another way to restore, or continue without restoring.</string>
+    <string name="EnterAepScreen__no_backup_found_body">Tama ang recovery key mo, ngunit walang Signal Backup para sa account na ito. Bumalik para pumili ng ibang paraan ng pag-restore, o magpatuloy nang hindi nagre-restore.</string>
     <!-- Text shown while preparing the restore -->
     <string name="LocalBackupRestoreScreen__preparing_restore">Hinahanda ang pag-restore…</string>
     <!-- Title shown while restore is in progress -->
@@ -658,7 +658,7 @@
     <!-- Action button for users who would rather write the Signal Login down themselves. -->
     <string name="SignalLoginInfoScreen__save_manually">I-save manually</string>
     <!-- Error shown when the Signal Login could not be stored in the password manager. -->
-    <string name="SignalLoginInfoScreen__your_signal_login_could_not_be_saved">Hindi aa-save ang Signal Login mo. I-save ito manually.</string>
+    <string name="SignalLoginInfoScreen__your_signal_login_could_not_be_saved">Hindi ma-save ang Signal Login mo. Paki save na lang ito manually.</string>
 
     <!-- Errors shown beneath an account ID text field, wherever one is offered -->
     <!-- Error shown when too many characters were entered in an account ID field. First placeholder is how many were entered, second is the maximum. -->
@@ -670,21 +670,21 @@
     <!-- Title of the screen where a user with an existing Signal Login types it in to log back in. -->
     <string name="SignalLoginCredentialEntryScreen__signal_login">Signal Login</string>
     <!-- Description telling the user what to enter to log in. -->
-    <string name="SignalLoginCredentialEntryScreen__enter_your_account_id_followed_by_your_recovery_key">Enter your account ID followed by your recovery key to restore your account.</string>
+    <string name="SignalLoginCredentialEntryScreen__enter_your_account_id_followed_by_your_recovery_key">Ilagay ang account ID mo, kasunod ng iyong recovery key para i-restore ang account mo.</string>
     <!-- Label of the text field the account ID is typed into. -->
     <string name="SignalLoginCredentialEntryScreen__account_id">Account ID</string>
     <!-- Label of the text field the recovery key is typed into. -->
     <string name="SignalLoginCredentialEntryScreen__recovery_key">Recovery key</string>
     <!-- Description of the button that spells out the typed recovery key instead of masking it. -->
-    <string name="SignalLoginCredentialEntryScreen__show_recovery_key">Show recovery key</string>
+    <string name="SignalLoginCredentialEntryScreen__show_recovery_key">Ipakita ang recovery key</string>
     <!-- Description of the button that masks the typed recovery key. -->
-    <string name="SignalLoginCredentialEntryScreen__hide_recovery_key">Hide recovery key</string>
+    <string name="SignalLoginCredentialEntryScreen__hide_recovery_key">Itago ang recovery key</string>
     <!-- Button that opens a support article for users who can\'t find their Signal Login. -->
     <string name="SignalLoginCredentialEntryScreen__need_help">Kailangan mo ba ng tulong?</string>
     <!-- Action button that submits the entered Signal Login. -->
     <string name="SignalLoginCredentialEntryScreen__next">Susunod</string>
     <!-- Error shown when the service rejects the entered login, which means one of the two halves is wrong. -->
-    <string name="SignalLoginCredentialEntryScreen__incorrect_account_id_or_recovery_key">Incorrect account ID or recovery key</string>
+    <string name="SignalLoginCredentialEntryScreen__incorrect_account_id_or_recovery_key">Maling account ID o recovery key</string>
 
     <!-- Add username screen -->
     <!-- Title of the screen offering the user an optional username. -->
@@ -702,7 +702,7 @@
     <!-- Title of the dialog explaining the digits paired with a username. -->
     <string name="AddUsernameScreen__what_is_this_number">Para saan ang number na ito?</string>
     <!-- Body of the dialog explaining the digits paired with a username. -->
-    <string name="AddUsernameScreen__these_digits_help_keep">Ang numbers na ito\'y nakatutulong para mapanatiling private ang username mo at makaiwas ka sa anumang mensaheng hindi mo gustong matanggap. I-share lamang ang iyong username sa mga tao at groups na gusto mong maka-chat. Kung magpapalit ka ng username, magkakaroon ka ng bagong set of digits.</string>
+    <string name="AddUsernameScreen__these_digits_help_keep">Ang numbers na ito ay nakatutulong para mapanatiling private ang username mo at makaiwas ka sa anumang mensaheng hindi mo gustong matanggap. I-share lamang ang iyong username sa mga tao at groups na gusto mong maka-chat. Kung magpapalit ka ng username, magkakaroon ka ng bagong numbers.</string>
     <!-- Button that skips choosing a username. -->
     <string name="AddUsernameScreen__skip">Laktawan</string>
     <!-- Button that submits the chosen username. -->
@@ -726,9 +726,9 @@
     <!-- Validation error shown when the number the user entered after their username has too many digits. -->
     <string name="AddUsernameScreen__enter_a_maximum_of_d_digits">Invalid username, maglagay ng maximum na %1$d digits.</string>
     <!-- Validation error shown when the number the user entered after their username contains something other than digits. -->
-    <string name="AddUsernameScreen__numbers_can_only_contain_digits">Invalid username, numbers can only contain digits.</string>
+    <string name="AddUsernameScreen__numbers_can_only_contain_digits">Hindi valid ang username, ang numbers ay maaari lamang maglaman ng digits.</string>
     <!-- Validation error shown when the number the user entered after their username is 00. -->
-    <string name="AddUsernameScreen__this_number_cant_be_00">Hindi pwedeng 00 ang number na ito. Maglagay ng digit between 1–9</string>
+    <string name="AddUsernameScreen__this_number_cant_be_00">Hindi pwedeng 00 ang number na ito. Maglagay ng number mula 1–9</string>
     <!-- Validation error shown when the number the user entered after their username has a leading zero. -->
     <string name="AddUsernameScreen__this_number_cant_start_with_0">Ang mga numerong may higit sa 2 digits ay hindi pwedeng magsimula sa 0</string>
 
@@ -746,7 +746,7 @@
     <!-- Title of the two-factor authentication code entry screen -->
     <string name="TotpEntryScreen__two_factor_authentication">Two-factor authentication</string>
     <!-- Subtitle explaining where to find the code -->
-    <string name="TotpEntryScreen__to_continue_enter_the_code">To continue enter the 6-digit code from your authenticator app.</string>
+    <string name="TotpEntryScreen__to_continue_enter_the_code">Para magpatuloy, ilagay ang 6-digit code mula sa authenticator app mo.</string>
     <!-- Button text to cancel entering a code -->
     <string name="TotpEntryScreen__cancel">I-cancel</string>
 
@@ -754,15 +754,15 @@
     <!-- Title of the two-factor authentication method selection screen -->
     <string name="TwoFactorSelectionScreen__two_factor_authentication">Two-factor authentication</string>
     <!-- Subtitle telling the user to pick one of the methods listed below -->
-    <string name="TwoFactorSelectionScreen__choose_a_method_below">Choose a method below to verify your account.</string>
+    <string name="TwoFactorSelectionScreen__choose_a_method_below">Pumili sa ibaba ng paraan ng pag-verify ng account mo.</string>
     <!-- Title of the card for verifying with a passkey -->
     <string name="TwoFactorSelectionScreen__passkey">Passkey</string>
     <!-- Description of the card for verifying with a passkey -->
-    <string name="TwoFactorSelectionScreen__tap_to_use_your_device_biometrics">Tap to use your device biometrics or FIDO2 passkey</string>
+    <string name="TwoFactorSelectionScreen__tap_to_use_your_device_biometrics">Mag-tap para gamitin ang biometrics ng device o ang FIDO2 passkey</string>
     <!-- Title of the card for verifying with a code from an authenticator app -->
     <string name="TwoFactorSelectionScreen__authenticator_app">Authenticator app</string>
     <!-- Description of the card for verifying with a code from an authenticator app -->
-    <string name="TwoFactorSelectionScreen__enter_a_one_time_code">Enter a one-time code generated by your authenticator app.</string>
+    <string name="TwoFactorSelectionScreen__enter_a_one_time_code">Ilagay ang one-time code galing sa authenticator app mo.</string>
     <!-- Button text to cancel two-factor authentication -->
     <string name="TwoFactorSelectionScreen__cancel">I-cancel</string>
 </resources>

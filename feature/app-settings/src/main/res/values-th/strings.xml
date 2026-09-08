@@ -45,11 +45,11 @@
     <!-- Account setting that allows user to request and export their signal account data -->
     <string name="AccountSettingsFragment__request_account_data">ข้อมูลบัญชีของคุณ</string>
     <!-- Section header for the Signal Login section of account settings -->
-    <string name="AccountSettingsFragment__signal_login">รหัสล็อกอิน Signal</string>
+    <string name="AccountSettingsFragment__signal_login">Signal Login</string>
     <!-- Title of the card that opens the user\'s Signal Login account and recovery keys -->
     <string name="AccountSettingsFragment__account_and_recovery">บัญชีและการกู้คืน</string>
     <!-- Description of what a Signal Login is, shown below the Signal Login card -->
-    <string name="AccountSettingsFragment__your_signal_login_is_used_to_recover">ใช้รหัสล็อกอิน Signal เพื่อกู้คืนบัญชีของคุณ โปรดเก็บกุญแจนี้ไว้กับตัวจัดการรหัสผ่านที่คุณมั่นใจว่าปลอดภัย</string>
+    <string name="AccountSettingsFragment__your_signal_login_is_used_to_recover">ใช้ Signal Login เพื่อกู้คืนบัญชีของคุณ โปรดเก็บกุญแจนี้ไว้กับตัวจัดการรหัสผ่านที่คุณมั่นใจว่าปลอดภัย</string>
     <!-- Section header for the two-factor authentication section of account settings -->
     <string name="AccountSettingsFragment__two_factor_authentication">การยืนยันตัวตนแบบสองขั้นตอน</string>
     <!-- Account setting that takes the user to the authenticator app setup flow -->
@@ -69,7 +69,7 @@
         <item quantity="other">%1$d พาสคีย์</item>
     </plurals>
     <!-- Description of two-factor authentication, shown below the two-factor authentication rows -->
-    <string name="AccountSettingsFragment__use_a_second_form_of_authentication">ใช้การยืนยันตัวตนชั้นที่สองเพื่อปกป้องบัญชีของคุณเมื่อคุณใช้รหัสล็อกอิน Signal บนอุปกรณ์เครื่องใหม่</string>
+    <string name="AccountSettingsFragment__use_a_second_form_of_authentication">ใช้การยืนยันตัวตนชั้นที่สองเพื่อปกป้องบัญชีของคุณเมื่อคุณใช้ Signal Login บนอุปกรณ์เครื่องใหม่</string>
     <!-- Clickable text that takes the user to a support article -->
     <string name="AccountSettingsFragment__learn_more">เรียนรู้เพิ่มเติม</string>
 
@@ -99,7 +99,7 @@
     <!-- Toast shown when there is no app installed that can handle the authenticator setup link -->
     <string name="TotpSetupScreen__no_authenticator_app_found">ไม่พบแอปยืนยันตัวตน</string>
     <!-- Dialog message shown when we couldn\'t reach the service to start setting up an authenticator app -->
-    <string name="TotpSetupScreen__couldnt_reach_signal">Couldn\'t reach Signal. Check your connection and try again.</string>
+    <string name="TotpSetupScreen__couldnt_reach_signal">ไม่สามารถเข้าถึง Signal ได้ โปรดตรวจสอบการเชื่อมต่อของคุณแล้วลองอีกครั้ง</string>
     <!-- Header of the third step of authenticator app setup -->
     <string name="TotpSetupScreen__step_3">ขั้นตอนที่ 3</string>
     <!-- Body of the third step of authenticator app setup -->
@@ -145,9 +145,9 @@
     <!-- Button that submits the entered code -->
     <string name="TotpCodeEntryScreen__done">เสร็จสิ้น</string>
     <!-- Error shown under the code field when the code the user entered was rejected -->
-    <string name="TotpCodeEntryScreen__incorrect_code">Incorrect code. Enter the code showing in your authenticator app now.</string>
+    <string name="TotpCodeEntryScreen__incorrect_code">รหัสไม่ถูกต้อง โปรดใส่รหัสที่แอปยืนยันตัวตนของคุณแสดงอยู่ขณะนี้</string>
     <!-- Error shown under the code field when we couldn\'t reach the service to check the code -->
-    <string name="TotpCodeEntryScreen__couldnt_reach_signal">Couldn\'t reach Signal. Check your connection and try again.</string>
+    <string name="TotpCodeEntryScreen__couldnt_reach_signal">ไม่สามารถเข้าถึง Signal ได้ โปรดตรวจสอบการเชื่อมต่อของคุณแล้วลองอีกครั้ง</string>
     <!-- TotpAppListScreen -->
     <!-- Title of the screen listing the authenticator apps on the account -->
     <string name="TotpAppListScreen__authenticator_app">แอปยืนยันตัวตน (Authenticator App)</string>
@@ -172,17 +172,17 @@
     <!-- Title of the dialog confirming removal of an authenticator app -->
     <string name="TotpAppListScreen__remove_authenticator_app">ลบแอปยืนยันตัวตนใช่หรือไม่</string>
     <!-- Body of the dialog confirming removal of an authenticator app -->
-    <string name="TotpAppListScreen__you_wont_be_able_to_use_this_app">You won\'t be able to use this app for one-time verification codes when you sign in.</string>
+    <string name="TotpAppListScreen__you_wont_be_able_to_use_this_app">คุณจะไม่สามารถใช้แอปนี้ในการรับรหัสยืนยันแบบใช้ครั้งเดียวเมื่อลงชื่อเข้าใช้</string>
     <!-- Title of the dialog shown when the account already has as many authenticator apps as it\'s allowed -->
     <string name="TotpAppListScreen__cant_add_authenticator_app">ไม่สามารถเพิ่มแอปยืนยันตัวตน</string>
     <!-- Body of the dialog shown when the account already has as many authenticator apps as it\'s allowed -->
     <string name="TotpAppListScreen__you_cant_add_more_than_d">ไม่สามารถเพิ่มแอปยืนยันตัวตนเกิน %1$d แอป โปรดลบแอปเดิมออกหนึ่งแอป</string>
     <!-- Dialog message shown when we couldn\'t work out which authenticator apps are on the account -->
-    <string name="TotpAppListScreen__couldnt_load_authenticator_apps">Couldn\'t load your authenticator apps. Check your connection and try again.</string>
+    <string name="TotpAppListScreen__couldnt_load_authenticator_apps">ไม่สามารถโหลดแอปยืนยันตัวตนของคุณได้ โปรดตรวจสอบการเชื่อมต่อของคุณแล้วลองอีกครั้ง</string>
     <!-- Toast shown after an authenticator app has been removed -->
     <string name="TotpAppListScreen__authenticator_app_removed">ลบแอปยืนยันตัวตนแล้ว</string>
     <!-- Toast shown when an authenticator app couldn\'t be removed -->
-    <string name="TotpAppListScreen__couldnt_remove_authenticator_app">Couldn\'t remove authenticator app. Check your connection and try again.</string>
+    <string name="TotpAppListScreen__couldnt_remove_authenticator_app">ไม่สามารถลบแอปยืนยันตัวตนได้ โปรดตรวจสอบการเชื่อมต่อของคุณแล้วลองอีกครั้ง</string>
 
     <!-- TotpNameEntryScreen -->
     <!-- Title of the screen where the user names an authenticator app -->
@@ -200,5 +200,5 @@
     <!-- Toast shown after an authenticator app has been renamed -->
     <string name="TotpNameEntryScreen__authenticator_app_renamed">เปลี่ยนชื่อแอปยืนยันตัวตนแล้ว</string>
     <!-- Toast shown when we couldn\'t reach the service to save the name -->
-    <string name="TotpNameEntryScreen__couldnt_save_name">Couldn\'t save name. Check your connection and try again.</string>
+    <string name="TotpNameEntryScreen__couldnt_save_name">ไม่สามารถบันทึกชื่อได้ โปรดตรวจสอบการเชื่อมต่อของคุณแล้วลองอีกครั้ง</string>
 </resources>

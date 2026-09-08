@@ -45,11 +45,11 @@
     <!-- Account setting that allows user to request and export their signal account data -->
     <string name="AccountSettingsFragment__request_account_data">आपला अकाऊंट डेटा</string>
     <!-- Section header for the Signal Login section of account settings -->
-    <string name="AccountSettingsFragment__signal_login">Signal लॉगिन</string>
+    <string name="AccountSettingsFragment__signal_login">Signal Login</string>
     <!-- Title of the card that opens the user\'s Signal Login account and recovery keys -->
     <string name="AccountSettingsFragment__account_and_recovery">खाते आणि पुनःप्राप्ती</string>
     <!-- Description of what a Signal Login is, shown below the Signal Login card -->
-    <string name="AccountSettingsFragment__your_signal_login_is_used_to_recover">तुमचे खाते पुन्हा मिळवण्यासाठी आणि रीस्टोर करण्यासाठी तुमचे Signal लॉगिन वापरले जाते. या कीज् तुमच्या विश्वासातील एका पासवर्ड व्यवस्थापकात सुरक्षितपणे साठवून ठेवा.</string>
+    <string name="AccountSettingsFragment__your_signal_login_is_used_to_recover">तुमचे खाते पुन्हा मिळवण्यासाठी आणि रीस्टोर करण्यासाठी तुमचे Signal Login वापरले जाते. या कीज् तुमच्या विश्वासातील एका पासवर्ड व्यवस्थापकात सुरक्षितपणे साठवून ठेवा.</string>
     <!-- Section header for the two-factor authentication section of account settings -->
     <string name="AccountSettingsFragment__two_factor_authentication">दुहेरी अधिस्वीकृती</string>
     <!-- Account setting that takes the user to the authenticator app setup flow -->
@@ -71,7 +71,7 @@
         <item quantity="other">%1$d पासकीज्</item>
     </plurals>
     <!-- Description of two-factor authentication, shown below the two-factor authentication rows -->
-    <string name="AccountSettingsFragment__use_a_second_form_of_authentication">तुमचे Signal लॉगिन एका नवीन डिव्हाईसवर वापरताना तुमच्या खात्याचे रक्षण करण्यासाठी दुसऱ्या प्रकारची अधिस्वीकृती वापरा.</string>
+    <string name="AccountSettingsFragment__use_a_second_form_of_authentication">तुमचे Signal Login एका नवीन डिव्हाईसवर वापरताना तुमच्या खात्याचे रक्षण करण्यासाठी दुसऱ्या प्रकारची अधिस्वीकृती वापरा.</string>
     <!-- Clickable text that takes the user to a support article -->
     <string name="AccountSettingsFragment__learn_more">अधिक जाणून घ्या</string>
 
@@ -101,7 +101,7 @@
     <!-- Toast shown when there is no app installed that can handle the authenticator setup link -->
     <string name="TotpSetupScreen__no_authenticator_app_found">कोणतेही ऑथेंटिकेटर ॲप सापडले नाही</string>
     <!-- Dialog message shown when we couldn\'t reach the service to start setting up an authenticator app -->
-    <string name="TotpSetupScreen__couldnt_reach_signal">Couldn\'t reach Signal. Check your connection and try again.</string>
+    <string name="TotpSetupScreen__couldnt_reach_signal">Signal पर्यंत पोहोचता आले नाही. तुमचे कनेक्शन तपासा आणि पुन्हा प्रयत्न करा.</string>
     <!-- Header of the third step of authenticator app setup -->
     <string name="TotpSetupScreen__step_3">पायरी 3</string>
     <!-- Body of the third step of authenticator app setup -->
@@ -147,9 +147,9 @@
     <!-- Button that submits the entered code -->
     <string name="TotpCodeEntryScreen__done">झाले</string>
     <!-- Error shown under the code field when the code the user entered was rejected -->
-    <string name="TotpCodeEntryScreen__incorrect_code">Incorrect code. Enter the code showing in your authenticator app now.</string>
+    <string name="TotpCodeEntryScreen__incorrect_code">चुकीचा कोड. तुमच्या ऑथेंटिकेटर ॲपमध्ये दिसणारा कोड आत्ता प्रविष्ट करा.</string>
     <!-- Error shown under the code field when we couldn\'t reach the service to check the code -->
-    <string name="TotpCodeEntryScreen__couldnt_reach_signal">Couldn\'t reach Signal. Check your connection and try again.</string>
+    <string name="TotpCodeEntryScreen__couldnt_reach_signal">Signal पर्यंत पोहोचता आले नाही. तुमचे कनेक्शन तपासा आणि पुन्हा प्रयत्न करा.</string>
     <!-- TotpAppListScreen -->
     <!-- Title of the screen listing the authenticator apps on the account -->
     <string name="TotpAppListScreen__authenticator_app">ऑथेंटिकेटर ॲप</string>
@@ -174,17 +174,17 @@
     <!-- Title of the dialog confirming removal of an authenticator app -->
     <string name="TotpAppListScreen__remove_authenticator_app">ऑथेंटिकेटर ॲप हटवायचे का?</string>
     <!-- Body of the dialog confirming removal of an authenticator app -->
-    <string name="TotpAppListScreen__you_wont_be_able_to_use_this_app">You won\'t be able to use this app for one-time verification codes when you sign in.</string>
+    <string name="TotpAppListScreen__you_wont_be_able_to_use_this_app">तुम्ही साईन इन केल्यावर एकवेळच्या पडताळणी कोडसाठी तुम्हाला हे ॲप वापरता येणार नाही.</string>
     <!-- Title of the dialog shown when the account already has as many authenticator apps as it\'s allowed -->
     <string name="TotpAppListScreen__cant_add_authenticator_app">ऑथेंटिकेटर ॲप समाविष्ट करता येत नाही</string>
     <!-- Body of the dialog shown when the account already has as many authenticator apps as it\'s allowed -->
     <string name="TotpAppListScreen__you_cant_add_more_than_d">तुम्ही %1$d पेक्षा अधिक ऑथेंटिकेटर ॲप्स समाविष्ट करू शकत नाही. आधी एक हटवून पाहा.</string>
     <!-- Dialog message shown when we couldn\'t work out which authenticator apps are on the account -->
-    <string name="TotpAppListScreen__couldnt_load_authenticator_apps">Couldn\'t load your authenticator apps. Check your connection and try again.</string>
+    <string name="TotpAppListScreen__couldnt_load_authenticator_apps">तुमची ऑथेंटिकेटर ॲप्स लोड करता आली नाहीत. तुमचे कनेक्शन तपासा आणि पुन्हा प्रयत्न करा.</string>
     <!-- Toast shown after an authenticator app has been removed -->
     <string name="TotpAppListScreen__authenticator_app_removed">ऑथेंटिकेटर ॲप हटवून टाकले</string>
     <!-- Toast shown when an authenticator app couldn\'t be removed -->
-    <string name="TotpAppListScreen__couldnt_remove_authenticator_app">Couldn\'t remove authenticator app. Check your connection and try again.</string>
+    <string name="TotpAppListScreen__couldnt_remove_authenticator_app">ऑथेंटिकेटर ॲप हटवता आले नाही. तुमचे कनेक्शन तपासा आणि पुन्हा प्रयत्न करा.</string>
 
     <!-- TotpNameEntryScreen -->
     <!-- Title of the screen where the user names an authenticator app -->
@@ -202,5 +202,5 @@
     <!-- Toast shown after an authenticator app has been renamed -->
     <string name="TotpNameEntryScreen__authenticator_app_renamed">ऑथेंटिकेटर ॲपचे नाव बदलले</string>
     <!-- Toast shown when we couldn\'t reach the service to save the name -->
-    <string name="TotpNameEntryScreen__couldnt_save_name">Couldn\'t save name. Check your connection and try again.</string>
+    <string name="TotpNameEntryScreen__couldnt_save_name">नाव जतन करता आले नाही. तुमचे कनेक्शन तपासा आणि पुन्हा प्रयत्न करा.</string>
 </resources>

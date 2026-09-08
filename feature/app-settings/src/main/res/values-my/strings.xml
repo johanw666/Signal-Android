@@ -45,11 +45,11 @@
     <!-- Account setting that allows user to request and export their signal account data -->
     <string name="AccountSettingsFragment__request_account_data">သင့်အကောင့်ဒေတာ</string>
     <!-- Section header for the Signal Login section of account settings -->
-    <string name="AccountSettingsFragment__signal_login">Signal လော့ဂ်အင်</string>
+    <string name="AccountSettingsFragment__signal_login">Signal Login</string>
     <!-- Title of the card that opens the user\'s Signal Login account and recovery keys -->
     <string name="AccountSettingsFragment__account_and_recovery">အကောင့်နှင့် ပြန်လည်ရယူခြင်း</string>
     <!-- Description of what a Signal Login is, shown below the Signal Login card -->
-    <string name="AccountSettingsFragment__your_signal_login_is_used_to_recover">သင့် Signal အကောင့်ဝင်ရောက်မှုကို သင့်အကောင့်အား ပြန်လည်ရယူပြီး ပြန်လည်အသုံးပြုနိုင်ရန် အသုံးပြုပါသည်။ ယုံကြည်စိတ်ချရသော စကားဝှက်စီမံရေးတွင် ဤကီးများကို လုံခြုံစွာ သိမ်းဆည်းထားပါ။</string>
+    <string name="AccountSettingsFragment__your_signal_login_is_used_to_recover">သင့် Signal Login ကို သင့်အကောင့်အား ပြန်လည်ရယူပြီး ပြန်လည်အသုံးပြုနိုင်ရန် အသုံးပြုပါသည်။ ယုံကြည်စိတ်ချရသော စကားဝှက်စီမံရေးတွင် ဤကီးများကို လုံခြုံစွာ သိမ်းဆည်းထားပါ။</string>
     <!-- Section header for the two-factor authentication section of account settings -->
     <string name="AccountSettingsFragment__two_factor_authentication">နှစ်ဆင့် အတည်ပြုခြင်း</string>
     <!-- Account setting that takes the user to the authenticator app setup flow -->
@@ -81,11 +81,11 @@
     <!-- Clickable text that takes the user to a support article -->
     <string name="TotpSetupScreen__learn_more">ပိုမိုလေ့လာရန်</string>
     <!-- Header of the first step of authenticator app setup -->
-    <string name="TotpSetupScreen__step_1">အဆင့် ၁</string>
+    <string name="TotpSetupScreen__step_1">အဆင့် 1</string>
     <!-- Body of the first step of authenticator app setup -->
     <string name="TotpSetupScreen__install_a_trusted_authenticator_app">သင့်စက်တွင် ယုံကြည်စိတ်ချရသော အတည်ပြုကုဒ်ထုတ်ပေးသည့် အက်ပ်ကို ထည့်သွင်းပါ။</string>
     <!-- Header of the second step of authenticator app setup -->
-    <string name="TotpSetupScreen__step_2">အဆင့် ၂</string>
+    <string name="TotpSetupScreen__step_2">အဆင့် 2</string>
     <!-- Body of the second step of authenticator app setup -->
     <string name="TotpSetupScreen__open_your_authenticator_app">သင့် Signal အကောင့်ကို ထည့်သွင်းရန် အောက်ပါခလုတ်ကို နှိပ်ပြီး သင့် အတည်ပြုကုဒ်ထုတ်ပေးသည့် အက်ပ်ကို ဖွင့်ပါ။</string>
     <!-- Button that opens the user\'s authenticator app -->
@@ -99,9 +99,9 @@
     <!-- Toast shown when there is no app installed that can handle the authenticator setup link -->
     <string name="TotpSetupScreen__no_authenticator_app_found">အတည်ပြုကုဒ်ထုတ်ပေးသည့် အက်ပ်ကို မတွေ့ပါ</string>
     <!-- Dialog message shown when we couldn\'t reach the service to start setting up an authenticator app -->
-    <string name="TotpSetupScreen__couldnt_reach_signal">Couldn\'t reach Signal. Check your connection and try again.</string>
+    <string name="TotpSetupScreen__couldnt_reach_signal">Signal သို့ ချိတ်ဆက်၍မရပါ။ သင့်အင်တာနက်ချိတ်ဆက်မှုကို ပြန်စစ်ဆေးပြီး ထပ်ကြိုးစားကြည့်ပါ။</string>
     <!-- Header of the third step of authenticator app setup -->
-    <string name="TotpSetupScreen__step_3">အဆင့် ၃</string>
+    <string name="TotpSetupScreen__step_3">အဆင့် 3</string>
     <!-- Body of the third step of authenticator app setup -->
     <string name="TotpSetupScreen__copy_the_code_thats_generated">ထုတ်ပေးထားသော ကုဒ်ကို ကူးယူပြီး ဆက်လက်လုပ်ဆောင်ရန် ဤနေရာသို့ ပြန်လာပါ။</string>
     <!-- Button that advances from the setup instructions to entering a code -->
@@ -145,9 +145,9 @@
     <!-- Button that submits the entered code -->
     <string name="TotpCodeEntryScreen__done">ပြီးပါပြီ</string>
     <!-- Error shown under the code field when the code the user entered was rejected -->
-    <string name="TotpCodeEntryScreen__incorrect_code">Incorrect code. Enter the code showing in your authenticator app now.</string>
+    <string name="TotpCodeEntryScreen__incorrect_code">ကုဒ် မှားနေပါသည်။ ယခု သင့်အတည်ပြုကုဒ်ထုတ်ပေးသည့် အက်ပ်မှာ ပြသနေသော ကုဒ်ကို ထည့်ပါ။</string>
     <!-- Error shown under the code field when we couldn\'t reach the service to check the code -->
-    <string name="TotpCodeEntryScreen__couldnt_reach_signal">Couldn\'t reach Signal. Check your connection and try again.</string>
+    <string name="TotpCodeEntryScreen__couldnt_reach_signal">Signal သို့ ချိတ်ဆက်၍မရပါ။ သင့်အင်တာနက်ချိတ်ဆက်မှုကို ပြန်စစ်ဆေးပြီး ထပ်ကြိုးစားကြည့်ပါ။</string>
     <!-- TotpAppListScreen -->
     <!-- Title of the screen listing the authenticator apps on the account -->
     <string name="TotpAppListScreen__authenticator_app">အတည်ပြုကုဒ်ထုတ်ပေးသည့် အက်ပ်</string>
@@ -172,17 +172,17 @@
     <!-- Title of the dialog confirming removal of an authenticator app -->
     <string name="TotpAppListScreen__remove_authenticator_app">အတည်ပြုကုဒ်ထုတ်ပေးသည့် အက်ပ်ကို ဖယ်ရှားမလား။</string>
     <!-- Body of the dialog confirming removal of an authenticator app -->
-    <string name="TotpAppListScreen__you_wont_be_able_to_use_this_app">You won\'t be able to use this app for one-time verification codes when you sign in.</string>
+    <string name="TotpAppListScreen__you_wont_be_able_to_use_this_app">သင်ဝင်ရောက်သည့်အခါ တစ်ကြိမ်သုံးအတည်ပြုကုဒ်များအတွက် ဤအက်ပ်ကို အသုံးပြုနိုင်တော့မည်မဟုတ်ပါ။</string>
     <!-- Title of the dialog shown when the account already has as many authenticator apps as it\'s allowed -->
     <string name="TotpAppListScreen__cant_add_authenticator_app">အတည်ပြုကုဒ်ထုတ်ပေးသည့် အက်ပ်ကို ထည့်၍မရပါ</string>
     <!-- Body of the dialog shown when the account already has as many authenticator apps as it\'s allowed -->
     <string name="TotpAppListScreen__you_cant_add_more_than_d">အတည်ပြုကုဒ်ထုတ်ပေးသည့် အက်ပ် %1$d ခုထက်ပို၍ ထည့်၍မရပါ။ တစ်ခုကို အရင်ဆုံး ဖယ်ရှားကြည့်ပါ။</string>
     <!-- Dialog message shown when we couldn\'t work out which authenticator apps are on the account -->
-    <string name="TotpAppListScreen__couldnt_load_authenticator_apps">Couldn\'t load your authenticator apps. Check your connection and try again.</string>
+    <string name="TotpAppListScreen__couldnt_load_authenticator_apps">သင့်အတည်ပြုကုဒ်ထုတ်ပေးသည့် အက်ပ်များကို ဖွင့်၍မရပါ။ သင့်အင်တာနက်ချိတ်ဆက်မှုကို ပြန်စစ်ဆေးပြီး ထပ်ကြိုးစားကြည့်ပါ။</string>
     <!-- Toast shown after an authenticator app has been removed -->
     <string name="TotpAppListScreen__authenticator_app_removed">အတည်ပြုကုဒ်ထုတ်ပေးသည့် အက်ပ်ကို ဖယ်ရှားပြီးပါပြီ</string>
     <!-- Toast shown when an authenticator app couldn\'t be removed -->
-    <string name="TotpAppListScreen__couldnt_remove_authenticator_app">Couldn\'t remove authenticator app. Check your connection and try again.</string>
+    <string name="TotpAppListScreen__couldnt_remove_authenticator_app">အတည်ပြုကုဒ်ထုတ်ပေးသည့် အက်ပ်ကို ဖယ်ရှား၍မရပါ။ သင့်အင်တာနက်ချိတ်ဆက်မှုကို ပြန်စစ်ဆေးပြီး ထပ်ကြိုးစားကြည့်ပါ။</string>
 
     <!-- TotpNameEntryScreen -->
     <!-- Title of the screen where the user names an authenticator app -->
@@ -200,5 +200,5 @@
     <!-- Toast shown after an authenticator app has been renamed -->
     <string name="TotpNameEntryScreen__authenticator_app_renamed">အတည်ပြုကုဒ်ထုတ်ပေးသည့် အက်ပ်ကို အမည်ပြောင်းပြီးပါပြီ</string>
     <!-- Toast shown when we couldn\'t reach the service to save the name -->
-    <string name="TotpNameEntryScreen__couldnt_save_name">Couldn\'t save name. Check your connection and try again.</string>
+    <string name="TotpNameEntryScreen__couldnt_save_name">အမည်ကို သိမ်းဆည်း၍မရပါ။ သင့်အင်တာနက်ချိတ်ဆက်မှုကို ပြန်စစ်ဆေးပြီး ထပ်ကြိုးစားကြည့်ပါ။</string>
 </resources>

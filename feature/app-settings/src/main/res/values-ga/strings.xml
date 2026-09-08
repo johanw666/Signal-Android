@@ -45,11 +45,11 @@
     <!-- Account setting that allows user to request and export their signal account data -->
     <string name="AccountSettingsFragment__request_account_data">Sonraí do chuntais</string>
     <!-- Section header for the Signal Login section of account settings -->
-    <string name="AccountSettingsFragment__signal_login">Logáil Isteach Signal</string>
+    <string name="AccountSettingsFragment__signal_login">Signal Login</string>
     <!-- Title of the card that opens the user\'s Signal Login account and recovery keys -->
     <string name="AccountSettingsFragment__account_and_recovery">Cuntas &amp; aisghabháil</string>
     <!-- Description of what a Signal Login is, shown below the Signal Login card -->
-    <string name="AccountSettingsFragment__your_signal_login_is_used_to_recover">Úsáidtear do Logáil Isteach Signal le do chuntas a athshlánú agus a aischur. Coinnigh na heochracha seo stóráilte go slán i mbainisteoir pasfhocal a bhfuil iontaoibh agat as.</string>
+    <string name="AccountSettingsFragment__your_signal_login_is_used_to_recover">Úsáidtear an Signal Login agat chun do chuntas a athshlánú agus a aischur. Coinnigh na heochracha seo stóráilte go slán i mbainisteoir pasfhocal a bhfuil iontaoibh agat as.</string>
     <!-- Section header for the two-factor authentication section of account settings -->
     <string name="AccountSettingsFragment__two_factor_authentication">Fíordheimhniú dhá fhachtóir</string>
     <!-- Account setting that takes the user to the authenticator app setup flow -->
@@ -77,7 +77,7 @@
         <item quantity="other">%1$d paseochair</item>
     </plurals>
     <!-- Description of two-factor authentication, shown below the two-factor authentication rows -->
-    <string name="AccountSettingsFragment__use_a_second_form_of_authentication">Úsáid cineál tánaisteach fíordheimhnithe le do chuntas a chosaint nuair a úsáideann tú do Logáil isteach Signal ar ghléas nua.</string>
+    <string name="AccountSettingsFragment__use_a_second_form_of_authentication">Úsáid cineál tánaisteach fíordheimhnithe chun do chuntas a chosaint nuair a úsáideann tú an Signal Login agat ar ghléas nua.</string>
     <!-- Clickable text that takes the user to a support article -->
     <string name="AccountSettingsFragment__learn_more">Tuilleadh faisnéise</string>
 
@@ -85,7 +85,7 @@
     <!-- Title of the screen that walks the user through setting up an authenticator app -->
     <string name="TotpSetupScreen__set_up_your_authenticator_app">Socraigh d\'aip fíordheimhnitheora</string>
     <!-- Instructions shown at the top of the authenticator app setup screen -->
-    <string name="TotpSetupScreen__follow_these_steps">Lean na céimeanna seo a leanas le d\'aip fíordheimhnitheora a chumrú.</string>
+    <string name="TotpSetupScreen__follow_these_steps">Lean na céimeanna seo a leanas chun d\'aip fíordheimhnitheora a shocrú.</string>
     <!-- Clickable text that takes the user to a support article -->
     <string name="TotpSetupScreen__learn_more">Tuilleadh faisnéise</string>
     <!-- Header of the first step of authenticator app setup -->
@@ -95,11 +95,11 @@
     <!-- Header of the second step of authenticator app setup -->
     <string name="TotpSetupScreen__step_2">Céim 2</string>
     <!-- Body of the second step of authenticator app setup -->
-    <string name="TotpSetupScreen__open_your_authenticator_app">Oscail d\'aip fíordheimhnitheora tríd an gcnaipe thíos a thapáil lena cur le do chuntas Signal.</string>
+    <string name="TotpSetupScreen__open_your_authenticator_app">Oscail d\'aip fíordheimhnitheora ach an cnaipe thíos a thapáil chun do chuntas Signal a chur leis.</string>
     <!-- Button that opens the user\'s authenticator app -->
     <string name="TotpSetupScreen__open">Oscail</string>
     <!-- Text above the setup key explaining that it can be entered by hand instead -->
-    <string name="TotpSetupScreen__or_you_can_copy_this_key">Nó is féidir leat an eochair seo a chóipeáil lena chumrú de láimh.</string>
+    <string name="TotpSetupScreen__or_you_can_copy_this_key">Nó is féidir leat an eochair seo a chóipeáil lena socrú de láimh.</string>
     <!-- Button that copies the setup key to the clipboard -->
     <string name="TotpSetupScreen__copy">Cóipeáil</string>
     <!-- Toast shown after the setup key has been copied to the clipboard -->
@@ -107,11 +107,11 @@
     <!-- Toast shown when there is no app installed that can handle the authenticator setup link -->
     <string name="TotpSetupScreen__no_authenticator_app_found">Níor aimsíodh aip fíordheimhnitheora</string>
     <!-- Dialog message shown when we couldn\'t reach the service to start setting up an authenticator app -->
-    <string name="TotpSetupScreen__couldnt_reach_signal">Couldn\'t reach Signal. Check your connection and try again.</string>
+    <string name="TotpSetupScreen__couldnt_reach_signal">Níorbh fhéidir Signal a bhaint amach. Seiceáil do nasc agus triail arís.</string>
     <!-- Header of the third step of authenticator app setup -->
     <string name="TotpSetupScreen__step_3">Céim 3</string>
     <!-- Body of the third step of authenticator app setup -->
-    <string name="TotpSetupScreen__copy_the_code_thats_generated">Cóipeáil an cód a gineadh agus fill anseo le leanúint leis.</string>
+    <string name="TotpSetupScreen__copy_the_code_thats_generated">Cóipeáil an cód a gineadh agus fill anseo chun leanúint leis.</string>
     <!-- Button that advances from the setup instructions to entering a code -->
     <string name="TotpSetupScreen__continue">Lean ar aghaidh</string>
 
@@ -153,14 +153,14 @@
     <!-- Button that submits the entered code -->
     <string name="TotpCodeEntryScreen__done">Déanta</string>
     <!-- Error shown under the code field when the code the user entered was rejected -->
-    <string name="TotpCodeEntryScreen__incorrect_code">Incorrect code. Enter the code showing in your authenticator app now.</string>
+    <string name="TotpCodeEntryScreen__incorrect_code">Cód mícheart. Cuir isteach an cód a thaispeántar i d\'aip fíordheimhnitheora anois.</string>
     <!-- Error shown under the code field when we couldn\'t reach the service to check the code -->
-    <string name="TotpCodeEntryScreen__couldnt_reach_signal">Couldn\'t reach Signal. Check your connection and try again.</string>
+    <string name="TotpCodeEntryScreen__couldnt_reach_signal">Níorbh fhéidir Signal a bhaint amach. Seiceáil do nasc agus triail arís.</string>
     <!-- TotpAppListScreen -->
     <!-- Title of the screen listing the authenticator apps on the account -->
     <string name="TotpAppListScreen__authenticator_app">Aip fíordheimhnitheora</string>
     <!-- Description of what an authenticator app is for, shown at the top of the screen -->
-    <string name="TotpAppListScreen__set_up_an_authenticator_app">Socraigh aip fíordheimhnitheora le cóid fíoraithe aonuaire a ghiniúint</string>
+    <string name="TotpAppListScreen__set_up_an_authenticator_app">Socraigh aip fíordheimhnitheora chun cóid fíoraithe aonuaire a ghiniúint</string>
     <!-- Clickable text that takes the user to a support article -->
     <string name="TotpAppListScreen__learn_more">Tuilleadh faisnéise</string>
     <!-- Button that starts setting up another authenticator app -->
@@ -170,27 +170,27 @@
     <!-- Shown in place of the list when no authenticator apps are configured -->
     <string name="TotpAppListScreen__no_authenticator_apps">Níl aipeanna fíordheimhnitheora ann</string>
     <!-- Subtitle of an authenticator app row saying when it was configured. Placeholder is a date or time. -->
-    <string name="TotpAppListScreen__added_s">Curtha leis %1$s</string>
+    <string name="TotpAppListScreen__added_s">%1$s curtha leis</string>
     <!-- Content description of the button that opens an authenticator app\'s options -->
     <string name="TotpAppListScreen__open_authenticator_app_options">Oscail roghanna maidir le haipeanna fíordheimhnitheora</string>
     <!-- Menu option that renames an authenticator app -->
     <string name="TotpAppListScreen__rename">Athainmnigh</string>
     <!-- Menu option that removes an authenticator app -->
-    <string name="TotpAppListScreen__remove">Bain é</string>
+    <string name="TotpAppListScreen__remove">Bain</string>
     <!-- Title of the dialog confirming removal of an authenticator app -->
     <string name="TotpAppListScreen__remove_authenticator_app">Bain aip fíordheimhnitheora?</string>
     <!-- Body of the dialog confirming removal of an authenticator app -->
-    <string name="TotpAppListScreen__you_wont_be_able_to_use_this_app">You won\'t be able to use this app for one-time verification codes when you sign in.</string>
+    <string name="TotpAppListScreen__you_wont_be_able_to_use_this_app">Ní bheidh tú in ann an aip seo a úsáid le haghaidh cóid fíoraithe aonuaire nuair a shíníonn tú isteach.</string>
     <!-- Title of the dialog shown when the account already has as many authenticator apps as it\'s allowed -->
     <string name="TotpAppListScreen__cant_add_authenticator_app">Ní féidir aip fíordheimhnitheora a chur leis</string>
     <!-- Body of the dialog shown when the account already has as many authenticator apps as it\'s allowed -->
     <string name="TotpAppListScreen__you_cant_add_more_than_d">Ní féidir leat níos mó ná an líon seo aipeanna fíordheimhnitheora a chur leis: %1$d. Triail ceann a bhaint ar dtús.</string>
     <!-- Dialog message shown when we couldn\'t work out which authenticator apps are on the account -->
-    <string name="TotpAppListScreen__couldnt_load_authenticator_apps">Couldn\'t load your authenticator apps. Check your connection and try again.</string>
+    <string name="TotpAppListScreen__couldnt_load_authenticator_apps">Níorbh fhéidir d\'aipeanna fíordheimhnitheora a lódáil. Seiceáil do nasc agus triail arís.</string>
     <!-- Toast shown after an authenticator app has been removed -->
     <string name="TotpAppListScreen__authenticator_app_removed">Aip fíordheimhnitheora bainte</string>
     <!-- Toast shown when an authenticator app couldn\'t be removed -->
-    <string name="TotpAppListScreen__couldnt_remove_authenticator_app">Couldn\'t remove authenticator app. Check your connection and try again.</string>
+    <string name="TotpAppListScreen__couldnt_remove_authenticator_app">Níorbh fhéidir an aip fíordheimhnitheora a bhaint. Seiceáil do nasc agus triail arís.</string>
 
     <!-- TotpNameEntryScreen -->
     <!-- Title of the screen where the user names an authenticator app -->
@@ -198,15 +198,15 @@
     <!-- Instructions shown above the name field when renaming an authenticator app -->
     <string name="TotpNameEntryScreen__choose_a_unique_name">Roghnaigh ainm uathúil don aip fíordheimhnitheora seo.</string>
     <!-- Instructions shown above the name field when naming a newly configured authenticator app -->
-    <string name="TotpNameEntryScreen__choose_a_unique_name_to_help_you_identify_it">Roghnaigh ainm uathúil don aip fíordheimhnitheora seo le cabhrú leat í a aithint níos moille.</string>
+    <string name="TotpNameEntryScreen__choose_a_unique_name_to_help_you_identify_it">Roghnaigh ainm uathúil don aip fíordheimhnitheora seo chun cabhrú leat í a aithint níos moille.</string>
     <!-- Label of the name field -->
     <string name="TotpNameEntryScreen__name">Ainm</string>
     <!-- Button that submits the entered name -->
     <string name="TotpNameEntryScreen__next">Ar aghaidh</string>
     <!-- Toast shown after an authenticator app has been successfully set up -->
-    <string name="TotpNameEntryScreen__authenticator_app_set_up">Socrú na haipe fíordheimhnitheora</string>
+    <string name="TotpNameEntryScreen__authenticator_app_set_up">Aip fíordheimhnitheora socraithe</string>
     <!-- Toast shown after an authenticator app has been renamed -->
     <string name="TotpNameEntryScreen__authenticator_app_renamed">Aip fíordheimhnitheora athainmnithe</string>
     <!-- Toast shown when we couldn\'t reach the service to save the name -->
-    <string name="TotpNameEntryScreen__couldnt_save_name">Couldn\'t save name. Check your connection and try again.</string>
+    <string name="TotpNameEntryScreen__couldnt_save_name">Níorbh fhéidir an t-ainm a shábháil. Seiceáil do nasc agus triail arís.</string>
 </resources>

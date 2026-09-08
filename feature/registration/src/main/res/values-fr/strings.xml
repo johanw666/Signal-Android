@@ -702,7 +702,7 @@
     <!-- Title of the dialog explaining the digits paired with a username. -->
     <string name="AddUsernameScreen__what_is_this_number">Que signifient ces chiffres ?</string>
     <!-- Body of the dialog explaining the digits paired with a username. -->
-    <string name="AddUsernameScreen__these_digits_help_keep">Ces chiffres servent à protéger la confidentialité de votre nom d\'utilisateur, vous évitant ainsi de recevoir des messages indésirables. Ne partagez votre nom d’utilisateur qu’avec les personnes et les groupes avec lesquels vous voulez discuter. Si vous changez de nom d’utilisateur, une nouvelle série de chiffres vous sera attribuée.</string>
+    <string name="AddUsernameScreen__these_digits_help_keep">Ces chiffres servent à protéger la confidentialité de votre nom d\'utilisateur, vous évitant ainsi de recevoir des messages indésirables. Ne partagez votre nom d\'utilisateur qu\'avec les personnes et les groupes avec lesquels vous voulez discuter. Si vous changez de nom d\'utilisateur, une nouvelle série de chiffres vous sera attribuée.</string>
     <!-- Button that skips choosing a username. -->
     <string name="AddUsernameScreen__skip">Ignorer</string>
     <!-- Button that submits the chosen username. -->

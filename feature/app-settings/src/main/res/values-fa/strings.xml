@@ -45,11 +45,11 @@
     <!-- Account setting that allows user to request and export their signal account data -->
     <string name="AccountSettingsFragment__request_account_data">اطلاعات حساب شما</string>
     <!-- Section header for the Signal Login section of account settings -->
-    <string name="AccountSettingsFragment__signal_login">اطلاعات ورود به سیگنال</string>
+    <string name="AccountSettingsFragment__signal_login">Signal Login</string>
     <!-- Title of the card that opens the user\'s Signal Login account and recovery keys -->
     <string name="AccountSettingsFragment__account_and_recovery">حساب و بازیابی</string>
     <!-- Description of what a Signal Login is, shown below the Signal Login card -->
-    <string name="AccountSettingsFragment__your_signal_login_is_used_to_recover">اطلاعات ورود به سیگنال شما برای بازیابی حسابتان استفاده می‌شود. این رمزها را به‌طور امن در یک برنامه مدیر رمز عبور که به آن اعتماد دارید ذخیره کنید.</string>
+    <string name="AccountSettingsFragment__your_signal_login_is_used_to_recover">Signal Login شما برای بازیابی حسابتان استفاده می‌شود. این رمزها را به‌طور امن در یک برنامه مدیر رمز عبور که به آن اعتماد دارید ذخیره کنید.</string>
     <!-- Section header for the two-factor authentication section of account settings -->
     <string name="AccountSettingsFragment__two_factor_authentication">احراز هویت دومرحله‌ای</string>
     <!-- Account setting that takes the user to the authenticator app setup flow -->
@@ -71,7 +71,7 @@
         <item quantity="other">%1$d کلید عبور</item>
     </plurals>
     <!-- Description of two-factor authentication, shown below the two-factor authentication rows -->
-    <string name="AccountSettingsFragment__use_a_second_form_of_authentication">هنگام استفاده از اطلاعات ورود به سیگنال در دستگاه جدید، از یک روش احراز هویت ثانویه برای محافظت از حساب خود استفاده کنید.</string>
+    <string name="AccountSettingsFragment__use_a_second_form_of_authentication">هنگام استفاده از Signal Login در دستگاه جدید، از یک روش احراز هویت ثانویه برای محافظت از حساب خود استفاده کنید.</string>
     <!-- Clickable text that takes the user to a support article -->
     <string name="AccountSettingsFragment__learn_more">اطلاعات بیشتر</string>
 
@@ -101,7 +101,7 @@
     <!-- Toast shown when there is no app installed that can handle the authenticator setup link -->
     <string name="TotpSetupScreen__no_authenticator_app_found">هیچ برنامه احراز هویتی پیدا نشد</string>
     <!-- Dialog message shown when we couldn\'t reach the service to start setting up an authenticator app -->
-    <string name="TotpSetupScreen__couldnt_reach_signal">Couldn\'t reach Signal. Check your connection and try again.</string>
+    <string name="TotpSetupScreen__couldnt_reach_signal">اتصال به سیگنال برقرار نشد. اتصال خود را بررسی و دوباره تلاش کنید.</string>
     <!-- Header of the third step of authenticator app setup -->
     <string name="TotpSetupScreen__step_3">مرحله ۳</string>
     <!-- Body of the third step of authenticator app setup -->
@@ -147,9 +147,9 @@
     <!-- Button that submits the entered code -->
     <string name="TotpCodeEntryScreen__done">انجام شد</string>
     <!-- Error shown under the code field when the code the user entered was rejected -->
-    <string name="TotpCodeEntryScreen__incorrect_code">Incorrect code. Enter the code showing in your authenticator app now.</string>
+    <string name="TotpCodeEntryScreen__incorrect_code">کد نادرست است. اکنون کد نمایش‌داده‌شده در برنامه احراز هویت خود را وارد کنید.</string>
     <!-- Error shown under the code field when we couldn\'t reach the service to check the code -->
-    <string name="TotpCodeEntryScreen__couldnt_reach_signal">Couldn\'t reach Signal. Check your connection and try again.</string>
+    <string name="TotpCodeEntryScreen__couldnt_reach_signal">اتصال به سیگنال برقرار نشد. اتصال خود را بررسی و دوباره تلاش کنید.</string>
     <!-- TotpAppListScreen -->
     <!-- Title of the screen listing the authenticator apps on the account -->
     <string name="TotpAppListScreen__authenticator_app">برنامه احراز هویت</string>
@@ -174,17 +174,17 @@
     <!-- Title of the dialog confirming removal of an authenticator app -->
     <string name="TotpAppListScreen__remove_authenticator_app">برنامه احراز هویت حذف شود؟</string>
     <!-- Body of the dialog confirming removal of an authenticator app -->
-    <string name="TotpAppListScreen__you_wont_be_able_to_use_this_app">You won\'t be able to use this app for one-time verification codes when you sign in.</string>
+    <string name="TotpAppListScreen__you_wont_be_able_to_use_this_app">هنگام ورود به سیستم، نمی‌توانید از این برنامه برای کدهای تأیید یکبارمصرف استفاده کنید.</string>
     <!-- Title of the dialog shown when the account already has as many authenticator apps as it\'s allowed -->
     <string name="TotpAppListScreen__cant_add_authenticator_app">افزودن برنامه احراز هویت امکان‌پذیر نیست</string>
     <!-- Body of the dialog shown when the account already has as many authenticator apps as it\'s allowed -->
     <string name="TotpAppListScreen__you_cant_add_more_than_d">نمی‌توانید بیش از %1$d برنامه احراز هویت اضافه کنید. ابتدا یکی را حذف کنید.</string>
     <!-- Dialog message shown when we couldn\'t work out which authenticator apps are on the account -->
-    <string name="TotpAppListScreen__couldnt_load_authenticator_apps">Couldn\'t load your authenticator apps. Check your connection and try again.</string>
+    <string name="TotpAppListScreen__couldnt_load_authenticator_apps">برنامه‌های احراز هویت بارگیری نشد. اتصال خود را بررسی و دوباره تلاش کنید.</string>
     <!-- Toast shown after an authenticator app has been removed -->
     <string name="TotpAppListScreen__authenticator_app_removed">برنامه احراز هویت حذف شد</string>
     <!-- Toast shown when an authenticator app couldn\'t be removed -->
-    <string name="TotpAppListScreen__couldnt_remove_authenticator_app">Couldn\'t remove authenticator app. Check your connection and try again.</string>
+    <string name="TotpAppListScreen__couldnt_remove_authenticator_app">برنامه احراز هویت حذف نشد. اتصال خود را بررسی و دوباره تلاش کنید.</string>
 
     <!-- TotpNameEntryScreen -->
     <!-- Title of the screen where the user names an authenticator app -->
@@ -202,5 +202,5 @@
     <!-- Toast shown after an authenticator app has been renamed -->
     <string name="TotpNameEntryScreen__authenticator_app_renamed">برنامه احراز هویت تغییر نام داد</string>
     <!-- Toast shown when we couldn\'t reach the service to save the name -->
-    <string name="TotpNameEntryScreen__couldnt_save_name">Couldn\'t save name. Check your connection and try again.</string>
+    <string name="TotpNameEntryScreen__couldnt_save_name">نام ذخیره نشد. اتصال خود را بررسی و دوباره تلاش کنید.</string>
 </resources>

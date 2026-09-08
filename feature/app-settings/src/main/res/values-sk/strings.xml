@@ -75,7 +75,7 @@
         <item quantity="other">%1$d prístupových kľúčov</item>
     </plurals>
     <!-- Description of two-factor authentication, shown below the two-factor authentication rows -->
-    <string name="AccountSettingsFragment__use_a_second_form_of_authentication">Použite ďalšiu formu autentifikácie, aby ste ochránili svoj účet pri používaní Signal Loginu na novom zariadení.</string>
+    <string name="AccountSettingsFragment__use_a_second_form_of_authentication">Použite ďalšiu formu autentifikácie, aby ste ochránili svoj účet pri používaní Signal Login na novom zariadení.</string>
     <!-- Clickable text that takes the user to a support article -->
     <string name="AccountSettingsFragment__learn_more">Zistiť viac</string>
 
@@ -105,7 +105,7 @@
     <!-- Toast shown when there is no app installed that can handle the authenticator setup link -->
     <string name="TotpSetupScreen__no_authenticator_app_found">Nenašla sa žiadna aplikácia na autentifikáciu</string>
     <!-- Dialog message shown when we couldn\'t reach the service to start setting up an authenticator app -->
-    <string name="TotpSetupScreen__couldnt_reach_signal">Couldn\'t reach Signal. Check your connection and try again.</string>
+    <string name="TotpSetupScreen__couldnt_reach_signal">Nepodarilo sa spojiť so Signalom. Skontrolujte svoje pripojenie a skúste to znova.</string>
     <!-- Header of the third step of authenticator app setup -->
     <string name="TotpSetupScreen__step_3">Krok 3</string>
     <!-- Body of the third step of authenticator app setup -->
@@ -151,9 +151,9 @@
     <!-- Button that submits the entered code -->
     <string name="TotpCodeEntryScreen__done">Hotovo</string>
     <!-- Error shown under the code field when the code the user entered was rejected -->
-    <string name="TotpCodeEntryScreen__incorrect_code">Incorrect code. Enter the code showing in your authenticator app now.</string>
+    <string name="TotpCodeEntryScreen__incorrect_code">Nesprávny kód. Zadajte kód zobrazený vo vašej aplikácii na autentifikáciu.</string>
     <!-- Error shown under the code field when we couldn\'t reach the service to check the code -->
-    <string name="TotpCodeEntryScreen__couldnt_reach_signal">Couldn\'t reach Signal. Check your connection and try again.</string>
+    <string name="TotpCodeEntryScreen__couldnt_reach_signal">Nepodarilo sa spojiť so Signalom. Skontrolujte svoje pripojenie a skúste to znova.</string>
     <!-- TotpAppListScreen -->
     <!-- Title of the screen listing the authenticator apps on the account -->
     <string name="TotpAppListScreen__authenticator_app">Aplikácia na autentifikáciu</string>
@@ -168,7 +168,7 @@
     <!-- Shown in place of the list when no authenticator apps are configured -->
     <string name="TotpAppListScreen__no_authenticator_apps">Žiadne aplikácie na autentifikáciu</string>
     <!-- Subtitle of an authenticator app row saying when it was configured. Placeholder is a date or time. -->
-    <string name="TotpAppListScreen__added_s">Pridaný „%1$s“</string>
+    <string name="TotpAppListScreen__added_s">Pridané %1$s</string>
     <!-- Content description of the button that opens an authenticator app\'s options -->
     <string name="TotpAppListScreen__open_authenticator_app_options">Otvoriť možnosti aplikácie na autentifikáciu</string>
     <!-- Menu option that renames an authenticator app -->
@@ -178,21 +178,21 @@
     <!-- Title of the dialog confirming removal of an authenticator app -->
     <string name="TotpAppListScreen__remove_authenticator_app">Odstrániť aplikáciu na autentifikáciu?</string>
     <!-- Body of the dialog confirming removal of an authenticator app -->
-    <string name="TotpAppListScreen__you_wont_be_able_to_use_this_app">You won\'t be able to use this app for one-time verification codes when you sign in.</string>
+    <string name="TotpAppListScreen__you_wont_be_able_to_use_this_app">Túto aplikáciu nebudete môcť použiť na jednorazové overovacie kódy, keď sa prihlásite.</string>
     <!-- Title of the dialog shown when the account already has as many authenticator apps as it\'s allowed -->
     <string name="TotpAppListScreen__cant_add_authenticator_app">Nie je možné pridať aplikáciu na autentifikáciu</string>
     <!-- Body of the dialog shown when the account already has as many authenticator apps as it\'s allowed -->
     <string name="TotpAppListScreen__you_cant_add_more_than_d">Nemôžete pridať viac ako %1$d aplikácie na autentifikáciu. Skúste najprv jednu odstrániť.</string>
     <!-- Dialog message shown when we couldn\'t work out which authenticator apps are on the account -->
-    <string name="TotpAppListScreen__couldnt_load_authenticator_apps">Couldn\'t load your authenticator apps. Check your connection and try again.</string>
+    <string name="TotpAppListScreen__couldnt_load_authenticator_apps">Nepodarilo sa načítať vaše aplikácie na autentifikáciu. Skontrolujte svoje pripojenie a skúste to znova.</string>
     <!-- Toast shown after an authenticator app has been removed -->
     <string name="TotpAppListScreen__authenticator_app_removed">Aplikácia na autentifikáciu bola odstránená</string>
     <!-- Toast shown when an authenticator app couldn\'t be removed -->
-    <string name="TotpAppListScreen__couldnt_remove_authenticator_app">Couldn\'t remove authenticator app. Check your connection and try again.</string>
+    <string name="TotpAppListScreen__couldnt_remove_authenticator_app">Nepodarilo sa odstrániť aplikáciu na autentifikáciu. Skontrolujte svoje pripojenie a skúste to znova.</string>
 
     <!-- TotpNameEntryScreen -->
     <!-- Title of the screen where the user names an authenticator app -->
-    <string name="TotpNameEntryScreen__choose_a_name">Zvoliť názov</string>
+    <string name="TotpNameEntryScreen__choose_a_name">Zvoľte názov</string>
     <!-- Instructions shown above the name field when renaming an authenticator app -->
     <string name="TotpNameEntryScreen__choose_a_unique_name">Vyberte si jedinečný názov pre túto aplikáciu na autentifikáciu.</string>
     <!-- Instructions shown above the name field when naming a newly configured authenticator app -->
@@ -206,5 +206,5 @@
     <!-- Toast shown after an authenticator app has been renamed -->
     <string name="TotpNameEntryScreen__authenticator_app_renamed">Aplikácia na autentifikáciu bola premenovaná</string>
     <!-- Toast shown when we couldn\'t reach the service to save the name -->
-    <string name="TotpNameEntryScreen__couldnt_save_name">Couldn\'t save name. Check your connection and try again.</string>
+    <string name="TotpNameEntryScreen__couldnt_save_name">Názov sa nepodarilo uložiť. Skontrolujte svoje pripojenie a skúste to znova.</string>
 </resources>

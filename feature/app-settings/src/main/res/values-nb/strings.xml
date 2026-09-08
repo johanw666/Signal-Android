@@ -45,11 +45,11 @@
     <!-- Account setting that allows user to request and export their signal account data -->
     <string name="AccountSettingsFragment__request_account_data">Dine brukerdata</string>
     <!-- Section header for the Signal Login section of account settings -->
-    <string name="AccountSettingsFragment__signal_login">Signal-innlogging</string>
+    <string name="AccountSettingsFragment__signal_login">Signal Login</string>
     <!-- Title of the card that opens the user\'s Signal Login account and recovery keys -->
     <string name="AccountSettingsFragment__account_and_recovery">Konto og gjenoppretting</string>
     <!-- Description of what a Signal Login is, shown below the Signal Login card -->
-    <string name="AccountSettingsFragment__your_signal_login_is_used_to_recover">Signal-innloggingen brukes til å gjenopprette kontoen din. Lagre disse kodene trygt i et passordverktøy du stoler på.</string>
+    <string name="AccountSettingsFragment__your_signal_login_is_used_to_recover">Signal Login kan brukes til å gjenopprette kontoen din. Lagre disse kodene trygt i et passordverktøy du stoler på.</string>
     <!-- Section header for the two-factor authentication section of account settings -->
     <string name="AccountSettingsFragment__two_factor_authentication">Tofaktorautentisering</string>
     <!-- Account setting that takes the user to the authenticator app setup flow -->
@@ -71,7 +71,7 @@
         <item quantity="other">%1$d passnøkler</item>
     </plurals>
     <!-- Description of two-factor authentication, shown below the two-factor authentication rows -->
-    <string name="AccountSettingsFragment__use_a_second_form_of_authentication">Bruk en sekundær autentiseringsmetode for å beskytte kontoen din når du bruker Signal-innloggingen din på en ny enhet.</string>
+    <string name="AccountSettingsFragment__use_a_second_form_of_authentication">Bruk en sekundær autentiseringsmetode for å beskytte kontoen din når du bruker din Signal Login på en ny enhet.</string>
     <!-- Clickable text that takes the user to a support article -->
     <string name="AccountSettingsFragment__learn_more">Les mer</string>
 
@@ -101,7 +101,7 @@
     <!-- Toast shown when there is no app installed that can handle the authenticator setup link -->
     <string name="TotpSetupScreen__no_authenticator_app_found">Fant ingen autentiseringsapp</string>
     <!-- Dialog message shown when we couldn\'t reach the service to start setting up an authenticator app -->
-    <string name="TotpSetupScreen__couldnt_reach_signal">Couldn\'t reach Signal. Check your connection and try again.</string>
+    <string name="TotpSetupScreen__couldnt_reach_signal">Kunne ikke nå Signal. Sjekk internettilkoblingen, og prøv på nytt.</string>
     <!-- Header of the third step of authenticator app setup -->
     <string name="TotpSetupScreen__step_3">Trinn 3</string>
     <!-- Body of the third step of authenticator app setup -->
@@ -147,14 +147,14 @@
     <!-- Button that submits the entered code -->
     <string name="TotpCodeEntryScreen__done">Ferdig</string>
     <!-- Error shown under the code field when the code the user entered was rejected -->
-    <string name="TotpCodeEntryScreen__incorrect_code">Incorrect code. Enter the code showing in your authenticator app now.</string>
+    <string name="TotpCodeEntryScreen__incorrect_code">Feil kode. Skriv inn koden fra autentiseringsappen din.</string>
     <!-- Error shown under the code field when we couldn\'t reach the service to check the code -->
-    <string name="TotpCodeEntryScreen__couldnt_reach_signal">Couldn\'t reach Signal. Check your connection and try again.</string>
+    <string name="TotpCodeEntryScreen__couldnt_reach_signal">Kunne ikke nå Signal. Sjekk internettilkoblingen, og prøv på nytt.</string>
     <!-- TotpAppListScreen -->
     <!-- Title of the screen listing the authenticator apps on the account -->
     <string name="TotpAppListScreen__authenticator_app">Autentiseringsapp</string>
     <!-- Description of what an authenticator app is for, shown at the top of the screen -->
-    <string name="TotpAppListScreen__set_up_an_authenticator_app">Konfigurer en autentiseringsapp for å generere unike bekreftelseskoder</string>
+    <string name="TotpAppListScreen__set_up_an_authenticator_app">Konfigurer en autentiseringsapp for å generere unike engangskoder</string>
     <!-- Clickable text that takes the user to a support article -->
     <string name="TotpAppListScreen__learn_more">Les mer</string>
     <!-- Button that starts setting up another authenticator app -->
@@ -174,17 +174,17 @@
     <!-- Title of the dialog confirming removal of an authenticator app -->
     <string name="TotpAppListScreen__remove_authenticator_app">Vil du fjerne autentiseringsappen?</string>
     <!-- Body of the dialog confirming removal of an authenticator app -->
-    <string name="TotpAppListScreen__you_wont_be_able_to_use_this_app">You won\'t be able to use this app for one-time verification codes when you sign in.</string>
+    <string name="TotpAppListScreen__you_wont_be_able_to_use_this_app">Du kan ikke bruke denne appen for engangskoder når du logger inn.</string>
     <!-- Title of the dialog shown when the account already has as many authenticator apps as it\'s allowed -->
     <string name="TotpAppListScreen__cant_add_authenticator_app">Autentiseringsappen kan ikke legges til</string>
     <!-- Body of the dialog shown when the account already has as many authenticator apps as it\'s allowed -->
     <string name="TotpAppListScreen__you_cant_add_more_than_d">Du kan legge til maks %1$d autentiseringsapper. Fjern en app for å legge til en ny.</string>
     <!-- Dialog message shown when we couldn\'t work out which authenticator apps are on the account -->
-    <string name="TotpAppListScreen__couldnt_load_authenticator_apps">Couldn\'t load your authenticator apps. Check your connection and try again.</string>
+    <string name="TotpAppListScreen__couldnt_load_authenticator_apps">Kunne ikke laste inn autentiseringsappene. Sjekk internettilkoblingen, og prøv på nytt.</string>
     <!-- Toast shown after an authenticator app has been removed -->
     <string name="TotpAppListScreen__authenticator_app_removed">Autentiseringsappen ble fjernet</string>
     <!-- Toast shown when an authenticator app couldn\'t be removed -->
-    <string name="TotpAppListScreen__couldnt_remove_authenticator_app">Couldn\'t remove authenticator app. Check your connection and try again.</string>
+    <string name="TotpAppListScreen__couldnt_remove_authenticator_app">Kunne ikke fjerne autentiseringsappen. Sjekk internettilkoblingen, og prøv på nytt.</string>
 
     <!-- TotpNameEntryScreen -->
     <!-- Title of the screen where the user names an authenticator app -->
@@ -202,5 +202,5 @@
     <!-- Toast shown after an authenticator app has been renamed -->
     <string name="TotpNameEntryScreen__authenticator_app_renamed">Navnet på autentiseringsappen ble endret</string>
     <!-- Toast shown when we couldn\'t reach the service to save the name -->
-    <string name="TotpNameEntryScreen__couldnt_save_name">Couldn\'t save name. Check your connection and try again.</string>
+    <string name="TotpNameEntryScreen__couldnt_save_name">Kunne ikke lagre navnet. Sjekk internettilkoblingen, og prøv på nytt.</string>
 </resources>

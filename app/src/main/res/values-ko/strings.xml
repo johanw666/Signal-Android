@@ -3167,7 +3167,7 @@
     <!-- Subtitle in a dialog that describes the timezone the user is picking times in. The first placeholder is a UTC offset, and the second placeholder is a user-friendly name for the timezone, e.g. "All times in (GMT-05:00) Eastern Standard Time" -->
     <string name="MuteUntilTimePickerBottomSheet__timezone_disclaimer">모든 시간대 %2$s(%1$s)(으)로 설정</string>
     <!-- Toast shown when choosing an invalid date to mute until (eg a date in the past) -->
-    <string name="MuteUntilTimePickerBottomSheet__invalid">Invalid time</string>
+    <string name="MuteUntilTimePickerBottomSheet__invalid">유효하지 않은 시간입니다</string>
 
     <!-- KeyCachingService -->
     <string name="KeyCachingService_signal_passphrase_cached">앱을 열려면 터치하세요.</string>
@@ -3286,7 +3286,7 @@
     <!-- Notification channel name for notifications sent when a device has been linked -->
     <string name="NotificationChannel_new_linked_device">새로 연동된 기기</string>
     <!-- Notification channel name for unread reminder notifications -->
-    <string name="NotificationChannel_unread_reminders">읽지 않는 메시지 알림</string>
+    <string name="NotificationChannel_unread_reminders">읽지 않은 메시지 알림</string>
 
     <!-- QuickResponseService -->
     <string name="QuickResponseService_quick_response_unavailable_when_Signal_is_locked">Signal가 잠겨 있는 경우 빠른 답장을 사용할 수 없어요.</string>
@@ -4226,7 +4226,7 @@
     <!-- Body option in settings to turn on reaction notifications    -->
     <string name="preferences_notifications__notify_reaction">내가 보낸 메시지에 대한 반응 알림을 표시합니다.</string>
     <!-- Option in settings to turn on unread reminders -->
-    <string name="preferences_notifications__unread">읽지 않는 메시지 알림</string>
+    <string name="preferences_notifications__unread">읽지 않은 메시지 알림</string>
     <!-- Body option to turn on unread reminders -->
     <string name="preferences_notifications__notify_unread">알림을 끈 대화에 읽지 않은 메시지가 있으면 일정 주기로 알림을 표시합니다.</string>
     <string name="preferences_notifications__ringtone">알림 벨소리</string>
@@ -6196,15 +6196,15 @@
     <string name="DSLSettingsToolbar__navigate_up">위로 탐색</string>
     <string name="MultiselectForwardFragment__forward_to">다음으로 전달</string>
     <!-- Displayed when sharing content to people via the fragment -->
-    <string name="MultiselectForwardFragment__share_with">공유자</string>
+    <string name="MultiselectForwardFragment__share_with">다음 대상과 공유하기</string>
     <string name="MultiselectForwardFragment__add_a_message">메시지 추가</string>
-    <string name="MultiselectForwardFragment__faster_forwards">빨리감기</string>
+    <string name="MultiselectForwardFragment__faster_forwards">더 빨라진 메시지 전달</string>
     <!-- Displayed when user selects a video that will be clipped before sharing to a story -->
     <string name="MultiselectForwardFragment__videos_will_be_trimmed">동영상이 30초 클립으로 편집되어 여러 개의 스토리로 전송됩니다.</string>
     <!-- Displayed when user selects a video that cannot be sent as a story -->
     <string name="MultiselectForwardFragment__videos_sent_to_stories_cant">스토리에 보내는 동영상 길이는 30초 이하여야 합니다.</string>
     <!-- Body in alert dialog telling users that messages are now sent immediately -->
-    <string name="MultiselectForwardFragment__forwarded_messages_are_now">이제 전달하는 메시지를 바로 보냅니다.</string>
+    <string name="MultiselectForwardFragment__forwarded_messages_are_now">메시지를 전달하면 이제 지연 없이 바로 전송됩니다.</string>
     <plurals name="MultiselectForwardFragment_send_d_messages">
         <item quantity="other">%1$d개 메시지 보내기</item>
     </plurals>
@@ -6215,12 +6215,12 @@
         <item quantity="other">메시지를 보내지 못함</item>
     </plurals>
     <plurals name="MultiselectForwardFragment__couldnt_forward_messages">
-        <item quantity="other">메시지를 더는 사용할 수 없어 전달하지 못했습니다.</item>
+        <item quantity="other">메시지가 더는 존재하지 않아 전달하지 못했습니다.</item>
     </plurals>
     <!-- Error message shown when attempting to select a group to forward/share but it\'s announcement only and you are not an admin -->
     <string name="MultiselectForwardFragment__only_admins_can_send_messages_to_this_group">관리자만 이 그룹에 메시지를 전송할 수 있습니다.</string>
     <!-- Error message shown when users try to choose more than 5 chats to send a message to -->
-    <string name="MultiselectForwardFragment__you_cant_select_more_chats">대화는 5개 이상 선택할 수 없습니다.</string>
+    <string name="MultiselectForwardFragment__you_cant_select_more_chats">대화는 최대 5개까지 선택할 수 있습니다.</string>
 
     <!-- Media V2 -->
     <!-- Dialog message when sending a story via an add to group story button -->
@@ -6232,7 +6232,7 @@
     <!-- Accessibility label describing the toggle view once button on the Media review screen -->
     <string name="MediaReviewFragment__view_once_toggle_accessibility_label">한 번만 보기 설정 전환</string>
     <!-- Accessibility label describing the finish adding a message button on the Media review screen dialog -->
-    <string name="MediaReviewFragment__finish_adding_a_message_accessibility_label">메시지 추가 완료</string>
+    <string name="MediaReviewFragment__finish_adding_a_message_accessibility_label">메시지 추가 마무리</string>
 
     <string name="ImageEditorHud__cancel">취소</string>
     <string name="ImageEditorHud__draw">그리기</string>
@@ -6276,8 +6276,8 @@
     <string name="ImageView__badge">배지</string>
 
     <string name="SubscribeFragment__cancel_subscription">구독 취소</string>
-    <string name="SubscribeFragment__confirm_cancellation">취소할까요?</string>
-    <string name="SubscribeFragment__you_wont_be_charged_again">요금이 다시 청구되지 않습니다. 청구 기간이 끝나면 프로필에서 배지가 사라집니다.</string>
+    <string name="SubscribeFragment__confirm_cancellation">정말 취소할까요?</string>
+    <string name="SubscribeFragment__you_wont_be_charged_again">앞으로 요금은 청구되지 않습니다. 현재 결제 주기가 끝나면 프로필에서 배지가 삭제됩니다.</string>
     <string name="SubscribeFragment__not_now">나중에</string>
     <string name="SubscribeFragment__confirm">확인</string>
     <string name="SubscribeFragment__update_subscription">구독 업데이트</string>
@@ -6286,11 +6286,11 @@
     <string name="SubscribeFragment__update">업데이트</string>
     <string name="SubscribeFragment__you_will_be_charged_the_full_amount_s_of">오늘 새 구독 요금의 전체 금액(%1$s)이 청구됩니다. 구독은 매월 갱신됩니다.</string>
 
-    <string name="Subscription__s_per_month">%1$s/1개월</string>
+    <string name="Subscription__s_per_month">%1$s/월</string>
     <!-- Shown when a subscription is active and isn\'t going to expire at the end of the term -->
     <string name="Subscription__renews_s">%1$s 갱신</string>
     <!-- Shown when a subscription is active and is going to expire at the end of the term -->
-    <string name="Subscription__expires_s">%1$s에 만료됨</string>
+    <string name="Subscription__expires_s">%1$s 만료</string>
 
     <!-- Title of learn more sheet -->
     <string name="SubscribeLearnMoreBottomSheetDialogFragment__signal_is_different">Signal은 독립적인 비영리단체로, 메시지와 통화의 프라이버시 보호를 핵심 가치로 삼고 있습니다. 광고도, 추적도, 감시도 없습니다. Signal의 사명을 지지하신다면 지금 후원해 보세요.</string>
@@ -6352,7 +6352,7 @@
     <string name="MySupportPreference__couldnt_add_badge_s">배지를 추가하지 못했습니다. %1$s</string>
     <string name="MySupportPreference__please_contact_support">고객 지원팀으로 문의하세요.</string>
     <!-- Displayed as a subtitle on a row in the Manage Donations screen when payment for a donation is pending -->
-    <string name="MySupportPreference__payment_pending">송금 대기 중</string>
+    <string name="MySupportPreference__payment_pending">결제 대기 중</string>
     <!-- Displayed as a dialog message when clicking on a donation row that is pending. Placeholder is a formatted fiat amount -->
     <string name="MySupportPreference__your_bank_transfer_of_s">%1$s의 계좌 이체가 대기 중입니다. 계좌 이체를 완료하는 데 영업일 기준 1~14일이 걸릴 수 있습니다.  </string>
     <!-- Displayed in the pending help dialog, used to launch user to more details about bank transfers -->
@@ -6391,21 +6391,21 @@
     <string name="ExpiredBadgeBottomSheetDialogFragment__add_a_boost">부스트 추가</string>
     <string name="ExpiredBadgeBottomSheetDialogFragment__not_now">나중에</string>
     <!-- Copy displayed when badge expires after user inactivity -->
-    <string name="ExpiredBadgeBottomSheetDialogFragment__your_recurring_monthly_donation_was_automatically">오랫동안 활동 기록이 없어 월간 정기후원이 자동으로 취소되었습니다. %1$s 배지가 더는 프로필에 표시되지 않습니다.</string>
+    <string name="ExpiredBadgeBottomSheetDialogFragment__your_recurring_monthly_donation_was_automatically">오랫동안 활동 기록이 없어 월 정기후원이 자동으로 취소되었습니다. %1$s 배지가 더는 프로필에 표시되지 않습니다.</string>
     <!-- Copy displayed when badge expires after payment failure -->
     <string name="ExpiredBadgeBottomSheetDialogFragment__your_recurring_monthly_donation_was_canceled">결제를 처리할 수 없어 월 정기후원이 취소되었습니다. 배지가 더는 프로필에 표시되지 않습니다.</string>
     <!-- Copy displayed when badge expires after a payment failure and we have a displayable charge failure reason -->
     <string name="ExpiredBadgeBottomSheetDialogFragment__your_recurring_monthly_donation_was_canceled_s">월 정기후원이 취소되었습니다. %1$s %2$s 배지가 더는 프로필에 표시되지 않습니다.</string>
-    <string name="ExpiredBadgeBottomSheetDialogFragment__you_can">Signal을 계속 사용할 수는 있지만 앱을 지원하고 배지를 재활성화하려면 지금 갱신하세요.</string>
+    <string name="ExpiredBadgeBottomSheetDialogFragment__you_can">Signal 앱을 후원하고 배지를 다시 활성화하려면 지금 갱신하세요. 갱신하지 않아도 Signal은 계속 이용하실 수 있습니다.</string>
     <string name="ExpiredBadgeBottomSheetDialogFragment__renew_subscription">구독 갱신</string>
     <!-- Button label to send user to Google Pay website -->
     <string name="ExpiredBadgeBottomSheetDialogFragment__go_to_google_pay">Google Pay로 이동</string>
 
     <string name="CantProcessSubscriptionPaymentBottomSheetDialogFragment__cant_process_subscription_payment">구독 결제를 처리할 수 없습니다.</string>
-    <string name="CantProcessSubscriptionPaymentBottomSheetDialogFragment__were_having_trouble">Signal 기여자 결제를 처리하는 도중 문제가 발생했습니다. 결제 수단 정보가 최신 상태인지 확인해 주세요. 최신 상태가 아닐 경우 Google Pay에서 업데이트하세요. Signal이 며칠 후 다시 결제 처리를 시도합니다.</string>
+    <string name="CantProcessSubscriptionPaymentBottomSheetDialogFragment__were_having_trouble">Signal 후원 결제에 문제가 발생했습니다. 등록된 결제 수단이 최신인지 확인하고, 필요한 경우 Google Pay에서 정보를 수정해 주세요. 며칠 내로 결제가 다시 진행됩니다.</string>
     <string name="CantProcessSubscriptionPaymentBottomSheetDialogFragment__dont_show_this_again">다시 표시 안 함</string>
 
-    <string name="Subscription__contact_support">지원에 문의</string>
+    <string name="Subscription__contact_support">고객 지원에 문의하기</string>
     <string name="Subscription__get_a_s_badge">%1$s 배지 받기</string>
 
     <!-- *PaymentInProgressFragment strings -->
@@ -6440,13 +6440,13 @@
     <string name="DonationsErrors__error_processing_payment_s">후원을 처리하는 중 오류가 발생했어요. %1$s</string>
     <string name="DonationsErrors__your_payment">후원을 처리할 수 없어 요금이 청구되지 않았습니다. 다시 시도해 주세요.</string>
     <string name="DonationsErrors__still_processing">아직 처리 중</string>
-    <string name="DonationsErrors__couldnt_add_badge">배지를 추가할 수 없습니다.</string>
+    <string name="DonationsErrors__couldnt_add_badge">배지 추가 실패</string>
     <!-- Displayed when backup credential could not be redeemed. Dialog or notification title -->
     <string name="DonationsError__something_went_wrong">오류가 발생했습니다</string>
     <!-- Displayed when backup credential could not be redeemed. Dialog or notification body -->
     <string name="DonationsError__your_backups_subscription_couldnt_be_displayed">백업 구독을 표시할 수 없습니다. 고객 지원팀에 문의하세요.</string>
     <!-- Displayed when badge credential couldn\'t be verified -->
-    <string name="DonationsErrors__failed_to_validate_badge">배지를 확인하지 못했습니다.</string>
+    <string name="DonationsErrors__failed_to_validate_badge">배지를 확인하지 못했습니다</string>
     <!-- Displayed when badge credential couldn\'t be verified -->
     <string name="DonationsErrors__could_not_validate">서버 응답을 확인할 수 없습니다. 고객 지원팀으로 문의해 주세요.</string>
     <!-- Displayed as title when some generic error happens during sending donation on behalf of another user -->
@@ -6455,7 +6455,7 @@
     <string name="DonationsErrors__your_payment_was_processed_but">후원금이 처리되었으나 Signal에서 후원 메시지를 보내지 못했습니다. 고객 지원팀으로 문의해 주세요.</string>
     <string name="DonationsErrors__your_badge_could_not">배지를 계정에 추가하지 못했지만 요금이 청구됐을 수 있습니다. 고객 지원팀으로 문의해 주세요.</string>
     <string name="DonationsErrors__your_payment_is_still">후원금을 아직 처리하는 중입니다. 연결에 따라 몇 분이 소요될 수 있습니다.</string>
-    <string name="DonationsErrors__failed_to_cancel_subscription">구독을 취소하지 못했습니다.</string>
+    <string name="DonationsErrors__failed_to_cancel_subscription">구독 취소 실패</string>
     <string name="DonationsErrors__subscription_cancellation_requires_an_internet_connection">구독을 취소하려면 인터넷 연결이 필요합니다.</string>
     <string name="ViewBadgeBottomSheetDialogFragment__your_device_doesn_t_support">이 기기는 앱 내 기부를 지원하지 않아 프로필 배지를 받을 수 없습니다. 대신 웹사이트에서 기부하여 Signal을 후원하는 방법도 있으니 참고해 주세요.</string>
     <string name="NetworkFailure__network_error_check_your_connection_and_try_again">네트워크 오류. 연결을 확인하고 다시 시도하세요.</string>
@@ -6463,9 +6463,9 @@
     <!-- Displayed as a dialog title when the selected recipient for a gift doesn\'t support gifting -->
     <string name="DonationsErrors__cannot_send_donation">후원금을 보낼 수 없습니다</string>
     <!-- Displayed as a dialog message when the selected recipient for a gift doesn\'t support gifting -->
-    <string name="DonationsErrors__this_user_cant_receive_donations_until">이 사용자는 Signal을 최신 버전으로 업그레이드해야 후원을 받을 수 있습니다.</string>
+    <string name="DonationsErrors__this_user_cant_receive_donations_until">상대방이 Signal 앱을 최신 버전으로 업데이트해야 후원금을 보낼 수 있습니다.</string>
     <!-- Displayed as a dialog message when the user\'s profile could not be fetched, likely due to lack of internet -->
-    <string name="DonationsErrors__your_donation_could_not_be_sent">네트워크 오류로 인해 후원금을 보내지 못했습니다. 연결을 확인하고 다시 시도하세요.</string>
+    <string name="DonationsErrors__your_donation_could_not_be_sent">네트워크 오류로 인해 후원금을 보내지 못했습니다. 연결을 확인하고 다시 시도해 주세요.</string>
     <!-- Displayed as a dialog message when the user encounters an error during an iDEAL donation -->
     <string name="DonationsErrors__your_ideal_wero_couldnt_be_processed">iDEAL | Wero 후원을 처리하지 못했습니다. 다른 결제 수단을 시도하거나 은행에 자세한 정보를 문의해 주세요.</string>
 
@@ -6474,13 +6474,13 @@
     <!-- Gift message view title for incoming donations -->
     <string name="GiftMessageView__s_donated_to_signal_on">%1$s 님이 나를 대신해 Signal을 후원했어요</string>
     <!-- Gift badge redeem action label -->
-    <string name="GiftMessageView__redeem">사용</string>
+    <string name="GiftMessageView__redeem">활성화하기</string>
     <!-- Gift badge view action label -->
     <string name="GiftMessageView__view">보기</string>
     <!-- Gift badge redeeming action label -->
-    <string name="GiftMessageView__redeeming">사용 중…</string>
+    <string name="GiftMessageView__redeeming">활성화 중…</string>
     <!-- Gift badge redeemed label -->
-    <string name="GiftMessageView__redeemed">사용함</string>
+    <string name="GiftMessageView__redeemed">활성화 완료</string>
 
 
     <!-- Stripe decline code generic_failure -->
@@ -6514,7 +6514,7 @@
     <!-- Stripe decline code issuer not available -->
     <string name="DeclineCode__try_completing_the_payment_again">후원을 다시 시도하거나 은행에 자세한 정보를 문의하세요.</string>
     <!-- Stripe decline code processing error -->
-    <string name="DeclineCode__try_again">다시 시도하거나 자세한 정보를 은행에 문의하세요.</string>
+    <string name="DeclineCode__try_again">다시 시도하거나 은행에 자세한 정보를 문의하세요.</string>
 
     <!-- Credit Card decline code error strings -->
     <!-- Stripe decline code approve_with_id for credit cards displayed in a notification or dialog -->
@@ -6553,11 +6553,11 @@
     <!-- Call to action button to continue to the next step -->
     <string name="EditNotificationProfileFragment__next">다음</string>
     <!-- Call to action button once the profile is named to create the profile and continue to the customization steps -->
-    <string name="EditNotificationProfileFragment__create">만들기</string>
+    <string name="EditNotificationProfileFragment__create">생성</string>
     <!-- Call to action button once the profile name is edited -->
     <string name="EditNotificationProfileFragment__save">저장</string>
     <!-- Title of edit notification profile screen -->
-    <string name="EditNotificationProfileFragment__edit_this_profile">이 프로필 수정</string>
+    <string name="EditNotificationProfileFragment__edit_this_profile">프로필을 수정하세요</string>
     <!-- Error message shown when attempting to create or edit a profile name to an existing profile name -->
     <string name="EditNotificationProfileFragment__a_profile_with_this_name_already_exists">다른 프로필에서 사용 중인 이름입니다</string>
     <!-- Preset selectable name for a profile name, shown as list in edit/create screen -->
@@ -6632,7 +6632,7 @@
     <!-- Title for add schedule to profile in create flow -->
     <string name="EditNotificationProfileSchedule__add_a_schedule">일정 추가</string>
     <!-- Descriptor text indicating what the user can do with this screen -->
-    <string name="EditNotificationProfileSchedule__set_up_a_schedule_to_enable_this_notification_profile_automatically">일정을 설정하여 이 알림 프로필을 자동으로 활성화하세요.</string>
+    <string name="EditNotificationProfileSchedule__set_up_a_schedule_to_enable_this_notification_profile_automatically">알림 프로필이 자동으로 활성화되도록 일정을 설정하세요.</string>
     <!-- Text shown next to toggle switch to enable/disable schedule -->
     <string name="EditNotificationProfileSchedule__schedule">일정</string>
     <!-- Label for showing the start time for the schedule -->
@@ -6667,7 +6667,7 @@
     <string name="EditNotificationProfileSchedule__schedule_must_have_at_least_one_day">일정은 하루 이상이어야 합니다.</string>
 
     <!-- Title for final screen shown after completing a profile creation -->
-    <string name="NotificationProfileCreated__profile_created">프로필 생성됨</string>
+    <string name="NotificationProfileCreated__profile_created">프로필 생성 완료</string>
     <!-- Call to action button to press to close the created screen and move to the profile details screen -->
     <string name="NotificationProfileCreated__done">확인</string>
     <!-- Descriptor text shown to indicate how to manually turn a profile on/off -->
@@ -6693,7 +6693,7 @@
     <!-- Banner title when notification permission is disabled -->
     <string name="NotificationSettingsFragment__to_enable_notifications">알림을 사용하려면 Signal에 알림을 표시할 권한을 부여해야 합니다.</string>
     <!-- Banner action when notification permission is disabled -->
-    <string name="NotificationSettingsFragment__turn_on">사용</string>
+    <string name="NotificationSettingsFragment__turn_on">켜기</string>
 
     <!-- Text description in Signal Release channel details explaining that it is the only chat from Signal -->
     <string name="ReleaseNotes__this_is_official_chat">Signal이 운영하는 유일한 공식 채널입니다.</string>
@@ -6711,13 +6711,13 @@
     <!-- Donation receipts one-time tab label -->
     <string name="DonationReceiptListFragment__one_time">일회성 후원</string>
     <!-- Donation receipts gift tab -->
-    <string name="DonationReceiptListFragment__for_a_friend">친구 대신</string>
+    <string name="DonationReceiptListFragment__for_a_friend">친구 대신 후원</string>
     <!-- Donation receipts gift tab label -->
     <string name="DonationReceiptListFragment__donation_for_a_friend">친구 대신 후원</string>
     <!-- Donation receipts donation type heading -->
     <string name="DonationReceiptDetailsFragment__donation_type">후원 종류</string>
     <!-- Donation receipts date paid heading -->
-    <string name="DonationReceiptDetailsFragment__date_paid">지불 날짜</string>
+    <string name="DonationReceiptDetailsFragment__date_paid">결제일</string>
     <!-- Donation receipts share PNG -->
     <string name="DonationReceiptDetailsFragment__share_receipt">영수증 공유</string>
     <!-- Donation receipts list end note -->
@@ -6740,9 +6740,9 @@
     <!-- Label for Stories tab in home app screen -->
     <string name="ConversationListTabs__stories">스토리</string>
     <!-- String for counts above 99 in conversation list tabs -->
-    <string name="ConversationListTabs__99p">99개 이상</string>
+    <string name="ConversationListTabs__99p">99+</string>
     <!-- Menu item on stories landing page -->
-    <string name="StoriesLandingFragment__story_privacy">스토리 개인정보보호</string>
+    <string name="StoriesLandingFragment__story_privacy">스토리 개인정보 보호</string>
     <!-- Title for "My Stories" row item in Stories landing page -->
     <string name="StoriesLandingFragment__my_stories">내 스토리</string>
     <!-- Subtitle for "My Stories" row item when user has not added stories -->
@@ -6756,7 +6756,7 @@
     <!-- Context menu option to forward a story -->
     <string name="StoriesLandingItem__forward">전달</string>
     <!-- Context menu option to share a story -->
-    <string name="StoriesLandingItem__share">공유…</string>
+    <string name="StoriesLandingItem__share">공유</string>
     <!-- Context menu option to go to story chat -->
     <string name="StoriesLandingItem__go_to_chat">대화로 이동</string>
     <!-- Context menu option to go to story info -->
@@ -6766,7 +6766,7 @@
     <!-- Label when multiple stories are pending sending where %1$d is the number of stories being sent -->
     <string name="StoriesLandingItem__sending_d">%1$d 전송 중…</string>
     <!-- Label when a story fails to send due to networking -->
-    <string name="StoriesLandingItem__send_failed">보내기 실패</string>
+    <string name="StoriesLandingItem__send_failed">전송 실패</string>
     <!-- Label when a story fails to send due to identity mismatch -->
     <string name="StoriesLandingItem__partially_sent">부분 전송됨</string>
     <!-- Status label when a story fails to send indicating user action to retry -->
@@ -6783,7 +6783,7 @@
     <string name="StoriesLandingFragment__hidden_stories">숨겨진 스토리</string>
     <!-- Displayed on each sent story under My Stories -->
     <plurals name="MyStories__d_views">
-        <item quantity="other">조회수 %1$d</item>
+        <item quantity="other">조회수 %1$d회</item>
     </plurals>
     <!-- Forward story label, displayed in My Stories context menu -->
     <string name="MyStories_forward">전달</string>
@@ -6844,7 +6844,7 @@
 
     <!-- Displayed at bottom of story viewer when current item has views -->
     <plurals name="StoryViewerFragment__d_views">
-        <item quantity="other">조회수 %1$d</item>
+        <item quantity="other">조회수 %1$d회</item>
     </plurals>
     <!-- Displayed at bottom of story viewer when current item has replies -->
     <plurals name="StoryViewerFragment__d_replies">
@@ -6861,7 +6861,7 @@
     <!-- Displayed when viewing a post you sent -->
     <string name="StoryViewerPageFragment__you">나</string>
     <!-- Displayed when viewing a story sent to a group, placeholders are person who sent the story and the group name -->
-    <string name="StoryViewerPageFragment__s_to_s">%1$s~%2$s</string>
+    <string name="StoryViewerPageFragment__s_to_s">%1$s -&gt; %2$s</string>
     <!-- Displayed when viewing a post from another user with no replies -->
     <string name="StoryViewerPageFragment__reply">답장</string>
     <!-- Displayed when viewing a post that has failed to send to some users -->
@@ -6879,15 +6879,15 @@
     <!-- Button label displayed when user has disabled receipts -->
     <string name="StoryViewsFragment__go_to_settings">설정으로 이동</string>
     <!-- Dialog action to remove viewer from a story -->
-    <string name="StoryViewsFragment__remove">제거</string>
+    <string name="StoryViewsFragment__remove">제외</string>
     <!-- Dialog title when removing a viewer from a story -->
     <string name="StoryViewsFragment__remove_viewer">볼 수 있는 사람에서 제외할까요?</string>
     <!-- Dialog message when removing a viewer from a story -->
-    <string name="StoryViewsFragment__s_will_still_be_able">%1$s 님은 이 게시물은 계속 볼 수 있지만 앞으로 내가 %2$s에 공유하는 게시물은 볼 수 없게 됩니다.</string>
+    <string name="StoryViewsFragment__s_will_still_be_able">%1$s 님은 이 게시물을 계속 볼 수 있지만, 앞으로 내가 %2$s에 공유하는 게시물은 볼 수 없게 됩니다.</string>
     <!-- Story View context menu action to remove them from a story -->
     <string name="StoryViewItem__remove_viewer">볼 수 있는 사람에서 제외하기</string>
     <!-- Displayed when a story has no replies yet -->
-    <string name="StoryGroupReplyFragment__no_replies_yet">답장 없음</string>
+    <string name="StoryGroupReplyFragment__no_replies_yet">아직 받은 답장이 없어요</string>
     <!-- Displayed when no longer a group member -->
     <string name="StoryGroupReplyFragment__you_cant_reply">더 이상 이 그룹의 멤버가 아니므로 이 스토리에 답장할 수 없습니다.</string>
     <!-- Displayed for when you reacted to a story when viewing replies -->
@@ -6944,7 +6944,7 @@
     <!-- Switchable option for allowing replies and reactions on your stories -->
     <string name="MyStorySettingsFragment__allow_replies_amp_reactions">답장 및 반응 허용</string>
     <!-- Summary for switchable option allowing replies and reactions on your story -->
-    <string name="MyStorySettingsFragment__let_people_who_can_view_your_story_react_and_reply">내 스토리를 볼 수 있는 사용자의 공감 및 답장 허용</string>
+    <string name="MyStorySettingsFragment__let_people_who_can_view_your_story_react_and_reply">내 스토리를 볼 수 있는 사용자의 반응 및 답장 허용</string>
     <!-- Signal connections bolded text in the Signal Connections sheet -->
     <string name="SignalConnectionsBottomSheet___signal_connections">Signal 친구</string>
     <!-- Displayed at the top of the signal connections sheet. Please remember to insert strong tag as required. -->
@@ -6966,7 +6966,7 @@
     <!-- Dialog message when attempting to remove someone from a custom story -->
     <string name="PrivateStorySettingsFragment__this_person_will_no_longer">이 사용자는 더 이상 내 스토리를 볼 수 없습니다.</string>
     <!-- Positive action label when attempting to remove someone from a custom story -->
-    <string name="PrivateStorySettingsFragment__remove">삭제하기</string>
+    <string name="PrivateStorySettingsFragment__remove">삭제</string>
     <!-- Dialog title when deleting a custom story -->
     <!-- Dialog message when deleting a custom story -->
     <!-- Page title for editing a custom story name -->
@@ -7043,7 +7043,7 @@
     <!-- Name story screen viewers subheading -->
     <string name="CreateStoryWithViewersFragment__viewers">볼 수 있는 사람</string>
     <!-- Name story screen create button label -->
-    <string name="CreateStoryWithViewersFragment__create">만들기</string>
+    <string name="CreateStoryWithViewersFragment__create">생성</string>
     <!-- Name story screen error when save attempted with no label -->
     <string name="CreateStoryWithViewersFragment__this_field_is_required">이 입력창은 필수입니다.</string>
     <!-- Name story screen error when save attempted but label is duplicate -->
@@ -7265,7 +7265,7 @@
     <string name="SafetyNumberReviewConnectionsFragment__remove">제거</string>
 
     <!-- Title of initial My Story settings configuration shown when sending to My Story for the first time -->
-    <string name="ChooseInitialMyStoryMembershipFragment__my_story_privacy">내 스토리 개인정보보호</string>
+    <string name="ChooseInitialMyStoryMembershipFragment__my_story_privacy">내 스토리 개인정보 보호</string>
     <!-- Subtitle of initial My Story settings configuration shown when sending to My Story for the first time -->
     <string name="ChooseInitialMyStoryMembershipFragment__choose_who_can_see_posts_to_my_story_you_can_always_make_changes_in_settings">내 스토리 게시물을 볼 수 있는 사람을 선택하세요. 설정에서 언제든지 변경할 수 있습니다.</string>
     <!-- All connections option for initial My Story settings configuration shown when sending to My Story for the first time -->
@@ -9750,68 +9750,56 @@
     <!-- Button declining to paste the recovery key -->
     <string name="RecoveryKeyWarningDialog__dont_share">복구 키 공유하지 않기</string>
 
-    <!-- Notification body for unread reminders. First two placeholders are the number of unread messages and calls, last two are the summaries for mentions and replies -->
-    <string name="UnreadReminderJob__calls_and_unread_full_summary">You have %1$s and %2$s including %3$s and %4$s.</string>
-    <!-- Notification body for unread reminders. First two placeholders are the number of unread messages and calls, third is a summary of mentions or replies -->
-    <string name="UnreadReminderJob__calls_and_unread_summary">You have %1$s and %2$s including %3$s.</string>
-    <!-- Notification body for unread reminders. First two placeholders are the number of unread messages and calls, third is a list of recipients who sent them -->
-    <string name="UnreadReminderJob__calls_and_unread_author">You have %1$s and %2$s from %3$s.</string>
     <!-- Notification body for unread reminders. First placeholder is unread messages, second is a summary of unread mentions or replies -->
-    <string name="UnreadReminderJob__unread_one_summary">You have %1$s, including %2$s.</string>
+    <string name="UnreadReminderJob__unread_one_summary">%1$s(%2$s 포함)가 있습니다.</string>
     <!-- Notification body for unread reminders. First placeholder is unread messages, second is a summary of unread mentions, third replies -->
-    <string name="UnreadReminderJob__unread_both_summary">You have %1$s, including %2$s and %3$s.</string>
+    <string name="UnreadReminderJob__unread_both_summary">%1$s(%2$s, %3$s 포함)가 있습니다.</string>
     <!-- Notification body for unread reminders. First placeholder is unread messages, second is a list of people who sent them -->
-    <string name="UnreadReminderJob__calls_or_unread_author">You have %1$s from %2$s.</string>
-    <!-- Notification body for unread reminders. First placeholder is unread messages or unread calls -->
-    <string name="UnreadReminderJob__calls_or_unread">You have %1$s.</string>
-    <!-- Notification body for unread reminders. First placeholder is unread messages, second is unread calls. -->
-    <string name="UnreadReminderJob__calls_and_unread">You have %1$s and %2$s.</string>
-    <!-- Notification placeholder for unread calls -->
-    <plurals name="UnreadReminderJob__calls">
-        <item quantity="other">%1$d missed calls</item>
-    </plurals>
+    <string name="UnreadReminderJob__calls_or_unread_author">%2$s 님에게서 온 %1$s가 있습니다.</string>
+    <!-- Notification body for unread reminders. First placeholder is unread messages -->
+    <string name="UnreadReminderJob__calls_or_unread">%1$s이(가) 있습니다.</string>
     <!-- Notification placeholder for unread messages -->
     <plurals name="UnreadReminderJob__messages">
         <item quantity="other">읽지 않은 메시지 %1$d개</item>
     </plurals>
     <!-- Notification placeholder for a single recipient who sent unread messages -->
-    <string name="UnreadReminderJob__authors_one">%1$s</string>
+    <string name="UnreadReminderJob__authors_one">%1$s 님</string>
     <!-- Notification placeholder for two recipients who sent unread messages -->
-    <string name="UnreadReminderJob__authors_two">%1$s, %2$s</string>
+    <string name="UnreadReminderJob__authors_two">%1$s 님, %2$s 님</string>
     <!-- Notification placeholder for three or more recipients who sent unread messages -->
-    <string name="UnreadReminderJob__authors_many">%1$s and others</string>
+    <string name="UnreadReminderJob__authors_many">%1$s 님 외 여러 명</string>
     <!-- Notification placeholder that sums up a single unread mention. Placeholder is the name of the person who sent the message -->
-    <string name="UnreadReminderJob__mentions_one">a mention of you by %1$s</string>
+    <string name="UnreadReminderJob__mentions_one">%1$s 님의 멘션 1회</string>
     <!-- Notification placeholder that sums up unread mentions from two people. First placeholder is the number of mentions, second and third are the names of the people who sent them -->
     <plurals name="UnreadReminderJob__mentions_two">
-        <item quantity="other">%1$d mentions of you by %2$s and %3$s</item>
+        <item quantity="other">%2$s 님과 %3$s 님의 멘션 %1$d회</item>
     </plurals>
     <!-- Notification placeholder that sums up unread mentions from three or more people. First placeholder is the number of mentions, second is the name of one person who sent them -->
     <plurals name="UnreadReminderJob__mentions_many">
-        <item quantity="other">%1$d mentions of you by %2$s and others</item>
+        <item quantity="other">%2$s 님 외 여러 명의 멘션 %1$d회</item>
     </plurals>
     <!-- Notification placeholder that sums up a single unread reply. Placeholder is the name of the person who sent the message -->
-    <string name="UnreadReminderJob__replies_one">a reply from %1$s</string>
+    <string name="UnreadReminderJob__replies_one">%1$s 님이 보낸 답장 1개</string>
     <!-- Notification placeholder that sums up unread replies from two people. First placeholder is the number of replies, second and third are the names of the people who sent them -->
     <plurals name="UnreadReminderJob__replies_two">
-        <item quantity="other">%1$d replies from %2$s and %3$s</item>
+        <item quantity="other">%2$s 님과 %3$s 님이 보낸 답장 %1$d개</item>
     </plurals>
     <!-- Notification placeholder that sums up unread replies from three or more people. First placeholder is the number of replies, second is the name of one person who sent them -->
     <plurals name="UnreadReminderJob__replies_many">
-        <item quantity="other">%1$d replies from %2$s and others</item>
+        <item quantity="other">%2$s 님 외 여러 명이 보낸 답장 %1$d개</item>
     </plurals>
 
     <!-- Title of the screen where the user chooses which parts of a contact to share -->
     <string name="ShareContactScreen__share_contact">연락처 공유</string>
 
     <!-- Label beneath the company name of the contact being shared -->
-    <string name="ShareContactScreen__company">Company</string>
+    <string name="ShareContactScreen__company">회사</string>
     <!-- Label beneath a shared nickname value -->
     <string name="ShareContactScreen__nickname">별칭</string>
     <!-- Label beneath a shared note value -->
     <string name="ShareContactScreen__notes">메모</string>
     <!-- Title of the sheet where the user picks which photo to share -->
-    <string name="ShareContactScreen__select_a_photo_to_share">Select a photo to share</string>
+    <string name="ShareContactScreen__select_a_photo_to_share">공유할 사진 선택하기</string>
     <!-- Button that confirms the chosen photo and closes the photo picker sheet -->
     <string name="ShareContactScreen__done">확인</string>
     <!-- Accessibility label for the button that sends the contact card -->
@@ -9846,13 +9834,13 @@
     <!-- Row that adds a shared contact to a Signal group -->
     <string name="SharedContactDetailsScreen__add_to_a_group">그룹에 추가</string>
     <!-- Toast shown after copying a shared contact detail -->
-    <string name="SharedContactDetailsScreen__copied">Copied</string>
+    <string name="SharedContactDetailsScreen__copied">복사됨</string>
     <!-- Toast shown when there is no contacts app to save a shared contact into -->
-    <string name="SharedContactDetailsScreen__couldnt_open_contacts">Couldn\'t open Contacts</string>
+    <string name="SharedContactDetailsScreen__couldnt_open_contacts">연락처 앱을 열 수 없음</string>
     <!-- Toast shown when there is no map app to open a shared address in -->
-    <string name="SharedContactDetailsScreen__couldnt_open_maps">Couldn\'t open maps</string>
+    <string name="SharedContactDetailsScreen__couldnt_open_maps">지도 앱을 열 수 없음</string>
     <!-- Subject line of an email invitation to Signal -->
-    <string name="SharedContactDetailsScreen__join_me_on_signal">Join me on Signal</string>
+    <string name="SharedContactDetailsScreen__join_me_on_signal">Signal에서 함께 대화해요</string>
 
     <!-- EOF -->
 </resources>

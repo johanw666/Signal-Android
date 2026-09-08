@@ -9954,27 +9954,14 @@
     <!-- Button declining to paste the recovery key -->
     <string name="RecoveryKeyWarningDialog__dont_share">Не споделяйте</string>
 
-    <!-- Notification body for unread reminders. First two placeholders are the number of unread messages and calls, last two are the summaries for mentions and replies -->
-    <string name="UnreadReminderJob__calls_and_unread_full_summary">Имате %1$s и %2$s, включително %3$s и %4$s.</string>
-    <!-- Notification body for unread reminders. First two placeholders are the number of unread messages and calls, third is a summary of mentions or replies -->
-    <string name="UnreadReminderJob__calls_and_unread_summary">Имате %1$s и %2$s, включително %3$s.</string>
-    <!-- Notification body for unread reminders. First two placeholders are the number of unread messages and calls, third is a list of recipients who sent them -->
-    <string name="UnreadReminderJob__calls_and_unread_author">Имате %1$s и %2$s от %3$s.</string>
     <!-- Notification body for unread reminders. First placeholder is unread messages, second is a summary of unread mentions or replies -->
     <string name="UnreadReminderJob__unread_one_summary">Имате %1$s, включително %2$s.</string>
     <!-- Notification body for unread reminders. First placeholder is unread messages, second is a summary of unread mentions, third replies -->
     <string name="UnreadReminderJob__unread_both_summary">Имате %1$s, включително %2$s и %3$s.</string>
     <!-- Notification body for unread reminders. First placeholder is unread messages, second is a list of people who sent them -->
     <string name="UnreadReminderJob__calls_or_unread_author">Имате %1$s от %2$s.</string>
-    <!-- Notification body for unread reminders. First placeholder is unread messages or unread calls -->
+    <!-- Notification body for unread reminders. First placeholder is unread messages -->
     <string name="UnreadReminderJob__calls_or_unread">Имате %1$s.</string>
-    <!-- Notification body for unread reminders. First placeholder is unread messages, second is unread calls. -->
-    <string name="UnreadReminderJob__calls_and_unread">Имате %1$s и %2$s.</string>
-    <!-- Notification placeholder for unread calls -->
-    <plurals name="UnreadReminderJob__calls">
-        <item quantity="one">%1$d пропуснато обаждане</item>
-        <item quantity="other">%1$d пропуснати обаждания</item>
-    </plurals>
     <!-- Notification placeholder for unread messages -->
     <plurals name="UnreadReminderJob__messages">
         <item quantity="one">%1$d непрочетено съобщение</item>

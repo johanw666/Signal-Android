@@ -45,7 +45,7 @@
     <string name="RegistrationActivity_select_a_country">దేశాన్ని ఎంచుకోండి</string>
     <string name="RegistrationActivity_phone_number_description">ఫోను నంబరు</string>
     <!-- Label the phone number field takes on when what has been typed reads as an account ID rather than a number -->
-    <string name="RegistrationActivity_account_id">Account ID</string>
+    <string name="RegistrationActivity_account_id">ఖాతా ID</string>
     <!-- Error shown beneath the phone number field when the entered number is not valid -->
     <string name="RegistrationActivity_not_a_valid_phone_number">చెల్లుబాటు అయ్యే ఫోన్ నంబర్ కాదు</string>
     <!-- Dialog title shown when the entered phone number is rejected as invalid -->
@@ -247,7 +247,7 @@
     <!-- Title of the dialog shown when the entered recovery key is correct, but the account has no Signal Backup to restore -->
     <string name="EnterAepScreen__no_backup_found">బ్యాకప్ ఏదీ కనుగొనబడలేదు</string>
     <!-- Body of the dialog shown when the entered recovery key is correct, but the account has no Signal Backup to restore -->
-    <string name="EnterAepScreen__no_backup_found_body">Your recovery key is correct, but there\'s no Signal Backup for this account. Go back to choose another way to restore, or continue without restoring.</string>
+    <string name="EnterAepScreen__no_backup_found_body">మీ రికవరీ కీ సరైనదే, కానీ ఈ ఖాతాకు Signal బ్యాకప్ ఏదీ లేదు. వేరే విధానాన్ని ఎంచుకుని పునరుద్ధరించడానికి వెనక్కి వెళ్లండి లేదా పునరుద్ధరణ లేకుండా కొనసాగించండి.</string>
     <!-- Text shown while preparing the restore -->
     <string name="LocalBackupRestoreScreen__preparing_restore">పునరుద్ధరణను సిద్ధం చేస్తోంది…</string>
     <!-- Title shown while restore is in progress -->
@@ -614,9 +614,9 @@
 
     <!-- Signal Login purchase screen -->
     <!-- Title of the screen where the user buys a Signal Login to register without a phone number. -->
-    <string name="SignalLoginPaymentScreen__signal_login">Signal లాగిన్</string>
+    <string name="SignalLoginPaymentScreen__signal_login">Signal Login</string>
     <!-- Description of what a Signal Login is. Followed by a "learn more" link. -->
-    <string name="SignalLoginPaymentScreen__register_without_a_phone_number">Signal లాగిన్ ఉపయోగించి ఫోన్ నంబర్ లేకుండా నమోదు చేసుకోండి. ఒక్కసారి కొనుగోలు చేయడం ద్వారా, మీరు ప్రారంభించడానికి ఒక ఖాతా కీని పొందుతారు.</string>
+    <string name="SignalLoginPaymentScreen__register_without_a_phone_number">Signal Login ఉపయోగించి ఫోన్ నంబర్ లేకుండా నమోదు చేసుకోండి. ఒక్కసారి కొనుగోలు చేయడం ద్వారా, మీరు ప్రారంభించడానికి ఒక ఖాతా కీని అందుకుంటారు.</string>
     <!-- Link at the end of the description that opens a support article about Signal Login. -->
     <string name="SignalLoginPaymentScreen__learn_more">మరింత తెలుసుకోండి</string>
     <!-- Subtitle of the purchase option, clarifying the price is not a subscription. -->
@@ -628,7 +628,7 @@
     <!-- Selling point of the purchase option: the purchase supports Signal. -->
     <string name="SignalLoginPaymentScreen__signal_is_a_non_profit">Signal ఒక లాభాపేక్ష లేని సంస్థ — మీరు చేసే కొనుగోలు మా లక్ష్యానికి మద్దతు ఇవ్వడంలో సహాయం చేస్తుంది</string>
     <!-- Title of the option for users who already bought a Signal Login. -->
-    <string name="SignalLoginPaymentScreen__i_have_a_signal_login">నా దగ్గర Signal లాగిన్ ఉంది</string>
+    <string name="SignalLoginPaymentScreen__i_have_a_signal_login">నా దగ్గర ఒక Signal Login ఉంది</string>
     <!-- Subtitle of the existing-login option. -->
     <string name="SignalLoginPaymentScreen__use_your_existing_account_key">మీ ప్రస్తుత ఖాతా కీని ఉపయోగించండి</string>
     <!-- Selling point of the existing-login option: the account can be restored. -->
@@ -650,41 +650,41 @@
 
     <!-- Signal Login details screen -->
     <!-- Title of the screen that shows the user their newly purchased Signal Login. -->
-    <string name="SignalLoginInfoScreen__your_signal_login">మీ Signal లాగిన్</string>
+    <string name="SignalLoginInfoScreen__your_signal_login">మీ Signal Login</string>
     <!-- Description warning the user that a lost Signal Login cannot be recovered. -->
-    <string name="SignalLoginInfoScreen__thanks_for_your_purchase">మీ కొనుగోలుకు ధన్యవాదాలు. మీ ఖాతాను నమోదు చేసుకోవడానికి మరియు పునరుద్ధరించడానికి మీ Signal లాగిన్‌ను ఉపయోగించండి. ఒకవేళ మీరు మీ కీలని మర్చిపోతే, మీ ఖాతాను మీరు తిరిగి పొందలేరు.</string>
+    <string name="SignalLoginInfoScreen__thanks_for_your_purchase">మీ కొనుగోలుకు ధన్యవాదాలు. మీ ఖాతాను నమోదు చేసుకోవడానికి మరియు పునరుద్ధరించడానికి మీ Signal Login‌ను ఉపయోగించండి. ఒకవేళ మీరు మీ కీలని మర్చిపోతే, మీ ఖాతాను మీరు తిరిగి పొందలేరు.</string>
     <!-- Action button that stores the Signal Login in the device password manager. -->
     <string name="SignalLoginInfoScreen__save_to_password_manager">పాస్‌వర్డ్ మేనేజర్‌లో సేవ్ చేయండి</string>
     <!-- Action button for users who would rather write the Signal Login down themselves. -->
     <string name="SignalLoginInfoScreen__save_manually">మాన్యువల్‌గా సేవ్ చేయండి</string>
     <!-- Error shown when the Signal Login could not be stored in the password manager. -->
-    <string name="SignalLoginInfoScreen__your_signal_login_could_not_be_saved">మీ Signal లాగిన్ సేవ్ చేయబడలేదు. దయచేసి దానికి బదులుగా మాన్యువల్‌గా సేవ్ చేయండి.</string>
+    <string name="SignalLoginInfoScreen__your_signal_login_could_not_be_saved">మీ Signal Login సేవ్ చేయబడలేదు. దయచేసి దానికి బదులుగా మాన్యువల్‌గా సేవ్ చేయండి.</string>
 
     <!-- Errors shown beneath an account ID text field, wherever one is offered -->
     <!-- Error shown when too many characters were entered in an account ID field. First placeholder is how many were entered, second is the maximum. -->
     <string name="AccountIdField__too_long">చాలా పొపవైనది. %1$d/%2$d అక్షరాలు.</string>
     <!-- Error shown when the entered account ID contains characters that can\'t appear in one. -->
-    <string name="AccountIdField__invalid_account_id">Invalid account ID</string>
+    <string name="AccountIdField__invalid_account_id">చెల్లని ఖాతా ID</string>
 
     <!-- Signal Login credential entry screen -->
     <!-- Title of the screen where a user with an existing Signal Login types it in to log back in. -->
-    <string name="SignalLoginCredentialEntryScreen__signal_login">Signal లాగిన్</string>
+    <string name="SignalLoginCredentialEntryScreen__signal_login">Signal Login</string>
     <!-- Description telling the user what to enter to log in. -->
-    <string name="SignalLoginCredentialEntryScreen__enter_your_account_id_followed_by_your_recovery_key">Enter your account ID followed by your recovery key to restore your account.</string>
+    <string name="SignalLoginCredentialEntryScreen__enter_your_account_id_followed_by_your_recovery_key">మీ ఖాతాను పునరుద్ధరించడానికి మీ అకౌంట్ IDతో పాటు మీ రికవరీ కీని నమోదు చేయండి.</string>
     <!-- Label of the text field the account ID is typed into. -->
-    <string name="SignalLoginCredentialEntryScreen__account_id">Account ID</string>
+    <string name="SignalLoginCredentialEntryScreen__account_id">ఖాతా ID</string>
     <!-- Label of the text field the recovery key is typed into. -->
     <string name="SignalLoginCredentialEntryScreen__recovery_key">రికవరీ కీ</string>
     <!-- Description of the button that spells out the typed recovery key instead of masking it. -->
-    <string name="SignalLoginCredentialEntryScreen__show_recovery_key">Show recovery key</string>
+    <string name="SignalLoginCredentialEntryScreen__show_recovery_key">రికవరీ కీని చూపించండి</string>
     <!-- Description of the button that masks the typed recovery key. -->
-    <string name="SignalLoginCredentialEntryScreen__hide_recovery_key">Hide recovery key</string>
+    <string name="SignalLoginCredentialEntryScreen__hide_recovery_key">రికవరీ కీని దాచండి</string>
     <!-- Button that opens a support article for users who can\'t find their Signal Login. -->
     <string name="SignalLoginCredentialEntryScreen__need_help">సాయం అవసరమా?</string>
     <!-- Action button that submits the entered Signal Login. -->
     <string name="SignalLoginCredentialEntryScreen__next">తరువాత</string>
     <!-- Error shown when the service rejects the entered login, which means one of the two halves is wrong. -->
-    <string name="SignalLoginCredentialEntryScreen__incorrect_account_id_or_recovery_key">Incorrect account ID or recovery key</string>
+    <string name="SignalLoginCredentialEntryScreen__incorrect_account_id_or_recovery_key">తప్పు ఖాతా ID లేదా రికవరీ కీ</string>
 
     <!-- Add username screen -->
     <!-- Title of the screen offering the user an optional username. -->
@@ -726,7 +726,7 @@
     <!-- Validation error shown when the number the user entered after their username has too many digits. -->
     <string name="AddUsernameScreen__enter_a_maximum_of_d_digits">యూజర్‌నేమ్ చెల్లుబాటు కాదు, గరిష్టంగా %1$d అంకెలను ఎంటర్ చేయండి.</string>
     <!-- Validation error shown when the number the user entered after their username contains something other than digits. -->
-    <string name="AddUsernameScreen__numbers_can_only_contain_digits">Invalid username, numbers can only contain digits.</string>
+    <string name="AddUsernameScreen__numbers_can_only_contain_digits">చెల్లని యూజర్‌నేమ్, సంఖ్యల్లో అంకెలు మాత్రమే ఉండాలి.</string>
     <!-- Validation error shown when the number the user entered after their username is 00. -->
     <string name="AddUsernameScreen__this_number_cant_be_00">ఈ నంబర్ 00 గా ఉండకూడదు. 1–9 మధ్య అంకెను ఎంటర్ చేయండి</string>
     <!-- Validation error shown when the number the user entered after their username has a leading zero. -->
@@ -746,7 +746,7 @@
     <!-- Title of the two-factor authentication code entry screen -->
     <string name="TotpEntryScreen__two_factor_authentication">రెండు-దశల ప్రమాణీకరణ</string>
     <!-- Subtitle explaining where to find the code -->
-    <string name="TotpEntryScreen__to_continue_enter_the_code">To continue enter the 6-digit code from your authenticator app.</string>
+    <string name="TotpEntryScreen__to_continue_enter_the_code">మీ అథెంటికేటర్ యాప్ నుండి 6-అంకెల కోడ్‌ను నమోదు చేయండి.</string>
     <!-- Button text to cancel entering a code -->
     <string name="TotpEntryScreen__cancel">రద్దు చేయండి</string>
 
@@ -754,15 +754,15 @@
     <!-- Title of the two-factor authentication method selection screen -->
     <string name="TwoFactorSelectionScreen__two_factor_authentication">రెండు-దశల ప్రమాణీకరణ</string>
     <!-- Subtitle telling the user to pick one of the methods listed below -->
-    <string name="TwoFactorSelectionScreen__choose_a_method_below">Choose a method below to verify your account.</string>
+    <string name="TwoFactorSelectionScreen__choose_a_method_below">మీ ఖాతాను ధృవీకరించడానికి క్రింది పద్ధతుల్లో ఒకదానిని ఎంచుకోండి.</string>
     <!-- Title of the card for verifying with a passkey -->
-    <string name="TwoFactorSelectionScreen__passkey">Passkey</string>
+    <string name="TwoFactorSelectionScreen__passkey">పాస్ కీ</string>
     <!-- Description of the card for verifying with a passkey -->
-    <string name="TwoFactorSelectionScreen__tap_to_use_your_device_biometrics">Tap to use your device biometrics or FIDO2 passkey</string>
+    <string name="TwoFactorSelectionScreen__tap_to_use_your_device_biometrics">మీ పరికరంలోని బయోమెట్రిక్ లేదా FIDO2 పాస్‌కీని ఉపయోగించడానికి తట్టండి</string>
     <!-- Title of the card for verifying with a code from an authenticator app -->
     <string name="TwoFactorSelectionScreen__authenticator_app">అథెంటికేటర్ యాప్</string>
     <!-- Description of the card for verifying with a code from an authenticator app -->
-    <string name="TwoFactorSelectionScreen__enter_a_one_time_code">Enter a one-time code generated by your authenticator app.</string>
+    <string name="TwoFactorSelectionScreen__enter_a_one_time_code">మీ ఆథెంటికేటర్ యాప్ ద్వారా రూపొందించబడిన వన్-టైమ్ కోడ్‌ను నమోదు చేయండి.</string>
     <!-- Button text to cancel two-factor authentication -->
     <string name="TwoFactorSelectionScreen__cancel">రద్దు చేయండి</string>
 </resources>
