@@ -36,6 +36,7 @@ import androidx.compose.material3.rememberBottomSheetScaffoldState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.Immutable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.SideEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateOf
@@ -122,10 +123,17 @@ fun MediaKeyboardScaffold(
 
   // The target state, so it does not read as hidden for the whole closing animation.
   val systemKeyboardVisible = WindowInsets.isImeVisible
+  val systemKeyboardAnimating = imeAnimationSource.getBottom(density) != imeAnimationTarget.getBottom(density)
+
+  // Written together, so nothing waiting on the controller can see a keyboard that is neither
+  // visible nor still animating out.
+  SideEffect {
+    controller.isSystemKeyboardVisible = systemKeyboardVisible
+    controller.isSystemKeyboardAnimating = systemKeyboardAnimating
+  }
 
   var hasReportedKeyboardVisibility by remember { mutableStateOf(false) }
   LaunchedEffect(systemKeyboardVisible) {
-    controller.isSystemKeyboardVisible = systemKeyboardVisible
     if (hasReportedKeyboardVisibility) {
       onEvent(MediaKeyboardEvents.SystemKeyboardVisibilityChanged(systemKeyboardVisible))
     }
@@ -224,13 +232,7 @@ fun MediaKeyboardScaffold(
   }
 
   val systemKeyboardTakingOverSpace = activeKey == null &&
-    (
-      controller.awaitingSystemKeyboard ||
-        (
-          imeAnimationTarget.getBottom(density) > 0 &&
-            imeAnimationSource.getBottom(density) != imeAnimationTarget.getBottom(density)
-          )
-      )
+    (controller.awaitingSystemKeyboard || (imeAnimationTarget.getBottom(density) > 0 && systemKeyboardAnimating))
 
   val claimedBottomPx = {
     if (activeKey != null) {

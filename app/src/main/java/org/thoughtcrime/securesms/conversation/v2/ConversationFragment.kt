@@ -4115,11 +4115,6 @@ class ConversationFragment :
         (!recipient.isGroup || recipient.isActiveGroup) &&
         adapter.selectedItems.isEmpty()
       ) {
-        multiselectItemDecoration.setFocusedItem(MultiselectPart.Message(item.conversationMessage))
-        binding.conversationItemRecycler.invalidateItemDecorations()
-        binding.reactionsShade.visibility = View.VISIBLE
-        binding.conversationItemRecycler.suppressLayout(true)
-
         val target: InteractiveConversationElement? = if (itemView is InteractiveConversationElement) {
           itemView
         } else {
@@ -4132,103 +4127,15 @@ class ConversationFragment :
         }
 
         if (target != null) {
-          val audioUri = messageRecord.getAudioUriForLongClick()
-          if (audioUri != null) {
-            getVoiceNoteMediaController().pausePlayback(audioUri)
-          }
-
-          val childAdapterPosition = target.getAdapterPosition(binding.conversationItemRecycler)
-          var mp4Holder: GiphyMp4ProjectionPlayerHolder? = null
-          var videoBitmap: Bitmap? = null
-          if (childAdapterPosition != RecyclerView.NO_POSITION) {
-            mp4Holder = giphyMp4ProjectionRecycler.getCurrentHolder(childAdapterPosition)
-            if (mp4Holder?.isVisible == true) {
-              mp4Holder.pause()
-              videoBitmap = mp4Holder.bitmap
-              mp4Holder.hide()
-            }
-          }
-
-          val snapshot = ConversationItemSelection.snapshotView(target, binding.conversationItemRecycler, messageRecord, videoBitmap)
-
+          // Read before anything is asked to hide, or the keyboard cannot be brought back on dismiss.
           val focusedView = if (container.isInputShowing || !container.isKeyboardShowing) null else itemView.rootView.findFocus()
-          val bodyBubble = target.bubbleView
-          val selectedConversationModel = SelectedConversationModel(
-            bitmap = snapshot,
-            itemX = itemView.x,
-            itemY = itemView.y + binding.conversationItemRecycler.translationY,
-            bubbleY = bodyBubble.y,
-            bubbleWidth = bodyBubble.width,
-            audioUri = audioUri,
-            isOutgoing = messageRecord.isOutgoing,
-            focusedView = focusedView,
-            snapshotMetrics = target.getSnapshotStrategy()?.snapshotMetrics ?: InteractiveConversationElement.SnapshotMetrics(
-              snapshotOffset = bodyBubble.x,
-              contextMenuPadding = bodyBubble.x
-            )
-          )
 
-          bodyBubble.visibility = View.INVISIBLE
-          target.reactionsView.visibility = View.INVISIBLE
-
-          val quotedIndicatorVisible = target.quotedIndicatorView?.visibility == View.VISIBLE
-          if (quotedIndicatorVisible) {
-            ViewUtil.fadeOut(target.quotedIndicatorView!!, 150, View.INVISIBLE)
+          // The overlay sizes itself to the content area, so every keyboard has to be all the way
+          // out before it measures. Mid-animation it has half a screen to fit the menu into.
+          viewLifecycleOwner.lifecycleScope.launch {
+            container.hideAllAndAwaitSettled(composeText)
+            showReactionOverlay(itemView, item, target, focusedView)
           }
-
-          container.hideKeyboard(composeText)
-
-          viewModel.setHideScrollButtonsForReactionOverlay(true)
-
-          val targetViews: InteractiveConversationElement = target
-          handleReaction(
-            item.conversationMessage,
-            ReactionsToolbarListener(item.conversationMessage),
-            selectedConversationModel,
-            object : OnHideListener {
-              override fun startHide(focusedView: View?) {
-                if (!lifecycle.currentState.isAtLeast(Lifecycle.State.STARTED) || activity == null || activity?.isFinishing == true) {
-                  return
-                }
-
-                multiselectItemDecoration.hideShade(binding.conversationItemRecycler)
-                ViewUtil.fadeOut(binding.reactionsShade, resources.getInteger(R.integer.reaction_scrubber_hide_duration), View.GONE)
-
-                if (focusedView == composeText || searchMenuItem?.isActionViewExpanded == true) {
-                  container.showSoftkey(composeText)
-                }
-              }
-
-              override fun onHide() {
-                viewModel.setIsReactionDelegateShowing(false)
-
-                if (!lifecycle.currentState.isAtLeast(Lifecycle.State.STARTED) || activity == null || activity?.isFinishing == true) {
-                  return
-                }
-
-                binding.conversationItemRecycler.suppressLayout(false)
-                if (selectedConversationModel.audioUri != null) {
-                  getVoiceNoteMediaController().resumePlayback(selectedConversationModel.audioUri, messageRecord.id)
-                }
-
-                clearFocusedItem()
-
-                if (mp4Holder != null) {
-                  mp4Holder.show()
-                  mp4Holder.resume()
-                }
-
-                bodyBubble.visibility = View.VISIBLE
-                targetViews.reactionsView.visibility = View.VISIBLE
-
-                if (quotedIndicatorVisible && targetViews.quotedIndicatorView != null) {
-                  ViewUtil.fadeIn(targetViews.quotedIndicatorView!!, 150)
-                }
-
-                viewModel.setHideScrollButtonsForReactionOverlay(false)
-              }
-            }
-          )
         }
       } else if (item.conversationMessage.isActiveCollapsedHead) {
         viewModel.onExpandEvents(item.conversationMessage.messageRecord.id)
@@ -4237,6 +4144,127 @@ class ConversationFragment :
         adapter.toggleSelection(item)
         startActionMode()
       }
+    }
+
+    /**
+     * Snapshots [target] and hands it to the reaction overlay. Split out of [onItemLongClick] because
+     * it runs once the keyboards are out of the way, which is not until a few frames later.
+     */
+    private fun showReactionOverlay(
+      itemView: View,
+      item: MultiselectPart,
+      target: InteractiveConversationElement,
+      focusedView: View?
+    ) {
+      if (!lifecycle.currentState.isAtLeast(Lifecycle.State.STARTED) || activity == null || activity?.isFinishing == true) {
+        return
+      }
+
+      val messageRecord = item.getMessageRecord()
+
+      // The wait gave the list room to move on, so the row may be gone or bound to another message.
+      if (isActionModeStarted() || adapter.selectedItems.isNotEmpty() || target.conversationMessage.messageRecord.id != messageRecord.id) {
+        return
+      }
+
+      multiselectItemDecoration.setFocusedItem(MultiselectPart.Message(item.conversationMessage))
+      binding.conversationItemRecycler.invalidateItemDecorations()
+      binding.reactionsShade.visibility = View.VISIBLE
+      binding.conversationItemRecycler.suppressLayout(true)
+
+      val audioUri = messageRecord.getAudioUriForLongClick()
+      if (audioUri != null) {
+        getVoiceNoteMediaController().pausePlayback(audioUri)
+      }
+
+      val childAdapterPosition = target.getAdapterPosition(binding.conversationItemRecycler)
+      var mp4Holder: GiphyMp4ProjectionPlayerHolder? = null
+      var videoBitmap: Bitmap? = null
+      if (childAdapterPosition != RecyclerView.NO_POSITION) {
+        mp4Holder = giphyMp4ProjectionRecycler.getCurrentHolder(childAdapterPosition)
+        if (mp4Holder?.isVisible == true) {
+          mp4Holder.pause()
+          videoBitmap = mp4Holder.bitmap
+          mp4Holder.hide()
+        }
+      }
+
+      val snapshot = ConversationItemSelection.snapshotView(target, binding.conversationItemRecycler, messageRecord, videoBitmap)
+
+      val bodyBubble = target.bubbleView
+      val selectedConversationModel = SelectedConversationModel(
+        bitmap = snapshot,
+        itemX = itemView.x,
+        itemY = itemView.y + binding.conversationItemRecycler.translationY,
+        bubbleY = bodyBubble.y,
+        bubbleWidth = bodyBubble.width,
+        audioUri = audioUri,
+        isOutgoing = messageRecord.isOutgoing,
+        focusedView = focusedView,
+        snapshotMetrics = target.getSnapshotStrategy()?.snapshotMetrics ?: InteractiveConversationElement.SnapshotMetrics(
+          snapshotOffset = bodyBubble.x,
+          contextMenuPadding = bodyBubble.x
+        )
+      )
+
+      bodyBubble.visibility = View.INVISIBLE
+      target.reactionsView.visibility = View.INVISIBLE
+
+      val quotedIndicatorVisible = target.quotedIndicatorView?.visibility == View.VISIBLE
+      if (quotedIndicatorVisible) {
+        ViewUtil.fadeOut(target.quotedIndicatorView!!, 150, View.INVISIBLE)
+      }
+
+      viewModel.setHideScrollButtonsForReactionOverlay(true)
+
+      handleReaction(
+        item.conversationMessage,
+        ReactionsToolbarListener(item.conversationMessage),
+        selectedConversationModel,
+        object : OnHideListener {
+          override fun startHide(focusedView: View?) {
+            if (!lifecycle.currentState.isAtLeast(Lifecycle.State.STARTED) || activity == null || activity?.isFinishing == true) {
+              return
+            }
+
+            multiselectItemDecoration.hideShade(binding.conversationItemRecycler)
+            ViewUtil.fadeOut(binding.reactionsShade, resources.getInteger(R.integer.reaction_scrubber_hide_duration), View.GONE)
+
+            if (focusedView == composeText || searchMenuItem?.isActionViewExpanded == true) {
+              container.showSoftkey(composeText)
+            }
+          }
+
+          override fun onHide() {
+            viewModel.setIsReactionDelegateShowing(false)
+
+            if (!lifecycle.currentState.isAtLeast(Lifecycle.State.STARTED) || activity == null || activity?.isFinishing == true) {
+              return
+            }
+
+            binding.conversationItemRecycler.suppressLayout(false)
+            if (selectedConversationModel.audioUri != null) {
+              getVoiceNoteMediaController().resumePlayback(selectedConversationModel.audioUri, messageRecord.id)
+            }
+
+            clearFocusedItem()
+
+            if (mp4Holder != null) {
+              mp4Holder.show()
+              mp4Holder.resume()
+            }
+
+            bodyBubble.visibility = View.VISIBLE
+            target.reactionsView.visibility = View.VISIBLE
+
+            if (quotedIndicatorVisible && target.quotedIndicatorView != null) {
+              ViewUtil.fadeIn(target.quotedIndicatorView!!, 150)
+            }
+
+            viewModel.setHideScrollButtonsForReactionOverlay(false)
+          }
+        }
+      )
     }
 
     override fun onShowGroupDescriptionClicked(groupName: String, description: String, shouldLinkifyWebLinks: Boolean) {

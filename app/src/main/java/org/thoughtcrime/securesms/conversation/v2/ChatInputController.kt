@@ -124,6 +124,20 @@ class ChatInputController(
   }
 
   /**
+   * Like [runAfterAllHidden], but suspends until the keyboards have finished animating out rather
+   * than returning as soon as the hide has been asked for. For callers that measure themselves
+   * against the content area, which stays shrunk for the length of that animation.
+   */
+  suspend fun hideAllAndAwaitSettled(imeTarget: EditText) {
+    if (controller.isSettled) {
+      return
+    }
+
+    hideAll(imeTarget)
+    controller.awaitSettled()
+  }
+
+  /**
    * @param key The keyboard to bring up, or take away if already showing.
    * @param imeTarget The field the system keyboard belongs to.
    * @param showSoftKeyOnHide Whether the system keyboard replaces [key] when it is taken away.
