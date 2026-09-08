@@ -10,8 +10,10 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.consumeWindowInsets
+import androidx.compose.foundation.layout.exclude
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.ime
 import androidx.compose.foundation.layout.navigationBars
 import androidx.compose.foundation.layout.safeDrawing
 import androidx.compose.foundation.layout.statusBars
@@ -79,8 +81,9 @@ fun ChatScreen(
   Box(
     modifier = modifier
       .fillMaxSize()
-      // A bubble's host has already accounted for the system bars.
-      .then(if (isBubble) Modifier.consumeWindowInsets(WindowInsets.safeDrawing) else Modifier)
+      // A bubble's host has already accounted for the system bars, but not for the keyboard, so
+      // that one inset has to survive or nothing lifts the input off the system keyboard.
+      .then(if (isBubble) Modifier.consumeWindowInsets(WindowInsets.safeDrawing.exclude(WindowInsets.ime)) else Modifier)
   ) {
     AndroidView(
       factory = { backgroundView },
