@@ -37,7 +37,6 @@ import org.thoughtcrime.securesms.jobs.CallLinkUpdateSendJob
 import org.thoughtcrime.securesms.jobs.CallSyncEventJob
 import org.thoughtcrime.securesms.recipients.Recipient
 import org.thoughtcrime.securesms.recipients.RecipientId
-import org.thoughtcrime.securesms.service.UnreadReminderManager
 import org.thoughtcrime.securesms.service.webrtc.links.CallLinkRoomId
 import org.whispersystems.signalservice.internal.push.SyncMessage.CallEvent
 import java.util.UUID
@@ -192,74 +191,6 @@ class CallTable(context: Context, databaseHelper: SignalDatabase) : DatabaseTabl
       .where("($EVENT = ? OR $EVENT = ?) AND $READ = ?", Event.serialize(Event.MISSED), Event.serialize(Event.MISSED_NOTIFICATION_PROFILE), ReadState.serialize(ReadState.UNREAD))
       .run()
       .readToSingleLong()
-  }
-
-  /**
-   * Returns the number of unread calls and up to three distinct callers from [threadId].
-   */
-  fun getUnreadCallsForReminderNotification(threadId: Long, now: Long = System.currentTimeMillis()): Pair<Int, List<RecipientId>> {
-    val peerIds = readableDatabase
-      .select("$TABLE_NAME.$PEER")
-      .from("$TABLE_NAME INNER JOIN ${MessageTable.TABLE_NAME} ON $TABLE_NAME.$MESSAGE_ID = ${MessageTable.TABLE_NAME}.${MessageTable.ID}")
-      .where(
-        """
-          ${MessageTable.TABLE_NAME}.${MessageTable.THREAD_ID} = $threadId AND
-          $TABLE_NAME.$READ = ${ReadState.serialize(ReadState.UNREAD)} AND 
-          ($TABLE_NAME.$EVENT = ${Event.serialize(Event.MISSED)} OR $TABLE_NAME.$EVENT = ${Event.serialize(Event.MISSED_NOTIFICATION_PROFILE)}) AND
-          $TABLE_NAME.$TIMESTAMP > ${now - UnreadReminderManager.MAX_UNREAD_MESSAGE_AGE.inWholeMilliseconds}
-        """
-      )
-      .orderBy("$TABLE_NAME.$TIMESTAMP DESC")
-      .run()
-      .readToList { cursor -> RecipientId.from(cursor.requireLong(PEER)) }
-
-    return peerIds.size to peerIds.distinct().take(3)
-  }
-
-  /**
-   * Returns true if [threadId] has an unread missed call that occurred after [since].
-   */
-  fun hasUnreadCallsSince(threadId: Long, since: Long): Boolean {
-    return readableDatabase
-      .exists("$TABLE_NAME INNER JOIN ${MessageTable.TABLE_NAME} ON $TABLE_NAME.$MESSAGE_ID = ${MessageTable.TABLE_NAME}.${MessageTable.ID}")
-      .where(
-        """
-          ${MessageTable.TABLE_NAME}.${MessageTable.THREAD_ID} = $threadId AND
-          $TABLE_NAME.$READ = ${ReadState.serialize(ReadState.UNREAD)} AND
-          ($TABLE_NAME.$EVENT = ${Event.serialize(Event.MISSED)} OR $TABLE_NAME.$EVENT = ${Event.serialize(Event.MISSED_NOTIFICATION_PROFILE)}) AND
-          $TABLE_NAME.$TIMESTAMP > $since
-        """
-      )
-      .run()
-  }
-
-  /**
-   * Returns the thread id and timestamp of the oldest unread missed call across [threadIds].
-   * If there is none, it returns -1 for thread id and Long.MAX_VALUE for timestamp.
-   */
-  fun getOldestUnreadCall(threadIds: List<Long>): Pair<Long, Long> {
-    if (threadIds.isEmpty()) {
-      return Pair(-1, Long.MAX_VALUE)
-    }
-
-    val query = SqlUtil.buildFastCollectionQuery("${MessageTable.TABLE_NAME}.${MessageTable.THREAD_ID}", threadIds)
-
-    return readableDatabase
-      .select("${MessageTable.TABLE_NAME}.${MessageTable.THREAD_ID}", "$TABLE_NAME.$TIMESTAMP")
-      .from("$TABLE_NAME INNER JOIN ${MessageTable.TABLE_NAME} ON $TABLE_NAME.$MESSAGE_ID = ${MessageTable.TABLE_NAME}.${MessageTable.ID}")
-      .where(
-        """
-          ${query.where} AND
-          $TABLE_NAME.$READ = ${ReadState.serialize(ReadState.UNREAD)} AND
-          ($TABLE_NAME.$EVENT = ${Event.serialize(Event.MISSED)} OR $TABLE_NAME.$EVENT = ${Event.serialize(Event.MISSED_NOTIFICATION_PROFILE)}) AND
-          $TABLE_NAME.$TIMESTAMP > ${System.currentTimeMillis() - UnreadReminderManager.MAX_UNREAD_MESSAGE_AGE.inWholeMilliseconds}
-        """,
-        query.whereArgs
-      )
-      .orderBy("$TABLE_NAME.$TIMESTAMP ASC")
-      .limit(1)
-      .run()
-      .readToSingleObject { cursor -> cursor.requireLong(MessageTable.THREAD_ID) to cursor.requireLong(TIMESTAMP) } ?: Pair(-1, Long.MAX_VALUE)
   }
 
   fun insertOneToOneCall(callId: Long, timestamp: Long, peer: RecipientId, type: Type, direction: Direction, event: Event, fromSync: Boolean = false) {

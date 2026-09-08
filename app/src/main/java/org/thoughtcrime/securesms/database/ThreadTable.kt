@@ -41,7 +41,6 @@ import org.signal.core.util.withinTransaction
 import org.signal.libsignal.zkgroup.InvalidInputException
 import org.signal.libsignal.zkgroup.groups.GroupMasterKey
 import org.thoughtcrime.securesms.components.settings.app.chats.folders.ChatFolderRecord
-import org.thoughtcrime.securesms.components.settings.app.notifications.ReminderType
 import org.thoughtcrime.securesms.conversationlist.model.ConversationFilter
 import org.thoughtcrime.securesms.database.MessageTable.MarkedMessageInfo
 import org.thoughtcrime.securesms.database.SignalDatabase.Companion.attachments
@@ -679,17 +678,13 @@ class ThreadTable(context: Context, databaseHelper: SignalDatabase) : DatabaseTa
   }
 
   /**
-   * Gets eligible threads that could quality for unread reminders depending on its while muted settings.
-   * e.g. when getting missed calls, we get the muted threads that have opted into unread reminders
-   * and also have notify for calls while muted on.
+   * Gets eligible threads that could quality for unread reminders (opted in, has unread messages, elapsed time).
    */
-  fun getMutedThreadIds(reminderType: ReminderType, reminderThreshold: Long, now: Long = System.currentTimeMillis()): List<Long> {
-    val unreadReminderClause = getNotificationClause(RecipientTable.UNREAD_REMINDER, SignalStore.settings.unreadReminderEnabled)
-
-    val reminderClause = when (reminderType) {
-      ReminderType.MESSAGES -> "AND $unreadReminderClause AND $UNREAD_COUNT > 0"
-      ReminderType.CALLS -> "AND $unreadReminderClause AND (${getNotificationClause(RecipientTable.CALL_NOTIFICATION_SETTING, SignalStore.settings.allowCallsWhileMuted)})"
-      else -> ""
+  fun getMutedThreadIds(reminderThreshold: Long, now: Long = System.currentTimeMillis()): List<Long> {
+    val unreadReminderClause = if (SignalStore.settings.unreadReminderEnabled) {
+      "${RecipientTable.TABLE_NAME}.${RecipientTable.UNREAD_REMINDER} != ${RecipientTable.NotificationSetting.DO_NOT_NOTIFY.id}"
+    } else {
+      "${RecipientTable.TABLE_NAME}.${RecipientTable.UNREAD_REMINDER} = ${RecipientTable.NotificationSetting.ALWAYS_NOTIFY.id}"
     }
 
     return readableDatabase
@@ -699,9 +694,10 @@ class ThreadTable(context: Context, databaseHelper: SignalDatabase) : DatabaseTa
         """
           $ACTIVE = 1 AND
           $ARCHIVED = 0 AND
+          $UNREAD_COUNT > 0 AND
           $LAST_UNREAD_REMINDER < ${now - reminderThreshold} AND
-          ${RecipientTable.MUTE_UNTIL} >= $now
-          $reminderClause
+          ${RecipientTable.MUTE_UNTIL} >= $now AND
+          $unreadReminderClause
         """.trimIndent()
       )
       .run()
@@ -723,14 +719,6 @@ class ThreadTable(context: Context, databaseHelper: SignalDatabase) : DatabaseTa
       .values(LAST_UNREAD_REMINDER to timestamp)
       .where("$ID = ?", threadId)
       .run()
-  }
-
-  private fun getNotificationClause(column: String, allowByDefault: Boolean): String {
-    return if (allowByDefault) {
-      "${RecipientTable.TABLE_NAME}.$column != ${RecipientTable.NotificationSetting.DO_NOT_NOTIFY.id}"
-    } else {
-      "${RecipientTable.TABLE_NAME}.$column = ${RecipientTable.NotificationSetting.ALWAYS_NOTIFY.id}"
-    }
   }
 
   /**

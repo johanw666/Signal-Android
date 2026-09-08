@@ -5403,7 +5403,6 @@ open class MessageTable(context: Context?, databaseHelper: SignalDatabase) : Dat
 
   /**
    * Returns the number of unread messages (based on the [ReminderType]) and up to three distinct authors from [threadId]
-   * For missed calls, see [getUnreadContentForReminderNotification] in the calls table.
    */
   fun getUnreadContentForReminderNotification(threadId: Long, type: ReminderType, now: Long = System.currentTimeMillis()): Pair<Int, List<RecipientId>> {
     val categoryClause = when (type) {
