@@ -38,7 +38,7 @@ public final class AppInitialization {
     TextSecurePreferences.setJobManagerVersion(context, JobManager.CURRENT_VERSION);
     TextSecurePreferences.setLastVersionCode(context, BuildConfig.VERSION_CODE);
     TextSecurePreferences.setHasSeenStickerIntroTooltip(context, true);
-    SignalStore.settings().setPassphraseDisabled(true);
+    //SignalStore.settings().setPassphraseDisabled(true); // JW: don't do this
     TextSecurePreferences.setReadReceiptsEnabled(context, true);
     TextSecurePreferences.setTypingIndicatorsEnabled(context, true);
     AppDependencies.getMegaphoneRepository().onFirstEverAppLaunch();
@@ -53,7 +53,7 @@ public final class AppInitialization {
     SignalStore.onPostBackupRestore();
     SignalStore.onFirstEverAppLaunch();
     SignalStore.onboarding().clearAll();
-    SignalStore.settings().setPassphraseDisabled(true);
+    //SignalStore.settings().setPassphraseDisabled(true); // JW
     SignalStore.notificationProfile().setHasSeenTooltip(true);
     TextSecurePreferences.onPostBackupRestore(context);
     SignalStore.settings().setPassphraseDisabled(true);
@@ -84,7 +84,7 @@ public final class AppInitialization {
     TextSecurePreferences.setJobManagerVersion(context, JobManager.CURRENT_VERSION);
     TextSecurePreferences.setLastVersionCode(context, BuildConfig.VERSION_CODE);
     TextSecurePreferences.setHasSeenStickerIntroTooltip(context, true);
-    SignalStore.settings().setPassphraseDisabled(true);
+    //SignalStore.settings().setPassphraseDisabled(true); // JW
     AppDependencies.getMegaphoneRepository().onFirstEverAppLaunch();
     SignalStore.onFirstEverAppLaunch();
     AppDependencies.getJobManager().addAll(BlessedPacks.getFirstInstallJobs());

@@ -1,0 +1,29 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<resources>
+  <!--arrays.xml-->
+  <string name="arrays__import_export_orig">Importera/exportera</string>
+  <!--ImportFragment-->
+  <string name="ImportFragment_restore_encrypted_backup">Återställ krypterad säkerhetskopia?</string>
+  <string name="ImportFragment_restoring_an_encrypted_backup_will_completely_replace_your_existing_keys">
+Återställandet av en krypterad säkerhetskopia kommer helt ersätta dina existerande nycklar, inställningar och
+ meddelanden. Du kommer förlora all information som finns i din nuvarande Signal installation
+som inte finns i säkerhetskopian.</string>
+  <string name="ImportFragment_restore">Återställ</string>
+  <string name="ImportFragment_restoring">Återställer</string>
+  <string name="ImportFragment_restoring_encrypted_backup">Återställer krypterad säkerhetskopia...</string>
+  <string name="ImportFragment_no_encrypted_backup_found">Ingen krypterad säkerhetskopia kunde hittas!</string>
+  <string name="ImportFragment_restore_complete">Återställningen lyckades!</string>
+  <!--ExportFragment-->
+  <string name="ExportFragment_export_to_sd_card">Exportera till minneskort?</string>
+  <string name="ExportFragment_this_will_export_your_encrypted_keys_settings_and_messages">Denna\nåtgärd kommer att exportera dina krypterade nycklar, inställningar och meddelanden till ditt minneskort.</string>
+  <string name="ExportFragment_exporting_keys_settings_and_messages">Exporterar krypterade nycklar,\ninställningar och meddelanden...</string>
+  <!--database_upgrade_activity-->
+  <string name="export_fragment__export_encrypted_backup">Exportera krypterad säkerhetskopia</string>
+  <string name="export_fragment__export_an_encrypted_backup_to_the_sd_card">Exportera en krypterad\nsäkerhetskopia till minneskortet.</string>
+  <string name="import_fragment__restore_encrypted_backup">Återställ krypterad säkerhetskopia</string>
+  <string name="import_fragment__restore_a_previously_exported_encrypted_signal_backup">Återställ en tidigare exporterad krypterad säkerhetskopia av Signal</string>
+  <string name="import_fragment__import_system_sms_database">Importera systemets SMS-databas</string>
+  <string name="import_fragment__import_the_database_from_the_default_system">Importera databasen från standardappen för meddelanden</string>
+  <string name="import_fragment__import_plaintext_backup">Importera okrypterad backup</string>
+  <string name="import_fragment__import_a_plaintext_backup_file">Importera en okrypterad säkerhetskopia. Kompatibel med \"SMSBackup &amp; Restore.\"</string>
+</resources>

@@ -1,0 +1,23 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<resources>
+  <!--arrays.xml-->
+  <string name="arrays__import_export_orig">Importere / eksportere</string>
+  <!--ImportFragment-->
+  <string name="ImportFragment_restore_encrypted_backup">Gjenopprett kryptert backup?</string>
+  <string name="ImportFragment_restoring_an_encrypted_backup_will_completely_replace_your_existing_keys">
+Innlasting av en kryptert backup vil erstatte dine eksisterende nøkler, preferanser og meldinger. Du vil miste informasjonen som finnes i din eksisterende Signal installasjon, men ikke i backupen.</string>
+  <string name="ImportFragment_restore">Gjenopprett</string>
+  <string name="ImportFragment_restoring">Gjenoppretter</string>
+  <string name="ImportFragment_restoring_encrypted_backup">Gjenoppretter kryptert backup...</string>
+  <string name="ImportFragment_no_encrypted_backup_found">Ingen kryptert backup funnet!</string>
+  <string name="ImportFragment_restore_complete">Gjenoppretting fullført!</string>
+  <!--ExportFragment-->
+  <string name="ExportFragment_export_to_sd_card">Eksporter til SD-kort?</string>
+  <string name="ExportFragment_this_will_export_your_encrypted_keys_settings_and_messages">Dette vil eksportere dine krypteringsnøkler, innstillinger og meldinger til SD-kortet.</string>
+  <string name="ExportFragment_exporting_keys_settings_and_messages">Eksporterer krypterte nøkler, innstillinger og meldinger...</string>
+  <!--database_upgrade_activity-->
+  <string name="export_fragment__export_encrypted_backup">Eksporter kryptert backup</string>
+  <string name="export_fragment__export_an_encrypted_backup_to_the_sd_card">Eksporter en kryptert backup til SD-kortet.</string>
+  <string name="import_fragment__restore_encrypted_backup">Gjenopprett kryptert sikkerhetskopi</string>
+  <string name="import_fragment__restore_a_previously_exported_encrypted_signal_backup">Gjenopprett en tidligere eksportert og kryptert Signal sikkerhetskopi</string>
+</resources>
