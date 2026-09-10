@@ -100,6 +100,7 @@ import org.signal.core.util.getParcelableCompat
 import org.signal.core.util.getSerializableCompat
 import org.signal.core.util.logging.Log
 import org.signal.donations.StripeApi
+import org.thoughtcrime.securesms.ImportExportActivity // JW
 import org.thoughtcrime.securesms.backup.v2.ArchiveRestoreProgress
 import org.thoughtcrime.securesms.backup.v2.ArchiveRestoreProgressState
 import org.thoughtcrime.securesms.backup.v2.ui.CouldNotCompleteBackupRestoreSheet
@@ -1035,6 +1036,12 @@ class MainActivity :
 
     override fun onSettingsClick() {
       openSettings.launch(AppSettingsActivity.home(this@MainActivity))
+    }
+
+    // JW: added
+    override fun onImportExportClick() {
+      val intent = Intent(this@MainActivity, ImportExportActivity::class.java)
+      startActivity(intent)
     }
 
     override fun onNotificationProfileClick() {
