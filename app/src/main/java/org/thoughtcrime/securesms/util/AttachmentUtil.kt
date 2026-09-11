@@ -17,6 +17,7 @@ import org.thoughtcrime.securesms.database.SignalDatabase.Companion.attachments
 import org.thoughtcrime.securesms.database.SignalDatabase.Companion.messages
 import org.thoughtcrime.securesms.database.SignalDatabase.Companion.threads
 import org.thoughtcrime.securesms.database.model.MessageRecord
+import org.thoughtcrime.securesms.dependencies.AppDependencies // JW: added
 import org.thoughtcrime.securesms.jobmanager.impl.NotInCallConstraint
 import org.thoughtcrime.securesms.jobs.MultiDeviceDeleteSyncJob.Companion.enqueueAttachmentDelete
 import org.thoughtcrime.securesms.recipients.Recipient
@@ -94,16 +95,26 @@ object AttachmentUtil {
     val attachmentId = attachment.attachmentId
     val mmsId = attachment.mmsId
     val attachmentCount = attachments.getAttachmentsForMessage(mmsId).size
+    var deletedMessageRecord: MessageRecord? = null // JW
 
     if (attachmentCount <= 1) {
-      val deletedMessageRecord = messages.getMessageRecordOrNull(mmsId)
-      messages.deleteMessage(mmsId)
-      return deletedMessageRecord
+      // JW: changed
+      deletedMessageRecord = messages.getMessageRecordOrNull(mmsId)
+
+      if (!TextSecurePreferences.isDeleteMediaOnly(AppDependencies.application)) {
+        messages.deleteMessage(mmsId)
+        return deletedMessageRecord
+      } else {
+        messages.deleteAttachmentsOnly(mmsId)
+        deletedMessageRecord = null // JW: don't propagate this delete to linked devices here
+        return null
+      }
+    } else {
+      attachments.deleteAttachment(attachmentId)
+      enqueueAttachmentDelete(messages.getMessageRecordOrNull(mmsId), attachment)
     }
 
-    attachments.deleteAttachment(attachmentId)
-    enqueueAttachmentDelete(messages.getMessageRecordOrNull(mmsId), attachment)
-    return null
+    return deletedMessageRecord
   }
 
   /**
@@ -127,11 +138,17 @@ object AttachmentUtil {
 
         // If it's the only attachment, just delete the message
         if (attachmentCount <= 1) {
-          val deletedMessageRecord = messages.getMessageRecordOrNull(mmsId)
-          if (deletedMessageRecord != null) {
-            messages.deleteMessage(mmsId, deletedMessageRecord.threadId, notify = false, updateThread = false)
-            touchedThreadIds += deletedMessageRecord.threadId
-            deletedMessageRecords += deletedMessageRecord
+          var deletedMessageRecord = messages.getMessageRecordOrNull(mmsId)
+          // JW: changed
+          if (!TextSecurePreferences.isDeleteMediaOnly(AppDependencies.application)) {        
+            if (deletedMessageRecord != null) {
+              messages.deleteMessage(mmsId, deletedMessageRecord.threadId, notify = false, updateThread = false)
+              touchedThreadIds += deletedMessageRecord.threadId
+              deletedMessageRecords += deletedMessageRecord
+            }
+          } else {
+            messages.deleteAttachmentsOnly(mmsId)
+            deletedMessageRecord = null // JW: don't propagate this delete to linked devices here
           }
         } else {
           attachments.deleteAttachment(attachment.attachmentId)

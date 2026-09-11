@@ -62,6 +62,40 @@ class PrivacySettingsViewModel(
     refresh()
   }
 
+  // JW: added
+  fun setPassphraseEnabled(enabled: Boolean) {
+    SignalStore.settings.passphraseDisabled = !enabled
+    SignalStore.settings.screenLockEnabled = !enabled
+    sharedPreferences.edit().putBoolean("pref_enable_passphrase_temporary", enabled).apply()
+    refresh()
+  }
+
+  // JW: added
+  fun setOnlyScreenlockEnabled(enabled: Boolean) {
+    SignalStore.settings.passphraseDisabled = true
+    SignalStore.settings.screenLockEnabled = enabled
+    sharedPreferences.edit().putBoolean("pref_enable_passphrase_temporary", false).apply()
+    refresh()
+  }
+
+  // JW: added
+  fun setNoLock() {
+    SignalStore.settings.passphraseDisabled = true
+    SignalStore.settings.screenLockEnabled = false
+    sharedPreferences.edit().putBoolean("pref_enable_passphrase_temporary", false).apply()
+    refresh()
+  }
+
+  // JW: added method.
+  fun isPassphraseSelected(): Boolean {
+    // Because this preference may be undefined when this app is first ran we also check if there is a passphrase
+    // defined, if so, we assume passphrase protection:
+    val myContext = AppDependencies.application
+
+    return TextSecurePreferences.isProtectionMethodPassphrase(myContext) ||
+      TextSecurePreferences.getBooleanPreference(myContext, "pref_enable_passphrase_temporary", false) && !SignalStore.settings.passphraseDisabled
+  }
+
   fun refresh() {
     store.update(this::updateState)
   }
@@ -80,6 +114,9 @@ class PrivacySettingsViewModel(
       isObsoletePasswordTimeoutEnabled = SignalStore.settings.passphraseTimeoutEnabled,
       obsoletePasswordTimeout = SignalStore.settings.passphraseTimeout,
       universalExpireTimer = SignalStore.settings.universalExpireTimer
+      // JW: added
+      ,
+      isProtectionMethodPassphrase = TextSecurePreferences.isProtectionMethodPassphrase(AppDependencies.application)
     )
   }
 
