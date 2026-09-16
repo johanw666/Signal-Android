@@ -1,0 +1,4 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<resources xmlns:tools="http://schemas.android.com/tools">
+    <string name="preferences_chats__chat_backups">Sarunu rezerves kopijas</string>
+</resources>

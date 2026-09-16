@@ -1,0 +1,11 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<resources>
+  <!--ExportFragment-->
+  <string name="ExportFragment_export_to_sd_card">לייצא לכרטיס ה-SD?</string>
+  <string name="ExportFragment_this_will_export_your_encrypted_keys_settings_and_messages">פעולה זו\nתייצא את המפתחות, ההגדרות וההודעות המוצפנות שלך לכרטיס ה-SD.\n</string>
+  <string name="ExportFragment_exporting_keys_settings_and_messages">מייצא מפתחות, הגדרות\nוהודעות מוצפנות...\n</string>
+
+  <!--database_upgrade_activity-->
+  <string name="export_fragment__export_encrypted_backup">יצא גיבוי מוצפן</string>
+  <string name="export_fragment__export_an_encrypted_backup_to_the_sd_card">יצא גיבוי\nמוצפן לכרטיס ה-SD.\n</string>
+</resources>
