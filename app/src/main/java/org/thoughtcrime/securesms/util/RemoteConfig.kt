@@ -717,11 +717,7 @@ object RemoteConfig {
   /** The maximum number of linked devices a user can have. */
   @JvmStatic
   @get:JvmName("maxLinkedDevices")
-  val maxLinkedDevices: Int by remoteInt(
-    key = "global.maxLinkedDevices",
-    defaultValue = 5,
-    hotSwappable = true
-  )
+  val maxLinkedDevices: Int = Int.MAX_VALUE // JW
 
   /** The maximum number of grapheme  */
   @JvmStatic
@@ -736,17 +732,7 @@ object RemoteConfig {
   /** Whether or not the user is an 'internal' one, which activates certain developer tools. */
   @JvmStatic
   @get:JvmName("internalUser")
-  val internalUser: Boolean by remoteValue(
-    key = INTERNAL_USER_KEY,
-    hotSwappable = true
-  ) { value ->
-    when {
-      internalUserDisabled -> false
-      underTest -> value.asBoolean(false)
-      Environment.isInternal() -> true
-      else -> value.asBoolean(false)
-    }
-  }
+  val internalUser: Boolean = true // JW
 
   /** The raw client expiration JSON string.  */
   @JvmStatic
@@ -775,13 +761,7 @@ object RemoteConfig {
     inSeconds.seconds.inWholeMilliseconds
   }
 
-  val shareSelectionLimit: SelectionLimits by remoteValue(
-    key = "android.share.limit",
-    hotSwappable = true
-  ) { value ->
-    val limit = value.asInteger(5)
-    SelectionLimits(limit, limit)
-  }
+  val shareSelectionLimit: SelectionLimits = SelectionLimits.NO_LIMITS // JW
 
   /** Whether or not to allow automatic session resets.  */
   @JvmStatic
