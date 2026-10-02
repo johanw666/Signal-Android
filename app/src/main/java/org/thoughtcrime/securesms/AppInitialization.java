@@ -39,7 +39,7 @@ public final class AppInitialization {
     SignalStore.misc().setJobManagerVersion(JobManager.CURRENT_VERSION);
     PlainTextKeyValueStore.setLastVersionCode(BuildConfig.VERSION_CODE);
     SignalStore.tooltips().markStickerIntroTooltipSeen();
-    SignalStore.settings().setPassphraseDisabled(true);
+    //SignalStore.settings().setPassphraseDisabled(true); // JW: don't do this
     SignalStore.settings().setReadReceiptsEnabled(true);
     SignalStore.settings().setTypingIndicatorsEnabled(true);
     AppDependencies.getMegaphoneRepository().onFirstEverAppLaunch();
@@ -59,7 +59,7 @@ public final class AppInitialization {
     if (NotificationChannels.supported()) {
       NotificationChannels.getInstance().updateMessageVibrate(SignalStore.settings().isMessageVibrateEnabled());
     }
-    SignalStore.settings().setPassphraseDisabled(true);
+    //SignalStore.settings().setPassphraseDisabled(true); // JW
     AppDependencies.getJobManager().addAll(BlessedPacks.getFirstInstallJobs());
     EmojiSearchIndexDownloadJob.scheduleImmediately();
     DeleteAbandonedAttachmentsJob.enqueue();
@@ -87,7 +87,7 @@ public final class AppInitialization {
     SignalStore.misc().setJobManagerVersion(JobManager.CURRENT_VERSION);
     PlainTextKeyValueStore.setLastVersionCode(BuildConfig.VERSION_CODE);
     SignalStore.tooltips().markStickerIntroTooltipSeen();
-    SignalStore.settings().setPassphraseDisabled(true);
+    //SignalStore.settings().setPassphraseDisabled(true); // JW
     AppDependencies.getMegaphoneRepository().onFirstEverAppLaunch();
     SignalStore.onFirstEverAppLaunch();
     AppDependencies.getJobManager().addAll(BlessedPacks.getFirstInstallJobs());

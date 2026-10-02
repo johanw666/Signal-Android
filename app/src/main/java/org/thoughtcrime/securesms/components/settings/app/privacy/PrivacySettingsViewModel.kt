@@ -58,6 +58,34 @@ class PrivacySettingsViewModel(
     refresh()
   }
 
+  // JW: added
+  fun setPassphraseEnabled(enabled: Boolean) {
+    SignalStore.settings.passphraseDisabled = !enabled
+    SignalStore.settings.screenLockEnabled = !enabled
+    refresh()
+  }
+
+  // JW: added
+  fun setOnlyScreenlockEnabled(enabled: Boolean) {
+    SignalStore.settings.passphraseDisabled = true
+    SignalStore.settings.screenLockEnabled = enabled
+    refresh()
+  }
+
+  // JW: added
+  fun setNoLock() {
+    SignalStore.settings.passphraseDisabled = true
+    SignalStore.settings.screenLockEnabled = false
+    refresh()
+  }
+
+  // JW: added method.
+  fun isPassphraseSelected(): Boolean {
+    // Because this preference may be undefined when this app is first ran we also check if there is a passphrase
+    // defined, if so, we assume passphrase protection:
+    return SignalStore.misc.protectionMethodPassphrase || !SignalStore.settings.passphraseDisabled
+  }
+
   fun refresh() {
     store.update(this::updateState)
   }
@@ -77,6 +105,9 @@ class PrivacySettingsViewModel(
       isObsoletePasswordTimeoutEnabled = SignalStore.settings.passphraseTimeoutEnabled,
       obsoletePasswordTimeout = SignalStore.settings.passphraseTimeout,
       universalExpireTimer = SignalStore.settings.universalExpireTimer
+      // JW: added
+      ,
+      isProtectionMethodPassphrase =  SignalStore.misc.protectionMethodPassphrase
     )
   }
 
