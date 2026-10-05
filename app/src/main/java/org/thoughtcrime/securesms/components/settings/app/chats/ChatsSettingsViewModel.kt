@@ -17,6 +17,8 @@ import org.thoughtcrime.securesms.keyvalue.SignalStore
 import org.thoughtcrime.securesms.util.BackupUtil
 import org.thoughtcrime.securesms.util.ConversationUtil
 import org.thoughtcrime.securesms.util.RemoteConfig
+import org.thoughtcrime.securesms.util.UriUtils // JW: added
+import org.thoughtcrime.securesms.util.TextSecurePreferences; // JW: added
 
 class ChatsSettingsViewModel @JvmOverloads constructor(
   private val repository: ChatsSettingsRepository = ChatsSettingsRepository()
@@ -37,6 +39,19 @@ class ChatsSettingsViewModel @JvmOverloads constructor(
       clientDeprecated = SignalStore.misc.isClientDeprecated,
       isPlaintextExportEnabled = RemoteConfig.localPlaintextExport,
       chatExportState = ChatExportState.None
+      // JW: added
+      ,
+      chatBackupsLocation = SignalStore.misc.backupLocationRemovable,
+      chatBackupsLocationApi30 = UriUtils.getFullPathFromTreeUri(AppDependencies.application, SignalStore.settings.signalBackupDirectory),
+      chatBackupZipfile = SignalStore.misc.rawBackupInZipfile,
+      chatBackupZipfilePlain = SignalStore.misc.plainBackupInZipfile,
+      keepViewOnceMessages = SignalStore.misc.keepViewOnceMessages,
+      ignoreRemoteDelete = SignalStore.misc.ignoreRemoteDelete,
+      ignoreAdminDelete = SignalStore.misc.ignoreAdminDelete,
+      deleteMediaOnly = SignalStore.misc.deleteMediaOnly,
+      googleMapType = SignalStore.misc.googleMapType,
+      whoCanAddYouToGroups = SignalStore.misc.whoCanAddYouToGroups,
+      generateLinkPreviewImages = SignalStore.misc.sendLinkPreviewImages
     )
   )
 
@@ -96,7 +111,7 @@ class ChatsSettingsViewModel @JvmOverloads constructor(
 
   fun setKeepMutedChatsArchived(enabled: Boolean) {
     store.update { it.copy(keepMutedChatsArchived = enabled) }
-    SignalStore.settings.keepMutedChatsArchived = enabled
+    SignalStore.settings.keepMutedChatsArchived = enabled 
     repository.syncKeepMutedChatsArchivedState()
   }
 
@@ -130,5 +145,101 @@ class ChatsSettingsViewModel @JvmOverloads constructor(
         }
       }
     }
+    // JW: added. This is required to update the UI for settings that are not in the Signal store but in the shared preferences.
+    store.update { getState().copy() }
   }
+
+  // JW: added
+  fun setChatBackupLocation(enabled: Boolean) {
+    SignalStore.misc.backupLocationRemovable = enabled
+    SignalStore.misc.backupLocationChanged = true
+    // Store this also in the shared preferences so StorageUtil in core can access it
+    TextSecurePreferences.setBackupLocationRemovable(AppDependencies.application, enabled)
+    TextSecurePreferences.setBackupLocationChanged(AppDependencies.application, true) // Used in BackupUtil.getAllBackupsNewestFirst()
+    refresh()
+  }
+
+  // JW: added
+  fun setChatBackupLocationApi30(value: String) {
+    refresh()
+  }
+
+  // JW: added
+  fun setChatBackupZipfile(enabled: Boolean) {
+    SignalStore.misc.rawBackupInZipfile = enabled
+    refresh()
+  }
+
+  // JW: added
+  fun setChatBackupZipfilePlain(enabled: Boolean) {
+    SignalStore.misc.plainBackupInZipfile = enabled
+    refresh()
+  }
+
+  // JW: added
+  fun keepViewOnceMessages(enabled: Boolean) {
+    SignalStore.misc.keepViewOnceMessages = enabled
+    refresh()
+  }
+
+  // JW: added
+  fun setIgnoreRemoteDelete(enabled: Boolean) {
+    SignalStore.misc.ignoreRemoteDelete = enabled
+    refresh()
+  }
+
+  // JW: added
+  fun setIgnoreAdminDelete(enabled: Boolean) {
+    SignalStore.misc.ignoreAdminDelete = enabled
+    refresh()
+  }
+
+  // JW: added
+  fun setDeleteMediaOnly(enabled: Boolean) {
+    SignalStore.misc.deleteMediaOnly = enabled
+    refresh()
+  }
+
+  // JW: added
+  fun setGoogleMapType(mapType: String) {
+    SignalStore.misc.googleMapType = mapType
+    refresh()
+  }
+
+  // JW: added
+  fun setWhoCanAddYouToGroups(adder: String) {
+    SignalStore.misc.whoCanAddYouToGroups = adder
+    refresh()
+  }
+
+  fun setGenerateLinkPreviewImagesChanged(enabled: Boolean) {
+    SignalStore.misc.sendLinkPreviewImages = enabled
+    refresh()
+  }
+
+  // JW: added
+  private fun getState() = ChatsSettingsState(
+    generateLinkPreviews = SignalStore.settings.isLinkPreviewsEnabled,
+    useAddressBook = SignalStore.settings.isPreferSystemContactPhotos,
+    keepMutedChatsArchived = SignalStore.settings.keepMutedChatsArchived,
+    useSystemEmoji = SignalStore.settings.isPreferSystemEmoji,
+    enterKeySends = SignalStore.settings.isEnterKeySends,
+    localBackupsEnabled = SignalStore.settings.isBackupEnabled,
+    folderCount = ChatFoldersRepository.getFolderCount(),
+    userUnregistered = SignalStore.account.isUnauthorizedReceived || !SignalStore.account.isRegistered,
+    clientDeprecated = SignalStore.misc.isClientDeprecated,
+    isPlaintextExportEnabled = RemoteConfig.localPlaintextExport,
+    chatExportState = ChatExportState.None,
+    chatBackupsLocation = SignalStore.misc.backupLocationRemovable,
+    chatBackupsLocationApi30 = UriUtils.getFullPathFromTreeUri(AppDependencies.application, SignalStore.settings.signalBackupDirectory),
+    chatBackupZipfile = SignalStore.misc.rawBackupInZipfile,
+    chatBackupZipfilePlain = SignalStore.misc.plainBackupInZipfile,
+    keepViewOnceMessages = SignalStore.misc.keepViewOnceMessages,
+    ignoreRemoteDelete = SignalStore.misc.ignoreRemoteDelete,
+    ignoreAdminDelete = SignalStore.misc.ignoreAdminDelete,
+    deleteMediaOnly = SignalStore.misc.deleteMediaOnly,
+    googleMapType = SignalStore.misc.googleMapType,
+    whoCanAddYouToGroups = SignalStore.misc.whoCanAddYouToGroups,
+    generateLinkPreviewImages = SignalStore.misc.sendLinkPreviewImages
+  )
 }

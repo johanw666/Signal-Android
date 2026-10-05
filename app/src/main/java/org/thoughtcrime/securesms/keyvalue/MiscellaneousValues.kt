@@ -75,6 +75,34 @@ class MiscellaneousValues internal constructor(store: KeyValueStore, context: Co
     private const val NOTIFICATION_MESSAGES_CHANNEL_VERSION = "misc.notification_messages_channel_version"
     private const val RATING_ENABLED = "misc.rating_enabled"
     private const val RATING_LATER_TIMESTAMP = "misc.rating_later_timestamp"
+    //---------------------------------------------------------------------------
+    // JW: added strings are in this block.
+    // true = passphrase, false = Android lock or fingerprint
+    private const val PROTECTION_METHOD_PREF = "pref_signal_protection_method";
+    // true = backup to removable SD card (if available), false = backup to internal sd card
+    private const val BACKUP_LOCATION_REMOVABLE_PREF = "pref_backup_location_external";
+    // false (default) means the backup location is not changed by the user, true means it is changed.
+    // This is used to determine at first app start to locate the app backup.
+    private const val BACKUP_LOCATION_CHANGED = "pref_backup_location_changed";
+    // added to use encrypted zipfiles to store raw backups
+    private const val BACKUP_STORE_ZIPFILE_PREF = "pref_backup_zipfile";
+    // added to use encrypted zipfiles to store plaintext backups
+    private const val BACKUP_STORE_ZIPFILE_PLAIN_PREF = "pref_backup_zipfile_plain";
+    // used to see if we delete view once messages after view or not
+    private const val KEEP_VIEW_ONCE_MESSAGES = "pref_keep_view_once_messages";
+    // used to see if we ignore remote delete messages or not
+    private const val IGNORE_REMOTE_DELETE = "pref_ignore_remote_delete";
+    // used to see if we ignore admin delete of group messages or not
+    private const val IGNORE_ADMIN_DELETE = "pref_ignore_admin_delete";
+    // select map type for location picker
+    private const val GOOGLE_MAP_TYPE = "pref_google_map_type";
+    // delete only media, not the rest of the message, from the All media screen
+    private const val DELETE_MEDIA_ONLY = "pref_delete_media_only";
+    // who can add you to groups
+    private const val WHO_CAN_ADD_YOU_TO_GROUPS = "pref_who_can_add_you_to_groups";
+    // If we send link preview images
+    private const val SEND_LINK_PREVIEW_IMAGES = "pref_send_link_preview_images";
+    //---------------------------------------------------------------------------
   }
 
   init {
@@ -100,10 +128,40 @@ class MiscellaneousValues internal constructor(store: KeyValueStore, context: Co
       .putInteger(NOTIFICATION_MESSAGES_CHANNEL_VERSION, LegacySharedPrefs.getInteger(context, "pref_notification_messages_channel_version", 1))
       .putBoolean(RATING_ENABLED, LegacySharedPrefs.getBoolean(context, "pref_rating_enabled", true))
       .putLong(RATING_LATER_TIMESTAMP, LegacySharedPrefs.getLong(context, "pref_rating_later", -1))
+      // JW: added values
+      .putBoolean(BACKUP_STORE_ZIPFILE_PREF, LegacySharedPrefs.getBoolean(context, "pref_backup_zipfile", false))
+      .putBoolean(BACKUP_STORE_ZIPFILE_PLAIN_PREF, LegacySharedPrefs.getBoolean(context, "pref_backup_zipfile_plain", false))
+      .putBoolean(KEEP_VIEW_ONCE_MESSAGES, LegacySharedPrefs.getBoolean(context, "pref_keep_view_once_messages", false))
+      .putBoolean(IGNORE_REMOTE_DELETE, LegacySharedPrefs.getBoolean(context, "pref_ignore_remote_delete", false))
+      .putBoolean(IGNORE_ADMIN_DELETE, LegacySharedPrefs.getBoolean(context, "pref_ignore_admin_delete", false))
+      .putBoolean(DELETE_MEDIA_ONLY, LegacySharedPrefs.getBoolean(context, "pref_delete_media_only", false))
+      .putBoolean(SEND_LINK_PREVIEW_IMAGES, LegacySharedPrefs.getBoolean(context, "pref_send_link_preview_images", true))
+      .putString(GOOGLE_MAP_TYPE, LegacySharedPrefs.getString(context, "pref_google_map_type", "normal"))
+      .putString(WHO_CAN_ADD_YOU_TO_GROUPS, LegacySharedPrefs.getString(context, "pref_who_can_add_you_to_groups", "nonblocked"))
+      // JW: not-backupped values
+      .putBoolean(PROTECTION_METHOD_PREF, LegacySharedPrefs.getBoolean(context, "pref_signal_protection_method", false))
+      .putBoolean(BACKUP_LOCATION_REMOVABLE_PREF, LegacySharedPrefs.getBoolean(context, "pref_backup_location_external", false))
+      .putBoolean(BACKUP_LOCATION_CHANGED, LegacySharedPrefs.getBoolean(context, "pref_backup_location_changed", false))
+      // JW end
       // Written last so that it acts as the marker for this migration having run.
       .putInteger(FIRST_INSTALL_VERSION, LegacySharedPrefs.getInteger(context, "pref_first_install_version", -1))
       .commit()
   }
+
+  // JW: added variables
+  var protectionMethodPassphrase: Boolean by booleanValue(PROTECTION_METHOD_PREF, false)
+  var backupLocationRemovable: Boolean by booleanValue(BACKUP_LOCATION_REMOVABLE_PREF, false)
+  var backupLocationChanged: Boolean by booleanValue(BACKUP_LOCATION_CHANGED, false)
+  var rawBackupInZipfile: Boolean by booleanValue(BACKUP_STORE_ZIPFILE_PREF, false)
+  var plainBackupInZipfile: Boolean by booleanValue(BACKUP_STORE_ZIPFILE_PLAIN_PREF, false)
+  var keepViewOnceMessages: Boolean by booleanValue(KEEP_VIEW_ONCE_MESSAGES, false)
+  var googleMapType: String by stringValue(GOOGLE_MAP_TYPE, "normal")
+  var ignoreRemoteDelete: Boolean by booleanValue(IGNORE_REMOTE_DELETE, false)
+  var ignoreAdminDelete: Boolean by booleanValue(IGNORE_ADMIN_DELETE, false)
+  var deleteMediaOnly: Boolean by booleanValue(DELETE_MEDIA_ONLY, false)
+  var whoCanAddYouToGroups: String by stringValue(WHO_CAN_ADD_YOU_TO_GROUPS, "nonblocked")
+  var sendLinkPreviewImages: Boolean by booleanValue(SEND_LINK_PREVIEW_IMAGES, true)
+  // JW end
 
   /** When the next contact directory refresh is scheduled. */
   var directoryRefreshTime: Long by longValue(DIRECTORY_REFRESH_TIME, 0)
@@ -145,7 +203,16 @@ class MiscellaneousValues internal constructor(store: KeyValueStore, context: Co
   }
 
   public override fun getKeysToIncludeInBackup(): List<String> {
-    return listOf(STARTED_QUOTE_THUMBNAIL_MIGRATION)
+    return listOf(STARTED_QUOTE_THUMBNAIL_MIGRATION,
+                  BACKUP_STORE_ZIPFILE_PREF, // JW: added alues to backup
+                  BACKUP_STORE_ZIPFILE_PLAIN_PREF,
+                  KEEP_VIEW_ONCE_MESSAGES,
+                  IGNORE_REMOTE_DELETE,
+                  IGNORE_ADMIN_DELETE,
+                  DELETE_MEDIA_ONLY,
+                  SEND_LINK_PREVIEW_IMAGES,
+                  GOOGLE_MAP_TYPE,
+                  WHO_CAN_ADD_YOU_TO_GROUPS)
   }
 
   /**
@@ -179,14 +246,7 @@ class MiscellaneousValues internal constructor(store: KeyValueStore, context: Co
   /**
    * Whether or not the client is currently in a 'deprecated' state, disallowing network access. Send a notification if the client changes from not deprecated to deprecated state.
    */
-  var isClientDeprecated: Boolean
-    get() = getBoolean(CLIENT_DEPRECATED, false)
-    set(isDeprecated) {
-      if (isDeprecated && !isClientDeprecated) {
-        DeprecatedNotificationJob.enqueue()
-      }
-      putBoolean(CLIENT_DEPRECATED, isDeprecated)
-    }
+  var isClientDeprecated: Boolean = false // JW
 
   /**
    * Whether or not we've locked the device after they've transferred to a new one.
