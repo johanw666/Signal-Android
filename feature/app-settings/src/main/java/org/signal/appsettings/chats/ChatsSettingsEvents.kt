@@ -70,4 +70,19 @@ sealed interface ChatsSettingsEvents {
    * User acknowledged that the export finished.
    */
   data object ExportCompletionConfirmed : ChatsSettingsEvents
+
+  // JW: `added
+  data object ChatBackupClicked : ChatsSettingsEvents
+  data object ChatBackupsLocationApi30Clicked : ChatsSettingsEvents
+  data class SetChatBackupLocationChanged(val enabled: Boolean) : ChatsSettingsEvents
+  data class SetChatBackupZipfile(val enabled: Boolean) : ChatsSettingsEvents
+  data class SetChatBackupZipfilePlain(val enabled: Boolean) : ChatsSettingsEvents
+  data class SetKeepViewOnceMessages(val enabled: Boolean) : ChatsSettingsEvents
+  data class SetIgnoreRemoteDelete(val enabled: Boolean) : ChatsSettingsEvents
+  data class SetIgnoreAdminDelete(val enabled: Boolean) : ChatsSettingsEvents
+  data class SetDeleteMediaOnly(val enabled: Boolean) : ChatsSettingsEvents
+  data class SetGoogleMapType(val maptype: String) : ChatsSettingsEvents
+  data class SetWhoCanAddYouToGroups(val adder: String) : ChatsSettingsEvents
+  data class SetGenerateLinkPreviewImages(val enabled: Boolean) : ChatsSettingsEvents
+  // JW end
 }

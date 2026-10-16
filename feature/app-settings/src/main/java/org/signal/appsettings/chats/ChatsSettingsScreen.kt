@@ -32,6 +32,9 @@ import org.signal.core.ui.compose.SignalIcons
 import org.signal.core.ui.compose.SignalPreviewWrapper
 import org.signal.core.ui.compose.Snackbars
 import org.signal.core.ui.compose.Texts
+// JW: added
+import android.os.Build
+import androidx.compose.ui.res.stringArrayResource
 
 @VisibleForTesting
 object ChatsSettingsTestTags {
@@ -94,6 +97,17 @@ fun ChatsSettingsScreen(
           enabled = state.isRegisteredAndUpToDate(),
           checked = state.generateLinkPreviews,
           onCheckChanged = { onEvent(ChatsSettingsEvents.GenerateLinkPreviewsChanged(it)) }
+        )
+      }
+
+      // JW: added
+      item {
+        Rows.ToggleRow(
+          text = stringResource(R.string.preferences_chats__send_link_preview_images),
+          label = stringResource(R.string.preferences_chats__send_link_preview_images_summary),
+          enabled = state.isRegisteredAndUpToDate(),
+          checked = state.generateLinkPreviewImages,
+          onCheckChanged = { onEvent(ChatsSettingsEvents.SetGenerateLinkPreviewImages(it)) }
         )
       }
 
@@ -220,6 +234,142 @@ fun ChatsSettingsScreen(
           onCheckChanged = { onEvent(ChatsSettingsEvents.EnterKeySendsChanged(it)) }
         )
       }
+
+      // JW: added ------------------------------------------------------------
+      item {
+        Dividers.Default()
+      }
+
+      item {
+        Texts.SectionHeader(stringResource(R.string.preferences_chats__backups))
+      }
+
+      item {
+        Rows.TextRow(
+          text = stringResource(R.string.preferences_chats__chat_backups),
+          label = stringResource(if (state.localBackupsEnabled || state.legacyLocalBackupEnabled) R.string.arrays__enabled else R.string.arrays__disabled),
+          enabled = true,
+          onClick = { onEvent(ChatsSettingsEvents.ChatBackupClicked) }
+        )
+      }
+
+      if (Build.VERSION.SDK_INT < 30) {
+        item {
+          Rows.ToggleRow(
+            text = stringResource(R.string.preferences_chats__chat_backups_removable),
+            label = stringResource(R.string.preferences_chats__backup_chats_to_removable_storage),
+            checked = state.chatBackupsLocation,
+            onCheckChanged = { onEvent(ChatsSettingsEvents.SetChatBackupLocationChanged(it)) }
+          )
+        }
+      } else {
+          item {
+            Rows.TextRow(
+              text = stringResource(R.string.preferences_chats__chat_backups_location_tap_to_change),
+              label = if (state.chatBackupsLocationApi30 == "") stringResource(R.string.preferences_storage__none) else state.chatBackupsLocationApi30,
+              onClick = { onEvent(ChatsSettingsEvents.ChatBackupsLocationApi30Clicked) }
+            )
+          }
+      }
+
+      item {
+        Rows.ToggleRow(
+          text = stringResource(R.string.preferences_chats__chat_backups_zipfile),
+          label = stringResource(R.string.preferences_chats__backup_chats_to_encrypted_zipfile),
+          checked = state.chatBackupZipfile,
+          onCheckChanged = { onEvent(ChatsSettingsEvents.SetChatBackupZipfile(it)) }
+        )
+      }
+
+      item {
+        Rows.ToggleRow(
+          text = stringResource(R.string.preferences_chats__chat_backups_zipfile_plain),
+          label = stringResource(R.string.preferences_chats__backup_chats_to_encrypted_zipfile_plain),
+          checked = state.chatBackupZipfilePlain,
+          onCheckChanged = { onEvent(ChatsSettingsEvents.SetChatBackupZipfilePlain(it)) }
+        )
+      }
+
+      item {
+        Dividers.Default()
+      }
+      
+      item {
+        Texts.SectionHeader(stringResource(R.string.preferences_chats__control_message_deletion))
+      }
+
+      item {
+        Rows.ToggleRow(
+          text = stringResource(R.string.preferences_chats__chat_keep_view_once_messages),
+          label = stringResource(R.string.preferences_chats__keep_view_once_messages_summary),
+          checked = state.keepViewOnceMessages,
+          onCheckChanged = { onEvent(ChatsSettingsEvents.SetKeepViewOnceMessages(it)) }
+        )
+      }
+
+      item {
+        Rows.ToggleRow(
+          text = stringResource(R.string.preferences_chats__chat_ignore_remote_delete),
+          label = stringResource(R.string.preferences_chats__chat_ignore_remote_delete_summary),
+          checked = state.ignoreRemoteDelete,
+          onCheckChanged = { onEvent(ChatsSettingsEvents.SetIgnoreRemoteDelete(it)) }
+        )
+      }
+
+      item {
+        Rows.ToggleRow(
+          text = stringResource(R.string.preferences_chats__chat_ignore_admin_delete),
+          label = stringResource(R.string.preferences_chats__chat_ignore_admin_delete_summary),
+          checked = state.ignoreAdminDelete,
+          onCheckChanged = { onEvent(ChatsSettingsEvents.SetIgnoreAdminDelete(it)) }
+        )
+      }
+
+      item {
+        Rows.ToggleRow(
+          text = stringResource(R.string.preferences_chats__delete_media_only),
+          label = stringResource(R.string.preferences_chats__delete_media_only_summary),
+          checked = state.deleteMediaOnly,
+          onCheckChanged = { onEvent(ChatsSettingsEvents.SetDeleteMediaOnly(it)) }
+        )
+      }
+
+      item {
+        Dividers.Default()
+      }
+      
+      item {
+        Texts.SectionHeader(stringResource(R.string.preferences_chats__group_control))
+      }
+
+      item {
+        Rows.RadioListRow(
+          text = stringResource(R.string.preferences_chats__who_can_add_you_to_groups),
+          labels = stringArrayResource(R.array.pref_group_add_entries),
+          values = stringArrayResource(R.array.pref_group_add_values),
+          selectedValue = state.whoCanAddYouToGroups,
+          onSelected = { onEvent(ChatsSettingsEvents.SetWhoCanAddYouToGroups(it)) }
+        )
+      }
+
+      item {
+        Dividers.Default()
+      }
+      
+      item {
+        Texts.SectionHeader(stringResource(R.string.preferences_chats__google_map_type))
+      }
+
+      item {
+        Rows.RadioListRow(
+          text = stringResource(R.string.preferences__map_type),
+          labels = stringArrayResource(R.array.pref_map_type_entries),
+          values = stringArrayResource(R.array.pref_map_type_values),
+          selectedValue = state.googleMapType,
+          onSelected = { onEvent(ChatsSettingsEvents.SetGoogleMapType(it)) }
+        )
+      }
+     // ----------------------------------------------------------------------
     }
   }
 
@@ -248,6 +398,20 @@ private fun ChatsSettingsScreenPreview() {
       clientDeprecated = false,
       isPlaintextExportEnabled = true,
       plaintextExportProgress = BackupCreationProgress.Idle
+      // JW: added
+      ,
+      legacyLocalBackupEnabled = false,
+      chatBackupsLocation = false,
+      chatBackupsLocationApi30 = "Disabled",
+      chatBackupZipfile = false,
+      chatBackupZipfilePlain = false,
+      keepViewOnceMessages = false,
+      ignoreRemoteDelete = false,
+      ignoreAdminDelete = false,
+      deleteMediaOnly = false,
+      googleMapType = "normal",
+      whoCanAddYouToGroups = "nonblocked",
+      generateLinkPreviewImages = true
     ),
     onEvent = {}
   )
