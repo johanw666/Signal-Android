@@ -1,0 +1,6 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<resources>
+  <string name="preferences_chats__chat_backups">Cúltacaí na gcomhráite</string>
+  <!--arrays.xml-->
+  <string name="arrays__import_export_orig">Tabhair isteach / amach</string>
+</resources>
