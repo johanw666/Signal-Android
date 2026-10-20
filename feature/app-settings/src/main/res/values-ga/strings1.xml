@@ -1,0 +1,10 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<resources>
+  <string name="preferences_chats__backups">Cúltacaithe</string>
+  <string name="preferences_chats__chat_backups">Cúltacaí na gcomhráite</string>
+  <string name="preferences_storage__none">Gan Fuaim</string>
+  <!--arrays.xml-->
+  <string name="arrays__import_export_orig">Tabhair isteach / amach</string>
+  <string name="arrays__enabled">Cumasaithe</string>
+  <string name="arrays__disabled">Díchumasaithe</string>
+</resources>

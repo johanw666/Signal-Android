@@ -1,0 +1,8 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<resources>
+  <string name="arrays__import_export_orig">Tikula / Wereza</string>
+  <string name="import_fragment__import_system_sms_database">Yingiza system SMS database</string>
+  <string name="import_fragment__import_the_database_from_the_default_system">Yingiza datbase okuva ku apu ya default system messenger</string>
+  <string name="import_fragment__import_plaintext_backup">Yingiza backup yo bubaka obuwandike</string>
+  <string name="import_fragment__import_a_plaintext_backup_file">mport a plaintext backup file. Compatible with \'SMS Backup &amp; Restore.\'</string>
+</resources>
