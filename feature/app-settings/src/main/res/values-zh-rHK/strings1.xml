@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<resources xmlns:tools="http://schemas.android.com/tools">
+  <string name="preferences_chats__backups">備份</string>
+  <string name="preferences_chats__chat_backups">聊天備份</string>
+  <string name="preferences_storage__none">無</string>
+  <string name="arrays__enabled">已啟用</string>
+  <string name="arrays__disabled">已停用</string>
+</resources>
