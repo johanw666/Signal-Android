@@ -12,6 +12,8 @@ import java.time.ZoneOffset
 import java.time.format.DateTimeFormatter
 import java.util.Locale
 import java.util.Properties
+import com.android.build.OutputFile // JW
+import com.android.build.api.variant.FilterConfiguration.FilterType.* // JW
 
 plugins {
   alias(libs.plugins.android.application)
@@ -31,9 +33,12 @@ val staticIps = Properties().apply { file("static-ips.properties").reader().use 
 staticIps.stringPropertyNames().forEach { rootProject.extra[it] = staticIps.getProperty(it) }
 
 val canonicalVersionCode = 1772
-val canonicalVersionName = "8.33.2"
+val canonicalVersionName = "8.33.2.0-JW"
 val currentHotfixVersion = 0
 val maxHotfixVersions = 100
+
+// JW: added
+val abiCodes: Map<String, Int> = mapOf("armeabi-v7a" to 1, "arm64-v8a" to 2, "x86" to 2, "x86" to 3, "x86_64" to 4)
 
 // We don't want versions to ever end in 0 so that they don't conflict with nightly versions
 val possibleHotfixVersions = (0 until maxHotfixVersions).toList().filter { it % 10 != 0 }
@@ -261,8 +266,8 @@ android {
 
     manifestPlaceholders["mapsKey"] = "AIzaSyCSx9xea86GwDKGznCAULE9Y5a8b-TfN9U"
 
-    buildConfigField("long", "BUILD_TIMESTAMP", getLastCommitTimestamp() + "L")
-    buildConfigField("String", "GIT_HASH", "\"${getGitHash()}\"")
+    buildConfigField("long", "BUILD_TIMESTAMP", "1000L") // JW: fixed time for reproducible builds, is not used anyway
+    buildConfigField("String", "GIT_HASH", "\"000000\"") // JW
     buildConfigField("String", "SIGNAL_URL", "\"https://chat.signal.org\"")
     buildConfigField("String", "STORAGE_URL", "\"https://storage.signal.org\"")
     buildConfigField("String", "SIGNAL_CDN_URL", "\"https://cdn.signal.org\"")
@@ -310,7 +315,7 @@ android {
     buildConfigField("String", "STRIPE_BASE_URL", "\"https://api.stripe.com/v1\"")
     buildConfigField("String", "STRIPE_PUBLISHABLE_KEY", "\"pk_live_6cmGZopuTsV8novGgJJW9JpC00vLIgtQ1D\"")
     buildConfigField("boolean", "TRACING_ENABLED", "false")
-    buildConfigField("boolean", "LINK_DEVICE_UX_ENABLED", "false")
+    buildConfigField("boolean", "LINK_DEVICE_UX_ENABLED", "true") // JW
 
     ndk {
       abiFilters += listOf("armeabi-v7a", "arm64-v8a", "x86", "x86_64")
@@ -373,8 +378,10 @@ android {
 
     getByName("release") {
       isMinifyEnabled = true
+      manifestPlaceholders["mapsKey"] = getMapsKey() // JW
       proguardFiles(*buildTypes["debug"].proguardFiles.toTypedArray())
       buildConfigField("String", "BUILD_VARIANT_TYPE", "\"Release\"")
+      buildConfigField("boolean", "LINK_DEVICE_UX_ENABLED", "true") // JW
     }
 
     create("spinner") {
@@ -550,6 +557,21 @@ androidComponents {
       (variant as? com.android.build.api.variant.HasUnitTestBuilder)?.enableUnitTest = true
     }
   }
+  // JW added
+  onVariants(selector().all()) { variant: com.android.build.api.variant.ApplicationVariant ->
+    variant.outputs.forEach { output ->
+      val baseAbiCode = abiCodes[output.filters.find { it.filterType == ABI }?.identifier]
+      val postFix: Int
+      if (baseAbiCode != null) {
+        postFix = baseAbiCode
+      } else {
+        postFix = 0
+      }
+      output.versionCode.set(canonicalVersionCode * maxHotfixVersions + postFix)
+    }
+  }
+  // End JW: added
+
   onVariants(selector().all()) { variant: com.android.build.api.variant.ApplicationVariant ->
     // Rename APK to include version name
     val renameTask = tasks.register<RenameApkTask>("renameApk${variant.name.replaceFirstChar { it.uppercase() }}")
@@ -568,9 +590,10 @@ androidComponents {
 
     // Starting with minSdk 23, Android leaves native libraries uncompressed, which is fine for the Play Store, but not for our self-distributed APKs.
     // This reverts it to the legacy behavior, compressing the native libraries, and drastically reducing the APK file size.
-    if (variant.name.contains("website", ignoreCase = true) || variant.name.contains("github", ignoreCase = true)) {
+    // JW: Always use this
+    //if (variant.name.contains("website", ignoreCase = true) || variant.name.contains("github", ignoreCase = true)) {
       variant.packaging.jniLibs.useLegacyPackaging.set(true)
-    }
+    //}
 
     // Version overrides
     if (variant.name.contains("nightly", ignoreCase = true)) {
@@ -721,6 +744,7 @@ dependencies {
   implementation(project(":feature:media-keyboard"))
   implementation(project(":feature:registration"))
 
+  implementation("net.lingala.zip4j:zip4j:2.11.6") // JW: added
   implementation(libs.androidx.fragment.ktx)
   implementation(libs.androidx.appcompat)
   implementation(libs.androidx.window.window)
@@ -824,6 +848,7 @@ dependencies {
   implementation(project(":feature:media-send"))
   implementation(project(":feature:media-viewer"))
 
+
   "spinnerImplementation"(project(":lib:spinner"))
 
   "canaryImplementation"(libs.square.leakcanary)
@@ -895,55 +920,39 @@ tasks.withType<Test>().configureEach {
 }
 
 fun getLastCommitTimestamp(): String {
-  return providers.exec {
-    commandLine("git", "log", "-1", "--pretty=format:%ct")
-  }.standardOutput.asText.get() + "000"
+  return "\"000000\"" // JW
+  //return providers.exec {
+  //  commandLine("git", "log", "-1", "--pretty=format:%ct")
+  //}.standardOutput.asText.get() + "000"
 }
 
 fun getGitHash(): String {
-  return providers.exec {
-    commandLine("git", "rev-parse", "HEAD")
-  }.standardOutput.asText.get().trim().substring(0, 12)
+  return "\"000000\"" // JW
+  //return providers.exec {
+  //  commandLine("git", "rev-parse", "HEAD")
+  //}.standardOutput.asText.get().trim().substring(0, 12)
 }
 
 fun getNightlyTagForCurrentCommit(): String? {
-  val output = providers.exec {
-    commandLine("git", "tag", "--points-at", "HEAD")
-  }.standardOutput.asText.get().trim()
-
-  return output.lines()
-    .mapNotNull { nightlyTagRegex.matchEntire(it) }
-    .maxByOrNull { it.groupValues[2].toInt() }
-    ?.value
+  return "\"000000\"" // JW
 }
 
 fun getNightlyVersionCode(tag: String): Int {
-  val (tagCanonicalVersionCode, buildNumber) = checkNotNull(nightlyTagRegex.matchEntire(tag)).destructured
-
-  if (tagCanonicalVersionCode.toInt() != canonicalVersionCode) {
-    throw GradleException("Nightly tag '$tag' is for canonical version code $tagCanonicalVersionCode, but HEAD is at $canonicalVersionCode.")
-  }
-
-  // Nightlies sit 5 canonical versions ahead and only use version codes ending in 0, so they never collide with a release or hotfix.
-  return ((canonicalVersionCode + 5) * maxHotfixVersions) + (buildNumber.toInt() * 10)
+  return 0 // JW
 }
 
 fun getLastCommitDateTimeUtc(): String {
-  val timestamp = providers.exec {
-    commandLine("git", "log", "-1", "--pretty=format:%ct")
-  }.standardOutput.asText.get().trim().toLong()
-  val instant = Instant.ofEpochSecond(timestamp)
-  val formatter = DateTimeFormatter.ofPattern("MMM d '@' HH:mm 'UTC'", Locale.US)
-    .withZone(ZoneOffset.UTC)
-  return formatter.format(instant)
+  return "\"000000\"" // JW
 }
 
 fun getMapsKey(): String {
-  return providers
-    .gradleProperty("mapsKey")
-    .orElse(providers.environmentVariable("MAPS_KEY"))
-    .orElse("AIzaSyCSx9xea86GwDKGznCAULE9Y5a8b-TfN9U")
-    .get()
+  val mapKey = file("${project.rootDir}/maps.key")
+
+  return if (mapKey.exists()) {
+    mapKey.readLines()[0]
+  } else {
+    "AIzaSyCSx9xea86GwDKGznCAULE9Y5a8b-TfN9U"
+  }
 }
 
 abstract class LanguageListValueSource : ValueSource<List<String>, LanguageListValueSource.Params> {
