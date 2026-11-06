@@ -1,0 +1,10 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<resources>
+<!--arrays.xml-->
+  <string name="arrays__enabled">Уключана</string>
+  <string name="arrays__disabled">Адключана</string>
+  <string name="arrays__import_export_orig">Імпарт / экспарт</string>
+  <string name="preferences_chats__backups">Рэзервовыя копіі</string>
+  <string name="preferences_chats__chat_backups">Рэзервовыя копіі чата</string>
+  <string name="preferences_storage__none">Няма</string>
+</resources>

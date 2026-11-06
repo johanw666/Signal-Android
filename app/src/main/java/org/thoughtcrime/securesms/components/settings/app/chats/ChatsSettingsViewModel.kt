@@ -21,6 +21,8 @@ import org.signal.core.ui.compose.EventDrivenViewModel
 import org.signal.core.util.concurrent.SignalDispatchers
 import org.signal.core.util.logging.Log
 import org.thoughtcrime.securesms.backup.toBackupCreationProgress
+import org.thoughtcrime.securesms.dependencies.AppDependencies // JW: added
+import org.thoughtcrime.securesms.util.UriUtils // JW: added
 
 /**
  * Drives [org.signal.appsettings.chats.ChatsSettingsScreen]. Navigation goes straight to [parentEventEmitter].
@@ -48,6 +50,20 @@ class ChatsSettingsViewModel(
       plaintextExportProgress = ChatsSettingsRepository.observePlaintextExportProgress().value.toBackupCreationProgress(),
       chatExportState = ChatExportState.None,
       shouldAutoplayStickersAndGifs = ChatsSettingsRepository.isAutoplayStickersAndGifsEnabled()
+      // JW
+      ,
+      legacyLocalBackupEnabled = ChatsSettingsRepository.isLegacyLocalBackupEnabled(),
+      chatBackupsLocation = ChatsSettingsRepository.isChatBackupLocation(),
+      chatBackupsLocationApi30 = ChatsSettingsRepository.isChatBackupLocationApi30(),
+      chatBackupZipfile = ChatsSettingsRepository.isChatBackupZipfile(),
+      chatBackupZipfilePlain = ChatsSettingsRepository.isChatBackupZipfilePlain(),
+      keepViewOnceMessages = ChatsSettingsRepository.isKeepViewOnceMessages(),
+      ignoreRemoteDelete = ChatsSettingsRepository.isIgnoreRemoteDelete(),
+      ignoreAdminDelete = ChatsSettingsRepository.isIgnoreAdminDelete(),
+      deleteMediaOnly = ChatsSettingsRepository.isDeleteMediaOnly(),
+      googleMapType = ChatsSettingsRepository.isGoogleMapType(),
+      whoCanAddYouToGroups = ChatsSettingsRepository.isWhoCanAddYouToGroups(),
+      generateLinkPreviewImages = ChatsSettingsRepository.isGenerateLinkPreviewImages()
     )
   )
 
@@ -77,6 +93,20 @@ class ChatsSettingsViewModel(
       is ChatsSettingsEvents.AutoplayStickersAndGifsChanged -> setAutoplayStickersAndGifsEnabled(event.enabled)
       ChatsSettingsEvents.NavigateBackClicked -> parentEventEmitter.navigateBack()
       ChatsSettingsEvents.ChatFoldersClicked -> parentEventEmitter.navigateTo(AppSettingsRoute.ChatFoldersRoute.ChatFolders)
+      // JW: added
+      is ChatsSettingsEvents.SetChatBackupLocationChanged -> setChatBackupLocation(event.enabled)
+      is ChatsSettingsEvents.ChatBackupClicked -> error("Handled in the fragment.")
+      is ChatsSettingsEvents.ChatBackupsLocationApi30Clicked -> error("Handled in the fragment.")
+      is ChatsSettingsEvents.SetChatBackupZipfile -> setChatBackupZipfile(event.enabled)
+      is ChatsSettingsEvents.SetChatBackupZipfilePlain -> setChatBackupZipfilePlain(event.enabled)
+      is ChatsSettingsEvents.SetKeepViewOnceMessages -> setKeepViewOnceMessages(event.enabled)
+      is ChatsSettingsEvents.SetIgnoreRemoteDelete -> setIgnoreRemoteDelete(event.enabled)
+      is ChatsSettingsEvents.SetIgnoreAdminDelete -> setIgnoreAdminDelete(event.enabled)
+      is ChatsSettingsEvents.SetDeleteMediaOnly -> setDeleteMediaOnly(event.enabled)
+      is ChatsSettingsEvents.SetGoogleMapType -> setGoogleMapType(event.maptype)
+      is ChatsSettingsEvents.SetWhoCanAddYouToGroups -> setWhoCanAddYouToGroups(event.adder)
+      is ChatsSettingsEvents.SetGenerateLinkPreviewImages -> setGenerateLinkPreviewImages(event.enabled)
+      // JW end
     }
   }
 
@@ -140,4 +170,61 @@ class ChatsSettingsViewModel(
 
     _state.update { it.copy(folderCount = count, localBackupsEnabled = backupsEnabled) }
   }
+
+  // JW: added
+  private fun setChatBackupLocationApi30(directory: String) {
+    _state.update { it.copy(chatBackupsLocationApi30 = directory) }
+    ChatsSettingsRepository.setChatBackupsLocationApi30(directory)
+  }
+
+  private fun setChatBackupLocation(enabled: Boolean) {
+    _state.update { it.copy(chatBackupsLocation = enabled) }
+    ChatsSettingsRepository.setChatBackupLocation(enabled)
+  }
+
+  private fun setChatBackupZipfile(enabled: Boolean) {
+    _state.update { it.copy(chatBackupZipfile = enabled) }
+    ChatsSettingsRepository.setChatBackupZipfile(enabled)
+  }
+
+  private fun setChatBackupZipfilePlain(enabled: Boolean) {
+    _state.update { it.copy(chatBackupZipfilePlain = enabled) }
+    ChatsSettingsRepository.setChatBackupZipfilePlain(enabled)
+  }
+
+  private fun setKeepViewOnceMessages(enabled: Boolean) {
+    _state.update { it.copy(keepViewOnceMessages = enabled) }
+    ChatsSettingsRepository.setKeepViewOnceMessages(enabled)
+  }
+
+  private fun setIgnoreRemoteDelete(enabled: Boolean) {
+    _state.update { it.copy(ignoreRemoteDelete = enabled) }
+    ChatsSettingsRepository.setIgnoreRemoteDelete(enabled)
+  }
+
+  private fun setIgnoreAdminDelete(enabled: Boolean) {
+    _state.update { it.copy(ignoreAdminDelete = enabled) }
+    ChatsSettingsRepository.setIgnoreAdminDelete(enabled)
+  }
+
+  private fun setDeleteMediaOnly(enabled: Boolean) {
+    _state.update { it.copy(deleteMediaOnly = enabled) }
+    ChatsSettingsRepository.setDeleteMediaOnly(enabled)
+  }
+
+  private fun setGoogleMapType(maptype: String) {
+    _state.update { it.copy(googleMapType = maptype) }
+    ChatsSettingsRepository.setGoogleMapType(maptype)
+  }
+
+  private fun setWhoCanAddYouToGroups(adder: String) {
+    _state.update { it.copy(whoCanAddYouToGroups = adder) }
+    ChatsSettingsRepository.setWhoCanAddYouToGroups(adder)
+  }
+
+  private fun setGenerateLinkPreviewImages(enabled: Boolean) {
+    _state.update { it.copy(generateLinkPreviewImages = enabled) }
+    ChatsSettingsRepository.setGenerateLinkPreviewImages(enabled)
+  }
+  // JW: end
 }

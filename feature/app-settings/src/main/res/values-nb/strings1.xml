@@ -1,0 +1,13 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<resources>
+  <string name="preferences_chats__backups">Sikkerhetskopiering</string>
+  <string name="preferences_chats__chat_backups">Sikkerhetskopi av samtaler</string>
+  <string name="preferences_storage__none">Ingen</string>
+  <string name="arrays__import_export_orig">Importer / eksporter</string>
+  <string name="arrays__enabled">Slått på</string>
+  <string name="arrays__disabled">Slått av</string>
+  <string name="import_fragment__import_system_sms_database">Importer systemets SMS-database</string>
+  <string name="import_fragment__import_the_database_from_the_default_system">Importer database fra systemets forvalgte meldingsprogram</string>
+  <string name="import_fragment__import_plaintext_backup">Importer ukryptert sikkerhetskopi</string>
+  <string name="import_fragment__import_a_plaintext_backup_file">Importer ukryptert sikkerhetskopi. Dette kan brukes med «SMS-sikkerhetskopi &amp; -gjenoppretting.»</string>
+</resources>

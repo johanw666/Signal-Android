@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<resources xmlns:tools="http://schemas.android.com/tools">
+  <string name="preferences_chats__backups">Rezerves kopijas</string>
+  <string name="preferences_chats__chat_backups">Sarunu rezerves kopijas</string>
+  <string name="preferences_storage__none">Nav</string>
+  <string name="arrays__enabled">Iespējots</string>
+  <string name="arrays__disabled">Atspējots</string>
+</resources>

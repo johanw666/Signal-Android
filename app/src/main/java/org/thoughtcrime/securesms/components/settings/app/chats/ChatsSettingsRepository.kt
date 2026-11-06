@@ -18,10 +18,89 @@ import org.thoughtcrime.securesms.storage.StorageSyncHelper
 import org.thoughtcrime.securesms.util.BackupUtil
 import org.thoughtcrime.securesms.util.ConversationUtil
 import org.thoughtcrime.securesms.util.RemoteConfig
+// JW: added
+import org.thoughtcrime.securesms.util.TextSecurePreferences
+import org.thoughtcrime.securesms.util.UriUtils
 
 object ChatsSettingsRepository {
 
   private val shortcutRefreshDebouncer by lazy { ThrottledDebouncer(500L) }
+
+  // JW: added
+  fun isChatBackup(): Boolean = SignalStore.backup.areBackupsEnabled || SignalStore.settings.isBackupEnabled
+
+  fun isLegacyLocalBackupEnabled(): Boolean = SignalStore.settings.isBackupEnabled
+
+  fun isChatBackupLocation(): Boolean = SignalStore.misc.backupLocationRemovable
+  
+  fun setChatBackupLocation(enabled: Boolean) {
+    SignalStore.misc.backupLocationRemovable = enabled
+    SignalStore.misc.backupLocationChanged = true
+    // Store this also in the shared preferences so StorageUtil in core can access it
+    TextSecurePreferences.setBackupLocationRemovable(AppDependencies.application, enabled)
+    TextSecurePreferences.setBackupLocationChanged(AppDependencies.application, true) // Used in BackupUtil.getAllBackupsNewestFirst()
+  }
+
+  fun isChatBackupLocationApi30(): String = UriUtils.getFullPathFromTreeUri(AppDependencies.application, SignalStore.settings.signalBackupDirectory)
+
+  fun setChatBackupsLocationApi30(directory: String) {
+    SignalStore.settings.signalBackupDirectory = Uri.parse(directory)
+  }
+
+  fun isChatBackupZipfile(): Boolean = SignalStore.misc.rawBackupInZipfile
+
+  fun setChatBackupZipfile(enabled: Boolean) {
+    SignalStore.misc.rawBackupInZipfile = enabled
+  }
+
+  fun isChatBackupZipfilePlain(): Boolean = SignalStore.misc.plainBackupInZipfile
+
+  fun setChatBackupZipfilePlain(enabled: Boolean) {
+    SignalStore.misc.plainBackupInZipfile = enabled
+  }
+
+  fun isKeepViewOnceMessages(): Boolean = SignalStore.misc.keepViewOnceMessages
+
+  fun setKeepViewOnceMessages(enabled: Boolean) {
+    SignalStore.misc.keepViewOnceMessages = enabled
+  }
+
+  fun isIgnoreRemoteDelete(): Boolean = SignalStore.misc.ignoreRemoteDelete
+
+  fun setIgnoreRemoteDelete(enabled: Boolean) {
+    SignalStore.misc.ignoreRemoteDelete = enabled
+  }
+
+  fun isIgnoreAdminDelete(): Boolean = SignalStore.misc.ignoreAdminDelete
+
+  fun setIgnoreAdminDelete(enabled: Boolean) {
+    SignalStore.misc.ignoreAdminDelete = enabled
+  }
+
+  fun isDeleteMediaOnly(): Boolean = SignalStore.misc.deleteMediaOnly
+
+  fun setDeleteMediaOnly(enabled: Boolean) {
+    SignalStore.misc.deleteMediaOnly = enabled
+  }
+
+  fun isGoogleMapType(): String = SignalStore.misc.googleMapType
+
+  fun setGoogleMapType(maptype: String) {
+    SignalStore.misc.googleMapType = maptype
+  }
+
+  fun isWhoCanAddYouToGroups(): String = SignalStore.misc.whoCanAddYouToGroups
+
+  fun setWhoCanAddYouToGroups(adder: String) {
+    SignalStore.misc.whoCanAddYouToGroups = adder
+  }
+
+  fun isGenerateLinkPreviewImages(): Boolean = SignalStore.misc.sendLinkPreviewImages
+
+  fun setGenerateLinkPreviewImages(enabled: Boolean) {
+    SignalStore.misc.sendLinkPreviewImages = enabled
+  }
+  // JW: end
 
   fun isLinkPreviewsEnabled(): Boolean = SignalStore.settings.isLinkPreviewsEnabled
 

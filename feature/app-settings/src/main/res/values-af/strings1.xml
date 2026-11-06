@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<resources>
+    <string name="preferences_chats__backups">Rugsteunkopieë</string>
+    <string name="preferences_chats__chat_backups">Klets rugsteune</string>
+    <string name="arrays__enabled">Geaktiveer</string>
+    <string name="arrays__disabled">Deaktiveer</string>
+    <string name="preferences_storage__none">Geen</string>
+</resources>
