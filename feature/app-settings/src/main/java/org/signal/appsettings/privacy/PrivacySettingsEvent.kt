@@ -39,6 +39,12 @@ sealed interface PrivacySettingsEvent {
   /** The user tapped the switch to turn off the legacy passphrase, which asks them to confirm first. */
   data object DisablePassphraseClicked : PrivacySettingsEvent
 
+  // JW: user switches between passphrase and Android screenlock
+  data class SwitchPassphraseClicked(val enabled: Boolean) : PrivacySettingsEvent
+
+  //JW:  Set the user passphrase on or off
+  data class SetPassphraseClicked(val enabled: Boolean) : PrivacySettingsEvent
+
   /** The user confirmed turning off the legacy passphrase. */
   data object DisablePassphraseConfirmed : PrivacySettingsEvent
 

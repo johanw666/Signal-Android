@@ -70,6 +70,28 @@ class PrivacySettingsViewModel(
 
       PrivacySettingsEvent.DisablePassphraseClicked -> _state.update { it.copy(dialog = Dialog.ConfirmDisablePassphrase) }
 
+      // JW: added: switch between a passphrase and Android lock
+      is PrivacySettingsEvent.SwitchPassphraseClicked -> {
+        if (!event.enabled) {
+          PrivacySettingsRepository.disableObsoletePassphrase()
+        }
+        PrivacySettingsRepository.setProtectionMethodPassphrase(event.enabled)
+        refresh()
+      }
+
+      // JW: set or disable passphrase
+      is PrivacySettingsEvent.SetPassphraseClicked -> {
+        if (!event.enabled) {
+          _state.update { it.copy(dialog = Dialog.ConfirmDisablePassphrase) }
+        } else {
+          // enable password
+          PrivacySettingsRepository.disableObsoletePassphrase()
+          _actions.send(PrivacySettingsAction.LaunchChangePassphrase)
+          PrivacySettingsRepository.enableObsoletePassphrase()
+        }
+        refresh()
+      }
+
       PrivacySettingsEvent.DisablePassphraseConfirmed -> {
         if (_state.value.dialog != Dialog.ConfirmDisablePassphrase) return
         _state.update { it.copy(dialog = Dialog.None) }
@@ -161,6 +183,9 @@ class PrivacySettingsViewModel(
         screenSecurity = PrivacySettingsRepository.isScreenSecurityEnabled(),
         incognitoKeyboard = PrivacySettingsRepository.isIncognitoKeyboardEnabled(),
         paymentLock = PrivacySettingsRepository.isPaymentLockEnabled()
+        // JW
+        ,
+        isProtectionMethodPassphrase = PrivacySettingsRepository.isProtectionMethodPassphrase()
       )
     }
   }

@@ -1,43 +1,47 @@
-# Signal Android
+# Signal Android 
 
-Signal is a simple, powerful, and secure messenger that uses your phone's data connection (WiFi/4G/5G) to communicate securely.
+This is a fork of Signal Android with extra options added. For a more complete description, see [Signal-JW changes](https://johanw666.github.io/Signal/signal-jw.html)
 
-Millions of people use Signal every day for free and instantaneous communication anywhere in the world. Send and receive high-fidelity messages, participate in HD voice/video calls, and explore a growing set of new features that help you stay connected. 
+Signal is a messaging app for simple private communication with friends.
 
-Signal’s advanced privacy-preserving technology is always enabled, so you can focus on sharing the moments that matter with the people who matter to you.
+Signal uses your phone's data connection (WiFi/3G/4G) to communicate securely, optionally supports plain SMS/MMS to function as a unified messenger, and can also encrypt the stored messages on your phone.
 
-Currently available on the [Play Store](https://play.google.com/store/apps/details?id=org.thoughtcrime.securesms) and [signal.org](https://signal.org/android/apk/).
+Currently available on the Play store and [signal.org](https://signal.org/android/apk/).
 
-<a href='https://play.google.com/store/apps/details?id=org.thoughtcrime.securesms&pcampaignid=MKT-Other-global-all-co-prtnr-py-PartBadge-Mar2515-1'><img alt='Get it on Google Play' src='https://play.google.com/intl/en_us/badges/images/generic/en_badge_web_generic.png' height='80px'/></a>
+## Sideloading a non-Google checked apk
 
-Also available on [iOS](https://github.com/signalapp/signal-ios) and [Desktop](https://github.com/signalapp/signal-desktop).
+Google is about to do an Apple and restrict the freedom to install any app on your own device. Fortunately there is a (complicated) way around this:
+see the [Keep Android Open campaign](https://keepandroidopen.org/)
 
-## Contributing Bug Reports
-We use GitHub for bug tracking. Please search the existing issues for your bug and create a new one if the issue is not yet tracked!
+## WhatsApp Data Import
 
-https://github.com/signalapp/Signal-Android/issues
+This is based on code contributed by Samuel Welten (https://github.com/jukefoxer/Signal-Android) and Wollwolke 
+(https://github.com/Wollwolke/Signal-Android/tree/feature/wa-db-import). Thank you both for this.
 
-## Joining the Beta
-Want to live life on the bleeding edge and help out with testing?
+This fork of the Signal App provides a method to import one's WhatsApp conversations. It's currently still a pretty tedious process, but at least it's possible.
 
-You can subscribe to Signal Android Beta releases here:
-https://play.google.com/apps/testing/org.thoughtcrime.securesms
+### What works
 
-If you're interested in a life of peace and tranquility, stick with the standard releases.
+* Import 1-to-1 text conversation threads.
+* Import group chat conversations if a group chat with the same name is set up in the Signal App.
+* Importing images and videos messages from WhatsApp chats.
 
-## Contributing Translations
-Interested in helping translate Signal? Contribute here:
+### What doesn't work
 
-https://community.signalusers.org/c/translation-feedback/
+* Multimedia messages other than images and videos are currently not imported.
+* It's pretty slow (10 seconds per 1000 messages).
 
-## Contributing Code
+### How to do it
 
-If you're new to the Signal codebase, we recommend going through our issues and picking out a simple bug to fix in order to get yourself familiar. Also please have a look at the [CONTRIBUTING.md](https://github.com/signalapp/Signal-Android/blob/main/CONTRIBUTING.md), that might answer some of your questions.
-
-For larger changes and feature ideas, we ask that you propose it on the [unofficial Community Forum](https://community.signalusers.org) for a high-level discussion with the wider community before implementation.
-
-## Contributing Ideas
-Have something you want to say about Signal projects or want to be part of the conversation? Get involved in the [community forum](https://community.signalusers.org).
+* Extract your unencrypted msgstore.db from your WhatsApp installation. There are several methods to do so. WhatsAppDump seems to offer a possibility that doesn't require rooting the device. A more detailed description of how to do so might be added here in the future.
+* Copy the msgstore.db file to the top level directory of your internal storage
+* Make an encrypted Backup of your Signal Messages using the built-in feature of the Signal App.
+* Build and install this version of the Signal App and import the encrypted Backup of your signal messages.
+* You might have to go to the app permission settings and give it the permission to manage all of the external storage.
+* Go to Backup => Import WhatsApp to start the import.
+* Be patient until it finishes.
+* If you're happy with the WhatsApp import create another encrypted backup of all Signal messages.
+* Install the original Signal app again and import the encrypted Backup.
 
 Help
 ====
@@ -63,7 +67,7 @@ The form and manner of this distribution makes it eligible for export under the 
 
 ## License
 
-Copyright 2013 Signal Messenger, LLC
+Copyright 2013-2023 Signal
 
 Licensed under the GNU AGPLv3: https://www.gnu.org/licenses/agpl-3.0.html
 

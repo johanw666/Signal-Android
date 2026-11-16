@@ -29,6 +29,9 @@ data class PrivacySettingsState(
   val scrollToPaymentLock: Boolean = false,
   val dialog: Dialog = Dialog.None,
   val snackbar: Snackbar = Snackbar.None
+  // JW
+  ,
+  val isProtectionMethodPassphrase: Boolean = false
 ) {
 
   /** Screen lock can't do anything without a device credential, so it reads as off until one is set. */
