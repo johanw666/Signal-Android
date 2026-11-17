@@ -197,7 +197,20 @@ fun PrivacySettingsScreen(
         Texts.SectionHeader(text = stringResource(R.string.PrivacySettingsFragment__app_security))
       }
 
-      if (state.isObsoletePassphraseEnabled) {
+      // JW: added
+      item {
+        Rows.ToggleRow(
+          checked = state.isProtectionMethodPassphrase,
+          text = stringResource(R.string.preferences_app_protection__method_passphrase),
+          label = stringResource(R.string.preferences_app_protection__method_passphrase_summary),
+          onCheckChanged = { onEvent(PrivacySettingsEvent.SwitchPassphraseClicked(it)) }
+        )
+      }
+
+      //if (state.isObsoletePassphraseEnabled) {
+      // Because this preference may be undefined when this app is first ran we also check if there is a passphrase
+      // defined, if so, we assume passphrase protection:
+      if (state.isProtectionMethodPassphrase || state.isObsoletePassphraseEnabled) { // JW
         obsoletePassphraseRows(state = state, onEvent = onEvent)
       } else {
         item {
@@ -311,10 +324,11 @@ private fun LazyListScope.obsoletePassphraseRows(
 ) {
   item {
     Rows.ToggleRow(
-      checked = true,
+      checked = state.isObsoletePassphraseEnabled, // JW
       text = stringResource(R.string.preferences__enable_passphrase),
       label = stringResource(R.string.preferences__lock_signal_and_message_notifications_with_a_passphrase),
-      onCheckChanged = { onEvent(PrivacySettingsEvent.DisablePassphraseClicked) },
+      //onCheckChanged = { onEvent(PrivacySettingsEvent.DisablePassphraseClicked) },
+      onCheckChanged = { onEvent(PrivacySettingsEvent.SetPassphraseClicked(it)) }, // JW
       modifier = Modifier.testTag(PrivacySettingsTestTags.ROW_ENABLE_PASSPHRASE)
     )
   }
