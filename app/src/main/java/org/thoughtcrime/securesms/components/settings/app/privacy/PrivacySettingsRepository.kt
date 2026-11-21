@@ -29,6 +29,15 @@ object PrivacySettingsRepository {
     }
   }
 
+  // JW: added
+  fun isProtectionMethodPassphrase(): Boolean = SignalStore.misc.protectionMethodPassphrase
+
+  // JW: added
+  suspend fun setProtectionMethodPassphrase(enabled: Boolean) {
+    SignalStore.misc.protectionMethodPassphrase = enabled
+    syncConfiguration()
+  }
+
   fun isHiddenContactsAvailable(): Boolean = RemoteConfig.contactDelete
 
   suspend fun getHiddenCount(): Int {
@@ -101,6 +110,11 @@ object PrivacySettingsRepository {
       intent.action = KeyCachingService.DISABLE_ACTION
       application.startService(intent)
     }
+  }
+
+  // JW: added
+  fun enableObsoletePassphrase() {
+    SignalStore.settings.passphraseDisabled = false
   }
 
   fun isObsoletePassphraseTimeoutEnabled(): Boolean = SignalStore.settings.passphraseTimeoutEnabled
