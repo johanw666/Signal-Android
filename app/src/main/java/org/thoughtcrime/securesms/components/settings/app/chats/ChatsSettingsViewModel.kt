@@ -2,11 +2,14 @@ package org.thoughtcrime.securesms.components.settings.app.chats
 
 import android.net.Uri
 import androidx.lifecycle.viewModelScope
+import kotlinx.coroutines.channels.Channel
+import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
+import kotlinx.coroutines.flow.receiveAsFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.withContext
 import org.signal.appsettings.backups.BackupCreationProgress
@@ -21,6 +24,11 @@ import org.signal.core.ui.compose.EventDrivenViewModel
 import org.signal.core.util.concurrent.SignalDispatchers
 import org.signal.core.util.logging.Log
 import org.thoughtcrime.securesms.backup.toBackupCreationProgress
+import org.thoughtcrime.securesms.dependencies.AppDependencies // JW: added
+import org.thoughtcrime.securesms.util.UriUtils // JW: added
+import org.signal.appsettings.chats.ChatsSettingsAction // JW: added
+import org.signal.appsettings.privacy.PrivacySettingsAction
+import org.signal.appsettings.routes.openSection
 
 /**
  * Drives [org.signal.appsettings.chats.ChatsSettingsScreen]. Navigation goes straight to [parentEventEmitter].
@@ -48,10 +56,26 @@ class ChatsSettingsViewModel(
       plaintextExportProgress = ChatsSettingsRepository.observePlaintextExportProgress().value.toBackupCreationProgress(),
       chatExportState = ChatExportState.None,
       shouldAutoplayStickersAndGifs = ChatsSettingsRepository.isAutoplayStickersAndGifsEnabled()
+      // JW
+      ,
+      legacyLocalBackupEnabled = ChatsSettingsRepository.isLegacyLocalBackupEnabled(),
+      chatBackupsLocation = ChatsSettingsRepository.isChatBackupLocation(),
+      chatBackupsLocationApi30 = ChatsSettingsRepository.isChatBackupLocationApi30(),
+      chatBackupZipfile = ChatsSettingsRepository.isChatBackupZipfile(),
+      chatBackupZipfilePlain = ChatsSettingsRepository.isChatBackupZipfilePlain(),
+      keepViewOnceMessages = ChatsSettingsRepository.isKeepViewOnceMessages(),
+      ignoreRemoteDelete = ChatsSettingsRepository.isIgnoreRemoteDelete(),
+      ignoreAdminDelete = ChatsSettingsRepository.isIgnoreAdminDelete(),
+      deleteMediaOnly = ChatsSettingsRepository.isDeleteMediaOnly(),
+      googleMapType = ChatsSettingsRepository.isGoogleMapType(),
+      whoCanAddYouToGroups = ChatsSettingsRepository.isWhoCanAddYouToGroups(),
+      generateLinkPreviewImages = ChatsSettingsRepository.isGenerateLinkPreviewImages()
     )
   )
 
   val state: StateFlow<ChatsSettingsState> = _state.asStateFlow()
+  private val _actions = Channel<ChatsSettingsAction>(Channel.BUFFERED) // JW: added
+  val actions: Flow<ChatsSettingsAction> = _actions.receiveAsFlow() // JW: added
 
   init {
     ChatsSettingsRepository.observePlaintextExportProgress()
@@ -77,6 +101,20 @@ class ChatsSettingsViewModel(
       is ChatsSettingsEvents.AutoplayStickersAndGifsChanged -> setAutoplayStickersAndGifsEnabled(event.enabled)
       ChatsSettingsEvents.NavigateBackClicked -> parentEventEmitter.navigateBack()
       ChatsSettingsEvents.ChatFoldersClicked -> parentEventEmitter.navigateTo(AppSettingsRoute.ChatFoldersRoute.ChatFolders)
+      // JW: added
+      is ChatsSettingsEvents.SetChatBackupLocationChanged -> setChatBackupLocation(event.enabled)
+      is ChatsSettingsEvents.ChatBackupClicked -> parentEventEmitter.openSection(AppSettingsRoute.BackupsRoute.Backups())
+      is ChatsSettingsEvents.ChatBackupsLocationApi30Clicked -> _actions.send(ChatsSettingsAction.LaunchChatBackupsLocationApi30)
+      is ChatsSettingsEvents.SetChatBackupZipfile -> setChatBackupZipfile(event.enabled)
+      is ChatsSettingsEvents.SetChatBackupZipfilePlain -> setChatBackupZipfilePlain(event.enabled)
+      is ChatsSettingsEvents.SetKeepViewOnceMessages -> setKeepViewOnceMessages(event.enabled)
+      is ChatsSettingsEvents.SetIgnoreRemoteDelete -> setIgnoreRemoteDelete(event.enabled)
+      is ChatsSettingsEvents.SetIgnoreAdminDelete -> setIgnoreAdminDelete(event.enabled)
+      is ChatsSettingsEvents.SetDeleteMediaOnly -> setDeleteMediaOnly(event.enabled)
+      is ChatsSettingsEvents.SetGoogleMapType -> setGoogleMapType(event.maptype)
+      is ChatsSettingsEvents.SetWhoCanAddYouToGroups -> setWhoCanAddYouToGroups(event.adder)
+      is ChatsSettingsEvents.SetGenerateLinkPreviewImages -> setGenerateLinkPreviewImages(event.enabled)
+      // JW end
     }
   }
 
@@ -140,4 +178,55 @@ class ChatsSettingsViewModel(
 
     _state.update { it.copy(folderCount = count, localBackupsEnabled = backupsEnabled) }
   }
+
+  private fun setChatBackupLocation(enabled: Boolean) {
+    _state.update { it.copy(chatBackupsLocation = enabled) }
+    ChatsSettingsRepository.setChatBackupLocation(enabled)
+  }
+
+  private fun setChatBackupZipfile(enabled: Boolean) {
+    _state.update { it.copy(chatBackupZipfile = enabled) }
+    ChatsSettingsRepository.setChatBackupZipfile(enabled)
+  }
+
+  private fun setChatBackupZipfilePlain(enabled: Boolean) {
+    _state.update { it.copy(chatBackupZipfilePlain = enabled) }
+    ChatsSettingsRepository.setChatBackupZipfilePlain(enabled)
+  }
+
+  private fun setKeepViewOnceMessages(enabled: Boolean) {
+    _state.update { it.copy(keepViewOnceMessages = enabled) }
+    ChatsSettingsRepository.setKeepViewOnceMessages(enabled)
+  }
+
+  private fun setIgnoreRemoteDelete(enabled: Boolean) {
+    _state.update { it.copy(ignoreRemoteDelete = enabled) }
+    ChatsSettingsRepository.setIgnoreRemoteDelete(enabled)
+  }
+
+  private fun setIgnoreAdminDelete(enabled: Boolean) {
+    _state.update { it.copy(ignoreAdminDelete = enabled) }
+    ChatsSettingsRepository.setIgnoreAdminDelete(enabled)
+  }
+
+  private fun setDeleteMediaOnly(enabled: Boolean) {
+    _state.update { it.copy(deleteMediaOnly = enabled) }
+    ChatsSettingsRepository.setDeleteMediaOnly(enabled)
+  }
+
+  private fun setGoogleMapType(maptype: String) {
+    _state.update { it.copy(googleMapType = maptype) }
+    ChatsSettingsRepository.setGoogleMapType(maptype)
+  }
+
+  private fun setWhoCanAddYouToGroups(adder: String) {
+    _state.update { it.copy(whoCanAddYouToGroups = adder) }
+    ChatsSettingsRepository.setWhoCanAddYouToGroups(adder)
+  }
+
+  private fun setGenerateLinkPreviewImages(enabled: Boolean) {
+    _state.update { it.copy(generateLinkPreviewImages = enabled) }
+    ChatsSettingsRepository.setGenerateLinkPreviewImages(enabled)
+  }
+  // JW: end
 }

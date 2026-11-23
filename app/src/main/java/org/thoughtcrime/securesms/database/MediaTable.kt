@@ -135,10 +135,18 @@ class MediaTable internal constructor(context: Context?, databaseHelper: SignalD
       """
 
     /** Image and video attachments, excluding SVGs and link preview thumbnails. */
+/*
     private const val GALLERY_TYPE_CONDITIONS = """
         ${AttachmentTable.CONTENT_TYPE} NOT LIKE 'image/svg%' AND
         (${AttachmentTable.CONTENT_TYPE} LIKE 'image/%' OR ${AttachmentTable.CONTENT_TYPE} LIKE 'video/%') AND
         NOT $LINK_PREVIEW_THUMBNAIL_CONDITION
+      """
+  }
+*/
+    // JW: don't remove link preview media from the list, we want to be able to selectively delete it.
+    private const val GALLERY_TYPE_CONDITIONS = """
+        ${AttachmentTable.CONTENT_TYPE} NOT LIKE 'image/svg%' AND
+        (${AttachmentTable.CONTENT_TYPE} LIKE 'image/%' OR ${AttachmentTable.CONTENT_TYPE} LIKE 'video/%')
       """
   }
 

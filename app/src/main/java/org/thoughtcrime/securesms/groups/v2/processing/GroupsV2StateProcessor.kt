@@ -790,6 +790,19 @@ class GroupsV2StateProcessor private constructor(
   @VisibleForTesting
   internal class ProfileAndMessageHelper(private val aci: ACI, private val masterKey: GroupMasterKey, private val groupId: GroupId.V2) {
 
+    // JW: Check if the person is allowed to add you to a group
+    private fun mayThisPersonAddYouToAGroup(addedBy: Recipient): Boolean {
+      when (SignalStore.misc.whoCanAddYouToGroups) {
+        "anyone"             -> return true
+        "nonblocked"         -> return !addedBy.isBlocked
+        "onlycontacts"       -> return addedBy.isProfileSharing && !addedBy.isBlocked // check for blocked is not necessary but defensive programming if something changes here
+        "onlysystemcontacts" -> return addedBy.isSystemContact && !addedBy.isBlocked
+        "nobody"             -> return false
+        else                 -> return true
+      }
+      return true
+    }
+
     fun setProfileSharing(groupStateDiff: GroupStateDiff, newLocalState: DecryptedGroup, needsAvatarFetch: Boolean, sentBySelf: Boolean = false) {
       val previousGroupState = groupStateDiff.previousGroupState
 
@@ -815,6 +828,7 @@ class GroupsV2StateProcessor private constructor(
           .firstOrNull { it.revision == revisionJoinedAt }
 
         val addedBy = ServiceId.parseOrNull(addedAtChange?.editorServiceIdBytes)?.let { Recipient.externalPush(it) }
+        val mayAdd: Boolean = if (SignalStore.account.isLinkedDevice) !addedBy!!.isBlocked else mayThisPersonAddYouToAGroup(addedBy!!) // JW: for linked devices, fall back to Signal default to prevent unexpected group leaves
 
         if (addedBy != null) {
           Log.i(TAG, "Added as a full member of $groupId by ${addedBy.id}")
@@ -825,7 +839,7 @@ class GroupsV2StateProcessor private constructor(
             return
           } else if (addedBy.isSelf && !sentBySelf) {
             Log.i(TAG, "Group 'adder' is self. Not using self to auto-enable profile sharing.")
-          } else if (addedBy.isSelf || ((addedBy.isSystemContact || addedBy.isProfileSharing) && !addedBy.isHidden)) {
+          } else if (addedBy.isSelf || ((addedBy.isSystemContact || addedBy.isProfileSharing) && !addedBy.isHidden  && !addedBy.isBlocked)) { // JW: added isBlocked explicitly here
             Log.i(TAG, "Group 'adder' is trusted. self: " + addedBy.isSelf + ", contact: " + addedBy.isSystemContact + ", profileSharing: " + addedBy.isProfileSharing)
             Log.i(TAG, "Added to a group and auto-enabling profile sharing and redownloading avatar if needed")
             SignalDatabase.recipients.setProfileSharing(Recipient.externalGroupExact(groupId).id, true)
@@ -840,9 +854,10 @@ class GroupsV2StateProcessor private constructor(
         }
       } else if (selfAsPending != null) {
         val addedBy = UuidUtil.fromByteStringOrNull(selfAsPending.addedByAci)?.let { Recipient.externalPush(ACI.from(it)) }
+        val mayAdd: Boolean = if (SignalStore.account.isLinkedDevice) (addedBy?.isBlocked == true) else mayThisPersonAddYouToAGroup(addedBy!!) // JW
 
-        if (addedBy?.isBlocked == true) {
-          Log.i(TAG, "Added to group $groupId by a blocked user ${addedBy.id}. Leaving group.")
+        if (!mayAdd) { // JW: replaced blocked by more general permission
+          Log.i(TAG, "Added to group $groupId by a blocked user ${addedBy!!.id}. Leaving group.") // JW kotlin stuff
           AppDependencies.jobManager.add(LeaveGroupV2Job(groupId))
           return
         } else {
@@ -1065,6 +1080,7 @@ class GroupsV2StateProcessor private constructor(
 
       val serviceIds = SignalStore.account.getServiceIds()
       val outgoing = editor.isEmpty || aci == editor.get()
+      val extraCheck: Boolean = if (SignalStore.account.isLinkedDevice) true else (!SignalStore.misc.whoCanAddYouToGroups.equals("nonblocked") || !Recipient.resolved(RecipientIds.from(editor.get())).isBlocked) // JW
 
       val updateDescription = GV2UpdateDescription(
         gv2ChangeDescription = decryptedGroupV2Context,
@@ -1091,7 +1107,7 @@ class GroupsV2StateProcessor private constructor(
         } catch (e: MmsException) {
           Log.w(TAG, "Failed to insert outgoing update message!", e)
         }
-      } else {
+      } else if (extraCheck) { // JW: don't store messages from blocked contacts, but only if non-linked device.
         try {
           val updates = updateDescription.groupChangeUpdate!!.updates
 
